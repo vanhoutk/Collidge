@@ -21,7 +21,7 @@ public class BasicDialogFragment extends android.app.DialogFragment {
     public void setContext(Context c){
         this.context = c;
     }
-
+    
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
