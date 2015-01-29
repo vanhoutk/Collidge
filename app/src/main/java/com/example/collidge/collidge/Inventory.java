@@ -99,9 +99,9 @@ public class Inventory
          * Constructor for combat items is (Type, Text, Health, Energy, Quantity)
          */
         CombatItem Coffee, EnergyDrink, Noodles, ChickenRoll;
-        Coffee = new CombatItem("Energy", "Mmm that's good coffee!", 0, 10, 0);
+        Coffee = new CombatItem("Energy", "Mmm that's good coffee!", 0, 10, 2);
         EnergyDrink = new CombatItem("Energy", "Buzzing!", 0, 10, 0);
-        Noodles = new CombatItem("Health", "Instant Goodness", 10, 0, 0);
+        Noodles = new CombatItem("Health", "Instant Goodness", 10, 0, 2);
         ChickenRoll = new CombatItem("Health", "Needs more mayo!", 10, 0, 0);
 
         MyCombatInv.put("Coffee", Coffee);

@@ -1,11 +1,13 @@
 package com.example.collidge.collidge;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainMenu extends Activity
 {
@@ -98,6 +100,12 @@ public class MainMenu extends Activity
                     if (name == null)
                         name = "John Doe";
                     System.out.println(name);
+
+                    Toast.makeText(this, "Welcome" + name, Toast.LENGTH_LONG);
+
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("Name", name);
+                    startActivity(intent);
                 }
                 return true;
             case (MotionEvent.ACTION_MOVE) :
