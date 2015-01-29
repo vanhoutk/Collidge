@@ -15,7 +15,8 @@ public class MainMenu extends Activity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         if (easteregg != null)
@@ -55,7 +56,8 @@ public class MainMenu extends Activity
         return super.onOptionsItemSelected(item);
     }*/
 
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(MotionEvent event)
+    {
         DisplayMetrics screen;
         screen=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(screen);

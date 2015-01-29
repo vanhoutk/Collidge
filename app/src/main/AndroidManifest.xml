@@ -10,7 +10,7 @@
         android:screenOrientation="sensorLandscape">
 
         <activity
-            android:name="com.example.collidge.collidge.MainActivity"
+            android:name="com.example.collidge.collidge.MainMenu"
             android:label="@string/app_name">
 
             <intent-filter>
