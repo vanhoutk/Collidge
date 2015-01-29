@@ -27,8 +27,12 @@ import java.util.Set;
 
 public class Inventory
 {
-    private HashMap<String, CombatItem> MyCombatInv;
-    private HashMap<String, Equipment> MyEquipment;
+    /**
+     * Dan's edit
+     * Added = new HashMap();
+     */
+    private HashMap<String, CombatItem> MyCombatInv = new HashMap();
+    private HashMap<String, Equipment> MyEquipment = new HashMap();
     //private Map<String, CombatItem> MyCombatInv;
 
     /**
