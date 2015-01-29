@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Gary\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
+        <dex dex="C:\Users\Gary\AndroidStudioProjects\SetupGame\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-9d7a79293fcc2c3b9ee3895b12483208d658d0c4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Gary\AndroidStudioProjects\SetupGame\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f7afb7af09f1e23bca8c1fcdfb0297072a3ea43f">
+        <dex dex="C:\Users\Gary\AndroidStudioProjects\SetupGame\android\build\intermediates\pre-dexed\debug\core-1.0-d5b3be1bd7a8d74684e6053b37214fb9be9f64f0.jar" />
+    </item>
+    <item
+        jar="C:\Users\Gary\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
+        <dex dex="C:\Users\Gary\AndroidStudioProjects\SetupGame\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-7ef5bb2fcb37f9b6462abdef0ce1eeeeffcabdf2.jar" />
+    </item>
+
+</items>

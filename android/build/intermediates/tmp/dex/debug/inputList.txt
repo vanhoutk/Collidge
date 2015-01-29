@@ -1,0 +1,4 @@
+C:\Users\Gary\AndroidStudioProjects\SetupGame\android\build\intermediates\classes\debug
+C:\Users\Gary\AndroidStudioProjects\SetupGame\android\build\intermediates\pre-dexed\debug\core-1.0-d5b3be1bd7a8d74684e6053b37214fb9be9f64f0.jar
+C:\Users\Gary\AndroidStudioProjects\SetupGame\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-9d7a79293fcc2c3b9ee3895b12483208d658d0c4.jar
+C:\Users\Gary\AndroidStudioProjects\SetupGame\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-7ef5bb2fcb37f9b6462abdef0ce1eeeeffcabdf2.jar
