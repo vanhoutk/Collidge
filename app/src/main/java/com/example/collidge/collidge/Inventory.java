@@ -73,7 +73,7 @@ public class Inventory
          * Commented out the first line and replaced with the next one
          */
         //Set<String> names = Collections.emptySet();
-        Set<String> names = new HashSet<>();
+        Set<String> names = new HashSet();
 
         for(Map.Entry<String, CombatItem> entry: MyCombatInv.entrySet())
         {
