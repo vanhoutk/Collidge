@@ -24,11 +24,12 @@ public class Play implements Screen {
     public void show()
     {
         TmxMapLoader loader = new TmxMapLoader();
-        map = loader.load("map1.tmx");
+        map = loader.load("TrinityMap1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
         player = new Player(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(6 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 42) * player.getCollisionLayer().getTileHeight());
+        player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+        Gdx.input.setInputProcessor(player);
     }
 
     @Override
@@ -36,7 +37,10 @@ public class Play implements Screen {
     {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        
+        camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
+        camera.update();
+        
         renderer.setView(camera);
         renderer.render();
         
