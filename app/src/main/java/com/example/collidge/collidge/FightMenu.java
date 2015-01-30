@@ -1,5 +1,6 @@
 package com.example.collidge.collidge;
 
+import android.provider.UserDictionary;
 import android.view.MotionEvent;
 
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.Arrays;
  */
 public class FightMenu
 {
+
     private String[][] menuWords;
     private int[] previousMenus;
     private String[] attackList;
@@ -102,8 +104,6 @@ public class FightMenu
             previousMenus[1]=50;
             previousMenus[2]=50;
             actionSelected=true;
-
-
         }
 
         overflow=getMenuOverflow();
@@ -189,7 +189,13 @@ public class FightMenu
 
                     else if(menuWords[i][j]!=null)
                     {
+
                         menu[i][j]=3;
+                        if(menuWords[i][j].equals("InsufficientEnergy"))
+                        {
+                            menu[i][j]=2;
+                        }
+
                     }
                     else
                     {
@@ -223,7 +229,15 @@ public class FightMenu
         {
             if(j<=player.getMovesKnown())
             {
-                menuWords[1][j]=player.getAttacksNames()[j-1];
+                if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
+                {
+                    menuWords[1][j]="InsufficientEnergy";
+                }
+                else
+
+                {
+                    menuWords[1][j] = player.getAttacksNames()[j - 1];
+                }
             }
         }
 
@@ -267,9 +281,11 @@ public class FightMenu
                 Down();
 
             }
+            System.out.println("_______________________________________");
             System.out.println("  "+menuWords[currentMenu][aboveIcon]);
             System.out.println(">>"+menuWords[currentMenu][currentIcon]+"\t <<");
             System.out.println("  "+menuWords[currentMenu][belowIcon]);
+
 
         }
 
@@ -290,6 +306,18 @@ public class FightMenu
     {
         fillMenus(player);
         overflow=getMenuOverflow();
+    }
+    public String getAboveIcon()
+    {
+        return menuWords[currentMenu][aboveIcon];
+    }
+    public String getCurrentIcon()
+    {
+        return menuWords[currentMenu][currentIcon];
+    }
+    public String getBelowIcon()
+    {
+        return menuWords[currentMenu][belowIcon];
     }
 }
 

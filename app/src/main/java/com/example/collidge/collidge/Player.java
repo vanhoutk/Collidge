@@ -37,8 +37,8 @@ public class Player
     {
         return items.getList();
     }
-
-    private int movesKnown=3;
+//TODO finish move functionality
+    private int movesKnown=5;
     private boolean[] attacksList;
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
@@ -48,7 +48,7 @@ public class Player
         items=new Inventory();
         items.loadInventory();
 
-        level=3;
+        level=10;
         attacksList=new boolean[5];
         attacksList[0]=true;
         attacksList[1]=false;
@@ -60,6 +60,10 @@ public class Player
 
     }
 
+    public int[] getAttackEnergyCosts()
+    {
+    return attackEnergyCosts;
+    }
     public String[] getAttacksNames()
     {
         return attacksNames;

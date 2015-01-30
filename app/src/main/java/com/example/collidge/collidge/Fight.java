@@ -31,7 +31,7 @@ public class Fight
         enemies[1]=new Enemy(10,4,2,30);
         enemies[2]=new Enemy(10,4,3,40);
         enemies[3]=new Enemy(15,4,3,50);
-        enemies[4]=new Enemy(50,6,5,60);
+        enemies[4]=new Enemy(5000,6,5,60);
 
 
     }
@@ -77,10 +77,11 @@ public class Fight
     private void playerTurn(Player player,Enemy[] monsters)
     {
         int damage=0;
+
         if(ActionType==3)
         {
             player.useItem(fMenu.getMoveString(ActionType,ActionId));
-            fMenu.refreshMenus(player);
+
 
         }
         else if(ActionType==1)
@@ -131,6 +132,7 @@ public class Fight
         {
             enemyTurn(player, enemies);
         }
+        fMenu.refreshMenus(player);
 
     }
     private void moveSelect()
@@ -156,10 +158,11 @@ public class Fight
                 if (damage <= 0)
                 {
                     System.out.println("Damage by monster " + i + " resisted");
+                    player.changeHealth(-1);
                 } else
                 {
                     //damage= move damage*(playerStrength-enemyDefence)
-                    player.changeHealth(-damage);
+                    player.changeHealth(-(damage));
                     System.out.println("Enemy " + i + " deals " + (damage) + " damage");
                     if (player.getCurrentHealth() <= 0)
                     {
