@@ -15,7 +15,6 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-
 import java.io.File;
 
 
@@ -24,7 +23,7 @@ public class MainActivity extends Activity
     /**
      * Deidre -- start
      */
-    //Button createAlert;
+    Button createAlert;
     /**
      * Deirdre -- end
      */
@@ -35,13 +34,15 @@ public class MainActivity extends Activity
     Player player;
     Fight battle;
     DisplayMetrics screen;
-
     FightMenu menu;
-
     /**
      * Dan -- end
      */
 
+    /**
+     * Gary
+     */
+    MyGdxGame gdxGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -87,6 +88,7 @@ public class MainActivity extends Activity
     protected void onStart()
     {
         super.onStart();
+
         battle.start(player,player.getItemList());
     }
 
@@ -155,51 +157,51 @@ public class MainActivity extends Activity
      * Deirdre -- start
      */
 
-//    void show() {
-//        // DialogFragment.show() will take care of adding the fragment
-//        // in a transaction.  We also want to remove any currently showing
-//        // dialog, so make our own transaction and take care of that here.
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-//        if (prev != null) {
-//            ft.remove(prev);
-//        }
-//
-//        // Create and show the dialog.
-//        android.app.DialogFragment newFragment =  new BasicDialogFragment();
-//        ((BasicDialogFragment)newFragment).setContext(this);
-//        newFragment.show(ft, "dialog");
-//    }
-//
-//    public Intent getIntent(){
-//        return new Intent(this, Yes.class);
-//    }
-//
-//
-//    public void open_library(View view) {
-//
-//        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//        builder.setTitle("Add Photo!");
-//        builder.setItems(options, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int item) {
-//                if (options[item].equals("Capture Image")) {
-//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-//                    startActivityForResult(intent, 1);
-//                } else if (options[item].equals("Choose from Gallery")) {
-//                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                    startActivityForResult(intent, 2);
-//                } else if (options[item].equals("Cancel")) {
-//                    dialog.dismiss();
-//                }
-//            }
-//        });
-//        builder.show();
-//    }
+    void show() {
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+
+        // Create and show the dialog.
+        android.app.DialogFragment newFragment =  new BasicDialogFragment();
+        ((BasicDialogFragment)newFragment).setContext(this);
+        newFragment.show(ft, "dialog");
+    }
+
+    public Intent getIntent(){
+        return new Intent(this, Yes.class);
+    }
+
+
+    public void open_library(View view) {
+
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Capture Image")) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    startActivityForResult(intent, 1);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 2);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
 
     /**
      * Deirdre -- End

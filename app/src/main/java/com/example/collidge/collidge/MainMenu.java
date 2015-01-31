@@ -118,6 +118,7 @@ public class MainMenu extends Activity
                     intent.putExtra("Name", name);
                     contentView = 0;
                     startActivity(intent);
+
                     setContentView(R.layout.activity_main_menu);
                 }
                 return true;
