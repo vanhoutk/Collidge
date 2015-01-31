@@ -1,5 +1,7 @@
 package com.example.collidge.collidge;
 
+import java.util.Random;
+
 /**
  * Created by Daniel on 21/01/2015.
  */
@@ -7,16 +9,19 @@ public class Enemy
 {
     private int maxHealth,currentHealth,attack,defence;
     private boolean dead;
+    String name;
 
+    private Random rand=new Random();
     public int getExpValue()
     {
         return expValue;
     }
 
     private int expValue;
-    public int enemyId;
-    Enemy(int h, int a, int d,int exp)
+
+    Enemy(String nm, int h, int a, int d,int exp)
     {
+        name=nm;
         maxHealth=h;
         attack=a;
         defence=d;
@@ -24,14 +29,29 @@ public class Enemy
         currentHealth=maxHealth;
         dead=false;
     }
-    Enemy()
+    Enemy(Enemy template)
     {
-        maxHealth=20;
-        attack=3;
-        defence=2;
-        expValue=30;
+
+        maxHealth=template.maxHealth;
+        attack=template.attack;
+        defence=template.getDefence();
+        expValue=template.getExpValue();
+        name=template.getName();
+
+        //added randomness
+
+        System.out.println((rand.nextDouble()-.5));
+        maxHealth+=(int)(maxHealth*(rand.nextDouble()-.5));
+        attack+=(int)(attack*(rand.nextDouble()-.5));
+        defence+=(int)(defence*(rand.nextDouble()-.5));
+        expValue+=(int)(expValue*(rand.nextDouble()-.5));
         currentHealth=maxHealth;
+
+        System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;
+
+
+
     }
 
     public boolean getDead()
@@ -49,6 +69,10 @@ public class Enemy
     public int getAttack()
     {
         return attack;
+    }
+    public String getName()
+    {
+        return name;
     }
 
     public void changeHealth(int dH)

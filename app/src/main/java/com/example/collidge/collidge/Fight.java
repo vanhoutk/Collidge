@@ -22,16 +22,17 @@ public class Fight
     Fight()
     {
 
+        EnemyTypes BasicSet=new EnemyTypes();
         enemyCount=5;
         enemiesLeft=enemyCount;
         move=new Attack();
         //TODO add randomness and enemy lookup from world sprites
         enemies=new Enemy[enemyCount];
-        enemies[0]=new Enemy(10,3,2,20);
-        enemies[1]=new Enemy(10,4,2,30);
-        enemies[2]=new Enemy(10,4,3,40);
-        enemies[3]=new Enemy(15,4,3,50);
-        enemies[4]=new Enemy(5000,6,5,60);
+        enemies[0]=new Enemy(BasicSet.getEnemy("Fresher"));
+        enemies[1]=new Enemy(BasicSet.getEnemy("Fresher"));
+        enemies[2]=new Enemy(BasicSet.getEnemy("Fresher"));
+        enemies[3]=new Enemy(BasicSet.getEnemy("Master Debater"));
+        enemies[4]=new Enemy(BasicSet.getEnemy("\"Musician\""));
 
 
     }
@@ -115,13 +116,11 @@ public class Fight
 
         for (int i = 0; i < enemyCount; i++)
         {
-            System.out.print(i + ": ");
+
             if (!monsters[i].getDead())
             {
-                System.out.println(monsters[i].getHealth() + "  ^_^");
-            } else
-            {
-                System.out.println("   X_X");
+                System.out.print(monsters[i].getName() + ": ");
+                System.out.println(monsters[i].getHealth());
             }
 
         }
