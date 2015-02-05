@@ -252,41 +252,38 @@ public class FightMenu
     }
 
 
-    /*public void touchEvent(float x, float y,MotionEvent e)
+    public void touchDown(float x, float y)
     {
-        if(e.getAction()==MotionEvent.ACTION_DOWN&&actionSelected==false)
+        if(x<.5&&y<.5)
+        {
+            Select();
+        }
+        else if(x<.5&&y>.5)
         {
 
+        }
+        else if(x>.5&&y<0.5)
+        {
 
-            if(x<0&&y<0)
-            {
-                Select();
-            }
-            else if(x<0&&y>0)
-            {
-
-            }
-            else if(x>0&&y<0)
-            {
-
-                Up();
-
-            }
-            else if(x>0&&y>0)
-            {
-
-                Down();
-
-            }
-            System.out.println("_______________________________________");
-            System.out.println("  "+menuWords[currentMenu][aboveIcon]);
-            System.out.println(">>"+menuWords[currentMenu][currentIcon]+"\t <<");
-            System.out.println("  "+menuWords[currentMenu][belowIcon]);
-
+            Up();
 
         }
+        else if(x>0.5&&y>0.5)
+        {
+
+            Down();
+
+        }
+        System.out.println("_______________________________________");
+        System.out.println("  "+menuWords[currentMenu][aboveIcon]);
+        System.out.println(">>"+menuWords[currentMenu][currentIcon]+"\t <<");
+        System.out.println("  "+menuWords[currentMenu][belowIcon]);
 
     }
+
+
+
+
     public String getMoveString(int menu, int icon)
     {
         return menuWords[menu][icon];
@@ -315,6 +312,6 @@ public class FightMenu
     public String getBelowIcon()
     {
         return menuWords[currentMenu][belowIcon];
-    }*/
+    }
 }
 

@@ -2,10 +2,14 @@ package com.collidge;
 
 //import android.view.MotionEvent;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  * Created by Daniel on 20/01/2015.
  */
-public class Fight
+public class Fight extends GameState
 {
 
     Player playr;
@@ -19,9 +23,25 @@ public class Fight
     private int enemyCount,enemiesLeft;
     private Enemy[] enemies;
     Attack move;
-    Fight()
-    {
 
+
+    SpriteBatch batch;
+    Texture texture ;
+    Sprite healthBar;
+    Sprite healthBarLeft;
+
+
+
+
+    Fight(GameStateManager gsm)
+    {
+        super(gsm);
+    }
+
+
+    @Override
+    public void initialize()
+    {
         EnemyTypes BasicSet=new EnemyTypes();
         enemyCount=5;
         enemiesLeft=enemyCount;
@@ -35,28 +55,70 @@ public class Fight
         enemies[4]=new Enemy(BasicSet.getEnemy("\"Musician\""));
 
 
-    }
 
-    public void init()
-    {
 
+        batch=new SpriteBatch();
+        texture =new Texture("barHorizontal_green_mid.png");
+        healthBar=new Sprite(texture);
+        texture=new Texture("barHorizontal_green_left.png");
+        healthBarLeft=new Sprite(texture);
+        healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
+        healthBar.setSize((4*(screenWidth/10)),screenHeight/10);
+        healthBarLeft.setPosition(screenWidth/30,25*screenHeight/30);
+        healthBarLeft.setSize(screenWidth/50,screenHeight/10);
+        Player player=new Player();
+        fMenu=new FightMenu(player);
+
+        waitingForTouch=true;
     }
 
     public void update()
     {
-       /* if (insideMenuBool)
+//(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
+        healthBar.setSize((4*(screenWidth/10)),screenHeight/10);
+        healthBarLeft.setSize(screenWidth/50,screenHeight/10);
+
+
+    }
+
+    @Override
+    public void draw()
+    {
+        batch.begin();
+        healthBar.draw(batch);
+        healthBarLeft.draw(batch);
+        batch.end();
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button)
+    {
+        if(waitingForTouch==true)
         {
-            menuInput();
+            if(fMenu.actionSelected==false)
+            {
+                System.out.println(((float)screenX/screenWidth));
+                fMenu.touchDown((float)screenX/screenWidth,(float)screenY/screenHeight);
+                if(fMenu.actionSelected)
+                {
+                    playerTurn(playr,enemies);
+                }
+            }
 
         }
-        else if (comboTurnBool)
-        {
-            comboTurn();
-        }
-        else if (enemyTurnBool)
-        {
-            enemyTurn();
-        }*/
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer)
+    {
+        return false;
     }
 
     public void render()
@@ -66,16 +128,14 @@ public class Fight
 
     public void start(Player player,String[] items)
     {
-        fMenu=new FightMenu(player);
-        playr=player;
-        waitingForTouch=true;
+
     }
-    /*private void turn(Player player)
+    private void turn(Player player)
     {
         playerTurn(player,enemies);
 
-    }*/
-    /*private void playerTurn(Player player,Enemy[] monsters)
+    }
+    private void playerTurn(Player player,Enemy[] monsters)
     {
         int damage=0;
 
@@ -184,58 +244,7 @@ public class Fight
         }
     }
 
-    /*public void touchEvent(float x,float y, MotionEvent touch)
-    {
-        if(waitingForTouch)
-        {
-            if(!fMenu.actionSelected)
-            {
-                fMenu.touchEvent(x,y,touch);
-                if(fMenu.actionSelected)
-                {
-                    waitingForTouch = false;
-                    moveSelect();
 
-                }
-            }
 
-        }
-
-        /*if(waitingForTouch)
-        {
-
-            waitingForTouch=false;
-            if(touch.getAction()==MotionEvent.ACTION_DOWN)//motion down
-            {
-                if(x<0&&y<0)
-                {
-                    //moveSelection=false;
-                    action=0;
-                    System.out.println("Attack");
-                    if(enemiesLeft>0&&playr.getCurrentHealth()>0)
-                    {
-                        playerTurn(playr,enemies);
-                    }
-
-                }
-                else if(x<0&&y>0)
-                {
-                    action=0;
-                    System.out.println("Items");
-                    waitingForTouch=true;
-                }
-                else if(x>0&&y<0)
-                {
-                    action=0;
-                    System.out.println("Defend");
-                    waitingForTouch=true;
-                }
-                else if(x>0&&y>0)
-                {
-                    System.out.println("Run");
-                    waitingForTouch=true;
-                }
-            }
-        }*/
-    //}
 }
+

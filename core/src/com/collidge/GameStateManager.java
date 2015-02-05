@@ -18,14 +18,15 @@ public class GameStateManager
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
     public static final int MENUSTATE = 0;
     public static final int LEVEL1STATE = 1;
+    public static final int FIGHTSTATE =2;
 
     //Constructor creates all states and adds them to the list. Sets current state and loads it.
     public GameStateManager()
     {
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
-        GameState state1 = new TestState1(this);
-        GameState state2 = new TestState2(this);
+        GameState state1 = new Fight(this);
+        GameState state2 = new Fight(this);
         gameStates.add(state1);
         gameStates.add(state2);
         currentState = MENUSTATE;
