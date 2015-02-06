@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
-public class MapPlayer extends Sprite implements InputProcessor
+public class MapPlayer extends Sprite
 {
 
     private Vector2 velocity = new Vector2(); //movement velocity
@@ -156,91 +156,74 @@ public class MapPlayer extends Sprite implements InputProcessor
         this.collisionlayer = collisionlayer;
     }
 
-    @Override
-    public boolean keyDown(int keycode)
+    private void moveUp()
     {
-        switch(keycode)
+        velocity.y = speed;
+    }
+    private void moveDown()
+    {
+
+        velocity.y = -speed;
+    }
+    private void moveLeft()
+    {
+
+        velocity.x = -speed;
+    }
+    private void moveRight()
+    {
+
+        velocity.x = speed;
+    }
+    private void stopMovement()
+    {
+        velocity.y = 0;
+        velocity.x = 0;
+    }
+
+
+
+
+
+    public boolean touchDown(int screenX, int screenY, int height, int width)
+    {
+
+System.out.println(screenX);
+        // TODO Auto-generated method stub
+        if(screenX<(width/3.0))
         {
-            case Keys.W:
-                velocity.y = speed;
-                break;
-            case Keys.A:
-                velocity.x = -speed;
-                break;
-            case Keys.D:
-                velocity.x = speed;
-                break;
-            case Keys.S:
-                velocity.y = -speed;
-                break;
+            System.out.println("Left");
+            moveLeft();
         }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode)
-    {
-        switch(keycode)
+        else if(screenX>(width/1.5))
         {
-            case Keys.W:
-                velocity.y = 0;
-                break;
-            case Keys.A:
-                velocity.x = 0;
-                break;
-            case Keys.D:
-                velocity.x = 0;
-                break;
-            case Keys.S:
-                velocity.y = 0;
-                break;
-
+            moveRight();
         }
-        return true;
-    }
-
-    @Override
-    public boolean keyTyped(char character)
-    {
-        // TODO Auto-generated method stub
+        else if(screenY>(height/2))
+        {
+            moveDown();
+        }
+        else
+        {
+            moveUp();
+        }
         return false;
     }
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button)
-    {
 
+    public boolean touchUp(int screenX, int screenY, int height, int width)
+    {
         // TODO Auto-generated method stub
+        stopMovement();
         return false;
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    public boolean touchDragged(int screenX, int screenY, int height, int width)
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
-    @Override
-    public boolean mouseMoved(int screenX, int screenY)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
 
 
