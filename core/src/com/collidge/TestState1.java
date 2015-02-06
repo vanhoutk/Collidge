@@ -26,6 +26,7 @@ public class TestState1 extends GameState {
     int x = 0;
     int y = 0;
 
+    Player player = new Player();
     private TextureAtlas textureAtlas;
     private Sprite sprite2;
     private int currentFrame = 1;
@@ -47,19 +48,7 @@ public class TestState1 extends GameState {
         sprite2.setPosition(120, 100);
         sprite2.setSize(screenWidth/4,screenHeight/4);
        // sprite2.scale(2.5f);
-        Timer.schedule(new Task(){
-            @Override
-            public void run() {
-                currentFrame++;
-                if(currentFrame > 20)
-                    currentFrame = 1;
 
-                // ATTENTION! String.format() doesnt work under GWT for god knows why...
-                currentAtlasKey = String.format("%04d", currentFrame);
-                sprite2.setRegion(textureAtlas.findRegion(currentAtlasKey));
-            }
-        }
-                ,0,1/30.0f);
 
 
         batch = new SpriteBatch();
@@ -68,6 +57,8 @@ public class TestState1 extends GameState {
         // sprite.setScale(3.0f, 3.0f);
         font = new BitmapFont();
         font.setColor(Color.BLACK);
+        currentAtlasKey = String.format("%04d", currentFrame);
+        sprite2.setRegion(textureAtlas.findRegion(currentAtlasKey));
         //font.setScale(Gdx.graphics.getHeight()/10,Gdx.graphics.getHeight()/);
 
         // A Pixmap is basically a raw image in memory as repesented by pixels
@@ -154,7 +145,11 @@ public class TestState1 extends GameState {
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(screenY>screenHeight/2&&screenX<screenWidth/2)
+        {
 
+            gsm.startFight(player);
+        }
         return false;
     }
 

@@ -25,8 +25,8 @@ public class GameStateManager
     {
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
-        GameState state1 = new Fight(this);
-        GameState state2 = new Fight(this);
+        GameState state1 = new TestState1(this);
+        GameState state2 = new TestState2(this);
         gameStates.add(state1);
         gameStates.add(state2);
         currentState = MENUSTATE;
@@ -48,6 +48,18 @@ public class GameStateManager
         return gameStates.get(currentState);
     }
 
+    public void startFight(Player player)
+    {
+        GameState fight=new Fight(this, player);
+        gameStates.add(fight);
+        changeState(gameStates.size()-1);
+    }
+
+    public void endFight()
+    {
+        gameStates.remove(gameStates.size()-1);
+        changeState(0);
+    }
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.
     public void update()
     {

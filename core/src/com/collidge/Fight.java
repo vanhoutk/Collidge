@@ -21,6 +21,7 @@ public class Fight extends GameState
     Player playr;
     boolean waitingForTouch=false;
     int action;
+    private int damage;
     private int ActionType;
     private int ActionId;
     private boolean moveSelection=false;
@@ -41,9 +42,10 @@ public class Fight extends GameState
 
 
 
-    Fight(GameStateManager gsm)
+    Fight(GameStateManager gsm,Player player)
     {
         super(gsm);
+        playr=player;
     }
 
 
@@ -64,6 +66,18 @@ public class Fight extends GameState
         enemies[4]=new Enemy(BasicSet.getEnemy("\"Musician\""));
 
 
+        Timer.schedule(new Timer.Task(){
+            @Override
+            public void run() {
+                if(damage>0)
+                {
+                    playr.changeHealth(-1);
+                    damage--;
+                }
+            }
+        }
+                ,0,1/5.0f);
+
 
 
         batch=new SpriteBatch();
@@ -76,9 +90,9 @@ public class Fight extends GameState
         healthBarLeft.setPosition(screenWidth/30,25*screenHeight/30);
         healthBarLeft.setSize(screenWidth/50,screenHeight/10);
         //TODO add someway to input a player rather than create a new one (maybe in the gsm)
-        Player player=new Player();
-        fMenu=new FightMenu(player);
-        playr=player;
+
+        fMenu=new FightMenu(playr);
+
         waitingForTouch=true;
         battleFont = new BitmapFont();
     }
@@ -167,7 +181,7 @@ public class Fight extends GameState
     }
     private void playerTurn(Player player,Enemy[] monsters)
     {
-        int damage=0;
+        int dam=0;
 
         if(ActionType==3)
         {
@@ -177,29 +191,34 @@ public class Fight extends GameState
         }
         else if(ActionType==1)
         {
-            damage = player.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+            dam = player.attackPicker(fMenu.getMoveString(ActionType, ActionId));
 
 
 
             int target;
-            target = move.getTarget(damage, monsters);
+            target = move.getTarget(dam, monsters);
             //TODO add draw orders
-            damage *= move.moveExecute(damage);
+            dam *= move.moveExecute(dam);
 
             if (target >= 0)
             {
-                if ((damage * (player.getAttack() - monsters[target].getDefence())) <= 0)
+                if ((dam * (player.getAttack() - monsters[target].getDefence())) <= 0)
                 {
                     System.out.println("Damage on monster " + target + " resisted");
+                    monsters[target].changeHealth(-1);
                 } else
                 {
                     //damage= move damage*(playerStrength-enemyDefence)
-                    monsters[target].changeHealth(-(damage * (player.getAttack() - monsters[target].getDefence())));
-                    System.out.println((damage * (player.getAttack() - monsters[target].getDefence()))+" damage done");
+                    monsters[target].changeHealth(-(dam * (player.getAttack() - monsters[target].getDefence())));
+                    System.out.println((dam * (player.getAttack() - monsters[target].getDefence()))+" damage done");
                     if (monsters[target].getDead())
                     {
                         player.addExperience(monsters[target].getExpValue());
                         enemiesLeft -= 1;
+                        if(enemiesLeft<=0)
+                        {
+                            gsm.endFight();
+                        }
                     }
                 }
             }
@@ -238,20 +257,20 @@ public class Fight extends GameState
 
 
 
-        int damage;
+        int dam;
         for(int i=0;i<monsters.length;i++)
         {
             if(!monsters[i].getDead()&&player.getCurrentHealth()>0)
             {
-                damage=(monsters[i].getAttack() - player.getDefence());
+                dam=(monsters[i].getAttack() - player.getDefence());
                 System.out.println("Monster " + i + " attacks");
-                if (damage <= 0)
+                if (dam <= 0)
                 {
                     System.out.println("Damage by monster " + i + " resisted");
-                    player.changeHealth(-1);
+                    damage++;
                 } else
                 {
-                    dealDamage(-1,damage);
+                    damage+=dam;
                     //player.changeHealth(-(damage));
                     System.out.println("Enemy " + i + " deals " + (damage) + " damage");
                     if (player.getCurrentHealth() <= 0)

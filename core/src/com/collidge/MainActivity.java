@@ -172,9 +172,7 @@ public class MainActivity //extends Activity
         newFragment.show(ft, "dialog");
     }
 
-    public Intent getIntent(){
-        return new Intent(this, Yes.class);
-    }
+    
 
 
     public void open_library(View view) {
