@@ -172,7 +172,7 @@ public class MainActivity //extends Activity
         newFragment.show(ft, "dialog");
     }
 
-    
+
 
 
     public void open_library(View view) {

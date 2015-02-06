@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 
+
 /**
  * Created by Daniel on 20/01/2015.
  */
@@ -53,17 +54,15 @@ public class Fight extends GameState
     public void initialize()
     {
 
-        EnemyTypes BasicSet=new EnemyTypes();
-        enemyCount=5;
+        EnemySets BasicSet=new EnemySets();
+        enemies=BasicSet.getEnemies("Pack");
+
+        enemyCount=enemies.length;
         enemiesLeft=enemyCount;
         move=new Attack();
         //TODO add randomness and enemy lookup from world sprites
-        enemies=new Enemy[enemyCount];
-        enemies[0]=new Enemy(BasicSet.getEnemy("Fresher"));
-        enemies[1]=new Enemy(BasicSet.getEnemy("Fresher"));
-        enemies[2]=new Enemy(BasicSet.getEnemy("Fresher"));
-        enemies[3]=new Enemy(BasicSet.getEnemy("Master Debater"));
-        enemies[4]=new Enemy(BasicSet.getEnemy("\"Musician\""));
+        //enemies=new Enemy[enemyCount];
+
 
 
         Timer.schedule(new Timer.Task(){
@@ -72,11 +71,16 @@ public class Fight extends GameState
                 if(damage>0)
                 {
                     playr.changeHealth(-1);
+                    if(playr.getCurrentHealth()<=0)
+                    {
+                        gsm.endFight();
+                    }
                     damage--;
                 }
+
             }
         }
-                ,0,1/5.0f);
+                ,0,.3f);
 
 
 

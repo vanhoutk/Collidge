@@ -29,6 +29,7 @@ public class Enemy
         currentHealth=maxHealth;
         dead=false;
     }
+
     Enemy(Enemy template)
     {
 
@@ -38,9 +39,6 @@ public class Enemy
         expValue=template.getExpValue();
         name=template.getName();
 
-        //added randomness
-
-        System.out.println((rand.nextDouble()-.5));
         maxHealth+=(int)(maxHealth*(rand.nextDouble()-.5));
         attack+=(int)(attack*(rand.nextDouble()-.5));
         defence+=(int)(defence*(rand.nextDouble()-.5));
