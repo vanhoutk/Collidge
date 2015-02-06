@@ -2,15 +2,21 @@ package com.collidge;
 
 //import android.view.MotionEvent;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Timer;
 
 /**
  * Created by Daniel on 20/01/2015.
  */
 public class Fight extends GameState
 {
+
+
 
     Player playr;
     boolean waitingForTouch=false;
@@ -30,6 +36,8 @@ public class Fight extends GameState
     Sprite healthBar;
     Sprite healthBarLeft;
 
+    private BitmapFont battleFont;
+
 
 
 
@@ -42,6 +50,7 @@ public class Fight extends GameState
     @Override
     public void initialize()
     {
+
         EnemyTypes BasicSet=new EnemyTypes();
         enemyCount=5;
         enemiesLeft=enemyCount;
@@ -66,10 +75,12 @@ public class Fight extends GameState
         healthBar.setSize((4*(screenWidth/10)),screenHeight/10);
         healthBarLeft.setPosition(screenWidth/30,25*screenHeight/30);
         healthBarLeft.setSize(screenWidth/50,screenHeight/10);
+        //TODO add someway to input a player rather than create a new one (maybe in the gsm)
         Player player=new Player();
         fMenu=new FightMenu(player);
-
+        playr=player;
         waitingForTouch=true;
+        battleFont = new BitmapFont();
     }
 
     public void update()
@@ -84,9 +95,29 @@ public class Fight extends GameState
     @Override
     public void draw()
     {
+
         batch.begin();
         healthBar.draw(batch);
         healthBarLeft.draw(batch);
+
+        battleFont.setColor(Color.BLACK);
+        battleFont.setScale(screenWidth/200.0f,screenHeight/200.0f);
+        battleFont.draw(batch, playr.getCurrentHealth()+" Hp", screenWidth/5,9*screenHeight/10);
+        battleFont.draw(batch, playr.getCurrentEnergy()+" En", screenWidth/5,(9*screenHeight/10)-battleFont.getLineHeight());
+
+
+        if(!fMenu.actionSelected)
+        {
+
+
+            battleFont.draw(batch, fMenu.getAboveIcon(), screenWidth/5,screenHeight/2+battleFont.getLineHeight());
+            battleFont.draw(batch, fMenu.getCurrentIcon(), screenWidth/5,screenHeight/2);
+            battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
+
+            battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
+
+
+        }
         batch.end();
     }
 
@@ -97,10 +128,12 @@ public class Fight extends GameState
         {
             if(fMenu.actionSelected==false)
             {
-                System.out.println(((float)screenX/screenWidth));
+
                 fMenu.touchDown((float)screenX/screenWidth,(float)screenY/screenHeight);
                 if(fMenu.actionSelected)
                 {
+                    ActionId=fMenu.getActionId();
+                    ActionType=fMenu.getActionType();
                     playerTurn(playr,enemies);
                 }
             }
@@ -121,10 +154,7 @@ public class Fight extends GameState
         return false;
     }
 
-    public void render()
-    {
 
-    }
 
     public void start(Player player,String[] items)
     {
@@ -150,11 +180,12 @@ public class Fight extends GameState
             damage = player.attackPicker(fMenu.getMoveString(ActionType, ActionId));
 
 
+
             int target;
             target = move.getTarget(damage, monsters);
             //TODO add draw orders
             damage *= move.moveExecute(damage);
-            //TODO add lookup for energy cost of each move
+
             if (target >= 0)
             {
                 if ((damage * (player.getAttack() - monsters[target].getDefence())) <= 0)
@@ -220,8 +251,8 @@ public class Fight extends GameState
                     player.changeHealth(-1);
                 } else
                 {
-                    //damage= move damage*(playerStrength-enemyDefence)
-                    player.changeHealth(-(damage));
+                    dealDamage(-1,damage);
+                    //player.changeHealth(-(damage));
                     System.out.println("Enemy " + i + " deals " + (damage) + " damage");
                     if (player.getCurrentHealth() <= 0)
                     {
@@ -243,6 +274,49 @@ public class Fight extends GameState
             fMenu.actionSelected=false;
         }
     }
+
+
+    private void dealDamage(int target, int damage)
+    {
+        if(target<0)
+        {
+            playr.changeHealth(-1);
+
+            if(playr.getCurrentHealth()<=0)
+            {
+                return;
+            }
+        }
+        else if (target>=0)
+        {
+            if(enemies[target].getHealth()!=0)
+            {
+                enemies[target].changeHealth(-1);
+            }
+            else return;
+
+        }
+        damage=damage-1;
+
+        /*try
+        {
+            Thread.sleep(1000);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }*/
+
+        if(damage>0)
+        {
+            dealDamage(target, damage);
+        }
+        return;
+    }
+
+
+
+
+
 
 
 

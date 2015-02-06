@@ -48,7 +48,7 @@ public class Player
         items=new Inventory();
         items.loadInventory();
 
-        level=10;
+        level=1;
         attacksList=new boolean[5];
         attacksList[0]=true;
         attacksList[1]=false;

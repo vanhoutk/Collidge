@@ -31,8 +31,8 @@ public class FightMenu
         fillMenus(player);          //populate menus (both word and id) with values
         currentIcon=0;              //current item being pointed at. basically menu[][currentIcon]
         overflow=getMenuOverflow(); //number of empty items on the menus, used for wrap around
-
-        for(int  i=0;i<menu.length;i++)
+        validate();
+        /*for(int  i=0;i<menu.length;i++)
         {
             for(int j=0;j<menu[0].length;j++)
             {
@@ -50,7 +50,7 @@ public class FightMenu
                 }
             }
             System.out.println();
-        }
+        }*/
 
     }
     private void Select()
@@ -274,10 +274,10 @@ public class FightMenu
             Down();
 
         }
-        System.out.println("_______________________________________");
+        /*System.out.println("_______________________________________");
         System.out.println("  "+menuWords[currentMenu][aboveIcon]);
         System.out.println(">>"+menuWords[currentMenu][currentIcon]+"\t <<");
-        System.out.println("  "+menuWords[currentMenu][belowIcon]);
+        System.out.println("  "+menuWords[currentMenu][belowIcon]);*/
 
     }
 
@@ -313,5 +313,8 @@ public class FightMenu
     {
         return menuWords[currentMenu][belowIcon];
     }
+
+
+
 }
 

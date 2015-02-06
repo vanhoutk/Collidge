@@ -5,6 +5,8 @@ package com.collidge;
  */
 public class Attack
 {
+
+
     public int moveExecute(int moveId)
     {
         if(moveId==0)
@@ -29,8 +31,6 @@ public class Attack
             target++;
         }
         return target;
-
-
 
     }
 
