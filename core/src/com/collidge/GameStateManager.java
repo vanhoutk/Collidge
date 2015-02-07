@@ -50,20 +50,24 @@ public class GameStateManager
 
     public void startFight(Player player)
     {
-        GameState fight=new Fight(this, player);
-        gameStates.add(fight);
+
+        gameStates.add(new Fight(this,player));
         changeState(gameStates.size()-1);
     }
 
     public void endFight()
     {
+        System.out.println(gameStates.size());
         gameStates.remove(gameStates.size()-1);
         changeState(0);
     }
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.
     public void update()
     {
-        gameStates.get(currentState).update();
+        if(gameStates.get(currentState)!=null)
+        {
+            gameStates.get(currentState).update();
+        }
     }
 
     public void draw()

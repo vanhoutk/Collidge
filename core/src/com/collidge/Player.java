@@ -7,6 +7,9 @@ public class Player
 {
     private int level;
 
+
+
+    private int expTarget;
     private int health;
 
     public int getCurrentHealth()
@@ -56,6 +59,7 @@ public class Player
         attacksList[3]=false;
         attacksList[4]=false;
         updateStats();
+        healAll();
 
 
     }
@@ -69,6 +73,10 @@ public class Player
         return attacksNames;
     }
 
+    public int getExpTarget()
+    {
+        return expTarget;
+    }
 
 
     public void learnMove(int moveId)
@@ -83,6 +91,12 @@ public class Player
             attacksList[moveId]=true;
             movesKnown++;
         }
+    }
+
+    public void healAll()
+    {
+        currentEnergy=energy;
+        currentHealth=health;
     }
 
     public void useItem(String item)
@@ -146,9 +160,12 @@ public class Player
     public void addExperience(int newExp)
     {
         experience+=newExp;
-        while(experience>=100)
+        while(experience>=expTarget)
         {
+            experience-=expTarget;
             levelUp();
+
+
 
 
         }
@@ -158,34 +175,25 @@ public class Player
     {
 
         level++;
-
-        experience-=100;
-
-
-        //placeholders for clarity
-        System.out.println("Level Up to Level:"+level);
-        System.out.println("Hp +15");
-        System.out.println("Attack +2");
-        System.out.println("Defence +1");
-        System.out.println("Energy +10");
-        System.out.println("Intelligence +1");
         updateStats();
+        currentEnergy+=health/4;
+        currentHealth+=health/4;
     }
     private void updateStats()
     {
         //TODO add levelUp selections
-        attack=5+(level*2);
+        attack=5+(level);
 
-        defence=level;
+        defence=0;
         health=5+(level*15);
 
-        intelligence=level;
+        intelligence=(int)(level/2.5);
 
-        energy=level*10;
+        energy=level*5;
 
-        currentEnergy=energy;
-        currentHealth=health;
 
+
+        expTarget=(int)(level*level/1.2)+55;
 
     }
 

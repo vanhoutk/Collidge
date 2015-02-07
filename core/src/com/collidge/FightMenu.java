@@ -188,7 +188,7 @@ public class FightMenu
                     {
 
                         menu[i][j]=3;
-                        if(menuWords[i][j].equals("InsufficientEnergy"))
+                        if(menuWords[i][j].endsWith("*"))
                         {
                             menu[i][j]=2;
                         }
@@ -228,7 +228,7 @@ public class FightMenu
             {
                 if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
                 {
-                    menuWords[1][j]="InsufficientEnergy";
+                    menuWords[1][j]=player.getAttacksNames()[j-1]+"*";
                 }
                 else
 

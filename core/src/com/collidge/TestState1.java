@@ -33,13 +33,9 @@ public class TestState1 extends GameState {
     private String currentAtlasKey = new String("0001");
 
 
-    TestState1(GameStateManager gsm) {
+    TestState1(GameStateManager gsm)
+    {
         super(gsm);
-        //initialize();
-    }
-
-    @Override
-    public void initialize () {
         textureAtlas = new TextureAtlas("spritesheet.atlas");
 
         AtlasRegion region = textureAtlas.findRegion("0001");
@@ -47,7 +43,7 @@ public class TestState1 extends GameState {
         sprite2 = new Sprite(region);
         sprite2.setPosition(120, 100);
         sprite2.setSize(screenWidth/4,screenHeight/4);
-       // sprite2.scale(2.5f);
+        // sprite2.scale(2.5f);
 
 
 
@@ -84,29 +80,43 @@ public class TestState1 extends GameState {
         pixmap.dispose();
 
         sprite = new Sprite(texture);
+
+        //initialize();
     }
 
     @Override
-    public void dispose() {
+    public void initialize ()
+    {
+
+    }
+
+    @Override
+    public void dispose()
+    {
         batch.dispose();
         font.dispose();
         texture.dispose();
     }
 
     @Override
-    public void update () {
+    public void update ()
+    {
 
     }
 
     @Override
-    public void draw () {
+    public void draw ()
+    {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.flush();
         batch.begin();
         //batch.draw(img, 200, 500);
         sprite.draw(batch);
-        font.draw(batch, "width = " + Gdx.graphics.getWidth() + " height = " + Gdx.graphics.getHeight(), Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        font.setScale((int)(screenWidth/250.0),(int)(screenHeight/250.0));
+        font.draw(batch, "Lvl: " + player.getLevel() + " Exp: " + player.getExperience()+"/"+player.getExpTarget(), Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 
+        font.draw(batch, "Hp: " + player.getCurrentHealth()+"/"+player.getHealth(), Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2-font.getLineHeight());
         sprite2.setPosition(x-screenWidth/8,y-screenWidth/8);
         sprite2.draw(batch);
 
@@ -126,14 +136,18 @@ public class TestState1 extends GameState {
     }
 
     @Override
-    public void pause() {
+    public void pause()
+    {
+
     }
 
     @Override
-    public void resume() {
+    public void resume()
+    {
     }
 
-    public void keyDown() {
+    public void keyDown()
+    {
 
     }
 
@@ -148,7 +162,15 @@ public class TestState1 extends GameState {
         if(screenY>screenHeight/2&&screenX<screenWidth/2)
         {
 
-            gsm.startFight(player);
+            if(player.getCurrentHealth()>0)
+            {
+                gsm.startFight(player);
+            }
+            else
+            {
+                player.healAll();
+            }
+
         }
         return false;
     }
@@ -158,7 +180,7 @@ public class TestState1 extends GameState {
 
         x=screenX;
         y=(-screenY)+Gdx.graphics.getHeight();
-        System.out.println(x+", "+y);
+     //   System.out.println(x+", "+y);
         return false;
     }
 }
