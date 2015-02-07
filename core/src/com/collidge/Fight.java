@@ -4,15 +4,22 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Timer;
 
 
 /**
  * Created by Daniel on 20/01/2015.
+ */
+
+/**
+ * Small Edit by Michael on 07/02/2015
  */
 public class Fight extends GameState
 {
@@ -39,8 +46,15 @@ public class Fight extends GameState
     Sprite healthBarLeft;
 
     private BitmapFont battleFont;
-
-
+    /**
+     * Added by Michael 07/2/15
+     */
+    private Animation icon;
+    private Animation background;
+    private TextureAtlas spriteatlas;
+    private TextureAtlas backgroundatlas;
+    private String currentAtlasKey = new String("0001");
+    private float elapsedTime = 0;
 
 
     Fight(GameStateManager gsm,Player player)
@@ -95,6 +109,20 @@ public class Fight extends GameState
         healthBarLeft.setSize(screenWidth/50,screenHeight/10);
         //TODO add someway to input a player rather than create a new one (maybe in the gsm)
 
+
+        /**Michael*/
+
+        spriteatlas = new TextureAtlas(Gdx.files.internal("spritesheet.atlas"));
+        TextureAtlas.AtlasRegion region = spriteatlas.findRegion("0001");
+
+        backgroundatlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
+        TextureAtlas.AtlasRegion bregion = backgroundatlas.findRegion("0001");
+
+        icon = new Animation(1/15f, spriteatlas.getRegions());
+        background = new Animation(1/2f, backgroundatlas.getRegions());
+
+        /**End_Michael*/
+
         fMenu=new FightMenu(playr);
 
         waitingForTouch=true;
@@ -113,12 +141,19 @@ public class Fight extends GameState
     @Override
     public void draw()
     {
-
         batch.begin();
+
+        /**Michael*/
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        batch.draw(background.getKeyFrame(elapsedTime, true), 0, 0);
+        batch.draw(icon.getKeyFrame(elapsedTime, true), 1700, 700);
+        /**End_Michael*/
         healthBar.draw(batch);
         healthBarLeft.draw(batch);
 
-        battleFont.setColor(Color.BLACK);
+        //icon.draw(batch);           /**Michael*/
+
+        battleFont.setColor(Color.WHITE);
         battleFont.setScale(screenWidth/200.0f,screenHeight/200.0f);
         battleFont.draw(batch, playr.getCurrentHealth()+" Hp", screenWidth/5,9*screenHeight/10);
         battleFont.draw(batch, playr.getCurrentEnergy()+" En", screenWidth/5,(9*screenHeight/10)-battleFont.getLineHeight());
@@ -142,9 +177,9 @@ public class Fight extends GameState
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        if(waitingForTouch==true)
+        if(waitingForTouch)
         {
-            if(fMenu.actionSelected==false)
+            if(!fMenu.actionSelected)
             {
 
                 fMenu.touchDown((float)screenX/screenWidth,(float)screenY/screenHeight);
