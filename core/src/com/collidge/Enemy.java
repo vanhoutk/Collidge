@@ -60,6 +60,10 @@ public class Enemy
     {
         return currentHealth;
     }
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
     public int getDefence()
     {
         return defence;

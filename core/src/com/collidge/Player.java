@@ -45,7 +45,7 @@ public class Player
     private boolean[] attacksList;
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
-    private String[] attacksNames={"Bash","Slam","Blast","Collidge Spirit","Go Hard"};
+    private String[] attacksNames={"Bash","Slam","Blast","Spirit","Go Hard"};
     Player()
     {
         items=new Inventory();

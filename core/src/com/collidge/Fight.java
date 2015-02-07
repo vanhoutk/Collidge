@@ -4,11 +4,16 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Timer;
+
+
 
 
 /**
@@ -34,8 +39,9 @@ public class Fight extends GameState
 
 
     SpriteBatch batch;
-    Texture texture ;
+    Texture texture,textureMenu ;
     Sprite healthBar;
+    Sprite menuContainer;
 
 
 
@@ -104,6 +110,14 @@ public class Fight extends GameState
         healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.setSize((4*(screenWidth/10)),screenHeight/10);
 
+        texture=new Texture("panelInset_beige.png");
+
+        menuContainer=new Sprite(texture);
+
+
+
+
+
         //TODO add someway to input a player rather than create a new one (maybe in the gsm)
 
         fMenu=new FightMenu(playr);
@@ -134,6 +148,11 @@ public class Fight extends GameState
     {
 
         batch.begin();
+
+
+
+
+        healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.draw(batch);
 
 
@@ -145,6 +164,17 @@ public class Fight extends GameState
         if(!fMenu.actionSelected)
         {
 
+
+
+            menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*1.2f);
+            menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
+            menuContainer.draw(batch);
+
+            menuContainer.setPosition( screenWidth/6,screenHeight/2);
+            menuContainer.draw(batch);
+
+            menuContainer.setPosition( screenWidth/6,screenHeight/2-(battleFont.getLineHeight()*2));
+            menuContainer.draw(batch);
 
             if(fMenu.getAboveIcon().endsWith("*"))
             {
@@ -191,8 +221,12 @@ public class Fight extends GameState
             if(!enemies[i].getDead())
             {
 
+
+
+                healthBar.setPosition((int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*((i*2)+1)));
+                healthBar.setSize(enemies[i].getHealth()*((screenWidth/8)/enemies[i].getMaxHealth()),battleFont.getLineHeight()/2);
+                healthBar.draw(batch);
                 battleFont.draw(batch,enemies[i].getName()+": ",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
-                battleFont.draw(batch,enemies[i].getHealth()+"",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*((i*2)+1)));
 
             }
         }
