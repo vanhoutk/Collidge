@@ -31,8 +31,8 @@ public class FightMenu
         fillMenus(player);          //populate menus (both word and id) with values
         currentIcon=0;              //current item being pointed at. basically menu[][currentIcon]
         overflow=getMenuOverflow(); //number of empty items on the menus, used for wrap around
-
-        for(int  i=0;i<menu.length;i++)
+        validate();
+        /*for(int  i=0;i<menu.length;i++)
         {
             for(int j=0;j<menu[0].length;j++)
             {
@@ -50,7 +50,7 @@ public class FightMenu
                 }
             }
             System.out.println();
-        }
+        }*/
 
     }
     private void Select()
@@ -188,7 +188,7 @@ public class FightMenu
                     {
 
                         menu[i][j]=3;
-                        if(menuWords[i][j].equals("InsufficientEnergy"))
+                        if(menuWords[i][j].endsWith("*"))
                         {
                             menu[i][j]=2;
                         }
@@ -228,7 +228,7 @@ public class FightMenu
             {
                 if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
                 {
-                    menuWords[1][j]="InsufficientEnergy";
+                    menuWords[1][j]=player.getAttacksNames()[j-1]+"*";
                 }
                 else
 
@@ -252,41 +252,34 @@ public class FightMenu
     }
 
 
-    /*public void touchEvent(float x, float y,MotionEvent e)
+    public void touchDown(float x, float y)
     {
-        if(e.getAction()==MotionEvent.ACTION_DOWN&&actionSelected==false)
+        if(x<.5&&y<.6&&y>.4)
+        {
+            Select();
+        }
+        else if(y<0.35)
         {
 
-
-            if(x<0&&y<0)
-            {
-                Select();
-            }
-            else if(x<0&&y>0)
-            {
-
-            }
-            else if(x>0&&y<0)
-            {
-
-                Up();
-
-            }
-            else if(x>0&&y>0)
-            {
-
-                Down();
-
-            }
-            System.out.println("_______________________________________");
-            System.out.println("  "+menuWords[currentMenu][aboveIcon]);
-            System.out.println(">>"+menuWords[currentMenu][currentIcon]+"\t <<");
-            System.out.println("  "+menuWords[currentMenu][belowIcon]);
-
+            Down();
 
         }
+        else if(y>0.65)
+        {
+
+            Up();
+
+        }
+        /*System.out.println("_______________________________________");
+        System.out.println("  "+menuWords[currentMenu][aboveIcon]);
+        System.out.println(">>"+menuWords[currentMenu][currentIcon]+"\t <<");
+        System.out.println("  "+menuWords[currentMenu][belowIcon]);*/
 
     }
+
+
+
+
     public String getMoveString(int menu, int icon)
     {
         return menuWords[menu][icon];
@@ -315,6 +308,9 @@ public class FightMenu
     public String getBelowIcon()
     {
         return menuWords[currentMenu][belowIcon];
-    }*/
+    }
+
+
+
 }
 
