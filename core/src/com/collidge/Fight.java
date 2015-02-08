@@ -49,7 +49,7 @@ public class Fight extends GameState
     Texture texture,textureMenu ;
     Sprite healthBar;
     Sprite menuContainer;
-
+    Sprite menubutton;
 
 
     private BitmapFont battleFont;
@@ -58,8 +58,6 @@ public class Fight extends GameState
      */
     private Animation[] icon;
     private Animation background;
-    private TextureAtlas spriteatlas;
-    private TextureAtlas backgroundatlas;
     private float elapsedTime = 0;
 
 
@@ -136,9 +134,9 @@ public class Fight extends GameState
 
         /**Michael*/
 
-        spriteatlas = new TextureAtlas(Gdx.files.internal("spritesheet.atlas"));
+        TextureAtlas spriteatlas = new TextureAtlas(Gdx.files.internal("spritesheet.atlas"));
 
-        backgroundatlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
+        TextureAtlas backgroundatlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
 
         //List<Animation> icon = new ArrayList<Animation>(enemies.length);
         icon = new Animation[enemies.length];
@@ -179,17 +177,16 @@ public class Fight extends GameState
         /**Michael*/
         elapsedTime += Gdx.graphics.getDeltaTime();
         batch.draw(background.getKeyFrame(elapsedTime, true), 0, 0);
-        for (int i = 0; i<enemies.length;i++) {
+        for (int i = 0; i<enemies.length;i++)
             if (!enemies[i].getDead())
-           batch.draw(icon[i].getKeyFrame(elapsedTime, true), 1700,(screenHeight * (i / (float) enemies.length)));
-        }
+                batch.draw(icon[i].getKeyFrame(elapsedTime, true), ((9*screenWidth)/10),(screenHeight * (i / (float) enemies.length))+(screenHeight/(float)(enemies.length*enemies.length)));
         /**End_Michael*/
 
         healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.draw(batch);
 
         battleFont.setColor(Color.WHITE);
-        battleFont.setScale(screenWidth/200.0f,screenHeight/200.0f);
+        battleFont.setScale(screenWidth/250.0f,screenHeight/250.0f);
         battleFont.draw(batch, playr.getCurrentHealth()+" Hp", screenWidth/5,9*screenHeight/10);
         battleFont.draw(batch, playr.getCurrentEnergy()+" En", screenWidth/5,(9*screenHeight/10)-battleFont.getLineHeight());
 
@@ -208,13 +205,22 @@ public class Fight extends GameState
             menuContainer.setPosition( screenWidth/6,screenHeight/2-(battleFont.getLineHeight()*2));
             menuContainer.draw(batch);
 
+            menuContainer.setSize(screenWidth/5f,screenHeight/5f);
+            menuContainer.setPosition((2.5f/5f)*screenWidth,(4f/6f)*screenHeight);
+            menuContainer.draw(batch);
+
+            menuContainer.setPosition((2.5f/5f)*screenWidth,(0.5f/6f)*screenHeight);
+            menuContainer.draw(batch);
+
+
+
             if(fMenu.getAboveIcon().endsWith("*"))
             {
                 battleFont.setColor(Color.RED);
             }
             else
             {
-                battleFont.setColor(Color.BLACK);
+                battleFont.setColor(Color.WHITE);
             }
             battleFont.draw(batch, fMenu.getAboveIcon(), screenWidth/5,screenHeight/2+battleFont.getLineHeight());
             if(fMenu.getCurrentIcon().endsWith("*"))
@@ -232,37 +238,33 @@ public class Fight extends GameState
             }
             else
             {
-                battleFont.setColor(Color.BLACK);
+                battleFont.setColor(Color.WHITE);
             }
             battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
 
             battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
-
-
         }
-        battleFont.setColor(Color.BLACK);
+        battleFont.setColor(Color.WHITE);
 
 
 
         if(enemies.length>4)
         {
-            battleFont.setScale(screenWidth / (enemies.length * 40f), screenHeight / (enemies.length * 40f));
+            battleFont.setScale(screenWidth / (enemies.length * 60f), screenHeight / (enemies.length * 60f));
         }
         for(int i=0;i<enemies.length;i++)
         {
             if(!enemies[i].getDead())
             {
-
-
-
-                healthBar.setPosition((int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*((i*2)+1)));
+                healthBar.setPosition((4*screenWidth/5),(screenHeight * (i / (float) enemies.length))+(screenHeight/(float)(enemies.length*enemies.length)));
                 healthBar.setSize(enemies[i].getHealth()*((screenWidth/8)/enemies[i].getMaxHealth()),battleFont.getLineHeight()/2);
                 healthBar.draw(batch);
-                battleFont.draw(batch,enemies[i].getName()+": ",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
-
+                battleFont.draw(batch,enemies[i].getName()+": ",(4*screenWidth/5),(screenHeight * (i / (float) enemies.length))+(screenHeight/(float)(enemies.length*enemies.length)));
             }
-        }
+            else
+                battleFont.draw(batch,"ELIMINATED",(3.5f*screenWidth/5),(screenHeight * (i / (float) enemies.length))+(screenHeight/(float)(enemies.length*enemies.length)));
 
+        }
         batch.end();
     }
 
