@@ -4,7 +4,6 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Timer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -49,11 +51,10 @@ public class Fight extends GameState
     /**
      * Added by Michael 07/2/15
      */
-    private Animation icon;
+    private Animation[] icon;
     private Animation background;
     private TextureAtlas spriteatlas;
     private TextureAtlas backgroundatlas;
-    private String currentAtlasKey = new String("0001");
     private float elapsedTime = 0;
 
 
@@ -113,12 +114,13 @@ public class Fight extends GameState
         /**Michael*/
 
         spriteatlas = new TextureAtlas(Gdx.files.internal("spritesheet.atlas"));
-        TextureAtlas.AtlasRegion region = spriteatlas.findRegion("0001");
 
         backgroundatlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
-        TextureAtlas.AtlasRegion bregion = backgroundatlas.findRegion("0001");
 
-        icon = new Animation(1/15f, spriteatlas.getRegions());
+        //List<Animation> icon = new ArrayList<Animation>(enemies.length);
+        icon = new Animation[enemies.length];
+        for (int i =0;i<enemies.length;i++)
+            icon[i] = new Animation(1/15f, spriteatlas.getRegions());
         background = new Animation(1/2f, backgroundatlas.getRegions());
 
         /**End_Michael*/
@@ -146,11 +148,14 @@ public class Fight extends GameState
         /**Michael*/
         elapsedTime += Gdx.graphics.getDeltaTime();
         batch.draw(background.getKeyFrame(elapsedTime, true), 0, 0);
-        batch.draw(icon.getKeyFrame(elapsedTime, true), 1700, 700);
+        for (int i = 0; i<enemies.length;i++) {
+            if (!enemies[i].getDead())
+           batch.draw(icon[i].getKeyFrame(elapsedTime, true), 1700,(screenHeight * (i / (float) enemies.length)));
+        }
         /**End_Michael*/
         healthBar.draw(batch);
         healthBarLeft.draw(batch);
-
+        System.out.printf("boobies");
         //icon.draw(batch);           /**Michael*/
 
         battleFont.setColor(Color.WHITE);
