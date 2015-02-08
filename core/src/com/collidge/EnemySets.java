@@ -23,7 +23,7 @@ public class EnemySets
         EnemyCollections.put("Loner", fillArrays("Fresher","","",""));
         EnemyPopulation.put("Loner",fillArrays(1,0,0,0));
         EnemyCollections.put("Pack", fillArrays("Fresher","Fresher","Fresher",""));
-        EnemyPopulation.put("Pack",fillArrays(2,2,1,0));
+        EnemyPopulation.put("Pack",fillArrays(3,3,1,0));
         EnemyCollections.put("Preppy", fillArrays("Fresher","Master Debater","",""));
         EnemyPopulation.put("Preppy",fillArrays(1,1,0,0));
         EnemyCollections.put("Pet",fillArrays("Fresher","Lecturer","",""));
@@ -68,7 +68,8 @@ public class EnemySets
         {
             if(!Enemyset[i].equals(""))
             {
-                temp=(rand.nextInt()%pop[i])+1;
+                temp=(rand.nextInt(pop[i]));
+                temp++;
                 for(int j=0;j<temp;j++)
                 {
                     Enemies.add(new Enemy(Types.getEnemy(Enemyset[i])));

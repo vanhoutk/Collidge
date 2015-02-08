@@ -4,6 +4,7 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.utils.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 
 /**
@@ -43,9 +46,11 @@ public class Fight extends GameState
 
 
     SpriteBatch batch;
-    Texture texture ;
+    Texture texture,textureMenu ;
     Sprite healthBar;
-    Sprite healthBarLeft;
+    Sprite menuContainer;
+
+
 
     private BitmapFont battleFont;
     /**
@@ -69,6 +74,34 @@ public class Fight extends GameState
     public void initialize()
     {
 
+
+        Timer.schedule(new Timer.Task()
+        {
+            @Override
+            public void run()
+            {
+
+                if(damage>0)
+                {
+                    damage--;
+                    playr.changeHealth(-1);
+                    if (playr.getCurrentHealth() <= 0)
+                    {
+                        gsm.endFight();
+                        damage=0;
+                        cancel();
+
+
+                    }
+
+                }
+
+
+
+            }
+        }
+                , 0, .1f);
+
         EnemySets BasicSet=new EnemySets();
         enemies=BasicSet.getEnemies("Pack");
 
@@ -80,34 +113,24 @@ public class Fight extends GameState
 
 
 
-        Timer.schedule(new Timer.Task(){
-            @Override
-            public void run() {
-                if(damage>0)
-                {
-                    playr.changeHealth(-1);
-                    if(playr.getCurrentHealth()<=0)
-                    {
-                        gsm.endFight();
-                    }
-                    damage--;
-                }
-
-            }
-        }
-                ,0,.3f);
 
 
 
         batch=new SpriteBatch();
         texture =new Texture("barHorizontal_green_mid.png");
         healthBar=new Sprite(texture);
-        texture=new Texture("barHorizontal_green_left.png");
-        healthBarLeft=new Sprite(texture);
+
         healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.setSize((4*(screenWidth/10)),screenHeight/10);
-        healthBarLeft.setPosition(screenWidth/30,25*screenHeight/30);
-        healthBarLeft.setSize(screenWidth/50,screenHeight/10);
+
+        texture=new Texture("panelInset_beige.png");
+
+        menuContainer=new Sprite(texture);
+
+
+
+
+
         //TODO add someway to input a player rather than create a new one (maybe in the gsm)
 
 
@@ -131,11 +154,19 @@ public class Fight extends GameState
         battleFont = new BitmapFont();
     }
 
+
     public void update()
     {
 //(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
-        healthBar.setSize((4*(screenWidth/10)),screenHeight/10);
-        healthBarLeft.setSize(screenWidth/50,screenHeight/10);
+
+
+        if(gsm.returnCurrentState()!=this)
+        {
+            Timer.instance().clear();
+            Timer.instance().stop();
+        }
+        healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/20.0));
+
 
 
     }
@@ -153,29 +184,85 @@ public class Fight extends GameState
            batch.draw(icon[i].getKeyFrame(elapsedTime, true), 1700,(screenHeight * (i / (float) enemies.length)));
         }
         /**End_Michael*/
+
+        healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.draw(batch);
-        healthBarLeft.draw(batch);
-        System.out.printf("boobies");
-        //icon.draw(batch);           /**Michael*/
 
         battleFont.setColor(Color.WHITE);
         battleFont.setScale(screenWidth/200.0f,screenHeight/200.0f);
         battleFont.draw(batch, playr.getCurrentHealth()+" Hp", screenWidth/5,9*screenHeight/10);
         battleFont.draw(batch, playr.getCurrentEnergy()+" En", screenWidth/5,(9*screenHeight/10)-battleFont.getLineHeight());
 
-
         if(!fMenu.actionSelected)
         {
 
 
+
+            menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*1.2f);
+            menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
+            menuContainer.draw(batch);
+
+            menuContainer.setPosition( screenWidth/6,screenHeight/2);
+            menuContainer.draw(batch);
+
+            menuContainer.setPosition( screenWidth/6,screenHeight/2-(battleFont.getLineHeight()*2));
+            menuContainer.draw(batch);
+
+            if(fMenu.getAboveIcon().endsWith("*"))
+            {
+                battleFont.setColor(Color.RED);
+            }
+            else
+            {
+                battleFont.setColor(Color.BLACK);
+            }
             battleFont.draw(batch, fMenu.getAboveIcon(), screenWidth/5,screenHeight/2+battleFont.getLineHeight());
+            if(fMenu.getCurrentIcon().endsWith("*"))
+            {
+                battleFont.setColor(Color.RED);
+            }
+            else
+            {
+                battleFont.setColor(Color.BLACK);
+            }
             battleFont.draw(batch, fMenu.getCurrentIcon(), screenWidth/5,screenHeight/2);
+            if(fMenu.getBelowIcon().endsWith("*"))
+            {
+                battleFont.setColor(Color.RED);
+            }
+            else
+            {
+                battleFont.setColor(Color.BLACK);
+            }
             battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
 
             battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
 
 
         }
+        battleFont.setColor(Color.BLACK);
+
+
+
+        if(enemies.length>4)
+        {
+            battleFont.setScale(screenWidth / (enemies.length * 40f), screenHeight / (enemies.length * 40f));
+        }
+        for(int i=0;i<enemies.length;i++)
+        {
+            if(!enemies[i].getDead())
+            {
+
+
+
+                healthBar.setPosition((int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*((i*2)+1)));
+                healthBar.setSize(enemies[i].getHealth()*((screenWidth/8)/enemies[i].getMaxHealth()),battleFont.getLineHeight()/2);
+                healthBar.draw(batch);
+                battleFont.draw(batch,enemies[i].getName()+": ",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+
+            }
+        }
+
         batch.end();
     }
 
@@ -236,25 +323,21 @@ public class Fight extends GameState
         else if(ActionType==1)
         {
             dam = player.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-
-
-
             int target;
             target = move.getTarget(dam, monsters);
-            //TODO add draw orders
             dam *= move.moveExecute(dam);
 
             if (target >= 0)
             {
                 if ((dam * (player.getAttack() - monsters[target].getDefence())) <= 0)
                 {
-                    System.out.println("Damage on monster " + target + " resisted");
+                   // System.out.println("Damage on monster " + target + " resisted");
                     monsters[target].changeHealth(-1);
                 } else
                 {
                     //damage= move damage*(playerStrength-enemyDefence)
                     monsters[target].changeHealth(-(dam * (player.getAttack() - monsters[target].getDefence())));
-                    System.out.println((dam * (player.getAttack() - monsters[target].getDefence()))+" damage done");
+                   // System.out.println((dam * (player.getAttack() - monsters[target].getDefence()))+" damage done");
                     if (monsters[target].getDead())
                     {
                         player.addExperience(monsters[target].getExpValue());
@@ -273,8 +356,8 @@ public class Fight extends GameState
 
             if (!monsters[i].getDead())
             {
-                System.out.print(monsters[i].getName() + ": ");
-                System.out.println(monsters[i].getHealth());
+               // System.out.print(monsters[i].getName() + ": ");
+               // System.out.println(monsters[i].getHealth());
             }
 
         }
@@ -307,20 +390,20 @@ public class Fight extends GameState
             if(!monsters[i].getDead()&&player.getCurrentHealth()>0)
             {
                 dam=(monsters[i].getAttack() - player.getDefence());
-                System.out.println("Monster " + i + " attacks");
+          //      System.out.println("Monster " + i + " attacks");
                 if (dam <= 0)
                 {
-                    System.out.println("Damage by monster " + i + " resisted");
+            //        System.out.println("Damage by monster " + i + " resisted");
                     damage++;
                 } else
                 {
                     damage+=dam;
                     //player.changeHealth(-(damage));
-                    System.out.println("Enemy " + i + " deals " + (damage) + " damage");
+              //      System.out.println("Enemy " + i + " deals " + (dam) + " damage");
                     if (player.getCurrentHealth() <= 0)
                     {
                         enemiesLeft = -1;
-                        System.out.println("you lose");
+                //        System.out.println("you lose");
                         i = enemiesLeft;
                     }
 
@@ -328,9 +411,9 @@ public class Fight extends GameState
 
             }
         }
-        System.out.println("Player- Lvl: \t"+player.getLevel()+" \tExp:\t"+player.getExperience());
-        System.out.print("Hp: \t"+player.getCurrentHealth()+"/"+player.getHealth());
-        System.out.println("\tEn:\t "+player.getCurrentEnergy()+"/"+player.getEnergy());
+       // System.out.println("Player- Lvl: \t"+player.getLevel()+" \tExp:\t"+player.getExperience());
+        //System.out.print("Hp: \t"+player.getCurrentHealth()+"/"+player.getHealth());
+        //System.out.println("\tEn:\t "+player.getCurrentEnergy()+"/"+player.getEnergy());
         if(enemiesLeft>0)
         {
             waitingForTouch=true;

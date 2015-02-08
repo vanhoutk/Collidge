@@ -45,7 +45,7 @@ public class Enemy
         expValue+=(int)(expValue*(rand.nextDouble()-.5));
         currentHealth=maxHealth;
 
-        System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
+       // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;
 
 
@@ -59,6 +59,10 @@ public class Enemy
     public int getHealth()
     {
         return currentHealth;
+    }
+    public int getMaxHealth()
+    {
+        return maxHealth;
     }
     public int getDefence()
     {

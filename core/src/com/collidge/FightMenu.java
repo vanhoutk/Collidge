@@ -188,7 +188,7 @@ public class FightMenu
                     {
 
                         menu[i][j]=3;
-                        if(menuWords[i][j].equals("InsufficientEnergy"))
+                        if(menuWords[i][j].endsWith("*"))
                         {
                             menu[i][j]=2;
                         }
@@ -228,7 +228,7 @@ public class FightMenu
             {
                 if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
                 {
-                    menuWords[1][j]="InsufficientEnergy";
+                    menuWords[1][j]=player.getAttacksNames()[j-1]+"*";
                 }
                 else
 
@@ -254,24 +254,20 @@ public class FightMenu
 
     public void touchDown(float x, float y)
     {
-        if(x<.5&&y<.5)
+        if(x<.5&&y<.6&&y>.4)
         {
             Select();
         }
-        else if(x<.5&&y>.5)
-        {
-
-        }
-        else if(x>.5&&y<0.5)
-        {
-
-            Up();
-
-        }
-        else if(x>0.5&&y>0.5)
+        else if(y<0.35)
         {
 
             Down();
+
+        }
+        else if(y>0.65)
+        {
+
+            Up();
 
         }
         /*System.out.println("_______________________________________");
