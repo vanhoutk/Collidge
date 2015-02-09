@@ -9,9 +9,69 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.Toast;*/
 
-public class MainMenu //extends Activity
-{
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
+public class MainMenu extends GameState//extends Activity
+{
+    //private TextureAtlas textureatlas;
+    private Sprite logo;
+    private Texture texlogo;
+
+
+    MainMenu(GameStateManager gsm)
+    {
+        super(gsm);
+        texlogo = new Texture("badlogic");
+        logo = new Sprite(texlogo);
+        logo.setSize(screenWidth/3f, screenHeight/3f);
+        logo.setPosition(screenWidth/3f,screenHeight/3f);
+
+    }
+
+
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //6 FUNCTIONS THAT EVERY GAMESTATE MUST IMPLEMENT. EVEN IF COMPLETELY EMPTY!
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //initialize is the same as constructor but sometimes you want to reset an object without rebuilding it.
+    public void initialize()
+    {
+
+    }
+    //update will update all game logic before drawing
+    public void update()
+    {
+
+    }
+
+    public void dispose()
+    {
+        // batch.dispose();
+        // font.dispose();
+        // texture.dispose();
+    }
+    //after updating has occurred in that single frame. Both what has or what hasn't been changed has to be drawn/redrawn
+    public void draw()
+    {
+
+    }
+
+    //3 touch events that you can handle inside your own class
+    public boolean touchDown(int screenX, int screenY, int pointer, int button)
+    {
+        return false;
+    }
+    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    {
+        return false;
+    }
+    public boolean touchDragged(int screenX, int screenY, int pointer)
+    {
+        return false;
+    }
    /* private int contentView;
     private MediaPlayer easteregg;
     DisplayMetrics screen;
@@ -134,4 +194,5 @@ public class MainMenu //extends Activity
                 return super.onTouchEvent(event);
         }
     }*/
+
 }
