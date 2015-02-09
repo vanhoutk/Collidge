@@ -25,7 +25,7 @@ public class GameStateManager
     {
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
-        GameState state1 = new TestState1(this);
+        GameState state1 = new Play(this);
         GameState state2 = new TestState2(this);
         gameStates.add(state1);
         gameStates.add(state2);
