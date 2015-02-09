@@ -1,5 +1,7 @@
 package com.collidge;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.ArrayList;
 
 /**
@@ -14,6 +16,7 @@ public class GameStateManager
     private ArrayList<GameState> gameStates;
     //There can only be one current state
     public int currentState;
+
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
     public static final int MENUSTATE = 0;

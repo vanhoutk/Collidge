@@ -175,17 +175,17 @@ public class MapPlayer extends Sprite
 
 
 
-    public boolean touchDown(int screenX, int screenY, int height, int width)
+    public void touchDown(int screenX, int screenY, int width, int height)
     {
 
-        System.out.println(screenX);
+
         // TODO Auto-generated method stub
         if(screenX<(width/4))
         {
 
             moveLeft();
         }
-        else if(screenX>(3*width/4))
+        else if(screenX>((3*width)/4))
         {
             moveRight();
         }
@@ -197,18 +197,18 @@ public class MapPlayer extends Sprite
         {
             moveUp();
         }
-        return false;
+        return;
     }
 
 
-    public boolean touchUp(int screenX, int screenY, int height, int width)
+    public boolean touchUp(int screenX, int screenY, int width, int height)
     {
         // TODO Auto-generated method stub
         stopMovement();
         return false;
     }
 
-    public boolean touchDragged(int screenX, int screenY, int height, int width)
+    public boolean touchDragged(int screenX, int screenY, int width, int height)
     {
         return false;
     }
