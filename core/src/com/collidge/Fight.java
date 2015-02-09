@@ -262,8 +262,10 @@ public class Fight extends GameState
                 battleFont.draw(batch,enemies[i].getName()+": ",(4*screenWidth/5),(screenHeight * (i / (float) enemies.length))+(screenHeight/(float)(enemies.length*enemies.length)));
             }
             else
-                battleFont.draw(batch,"ELIMINATED",(3.5f*screenWidth/5),(screenHeight * (i / (float) enemies.length))+(screenHeight/(float)(enemies.length*enemies.length)));
-
+            {
+                battleFont.setScale(screenWidth / (enemies.length * 80f), screenHeight / (enemies.length * 80f));
+                battleFont.draw(batch, "ELIMINATED", (3.5f * screenWidth / 5), (screenHeight * (i / (float) enemies.length)) + (screenHeight / (float) (enemies.length * enemies.length)));
+            }
         }
         batch.end();
     }
