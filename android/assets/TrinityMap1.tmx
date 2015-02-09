@@ -17,9 +17,24 @@
     <property name="blocked" value=""/>
    </properties>
   </tile>
+  <tile id="159">
+   <properties>
+    <property name="fight" value=""/>
+   </properties>
+  </tile>
   <tile id="170">
    <properties>
     <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="174">
+   <properties>
+    <property name="fight" value=""/>
+   </properties>
+  </tile>
+  <tile id="175">
+   <properties>
+    <property name="fight" value=""/>
    </properties>
   </tile>
   <tile id="186">

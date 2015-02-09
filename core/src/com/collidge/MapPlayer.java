@@ -35,20 +35,8 @@ public class MapPlayer extends Sprite
 
     public void update(float delta)
     {
-		/*//applies gravity
-		velocity.y -= gravity*delta;
-		//clamp velocity
-		if(velocity.y > speed)
-		{
-			velocity.y = speed;
-		}
-		else if(velocity.y < speed)
-		{
-			velocity.y = -speed;
-		}*/
-
         float oldX = getX(), oldY = getY(), tilewidth = collisionlayer.getTileWidth(), tileheight = collisionlayer.getTileHeight();
-        boolean collisionX = false, collisionY = false;
+        boolean collisionX = false, collisionY = false, fight = false;
 
         setX(getX() + velocity.x*delta);
 
@@ -114,6 +102,8 @@ public class MapPlayer extends Sprite
             setY(oldY);
             velocity.y = 0;
         }
+
+
     }
 
     public Vector2 getVelocity()

@@ -129,6 +129,11 @@ public class Play extends GameState {
    @Override
     public void update()
     {
+        if(player.getX() == (18 * player.getCollisionLayer().getTileWidth()) && (player.getY() == (player.getCollisionLayer().getHeight() - 20) * player.getCollisionLayer().getTileHeight()))
+        {
+            //start fight here!!!!
+
+        }
 
 
     }
