@@ -328,7 +328,7 @@ public class Fight extends GameState
         }
         else if(ActionType==1)
         {
-            PlayerDam = player.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+
             targetPicker.reset(enemies);
             targeting=true;
             return;
@@ -341,51 +341,32 @@ public class Fight extends GameState
     {
         int target;
         target = targetPicker.getSelectedTarget();
-        PlayerDam *= move.moveExecute(PlayerDam);
-
-        if (target >= 0)
+        PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+        //PlayerDam *= move.moveExecute(PlayerDam);
+        enemies[target].changeHealth(-(PlayerDam*(playr.getAttack()-enemies[target].getDefence())));
+        if(enemies[target].getDead())
         {
-            if ((PlayerDam * (playr.getAttack() - enemies[target].getDefence())) <= 0)
-            {
-                // System.out.println("Damage on monster " + target + " resisted");
-                enemies[target].changeHealth(-1);
-            } else
-            {
-                //damage= move damage*(playerStrength-enemyDefence)
-                enemies[target].changeHealth(-(PlayerDam * (playr.getAttack() - enemies[target].getDefence())));
-                // System.out.println((dam * (player.getAttack() - monsters[target].getDefence()))+" damage done");
-                if (enemies[target].getDead())
-                {
-                    playr.addExperience(enemies[target].getExpValue());
-                    enemiesLeft -= 1;
-                    if(enemiesLeft<=0)
-                    {
-                        gsm.endFight();
-                    }
-                }
-            }
+            enemiesLeft--;
         }
         playerTurnEnd();
+
+
     }
+
+
     private void playerTurnEnd()
     {
 
-        for (int i = 0; i < enemyCount; i++)
-        {
-
-            if (!enemies[i].getDead())
-            {
-                // System.out.print(monsters[i].getName() + ": ");
-                // System.out.println(monsters[i].getHealth());
-            }
-
-        }
 
         playr.changeEnergy(playr.getIntelligence());
 
         if(enemiesLeft>0&&playr.getCurrentHealth()>=0)
         {
             enemyTurn(playr, enemies);
+        }
+        else
+        {
+            gsm.endFight();
         }
         fMenu.refreshMenus(playr);
     }
@@ -431,50 +412,6 @@ public class Fight extends GameState
             fMenu.actionSelected=false;
         }
     }
-
-
-    private void dealDamage(int target, int damage)
-    {
-        if(target<0)
-        {
-            playr.changeHealth(-1);
-
-            if(playr.getCurrentHealth()<=0)
-            {
-                return;
-            }
-        }
-        else if (target>=0)
-        {
-            if(enemies[target].getHealth()!=0)
-            {
-                enemies[target].changeHealth(-1);
-            }
-            else return;
-
-        }
-        damage=damage-1;
-
-        /*try
-        {
-            Thread.sleep(1000);
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }*/
-
-        if(damage>0)
-        {
-            dealDamage(target, damage);
-        }
-        return;
-    }
-
-
-
-
-
-
 
 
 }

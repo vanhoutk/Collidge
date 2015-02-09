@@ -89,8 +89,8 @@ public class Play extends GameState {
         //renderer.render();
         batch.begin();
         //player.draw(renderer.getBatch());
-        font.draw(batch, "blaaa", 50, 50);
-        player2.draw(batch);
+        /*font.draw(batch, "blaaa", 50, 50);
+        player2.draw(batch);*/
         batch.end();
     }
 
