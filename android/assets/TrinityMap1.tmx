@@ -2,7 +2,17 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="36" height="66" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="tilea2" tilewidth="32" tileheight="32">
   <image source="tilea2.png" width="512" height="384"/>
-  <tile id="155">
+  <tile id="59">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="90">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="91">
    <properties>
     <property name="blocked" value=""/>
    </properties>
