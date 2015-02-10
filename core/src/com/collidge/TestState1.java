@@ -1,7 +1,9 @@
 package com.collidge;
 
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -31,6 +33,11 @@ public class TestState1 extends GameState {
     private Sprite sprite2;
     private int currentFrame = 1;
     private String currentAtlasKey = new String("0001");
+
+    private Music song=Gdx.audio.newMusic(Gdx.files.internal("mymusic.mp3"));
+    private Music song2=Gdx.audio.newMusic(Gdx.files.internal("mymusic2.mp3"));
+
+
 
 
     TestState1(GameStateManager gsm)
@@ -87,6 +94,11 @@ public class TestState1 extends GameState {
     @Override
     public void initialize ()
     {
+
+        song2.stop();
+        song.play();
+        song.setLooping(true);
+
 
     }
 
@@ -159,18 +171,21 @@ public class TestState1 extends GameState {
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(screenY>screenHeight/2&&screenX<screenWidth/2)
+        if(screenY>screenHeight/2&&screenX>screenWidth/2)
         {
-
             if(player.getCurrentHealth()>0)
             {
+
+                song.pause();
+                song2.play();
+                song2.setLooping(true);
                 gsm.startFight(player);
             }
-            else
-            {
-                player.healAll();
-            }
 
+        }
+        else if(screenY<screenX/2&&screenX>screenWidth/2)
+        {
+            player.healAll();
         }
         return false;
     }

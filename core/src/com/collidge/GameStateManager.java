@@ -1,5 +1,7 @@
 package com.collidge;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,7 @@ public class GameStateManager
     //There can only be one current state
     public int currentState;
 
+
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
     public static final int MENUSTATE = 0;
     public static final int LEVEL1STATE = 1;
@@ -25,7 +28,7 @@ public class GameStateManager
     {
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
-        GameState state1 = new TestState1(this);
+        GameState state1 = new Play(this);
         GameState state2 = new TestState2(this);
         gameStates.add(state1);
         gameStates.add(state2);

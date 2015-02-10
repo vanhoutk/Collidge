@@ -31,6 +31,8 @@ public class Fight extends GameState
 
 
 
+    private int PlayerDam;
+
     Player playr;
     boolean waitingForTouch=false;
     int action;
@@ -38,6 +40,7 @@ public class Fight extends GameState
     private int ActionType;
     private int ActionId;
     private boolean moveSelection=false;
+    private boolean targeting=false;
 
     private FightMenu fMenu;
     private int enemyCount,enemiesLeft;
@@ -59,7 +62,10 @@ public class Fight extends GameState
     private Animation[] icon;
     private Animation background;
     private float elapsedTime = 0;
-
+    /**
+     * end of Michael 07/2/15
+     */
+    private TargetPicker targetPicker;
 
     Fight(GameStateManager gsm,Player player)
     {
@@ -109,6 +115,7 @@ public class Fight extends GameState
         //TODO add randomness and enemy lookup from world sprites
         //enemies=new Enemy[enemyCount];
 
+        targetPicker=new TargetPicker(enemies);
 
 
 
@@ -248,6 +255,7 @@ public class Fight extends GameState
 
 
 
+
         if(enemies.length>4)
         {
             battleFont.setScale(screenWidth / (enemies.length * 60f), screenHeight / (enemies.length * 60f));
@@ -267,6 +275,14 @@ public class Fight extends GameState
                 battleFont.draw(batch, "ELIMINATED", (3.5f * screenWidth / 5), (screenHeight * (i / (float) enemies.length)) + (screenHeight / (float) (enemies.length * enemies.length)));
             }
         }
+
+        if(targeting)
+        {
+            battleFont.setColor(Color.WHITE);
+            battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
+        }
+
+
         batch.end();
     }
 
@@ -287,7 +303,34 @@ public class Fight extends GameState
                 }
             }
 
+            else if(targeting)
+            {
+
+                if(screenX<screenWidth/3)
+                {
+                    targetPicker.Left();
+
+                }
+                else if(screenX>2*(screenWidth/3))
+                {
+                    targetPicker.Right();
+
+                }
+                else
+                {
+                    targetPicker.Select();
+
+                }
+
+                if(targetPicker.targetSelected)
+                {
+                    targeting=false;
+                    playerTurnPart2();
+                }
+            }
+
         }
+
         return false;
     }
 
@@ -316,7 +359,7 @@ public class Fight extends GameState
     }
     private void playerTurn(Player player,Enemy[] monsters)
     {
-        int dam=0;
+        PlayerDam=0;
 
         if(ActionType==3)
         {
@@ -326,61 +369,47 @@ public class Fight extends GameState
         }
         else if(ActionType==1)
         {
-            dam = player.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-            int target;
-            target = move.getTarget(dam, monsters);
-            dam *= move.moveExecute(dam);
 
-            if (target >= 0)
-            {
-                if ((dam * (player.getAttack() - monsters[target].getDefence())) <= 0)
-                {
-                   // System.out.println("Damage on monster " + target + " resisted");
-                    monsters[target].changeHealth(-1);
-                } else
-                {
-                    //damage= move damage*(playerStrength-enemyDefence)
-                    monsters[target].changeHealth(-(dam * (player.getAttack() - monsters[target].getDefence())));
-                   // System.out.println((dam * (player.getAttack() - monsters[target].getDefence()))+" damage done");
-                    if (monsters[target].getDead())
-                    {
-                        player.addExperience(monsters[target].getExpValue());
-                        enemiesLeft -= 1;
-                        if(enemiesLeft<=0)
-                        {
-                            gsm.endFight();
-                        }
-                    }
-                }
-            }
+            targetPicker.reset(enemies);
+            targeting=true;
+            return;
         }
+        playerTurnEnd();
 
-        for (int i = 0; i < enemyCount; i++)
+    }
+
+    private void playerTurnPart2()
+    {
+        int target;
+        target = targetPicker.getSelectedTarget();
+        PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+        //PlayerDam *= move.moveExecute(PlayerDam);
+        enemies[target].changeHealth(-(PlayerDam*(playr.getAttack()-enemies[target].getDefence())));
+        if(enemies[target].getDead())
         {
-
-            if (!monsters[i].getDead())
-            {
-               // System.out.print(monsters[i].getName() + ": ");
-               // System.out.println(monsters[i].getHealth());
-            }
-
+            enemiesLeft--;
         }
+        playerTurnEnd();
 
-        player.changeEnergy(player.getIntelligence());
+
+    }
+
+
+    private void playerTurnEnd()
+    {
+
+
+        playr.changeEnergy(playr.getIntelligence());
 
         if(enemiesLeft>0&&playr.getCurrentHealth()>=0)
         {
-            enemyTurn(player, enemies);
+            enemyTurn(playr, enemies);
         }
-        fMenu.refreshMenus(player);
-
-    }
-    private void moveSelect()
-    {
-        ActionType=fMenu.getActionType();
-        ActionId= fMenu.getActionId();
-        fMenu.actionSelected=true;
-        playerTurn(playr,enemies);
+        else
+        {
+            gsm.endFight();
+        }
+        fMenu.refreshMenus(playr);
     }
 
     private void enemyTurn(Player player,Enemy[] monsters)
@@ -424,50 +453,6 @@ public class Fight extends GameState
             fMenu.actionSelected=false;
         }
     }
-
-
-    private void dealDamage(int target, int damage)
-    {
-        if(target<0)
-        {
-            playr.changeHealth(-1);
-
-            if(playr.getCurrentHealth()<=0)
-            {
-                return;
-            }
-        }
-        else if (target>=0)
-        {
-            if(enemies[target].getHealth()!=0)
-            {
-                enemies[target].changeHealth(-1);
-            }
-            else return;
-
-        }
-        damage=damage-1;
-
-        /*try
-        {
-            Thread.sleep(1000);
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }*/
-
-        if(damage>0)
-        {
-            dealDamage(target, damage);
-        }
-        return;
-    }
-
-
-
-
-
-
 
 
 }

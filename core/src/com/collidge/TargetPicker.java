@@ -15,7 +15,51 @@ public class TargetPicker
     TargetPicker(Enemy[] enemies)
     {
 
-       int enemyCount=0;
+       reset(enemies);
+    }
+
+    public void Left()
+    {
+
+        currentTarget--;
+        if(currentTarget<0||monsters[currentTarget].getDead())
+        {
+            if(currentTarget<0)
+            {
+                currentTarget=monsters.length;
+            }
+            Left();
+        }
+    }
+    public void Right()
+    {
+
+        currentTarget++;
+        if(currentTarget>=monsters.length||monsters[currentTarget].getDead())
+        {
+            if(currentTarget>=monsters.length)
+            {
+                currentTarget%=monsters.length;
+                currentTarget--;
+            }
+            Right();
+        }
+    }
+    public void Select()
+    {
+        selectedTarget=currentTarget;
+        targetSelected=true;
+
+    }
+
+    public int getCurrentTarget()
+    {
+        return currentTarget;
+    }
+
+    public void reset(Enemy[] enemies)
+    {
+        int enemyCount=0;
         for(int i=0;i<enemies.length;i++)
         {
             if(!enemies[i].getDead())
@@ -35,9 +79,8 @@ public class TargetPicker
 
         }
     }
-
-    public void Left()
+    public int getSelectedTarget()
     {
-
+        return selectedTarget;
     }
 }
