@@ -252,19 +252,19 @@ public class FightMenu
     }
 
 
-    public void touchDown(float x, float y)
+    public void touchDown(float x, float y)  //assumes of course that the Font size can never change - little dangerous
     {
-        if(x<.5&&y<.6&&y>.4)
+        if(x<.5&&x>.166&&y<.6&&y>.4)
         {
             Select();
         }
-        else if(y<0.35)
+        else if(x >.5f && x< .7f && y < 0.33f && y >0.13f)
         {
 
             Down();
 
         }
-        else if(y>0.65)
+        else if(x >.5f && x< .7f && y>0.66 && y<.88f)
         {
 
             Up();

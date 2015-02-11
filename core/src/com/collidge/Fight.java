@@ -196,32 +196,18 @@ public class Fight extends GameState
         battleFont.setScale(screenWidth/250.0f,screenHeight/250.0f);
         battleFont.draw(batch, playr.getCurrentHealth()+" Hp", screenWidth/5,9*screenHeight/10);
         battleFont.draw(batch, playr.getCurrentEnergy()+" En", screenWidth/5,(9*screenHeight/10)-battleFont.getLineHeight());
+        menuContainer.setSize(screenWidth/5f,screenHeight/5f);
+        menuContainer.setPosition((1f/2f)*screenWidth,(2f/3f)*screenHeight);//Draws the top movement buttons
+        menuContainer.draw(batch);
 
+        menuContainer.setPosition((1f/2f)*screenWidth,(0.5f/6f)*screenHeight);//Draws the bottom movement buttons
+        menuContainer.draw(batch);
+        menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*3.6f);//draws the Command Box
+        menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight()*2);
+        menuContainer.draw(batch);
         if(!fMenu.actionSelected)
         {
-
-
-
-            menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*1.2f);
-            menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
-            menuContainer.draw(batch);
-
-            menuContainer.setPosition( screenWidth/6,screenHeight/2);
-            menuContainer.draw(batch);
-
-            menuContainer.setPosition( screenWidth/6,screenHeight/2-(battleFont.getLineHeight()*2));
-            menuContainer.draw(batch);
-
-            menuContainer.setSize(screenWidth/5f,screenHeight/5f);
-            menuContainer.setPosition((2.5f/5f)*screenWidth,(4f/6f)*screenHeight);
-            menuContainer.draw(batch);
-
-            menuContainer.setPosition((2.5f/5f)*screenWidth,(0.5f/6f)*screenHeight);
-            menuContainer.draw(batch);
-
-
-
-            if(fMenu.getAboveIcon().endsWith("*"))
+             if(fMenu.getAboveIcon().endsWith("*"))
             {
                 battleFont.setColor(Color.RED);
             }
@@ -272,14 +258,14 @@ public class Fight extends GameState
             else
             {
                 battleFont.setScale(screenWidth / (enemies.length * 80f), screenHeight / (enemies.length * 80f));
-                battleFont.draw(batch, "ELIMINATED", (3.5f * screenWidth / 5), (screenHeight * (i / (float) enemies.length)) + (screenHeight / (float) (enemies.length * enemies.length)));
+                battleFont.draw(batch, "DEAD", (4 * screenWidth / 5), (screenHeight * (i / (float) enemies.length)) + (screenHeight / (float) (enemies.length * enemies.length)));
             }
         }
 
         if(targeting)
         {
             battleFont.setColor(Color.WHITE);
-            battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
+            battleFont.draw(batch,">",(3.7f*screenWidth/5),(screenHeight * (targetPicker.getCurrentTarget() / (float) enemies.length)) + (screenHeight / (float) (enemies.length * enemies.length)));
         }
 
 
@@ -289,12 +275,14 @@ public class Fight extends GameState
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+        float x = (float)screenX/screenWidth;           //allows dimensions to be reduced down to (0,0) - (1,1)
+        float y = (float)screenY/screenHeight;          //(0,0) is top left corner of the screen, cause fuck you apparently
         if(waitingForTouch)
         {
             if(!fMenu.actionSelected)
             {
 
-                fMenu.touchDown((float)screenX/screenWidth,(float)screenY/screenHeight);
+                fMenu.touchDown(x,y);
                 if(fMenu.actionSelected)
                 {
                     ActionId=fMenu.getActionId();
@@ -305,18 +293,18 @@ public class Fight extends GameState
 
             else if(targeting)
             {
-
-                if(screenX<screenWidth/3)
-                {
-                    targetPicker.Left();
-
-                }
-                else if(screenX>2*(screenWidth/3))
+                if(x >0.5f && x <0.7f && y < 0.33f && y > 0.13f)
                 {
                     targetPicker.Right();
 
                 }
-                else
+                else if(x > 0.5f && x < 0.7f && y > 0.66f && y < 0.86f)
+                {
+                    targetPicker.Left();
+
+                }
+                else if(x>0.166f && x< 0.5f && y > 0.5 && y < 0.5f + screenHeight*battleFont.getLineHeight()*3.6f)
+
                 {
                     targetPicker.Select();
 
@@ -453,7 +441,6 @@ public class Fight extends GameState
             fMenu.actionSelected=false;
         }
     }
-
 
 }
 
