@@ -179,7 +179,13 @@ public class MapPlayer extends Sprite
     {
 
 
-        // TODO Auto-generated method stub
+        velocity.x=screenX-(width/2);
+        velocity.y=-(screenY-(height)/2);
+
+
+        velocity.y*=1.5;
+
+        /*
         if(screenX<(width/4))
         {
 
@@ -196,7 +202,7 @@ public class MapPlayer extends Sprite
         else
         {
             moveUp();
-        }
+        }*/
         return;
     }
 
@@ -210,7 +216,14 @@ public class MapPlayer extends Sprite
 
     public boolean touchDragged(int screenX, int screenY, int width, int height)
     {
-        return false;
+
+        velocity.x=screenX-(width/2);
+        velocity.y=-(screenY-(height/2));
+
+
+        velocity.y*=1.5;
+
+        return true;
     }
 
 

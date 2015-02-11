@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 
 
@@ -248,12 +249,37 @@ public class Fight extends GameState
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean tap(float x, float y, int count, int button)
+    {
         if(waitingForTouch==true)
         {
             if(fMenu.actionSelected==false)
             {
 
-                fMenu.touchDown((float)screenX/screenWidth,(float)screenY/screenHeight);
+                fMenu.touchDown((float)x/screenWidth,(float)y/screenHeight);
                 if(fMenu.actionSelected)
                 {
                     ActionId=fMenu.getActionId();
@@ -265,12 +291,12 @@ public class Fight extends GameState
             else if(targeting)
             {
 
-                if(screenX<screenWidth/3)
+                if(x<screenWidth/3)
                 {
                     targetPicker.Left();
 
                 }
-                else if(screenX>2*(screenWidth/3))
+                else if(x>2*(screenWidth/3))
                 {
                     targetPicker.Right();
 
@@ -294,17 +320,40 @@ public class Fight extends GameState
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    public boolean longPress(float x, float y)
     {
         return false;
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer)
+    public boolean fling(float velocityX, float velocityY, int button)
     {
         return false;
     }
 
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean zoom(float initialDistance, float distance)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2)
+    {
+        return false;
+    }
 
 
     public void start(Player player,String[] items)

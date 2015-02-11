@@ -254,21 +254,23 @@ public class FightMenu
 
     public void touchDown(float x, float y)
     {
-        if(x<.5&&y<.6&&y>.4)
+        if(x<.5)
         {
-            Select();
-        }
-        else if(y<0.35)
-        {
+            System.out.println(y);
+            if (y < .6 && y > .45)
+            {
+                Select();
+            } else if (y < 0.35)
+            {
 
-            Down();
+                Down();
 
-        }
-        else if(y>0.65)
-        {
+            } else if (y > 0.65)
+            {
 
-            Up();
+                Up();
 
+            }
         }
         /*System.out.println("_______________________________________");
         System.out.println("  "+menuWords[currentMenu][aboveIcon]);
