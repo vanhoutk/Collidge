@@ -117,51 +117,51 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public boolean touchDown(float x, float y, int pointer, int button)
     {
-        return false;
+        return gsm.returnCurrentState().touchDown(x,y, pointer,button);
     }
 
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
-       return false;
+       return gsm.returnCurrentState().tap(x,y,count,button);
     }
 
     @Override
     public boolean longPress(float x, float y)
     {
-        return false;
+        return gsm.returnCurrentState().longPress(x,y);
     }
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button)
     {
 
-        return false;
+        return gsm.returnCurrentState().fling(velocityX,velocityY,button);
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY)
     {
 
-        return false;
+        return gsm.returnCurrentState().pan(x,y,deltaX,deltaY);
     }
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button)
     {
-        return false;
+
+        return gsm.returnCurrentState().panStop(x,y,pointer,button);
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance)
     {
-
-        return false;
+        return gsm.returnCurrentState().zoom(initialDistance,distance);
     }
 
     @Override
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2)
     {
-        return false;
+        return gsm.returnCurrentState().pinch(initialPointer1,initialPointer2,pointer1,pointer2);
     }
 }
