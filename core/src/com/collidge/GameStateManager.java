@@ -19,9 +19,9 @@ public class GameStateManager
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
-    public static final int MENUSTATE = 0;
+   /* public static final int MENUSTATE = 0;
     public static final int LEVEL1STATE = 1;
-    public static final int FIGHTSTATE =2;
+    public static final int FIGHTSTATE =2;*/
 
     //Constructor creates all states and adds them to the list. Sets current state and loads it.
     public GameStateManager()
@@ -32,7 +32,7 @@ public class GameStateManager
         GameState state2 = new TestState2(this);
         gameStates.add(state1);
         gameStates.add(state2);
-        currentState = MENUSTATE;
+        currentState = 0;
         changeState(currentState);
     }
 
@@ -62,6 +62,7 @@ public class GameStateManager
     {
         System.out.println(gameStates.size());
         gameStates.remove(gameStates.size()-1);
+        //TODO add previous state class stuff
         changeState(0);
     }
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.

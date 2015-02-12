@@ -38,6 +38,7 @@ public class Play extends GameState {
     {
         super(gsm);
 
+        userCharacter=new Player();
 
     }
 
@@ -64,7 +65,7 @@ public class Play extends GameState {
         player2.setPosition(-player2.getWidth()/2,-player2.getHeight()/2);
         player2.setPosition(500,500);
 
-        userCharacter=new Player();
+
         System.out.println(player.getCollisionLayer().getTileWidth());
     }
 

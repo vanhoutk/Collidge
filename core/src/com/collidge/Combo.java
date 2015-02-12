@@ -73,7 +73,6 @@ public class Combo
         endY=y;
         if(Math.abs((endX-startX)*(endY*startY))>.1)
         {
-
             swipeSkill=swipe(targetX,targetY,startX,startY,endX,endY);
             comboing=false;
         }
