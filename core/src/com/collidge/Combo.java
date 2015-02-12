@@ -1,6 +1,8 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +17,7 @@ import java.util.Random;
  */
 public class Combo
 {
+    Sound pop1=Gdx.audio.newSound(Gdx.files.internal("pop1.ogg"));
     long startTime,allowedTime;
     Random rand=new Random();
     double startX,startY;
@@ -22,6 +25,9 @@ public class Combo
     double targetX, targetY;
     boolean comboing;
     double swipeSkill;
+    int tapTotal;
+    int tapsLeft;
+    double skill;
     Texture texture;
     Sprite screenMask,dot;
 
@@ -55,7 +61,7 @@ public class Combo
         switch(moveId)
         {
             case 0:
-                basicAttack();
+                basicAttack(fight);
                 return;
             default:
                 return;
@@ -63,14 +69,17 @@ public class Combo
     }
 
 
-    void basicAttack()
+    void basicAttack(Fight fight)
     {
-        swipeSkill=0;
+        skill=0;
         comboing=true;
         targetX=(int)(rand.nextDouble()*Gdx.graphics.getWidth());
         targetY=(int)(rand.nextDouble()*Gdx.graphics.getHeight());
 
-        allowedTime=50000;
+        tapTotal=10;
+        tapsLeft=tapTotal;
+
+        allowedTime=5000;
         startTime=TimeUtils.millis();
 
 
@@ -79,33 +88,36 @@ public class Combo
         return;
 
     }
-    double swipe(double dx,double dy,double x1,double y1,double x2,double y2)
-    {
-        double diff=Math.tan((x1-x2)/(y1-y2))-Math.tan(dx/dy);
-        diff/=5;
-        if(diff>10)
-        {
-            return 0;
-        }
-        else
-        {
-            return (10/diff);
-        }
-
-    }
 
     private void tapCombo(int x, int y, double targetx, double targety)
     {
 
-        swipeSkill= ((1/(x-targetx))*(1/(y-(targety))));
-        System.out.println("Skill: "+swipeSkill);
-        System.out.println("Tapped: "+x+", "+y);
-        System.out.println("Target: "+targetx+", "+targety);
-        if(swipeSkill>3)
+        if(Math.abs(x-targetx)<=(Gdx.graphics.getWidth()*.1)&&Math.abs(x-targetx)<=(Gdx.graphics.getWidth()*.1))
         {
-            swipeSkill=3;
+            skill+=1;
+
+            pop1.play();
+
+
         }
-        comboing=false;
+        else
+        {
+
+        }
+        tapsLeft--;
+
+        targetX=(int)(rand.nextDouble()*Gdx.graphics.getWidth());
+        targetY=(int)(rand.nextDouble()*Gdx.graphics.getHeight());
+
+        if(tapsLeft==0)
+        {
+            skill/=tapTotal;
+            tapTotal=0;
+            comboing=false;
+        }
+
+
+
     }
     void touchDown(float x,float y)
     {
@@ -116,24 +128,27 @@ public class Combo
 
     void touchUp(float x, float y)
     {
-        endX=x;
-        endY=y;
-        if(Math.abs((endX-startX)*(endY*startY))>.1)
-        {
-            swipeSkill=swipe(targetX,targetY,startX,startY,endX,endY);
-            comboing=false;
-        }
+
     }
     void tap(int x, int y)
     {
-        tapCombo(x,y,targetX,-targetY+Gdx.graphics.getHeight());
+        if(tapTotal>0)
+        {
+            tapCombo(x,y,targetX,-targetY+Gdx.graphics.getHeight());
+        }
+
 
     }
     void checkTimer()
     {
-        if(TimeUtils.timeSinceMillis(startTime)>allowedTime)
+        if(!comboing)
         {
-            swipeSkill=.01;
+            return;
+        }
+        else if(TimeUtils.timeSinceMillis(startTime)>allowedTime)
+        {
+
+            skill/=tapTotal;
             comboing=false;
         }
     }

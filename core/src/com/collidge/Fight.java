@@ -147,13 +147,15 @@ public class Fight extends GameState
         }
         if(combo.comboing)
         {
+            comboing=true;
             combo.update();
         }
-        else if (comboing)
+        else if(comboing)
         {
-            playerTurnPart3();
             comboing=false;
+            playerTurnPart3();
         }
+
         healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/20.0));
 
 
@@ -332,10 +334,6 @@ public class Fight extends GameState
             else if(combo.comboing)
             {
                 combo.tap((int)x,(int)y);
-                if(!combo.comboing)
-                {
-                    playerTurnPart3();
-                }
             }
 
         }
@@ -414,13 +412,14 @@ public class Fight extends GameState
     private void playerTurnPart3()
     {
         PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-        PlayerDam *= Math.abs(combo.swipeSkill);
+        PlayerDam*=(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence());
+        PlayerDam *= Math.abs(combo.skill);
         if(PlayerDam<1)
         {
             PlayerDam=1;
         }
         System.out.println("Damage: "+PlayerDam);
-        enemies[targetPicker.getSelectedTarget()].changeHealth(-(PlayerDam*(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence())));
+        enemies[targetPicker.getSelectedTarget()].changeHealth(-(PlayerDam));
         if(enemies[targetPicker.getSelectedTarget()].getDead())
         {
             enemiesLeft--;
