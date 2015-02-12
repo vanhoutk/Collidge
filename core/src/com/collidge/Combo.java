@@ -92,7 +92,7 @@ public class Combo
     private void tapCombo(int x, int y, double targetx, double targety)
     {
 
-        if(Math.abs(x-targetx)<=(Gdx.graphics.getWidth()*.1)&&Math.abs(x-targetx)<=(Gdx.graphics.getWidth()*.1))
+        if(Math.abs(x-targetx)<=(Gdx.graphics.getWidth()*.1)&&Math.abs(y-targety)<=(Gdx.graphics.getWidth()*.1))
         {
             skill+=1;
 
@@ -119,17 +119,8 @@ public class Combo
 
 
     }
-    void touchDown(float x,float y)
-    {
 
-        startX=x;
-        startY=y;
-    }
 
-    void touchUp(float x, float y)
-    {
-
-    }
     void tap(int x, int y)
     {
         if(tapTotal>0)
