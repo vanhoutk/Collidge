@@ -33,7 +33,7 @@ public class Fight extends GameState
     private int damage;
     private int ActionType;
     private int ActionId;
-    private boolean moveSelection=false;
+    private boolean comboing;
     private boolean targeting=false;
 
     private FightMenu fMenu;
@@ -47,6 +47,7 @@ public class Fight extends GameState
     Sprite healthBar;
     Sprite menuContainer;
 
+    Combo combo;
 
 
     private BitmapFont battleFont;
@@ -67,6 +68,7 @@ public class Fight extends GameState
     {
 
 
+        combo=new Combo();
         Timer.schedule(new Timer.Task()
         {
             @Override
@@ -143,6 +145,15 @@ public class Fight extends GameState
             Timer.instance().clear();
             Timer.instance().stop();
         }
+        if(combo.comboing)
+        {
+            combo.update();
+        }
+        else if (comboing)
+        {
+            playerTurnPart3();
+            comboing=false;
+        }
         healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/20.0));
 
 
@@ -160,6 +171,7 @@ public class Fight extends GameState
 
         healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.draw(batch);
+
 
 
         battleFont.setColor(Color.BLACK);
@@ -242,6 +254,10 @@ public class Fight extends GameState
             battleFont.setColor(Color.BLACK);
             battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
         }
+        else if(combo.comboing)
+        {
+            combo.draw(batch);
+        }
 
         batch.end();
     }
@@ -313,6 +329,14 @@ public class Fight extends GameState
                     playerTurnPart2();
                 }
             }
+            else if(combo.comboing)
+            {
+                combo.tap((int)x,(int)y);
+                if(!combo.comboing)
+                {
+                    playerTurnPart3();
+                }
+            }
 
         }
 
@@ -356,15 +380,7 @@ public class Fight extends GameState
     }
 
 
-    public void start(Player player,String[] items)
-    {
 
-    }
-    private void turn(Player player)
-    {
-        playerTurn(player,enemies);
-
-    }
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
@@ -390,18 +406,27 @@ public class Fight extends GameState
     {
         int target;
         target = targetPicker.getSelectedTarget();
+        combo.initiateCombo(0,this);
+        comboing=true;
+        return;
+    }
+
+    private void playerTurnPart3()
+    {
         PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-        //PlayerDam *= move.moveExecute(PlayerDam);
-        enemies[target].changeHealth(-(PlayerDam*(playr.getAttack()-enemies[target].getDefence())));
-        if(enemies[target].getDead())
+        PlayerDam *= Math.abs(combo.swipeSkill);
+        if(PlayerDam<1)
+        {
+            PlayerDam=1;
+        }
+        System.out.println("Damage: "+PlayerDam);
+        enemies[targetPicker.getSelectedTarget()].changeHealth(-(PlayerDam*(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence())));
+        if(enemies[targetPicker.getSelectedTarget()].getDead())
         {
             enemiesLeft--;
         }
         playerTurnEnd();
-
-
     }
-
 
     private void playerTurnEnd()
     {
@@ -422,9 +447,6 @@ public class Fight extends GameState
 
     private void enemyTurn(Player player,Enemy[] monsters)
     {
-
-
-
         int dam;
         for(int i=0;i<monsters.length;i++)
         {
