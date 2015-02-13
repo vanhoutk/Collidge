@@ -173,7 +173,6 @@ public class Player
     }
     private void levelUp()
     {
-
         level++;
         updateStats();
         currentEnergy+=health/4;

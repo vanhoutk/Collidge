@@ -81,6 +81,7 @@ public class Fight extends GameState
                     playr.changeHealth(-1);
                     if (playr.getCurrentHealth() <= 0)
                     {
+                        combo.delete();
                         gsm.endFight();
                         damage=0;
                         cancel();
@@ -383,6 +384,12 @@ public class Fight extends GameState
     {
         PlayerDam=0;
 
+        if(ActionType==2)
+        {
+
+            combo.delete();
+            gsm.endFight();
+        }
         if(ActionType==3)
         {
             player.useItem(fMenu.getMoveString(ActionType,ActionId));
@@ -422,6 +429,7 @@ public class Fight extends GameState
         enemies[targetPicker.getSelectedTarget()].changeHealth(-(PlayerDam));
         if(enemies[targetPicker.getSelectedTarget()].getDead())
         {
+            playr.addExperience(enemies[targetPicker.getSelectedTarget()].getExpValue());
             enemiesLeft--;
         }
         playerTurnEnd();
@@ -439,6 +447,7 @@ public class Fight extends GameState
         }
         else
         {
+            combo.delete();
             gsm.endFight();
         }
         fMenu.refreshMenus(playr);

@@ -144,6 +144,10 @@ public class Combo
         }
     }
 
+    void delete()
+    {
+        pop1.dispose();
+    }
 
 }
 
