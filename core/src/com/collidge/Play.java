@@ -62,7 +62,7 @@ public class Play extends GameState {
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
 
-        System.out.println(player.getCollisionLayer().getTileWidth());
+
     }
 
     @Override

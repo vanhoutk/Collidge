@@ -30,7 +30,7 @@ public class Fight extends GameState
     Player playr;
     boolean waitingForTouch=false;
     int action;
-    private int damage;
+    private int[] damage;
     private int ActionType;
     private int ActionId;
     private boolean comboing;
@@ -69,39 +69,14 @@ public class Fight extends GameState
 
 
         combo=new Combo();
-        Timer.schedule(new Timer.Task()
-        {
-            @Override
-            public void run()
-            {
 
-                if(damage>0)
-                {
-                    damage--;
-                    playr.changeHealth(-1);
-                    if (playr.getCurrentHealth() <= 0)
-                    {
-                        combo.delete();
-                        gsm.endFight();
-                        damage=0;
-                        cancel();
-
-
-                    }
-
-                }
-
-
-
-            }
-        }
-                , 0, .1f);
 
         EnemySets BasicSet=new EnemySets();
         enemies=BasicSet.getEnemies("Pack");
 
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
+        damage=new int[enemies.length+1];
         move=new Attack();
         //TODO add randomness and enemy lookup from world sprites
         //enemies=new Enemy[enemyCount];
@@ -133,6 +108,56 @@ public class Fight extends GameState
 
         waitingForTouch=true;
         battleFont = new BitmapFont();
+
+
+        Timer.schedule(new Timer.Task()
+        {
+            @Override
+            public void run()
+            {
+
+                if (damage[0] > 0)
+                {
+                    damage[0]--;
+                    playr.changeHealth(-1);
+                    if (playr.getCurrentHealth() <= 0)
+                    {
+                        combo.delete();
+                        gsm.endFight();
+                        damage[0] = 0;
+                        cancel();
+
+
+                    }
+
+                }
+                for(int i=1;i<damage.length;i++)
+                {
+                    if ((!enemies[i-1].getDead())&&damage[i] > 0)
+                    {
+                        damage[i]--;
+                        enemies[i-1].changeHealth(-1);
+                        if (enemies[i-1].getHealth() <= 0)
+                        {
+
+                            damage[i]=0;
+                            playr.addExperience(enemies[i-1].getExpValue());
+
+                            enemiesLeft--;
+                            if(enemiesLeft<=0)
+                            {
+                                cancel();
+                            }
+                        }
+
+                    }
+                }
+
+
+
+            }
+        }
+                , 0, .1f);
     }
 
 
@@ -409,8 +434,7 @@ public class Fight extends GameState
 
     private void playerTurnPart2()
     {
-        int target;
-        target = targetPicker.getSelectedTarget();
+
         combo.initiateCombo(0,this);
         comboing=true;
         return;
@@ -425,13 +449,9 @@ public class Fight extends GameState
         {
             PlayerDam=1;
         }
-        System.out.println("Damage: "+PlayerDam);
-        enemies[targetPicker.getSelectedTarget()].changeHealth(-(PlayerDam));
-        if(enemies[targetPicker.getSelectedTarget()].getDead())
-        {
-            playr.addExperience(enemies[targetPicker.getSelectedTarget()].getExpValue());
-            enemiesLeft--;
-        }
+        damage[targetPicker.getSelectedTarget()+1]+=PlayerDam;
+
+
         playerTurnEnd();
     }
 
@@ -465,10 +485,11 @@ public class Fight extends GameState
                 if (dam <= 0)
                 {
             //        System.out.println("Damage by monster " + i + " resisted");
-                    damage++;
-                } else
+                    damage[0]++;
+                }
+                else
                 {
-                    damage+=dam;
+                    damage[0]+=dam;
                     //player.changeHealth(-(damage));
               //      System.out.println("Enemy " + i + " deals " + (dam) + " damage");
                     if (player.getCurrentHealth() <= 0)
