@@ -152,12 +152,10 @@ public class MapPlayer extends Sprite
     }
     private void moveDown()
     {
-
         velocity.y = -speed;
     }
     private void moveLeft()
     {
-
         velocity.x = -speed;
     }
     private void moveRight()

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -24,13 +25,13 @@ public class Play extends GameState {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private OrthographicCamera camera2;
     private MapPlayer player;
     private Sprite player2;
     private Texture texture;
     private SpriteBatch  batch;
     private Batch spriteBatch;
     private BitmapFont font;
+    private TextureRegion TR;
 
     Play(GameStateManager gsm)
     {
@@ -46,19 +47,15 @@ public class Play extends GameState {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.update();
+        TR = new TextureRegion();
 
         font = new BitmapFont();
-        player2 = new Sprite(new Texture("player.png"));
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load("TrinityMap1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
-
-        player2.setOrigin(0,0);
-        player2.setPosition(-player2.getWidth()/2,-player2.getHeight()/2);
-        player2.setPosition(500,500);
     }
 
     @Override
