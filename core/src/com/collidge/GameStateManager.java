@@ -19,6 +19,7 @@ public class GameStateManager
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
+
    /* public static final int MENUSTATE = 0;
     public static final int LEVEL1STATE = 1;
     public static final int FIGHTSTATE =2;*/
@@ -32,6 +33,9 @@ public class GameStateManager
         GameState state2 = new TestState2(this);
         gameStates.add(state1);
         gameStates.add(state2);
+
+        //currentState = MENUSTATE;
+
         currentState = 0;
         changeState(currentState);
     }
@@ -51,6 +55,19 @@ public class GameStateManager
         return gameStates.get(currentState);
     }
 
+    //Kris -- adding in for testing of Inventory State
+    public void openInventory(Player player)
+    {
+        gameStates.add(new InventoryState(this, player));
+        changeState(gameStates.size()-1);
+    }
+
+    public void closeInventory()
+    {
+        changeState(0);
+        gameStates.remove(gameStates.size()-1);
+    }
+
     public void startFight(Player player)
     {
 
@@ -62,6 +79,7 @@ public class GameStateManager
     {
         System.out.println(gameStates.size());
         gameStates.remove(gameStates.size()-1);
+
         //TODO add previous state class stuff
         changeState(0);
     }
