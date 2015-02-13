@@ -6,6 +6,7 @@ package com.collidge;
 public class Player
 {
     private int level;
+
     private int expTarget;
     private int health;
     private int currentHealth;
@@ -27,10 +28,12 @@ public class Player
     {
         return currentHealth;
     }
+
     public int getCurrentEnergy()
     {
         return currentEnergy;
     }
+
     public int getMovesKnown()
     {
         return movesKnown;
@@ -44,6 +47,7 @@ public class Player
      * Kris -- Added in getEquipList to return a list of the Equipment items owned for use in the InventoryState
      */
     public String[] getEquipList(){return items.getEquipmentList();}
+
 //TODO finish move functionality
     private int movesKnown=5;
     private boolean[] attacksList;
@@ -182,7 +186,6 @@ public class Player
 
     private void levelUp()
     {
-
         level++;
         updateStats();
         currentEnergy+=health/4;

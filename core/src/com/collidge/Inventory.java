@@ -33,6 +33,13 @@ public class Inventory
     //private Map<String, CombatItem> MyCombatInv;
 
     /**
+<<<<<<< HEAD
+=======
+     * Note: Currently the inventory is being created in the Player class, will need to see if this continues
+     * to work fine when trying to access the inventory from the InventoryState class or if it'll need
+     * to be created in the main function somewhere.
+     *
+>>>>>>> f8e1fd527870d530c737465f5aa68d2c1a0e7814
      * Dan's edit
      * Changed to have Player player passed in.
      */
@@ -155,6 +162,7 @@ public class Inventory
          * Constructor for combat items is (Type, Text, Health, Energy, Quantity)
          */
         CombatItem Coffee, EnergyDrink, Noodles, ChickenRoll;
+
         Coffee = new CombatItem("Energy", "Energy Item. Restores 10 energy. Mmm that's good coffee!", 0, 10, 10, "Coffee_cup.png");
         EnergyDrink = new CombatItem("Energy", "Energy Item. Restores 10 energy. Buzzing!", 0, 10, 10, "badlogic.jpg");
         Noodles = new CombatItem("Health", "Health Item. Restores 10 HP. Instant Goodness", 10, 0, 10, "badlogic.jpg");

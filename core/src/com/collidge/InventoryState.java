@@ -1,5 +1,6 @@
 package com.collidge;
 
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Kris on 24-Jan-15.
  *
  * Will contain all of the drawing and display involved with the InventoryState
+<<<<<<< HEAD
  *
  * TODO: Comment code
  * TODO: Clean up code
@@ -448,4 +450,3 @@ public class InventoryState extends GameState
         return false;
     }
 }
-

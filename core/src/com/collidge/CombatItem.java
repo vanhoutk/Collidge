@@ -7,6 +7,8 @@ public class CombatItem extends Item
 {
     private int healthRestore;
     private int energyRestore;
+    private int itemQuantity;
+
 
     CombatItem(/*String name*/)
     {

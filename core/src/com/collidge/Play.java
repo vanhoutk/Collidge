@@ -38,7 +38,7 @@ public class Play extends GameState {
     {
         super(gsm);
 
-
+        userCharacter=new Player();
     }
 
     @Override
@@ -52,28 +52,22 @@ public class Play extends GameState {
         camera.update();
 
         font = new BitmapFont();
-        player2 = new Sprite(new Texture("player.png"));
+
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load("TrinityMap1.tmx");
+
         renderer = new OrthogonalTiledMapRenderer(map);
+
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
 
-        player2.setOrigin(0,0);
-        player2.setPosition(-player2.getWidth()/2,-player2.getHeight()/2);
-        player2.setPosition(500,500);
-
-        userCharacter=new Player();
         System.out.println(player.getCollisionLayer().getTileWidth());
     }
 
     @Override
     public void draw()
     {
-        // Gdx.gl.glClearColor(0, 0, 0, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
         camera.update();
 
@@ -81,7 +75,9 @@ public class Play extends GameState {
         renderer.render();
 
         renderer.getBatch().begin();
-        player.draw(renderer.getBatch());
+
+       // player.draw(renderer.getBatch());
+        player.draw2(renderer.getBatch(), 5);
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
@@ -140,12 +136,11 @@ public class Play extends GameState {
 
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510)
         {
-
             //Kris -- just put in to test InventoryState
-            gsm.openInventory(userCharacter);
+            //gsm.openInventory(userCharacter);
 
-            //userCharacter.healAll();
-            //gsm.startFight(userCharacter);
+            userCharacter.healAll();
+            gsm.startFight(userCharacter);
             player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
 
 
