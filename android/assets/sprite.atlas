@@ -1,0 +1,74 @@
+sprite.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+0001
+  rotate: false
+  xy: 2, 2
+  size: 2067, 1021
+  orig: 2067, 1032
+  offset: 0, 11
+  index: -1
+0002
+  rotate: false
+  xy: 2, 2
+  size: 2067, 1021
+  orig: 2067, 1032
+  offset: 0, 11
+  index: -1
+0003
+  rotate: false
+  xy: 2, 1025
+  size: 2040, 1020
+  orig: 2040, 1020
+  offset: 0, 0
+  index: -1
+0004
+  rotate: false
+  xy: 2, 2
+  size: 2067, 1021
+  orig: 2067, 1032
+  offset: 0, 11
+  index: -1
+0005
+  rotate: false
+  xy: 2, 1025
+  size: 2040, 1020
+  orig: 2040, 1020
+  offset: 0, 0
+  index: -1
+0006
+  rotate: false
+  xy: 2, 1025
+  size: 2040, 1020
+  orig: 2040, 1020
+  offset: 0, 0
+  index: -1
+0007
+  rotate: false
+  xy: 2, 2
+  size: 2067, 1021
+  orig: 2067, 1032
+  offset: 0, 11
+  index: -1
+0008
+  rotate: false
+  xy: 2, 2
+  size: 2067, 1021
+  orig: 2067, 1032
+  offset: 0, 11
+  index: -1
+0009
+  rotate: false
+  xy: 2, 1025
+  size: 2040, 1020
+  orig: 2040, 1020
+  offset: 0, 0
+  index: -1
+0010
+  rotate: false
+  xy: 2, 2
+  size: 2067, 1021
+  orig: 2067, 1032
+  offset: 0, 11
+  index: -1
