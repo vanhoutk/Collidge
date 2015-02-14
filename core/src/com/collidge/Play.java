@@ -134,10 +134,12 @@ public class Play extends GameState {
     {
 
 
+
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510)
         {
             //Kris -- just put in to test InventoryState
             //gsm.openInventory(userCharacter);
+
 
             userCharacter.healAll();
             gsm.startFight(userCharacter);
@@ -145,6 +147,13 @@ public class Play extends GameState {
 
 
         }
+        else if(player.getY()>2080)
+        {
+            gsm.openInventory(userCharacter);
+            player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+        }
+
+
 
 
 

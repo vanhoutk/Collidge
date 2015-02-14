@@ -49,11 +49,11 @@ public class Player
     public String[] getEquipList(){return items.getEquipmentList();}
 
 //TODO finish move functionality
-    private int movesKnown=5;
+    private int movesKnown=2;
     private boolean[] attacksList;
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
-    private String[] attacksNames={"Bash","Slam","Blast","Spirit","Go Hard"};
+    private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
 
     Player()
     {
@@ -67,12 +67,14 @@ public class Player
         attacksList[2]=false;
         attacksList[3]=false;
         attacksList[4]=false;
-        updateStats();
-        healAll();
+
+
 
         //Kris -- Start off with no armour/weapons equipped
         equippedWeapon = "None";
         equippedArmour = "None";
+        updateStats();
+        healAll();
     }
 
     public int[] getAttackEnergyCosts()
@@ -203,10 +205,9 @@ public class Player
         intelligence=(int)(level/2.5);
 
         energy=level*5;
-
-
-
         expTarget=(int)(level*level/1.2)+55;
+        equipItem(equippedArmour);
+        equipItem(equippedWeapon);
 
     }
 
@@ -240,6 +241,10 @@ public class Player
      */
     public void equipItem(String item)
     {
+        if(item=="None")
+        {
+            return;
+        }
         if(items.getItemType(item) == "Weapon")
         {
             if(equippedWeapon != "None")
