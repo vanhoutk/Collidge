@@ -68,7 +68,7 @@ public class MapPlayer extends Sprite
         }
 
         for (int i = 0; i < 4; i++) {
-            walkingAnimation[i] = new Animation(walkingRegions[i]);
+            walkingAnimation[i] = new Animation(walkingRegions[i],.2f);
         }
 
         startTime = System.currentTimeMillis();
@@ -302,7 +302,7 @@ public class MapPlayer extends Sprite
         velocity.y=-(screenY-(height/2));
         velocity.y*=1.5;
         getDirection();
-        System.out.println(direction+"");
+
 
         return true;
     }
