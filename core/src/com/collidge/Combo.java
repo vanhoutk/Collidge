@@ -76,14 +76,14 @@ public class Combo
         targetY=(int)(rand.nextDouble()*Gdx.graphics.getHeight());
 
         tapTotal=10;
-        tapsLeft=tapTotal;
+        tapsLeft=tapTotal-1;
 
         allowedTime=5000;
         startTime=TimeUtils.millis();
 
 
 
-        //TODO correct for the expected output of the swipe function
+
         return;
 
     }

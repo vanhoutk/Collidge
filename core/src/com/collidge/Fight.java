@@ -74,7 +74,7 @@ public class Fight extends GameState
         enemiesLeft=enemyCount;
         damage=new int[enemies.length+1];
         move=new Attack();
-        //TODO add randomness and enemy lookup from world sprites
+
         //enemies=new Enemy[enemyCount];
 
         targetPicker=new TargetPicker(enemies);
@@ -98,7 +98,7 @@ public class Fight extends GameState
 
 
 
-        //TODO add someway to input a player rather than create a new one (maybe in the gsm)
+
 
         fMenu=new FightMenu(playr);
 
@@ -142,6 +142,7 @@ public class Fight extends GameState
                             enemiesLeft--;
                             if(enemiesLeft<=0)
                             {
+                                gsm.endFight();
                                 cancel();
                             }
                         }
@@ -278,7 +279,32 @@ public class Fight extends GameState
 
         else if(combo.comboing)
         {
+            battleFont.setColor(Color.WHITE);
             combo.draw(batch);
+
+            if(combo.skill/combo.tapTotal<.2)
+            {
+                battleFont.draw(batch,"Bad",(int)(2*screenWidth/5),battleFont.getLineHeight());
+            }
+            else if(combo.skill/combo.tapTotal<.4)
+            {
+                battleFont.draw(batch,"OK",(int)(2*screenWidth/5),battleFont.getLineHeight());
+            }
+            else if(combo.skill/combo.tapTotal<.6)
+            {
+                battleFont.draw(batch,"Good",(int)(2*screenWidth/5),battleFont.getLineHeight());
+            }
+            else if(combo.skill/combo.tapTotal<.8)
+            {
+                battleFont.draw(batch,"Great",(int)(2*screenWidth/5),battleFont.getLineHeight());
+            }
+            else
+            {
+                battleFont.draw(batch,"Perfect",(int)(2*screenWidth/5),battleFont.getLineHeight());
+            }
+           // battleFont.draw(batch,((combo.skill/combo.tapTotal))+"",(int)(2*screenWidth/5),battleFont.getLineHeight());
+
+
         }
 
         batch.end();
@@ -405,8 +431,11 @@ public class Fight extends GameState
         if(ActionType==2)
         {
 
-            combo.delete();
-            gsm.endFight();
+            if(fMenu.getMoveString(ActionType,ActionId)=="Flee")
+            {
+                combo.delete();
+                gsm.endFight();
+            }
         }
 
         if(ActionType==3)

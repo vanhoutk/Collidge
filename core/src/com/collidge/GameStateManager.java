@@ -77,7 +77,8 @@ public class GameStateManager
 
     public void endFight()
     {
-        System.out.println(gameStates.size());
+
+        gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
 
         //TODO add previous state class stuff

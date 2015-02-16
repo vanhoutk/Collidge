@@ -48,7 +48,7 @@ public class Player
      */
     public String[] getEquipList(){return items.getEquipmentList();}
 
-//TODO finish move functionality
+
     private int movesKnown=2;
     private boolean[] attacksList;
     private int[] attackMultipliers={1,2,5,7,10};
@@ -197,6 +197,8 @@ public class Player
     private void updateStats()
     {
         //TODO add levelUp selections
+        unequipItem(equippedWeapon);
+        unequipItem(equippedArmour);
         attack=5+(level);
 
         defence=0;
@@ -271,6 +273,10 @@ public class Player
 
     public void unequipItem(String item)
     {
+        if(item=="None")
+        {
+            return;
+        }
         if(items.getItemType(item) == "Weapon")
         {
             attack -= items.getAttackBonus(item);
