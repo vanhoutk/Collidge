@@ -65,6 +65,7 @@ public class GameStateManager
     public void closeInventory()
     {
         changeState(0);
+        gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
 

@@ -243,11 +243,11 @@ public class Player
      */
     public void equipItem(String item)
     {
-        if(item=="None")
+        if(item.equals("None"))
         {
             return;
         }
-        if(items.getItemType(item) == "Weapon")
+        else if(items.getItemType(item) == "Weapon")
         {
             if(equippedWeapon != "None")
             {
@@ -273,11 +273,11 @@ public class Player
 
     public void unequipItem(String item)
     {
-        if(item=="None")
+        if(item.equals("None"))
         {
             return;
         }
-        if(items.getItemType(item) == "Weapon")
+        else if(items.getItemType(item) == "Weapon")
         {
             attack -= items.getAttackBonus(item);
             //energy -= items.getEnergyBonus(item);
