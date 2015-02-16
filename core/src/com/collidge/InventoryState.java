@@ -1,7 +1,7 @@
 package com.collidge;
 
 
-import com.badlogic.gdx.Application;
+//import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -46,42 +46,36 @@ public class InventoryState extends GameState
         texture = new Texture("inventory_slot_background.png");
         itemSquare = new Sprite(texture);
         textbox = new Sprite(texture);
-        //texture = new Texture("textbox_background_2.png");
         textbox2 = new Sprite(new Texture("textbox_background_2.png"));
-        //texture = new Texture("back_button.png");
         backButton = new Sprite(new Texture("back_button.png"));
         greenCircle = new Sprite(new Texture("greenCircleBlack.png"));
         greenSquare = new Sprite(new Texture("greenSquareBlack.jpg"));
         batch = new SpriteBatch();
         infoFont = new BitmapFont();
+
+        bitNumbers = new Sprite[10];
+        bitNumbers[0] = new Sprite(new Texture("zero.png"));
+        bitNumbers[1] = new Sprite(new Texture("one.png"));
+        bitNumbers[2] = new Sprite(new Texture("two.png"));
+        bitNumbers[3] = new Sprite(new Texture("three.png"));
+        bitNumbers[4] = new Sprite(new Texture("four.png"));
+        bitNumbers[5] = new Sprite(new Texture("five.png"));
+        bitNumbers[6] = new Sprite(new Texture("six.png"));
+        bitNumbers[7] = new Sprite(new Texture("seven.png"));
+        bitNumbers[8] = new Sprite(new Texture("eight.png"));
+        bitNumbers[9] = new Sprite(new Texture("nine.png"));
+
+        initialize();
+    }
+
+
+    //initialize is the same as constructor but sometimes you want to reset an object without rebuilding it.
+    @Override
+    public void initialize()
+    {
         itemInfoText = new String[11];
         itemNameText = new String[11];
         itemEquipText = new String[11];
-
-        bitNumbers = new Sprite[10];
-        //texture = new Texture("zero.png");
-        bitNumbers[0] = new Sprite(new Texture("zero.png"));
-        //texture = new Texture("one.png");
-        bitNumbers[1] = new Sprite(new Texture("one.png"));
-        //texture = new Texture("two.png");
-        bitNumbers[2] = new Sprite(new Texture("two.png"));
-        //texture = new Texture("three.png");
-        bitNumbers[3] = new Sprite(new Texture("three.png"));
-        //texture = new Texture("four.png");
-        bitNumbers[4] = new Sprite(new Texture("four.png"));
-        //texture = new Texture("five.png");
-        bitNumbers[5] = new Sprite(new Texture("five.png"));
-        //texture = new Texture("six.png");
-        bitNumbers[6] = new Sprite(new Texture("six.png"));
-        //texture = new Texture("seven.png");
-        bitNumbers[7] = new Sprite(new Texture("seven.png"));
-        //texture = new Texture("eight.png");
-        bitNumbers[8] = new Sprite(new Texture("eight.png"));
-        //texture = new Texture("nine.png");
-        bitNumbers[9] = new Sprite(new Texture("nine.png"));
-
-
-
         itemNameText[0] = "Inventory";
         itemInfoText[0] = "Touch any of the items above to display information.";
         itemEquipText[0] = " ";
@@ -96,7 +90,7 @@ public class InventoryState extends GameState
         itemImages = new Sprite[10];
         equipNum = player.getEquipList().length;
         itemNum = player.getItemList().length;
-        //Gdx.app.debug("Inventory State", "EquipNum = " + equipNum);
+
         for(int i = 0; i < equipNum; i++)
         {
             itemNames[i] = player.getEquipList()[i];
@@ -138,23 +132,22 @@ public class InventoryState extends GameState
             itemImages[equipNum + i] = new Sprite(new Texture(player.items.getItemImage(itemNames[equipNum + i])));
             itemNameText[equipNum + i + 1] = itemNames[equipNum + i];
             itemInfoText[equipNum + i + 1] = player.items.getItemText(itemNames[equipNum + i]);
-            itemEquipText[equipNum + i + 1] = "Cannot use outside of combat";
+
+            /**
+             * Kris -- Commented out to be replaced with usable combat items code
+             */
+            //itemEquipText[equipNum + i + 1] = "Cannot use outside of combat";
+            itemEquipText[equipNum + i + 1] = "Use item";
         }
     }
 
-
-    //initialize is the same as constructor but sometimes you want to reset an object without rebuilding it.
-    @Override
-    public void initialize()
-    {
-
-    }
     //update will update all game logic before drawing
     @Override
     public void update()
     {
 
     }
+
     //after updating has occured in that single frame. Both what or what hasn't been changed has to be drawn/redrawn
     @Override
     public void draw()
@@ -219,12 +212,12 @@ public class InventoryState extends GameState
             if(player.items.getItemType(itemNames[i]).equals("Energy") || player.items.getItemType(itemNames[i]).equals("Health"))
             {
                 int quantity = player.items.getItemQuantity(itemNames[i]);
-                bitNumbers[quantity/10].setSize(8 * sqSide/75, 8 * sqSide/75);
+                bitNumbers[quantity/10].setSize(10 * sqSide/75, 10 * sqSide/75);
                 bitNumbers[quantity/10].setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 1) * spacing / 2));
                 bitNumbers[quantity/10].draw(batch);
 
-                bitNumbers[quantity%10].setSize(8 * sqSide/75, 8 * sqSide/75);
-                bitNumbers[quantity%10].setPosition((spacing + sqSide/10) + x * (spacing + sqSide) + bitNumbers[quantity/10].getWidth(), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 1) * spacing / 2));
+                bitNumbers[quantity%10].setSize(10 * sqSide/75, 10 * sqSide/75);
+                bitNumbers[quantity%10].setPosition((spacing + sqSide/10) + x * (spacing + sqSide) + 3 * bitNumbers[quantity/10].getWidth() / 4, screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 1) * spacing / 2));
                 bitNumbers[quantity%10].draw(batch);
             }
             else if(player.items.getItemType(itemNames[i]).equals("Weapon"))
@@ -291,20 +284,27 @@ public class InventoryState extends GameState
         else if(itemEquipText[selectedItem].equals("UnEquip"))
         {
             infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
-            infoFont.draw(batch, "UnEquip", screenWidth - (5 * spacing/3 + sqSide), sqSide - infoFont.getLineHeight());
+            infoFont.draw(batch, "UnEquip", screenWidth - (5 * spacing / 3 + sqSide), sqSide - 9 * infoFont.getLineHeight() / 8);
         }
         else
         {
-            infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (7 * spacing / 4 + sqSide), sqSide, 7 * sqSide / 6, BitmapFont.HAlignment.CENTER);
+            /**
+             * Kris -- Commented out to be replaced with usable combat items
+             */
+            //infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (7 * spacing / 4 + sqSide), sqSide, 7 * sqSide / 6, BitmapFont.HAlignment.CENTER);
+            infoFont.setScale(screenWidth / 300f, screenHeight / 300f);
+            infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (6 * spacing / 4 + sqSide), sqSide - infoFont.getLineHeight()/2, sqSide, BitmapFont.HAlignment.CENTER);
         }
 
 
         batch.end();
     }
 
-    //3 touch events that you can handle inside your own class
-    //first touchDown(int,int,pointer,button) is from the input handler, the second uses floats and is in the gesture listener(possibly more accurate than ints)
-    //Use whichever you want, but only use one, and return false on the other
+    /**
+     * 3 touch events that you can handle inside your own class
+     * first touchDown(int,int,pointer,button) is from the input handler, the second uses floats and is in the gesture listener(possibly more accurate than ints)
+     * Use whichever you want, but only use one, and return false on the other
+     */
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
@@ -407,6 +407,14 @@ public class InventoryState extends GameState
                 else if(itemEquipText[selectedItem].equals("UnEquip"))
                 {
                     player.unequipItem(itemNames[selectedItem - 1]);
+                }
+                else if(itemEquipText[selectedItem].equals("Use item"))
+                {
+                    player.useItem(itemNames[selectedItem - 1]);
+                    if(player.items.getItemQuantity(itemNames[selectedItem-1]) == 0)
+                    {
+                        initialize();
+                    }
                 }
             }
         }
