@@ -16,10 +16,11 @@ public class EnemySets
     private EnemyTypes Types=new EnemyTypes();
     Random rand=new Random();
 
+    //allows for up to 4 different types of enemy per fight, and assigns the maximum number of each type of enemy
     EnemySets()
     {
-        EnemyCollections.put("Empty", fillArrays("","","",""));
-        EnemyPopulation.put("Empty",fillArrays(0,0,0,0));
+        EnemyCollections.put("Empty", fillArrays("","","",""));     //for example this enemy set is named empty and has blank enemies
+        EnemyPopulation.put("Empty",fillArrays(0,0,0,0));       //will always have 0 enemies
         EnemyCollections.put("Loner", fillArrays("Fresher","","",""));
         EnemyPopulation.put("Loner",fillArrays(1,0,0,0));
         EnemyCollections.put("Pack", fillArrays("Fresher","Fresher","Fresher",""));
@@ -37,6 +38,7 @@ public class EnemySets
 
     }
 
+    //puts the names of the enemies in an array
     private String[] fillArrays(String a, String b,String c,String d)
     {
         String[] temp=new String[4];
@@ -48,6 +50,7 @@ public class EnemySets
 
     }
 
+    //puts the quantities of enemies in an array
     private int[] fillArrays(int i, int j, int k, int l)
     {
         int[] temp=new int[4];
@@ -58,21 +61,24 @@ public class EnemySets
         return temp;
     }
 
+    //creates the array of enemies based on the specifications from the chosen EnemyCollection and EnemyPopulation (these must have the same name)
     public Enemy[] getEnemies(String name)
     {
         int temp=0;
         String[] Enemyset=EnemyCollections.get(name);
         int[] pop=EnemyPopulation.get(name);
-        Set<Enemy> Enemies = new HashSet();
+        Set<Enemy> Enemies = new HashSet();     //creates the hashset Enemies
+
+        //handles up to 4 enemies within the Enemyset. If the enemy at Enemyset[i] isn't blank, it is added to the array.
         for(int i=0;i<4;i++)
         {
             if(!Enemyset[i].equals(""))
             {
                 temp=(rand.nextInt(pop[i]));
-                temp++;
+                temp++;     //temp will be a random number in the range from 1 to pop[i] - where pop[i] is the number of the specific type of enemy passed in
                 for(int j=0;j<temp;j++)
                 {
-                    Enemies.add(new Enemy(Types.getEnemy(Enemyset[i])));
+                    Enemies.add(new Enemy(Types.getEnemy(Enemyset[i])));        //adds "temp" number of enemies (so a random no. less than the max) of the type specified in Enemyset[i]
                 }
             }
         }

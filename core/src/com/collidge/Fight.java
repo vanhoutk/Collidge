@@ -44,7 +44,7 @@ public class Fight extends GameState
 
     SpriteBatch batch;
     Texture texture,textureMenu ;
-    Sprite healthBar;
+    Sprite healthBar, healthBackground;
     Sprite menuContainer;
 
     Combo combo;
@@ -52,6 +52,7 @@ public class Fight extends GameState
     private TargetPicker targetPicker;
 
 
+    //allows the overall player class to be changed within the fight, so that e.g. it can gain experience
     Fight(GameStateManager gsm,Player player)
     {
         super(gsm);
@@ -66,40 +67,47 @@ public class Fight extends GameState
         combo=new Combo();
 
 
-
+        //gets the number and type of enemies to fight
         EnemySets BasicSet=new EnemySets();
-        enemies=BasicSet.getEnemies("Pack");
+        enemies=BasicSet.getEnemies("Pack");           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
 
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
-        damage=new int[enemies.length+1];
-        move=new Attack();
+        damage=new int[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
+        move=new Attack();        //calls the attack class
 
         //enemies=new Enemy[enemyCount];
 
+        //allows the player to select a particular enemy to attack
         targetPicker=new TargetPicker(enemies);
 
 
 
 
+        //player and enemy healthbars and attack/tactics panel
+        batch = new SpriteBatch();
+        texture = new Texture("barHorizontal_green_mid.png");
+        healthBar = new Sprite(texture);
 
-        batch=new SpriteBatch();
-        texture =new Texture("barHorizontal_green_mid.png");
-        healthBar=new Sprite(texture);
-
-        healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
-        healthBar.setSize((4*(screenWidth/10)),screenHeight/10);
-
-        texture=new Texture("panelInset_beige.png");
-
-        menuContainer=new Sprite(texture);
+        texture = new Texture("barHorizontal_red_mid.png");
+        healthBackground = new Sprite(texture);
 
 
+        healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), 25 * screenHeight / 30);
+        healthBar.setSize((4 * (screenWidth / 10)), screenHeight / 10);
+        healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 10 * screenHeight / 30);
+        healthBackground.setSize((int) ((playr.getHealth() * (4 * (screenWidth / 10))) / ((double) playr.getHealth())), (int) (screenHeight / 20.0));
+
+        texture = new Texture("panelInset_beige.png");
+
+        menuContainer = new Sprite(texture);
 
 
 
 
 
+
+        //calls fightMenu class
         fMenu=new FightMenu(playr);
 
         waitingForTouch=true;
@@ -112,10 +120,12 @@ public class Fight extends GameState
             public void run()
             {
 
+                //if damage was dealt to the player, subtract health
                 if (damage[0] > 0)
                 {
                     damage[0]--;
                     playr.changeHealth(-1);
+                    //check if the player died, if he did, end the fight
                     if (playr.getCurrentHealth() <= 0)
                     {
                         combo.delete();
@@ -127,6 +137,7 @@ public class Fight extends GameState
                     }
 
                 }
+                //changes enemy health based on damage done, if enemies die, give their experience to the player and kill them
                 for(int i=1;i<damage.length;i++)
                 {
                     if ((!enemies[i-1].getDead())&&damage[i] > 0)
@@ -178,6 +189,7 @@ public class Fight extends GameState
             comboing=false;
             playerTurnPart3();
         }
+        healthBackground.setSize((int) ((playr.getHealth() * (4 * (screenWidth / 10))) / ((double) playr.getHealth())), (int) (screenHeight / 20.0));
         healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/20.0));
 
 
@@ -192,15 +204,19 @@ public class Fight extends GameState
 
 
 
-
+        //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
+        healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 25 * screenHeight / 30);
+        healthBackground.draw(batch);
         healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.draw(batch);
 
+        //Sets colour and size of battle font, draws "HP" and "EN" for player health and energy
         battleFont.setColor(Color.BLACK);
         battleFont.setScale(screenWidth/200.0f,screenHeight/200.0f);
         battleFont.draw(batch, playr.getCurrentHealth()+" Hp", screenWidth/5,9*screenHeight/10);
         battleFont.draw(batch, playr.getCurrentEnergy()+" En", screenWidth/5,(9*screenHeight/10)-battleFont.getLineHeight());
 
+        //if no action has been selected in the fight menu, draws the fight menu
         if(!fMenu.actionSelected)
         {
 
@@ -252,32 +268,37 @@ public class Fight extends GameState
         battleFont.setColor(Color.BLACK);
 
 
-
+        //scales the battle font for drawing enemy names to be smaller if there are more than 4 enemies
         if(enemies.length>4)
         {
             battleFont.setScale(screenWidth / (enemies.length * 40f), screenHeight / (enemies.length * 40f));
         }
+        //draws enemy names, enemy hp
         for(int i=0;i<enemies.length;i++)
         {
             if(!enemies[i].getDead())
             {
 
-
-
+                healthBackground.setPosition((int) (3.0 * screenWidth / 5), screenHeight - (battleFont.getLineHeight() * ((i * 2) + 1)));
+                healthBackground.setSize(enemies[i].getMaxHealth() * ((screenWidth / 8) / enemies[i].getMaxHealth()), battleFont.getLineHeight() / 2);
+                healthBackground.draw(batch);
                 healthBar.setPosition((int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*((i*2)+1)));
                 healthBar.setSize(enemies[i].getHealth()*((screenWidth/8)/enemies[i].getMaxHealth()),battleFont.getLineHeight()/2);
                 healthBar.draw(batch);
                 battleFont.draw(batch,enemies[i].getName()+": ",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+                battleFont.draw(batch, enemies[i].getHealth() + "Hp", 3 * screenWidth / 5, (screenHeight - battleFont.getLineHeight() - (battleFont.getLineHeight() * (i * 2))));
 
             }
         }
+
+        //moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
         if(targeting)
         {
             battleFont.setColor(Color.BLACK);
             battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
         }
 
-        else if(combo.comboing)
+        else if(combo.comboing) //if in combo phase
         {
             battleFont.setColor(Color.WHITE);
             combo.draw(batch);
@@ -310,6 +331,10 @@ public class Fight extends GameState
         batch.end();
     }
 
+//*********************************************************************************************************************
+//******************************* these are just input methods that must be implemented *******************************
+//*********************************************************************************************************************
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
@@ -332,59 +357,6 @@ public class Fight extends GameState
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        return false;
-    }
-
-    @Override
-    public boolean tap(float x, float y, int count, int button)
-    {
-        if(waitingForTouch==true)
-        {
-            if(fMenu.actionSelected==false)
-            {
-
-                fMenu.touchDown((float)x/screenWidth,(float)y/screenHeight);
-                if(fMenu.actionSelected)
-                {
-                    ActionId=fMenu.getActionId();
-                    ActionType=fMenu.getActionType();
-                    playerTurn(playr,enemies);
-                }
-            }
-
-            else if(targeting)
-            {
-
-                if(x<screenWidth/3)
-                {
-                    targetPicker.Left();
-
-                }
-                else if(x>2*(screenWidth/3))
-                {
-                    targetPicker.Right();
-
-                }
-                else
-                {
-                    targetPicker.Select();
-
-                }
-
-                if(targetPicker.targetSelected)
-                {
-                    targeting=false;
-                    playerTurnPart2();
-                }
-            }
-
-            else if(combo.comboing)
-            {
-                combo.tap((int)x,(int)y);
-            }
-
-        }
-
         return false;
     }
 
@@ -424,11 +396,70 @@ public class Fight extends GameState
         return false;
     }
 
+//*************************************************************************************************************************
+//*************************************************************************************************************************
+
+    @Override
+    public boolean tap(float x, float y, int count, int button)
+    {
+        //if selecting an action from the fight menu. Actions have an ID and a type.
+        if(waitingForTouch==true)
+        {
+            if(fMenu.actionSelected==false)
+            {
+                //tap the menu to select an action
+                fMenu.touchDown((float)x/screenWidth,(float)y/screenHeight);
+                if(fMenu.actionSelected)
+                {
+                    ActionId=fMenu.getActionId();
+                    ActionType=fMenu.getActionType();
+                    playerTurn(playr,enemies);
+                }
+            }
+
+            //targeting an enemy after selecting an action- tap left or right of screen to move target picker icon, tap middle to select target
+            else if(targeting)
+            {
+
+                if(x<screenWidth/3)
+                {
+                    targetPicker.Left();
+
+                }
+                else if(x>2*(screenWidth/3))
+                {
+                    targetPicker.Right();
+
+                }
+                else
+                {
+                    targetPicker.Select();
+
+                }
+
+                if(targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
+                {
+                    targeting=false;
+                    playerTurnPart2();
+                }
+            }
+
+            else if(combo.comboing)     //if in combo phase, accept combo input
+            {
+                combo.tap((int)x,(int)y);
+            }
+
+        }
+
+        return false;
+    }
+
+
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
 
-        if(ActionType==2)
+        if(ActionType==2)       //flee
         {
 
             if(fMenu.getMoveString(ActionType,ActionId)=="Flee")
@@ -438,13 +469,13 @@ public class Fight extends GameState
             }
         }
 
-        if(ActionType==3)
+        if(ActionType==3)       //use an item
         {
             player.useItem(fMenu.getMoveString(ActionType,ActionId));
 
 
         }
-        else if(ActionType==1)
+        else if(ActionType==1)      //attack
         {
 
             targetPicker.reset(enemies);
@@ -455,7 +486,7 @@ public class Fight extends GameState
 
     }
 
-    private void playerTurnPart2()
+    private void playerTurnPart2()      //Initiating combo
     {
 
 
@@ -464,7 +495,7 @@ public class Fight extends GameState
         return;
     }
 
-    private void playerTurnPart3()
+    private void playerTurnPart3()      //Doing the combo
     {
         PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
         PlayerDam*=(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence());
@@ -479,6 +510,7 @@ public class Fight extends GameState
         playerTurnEnd();
     }
 
+    //at the end of the player's turn, if there are enemies left, start the enemy's turn, otherwise if all are dead end the fight
     private void playerTurnEnd()
     {
 
