@@ -77,6 +77,8 @@ public class Enemy
         return name;
     }
 
+
+    //dH will be a negative value, i.e. the damage the player does to the enemy.
     public void changeHealth(int dH)
     {
         currentHealth+=dH;

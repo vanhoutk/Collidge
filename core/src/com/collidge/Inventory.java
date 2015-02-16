@@ -33,10 +33,13 @@ public class Inventory
     //private Map<String, CombatItem> MyCombatInv;
 
     /**
+<<<<<<< HEAD
+=======
      * Note: Currently the inventory is being created in the Player class, will need to see if this continues
      * to work fine when trying to access the inventory from the InventoryState class or if it'll need
      * to be created in the main function somewhere.
      *
+>>>>>>> f8e1fd527870d530c737465f5aa68d2c1a0e7814
      * Dan's edit
      * Changed to have Player player passed in.
      */
@@ -47,21 +50,21 @@ public class Inventory
         MyCombatInv.get(item).changeItemQuantity(-1);
     }
 
-    /**
-     * Note: Depending on whether or not I can get getList to return only items whose quantity is > 0, I may
-     * change this to a bool, and return true if the item could be used, or false if none are left.
-     */
-    void equipItem(String item)
-    {
+//    void equipItem(String item)
+//    {
 //        player.setattack(MyEquipment.get(item).getAttackbonus());
 //        player.setenergy(MyEquipment.get(item).getEnergybonus());
 //        player.sethealth(MyEquipment.get(item).getHealthbonus());
 //        player.setdefence(MyEquipment.get(item).getDefencebonus());
-    }
+//    }
+
+    int getAttackBonus(String item){ return MyEquipment.get(item).getAttackbonus();}
+    int getEnergyBonus(String item){ return MyEquipment.get(item).getEnergybonus();}
+    int getDefenceBonus(String item){ return MyEquipment.get(item).getDefencebonus();}
+    int getHealthBonus(String item){ return MyEquipment.get(item).getHealthbonus();}
 
     /**
-     * Note: Have a feeling this function will need some work. Ideally should be a case of combat being able to use
-     * Inventory.getList() and being returned an array of strings which they can then display.
+     *
      */
     String[] getList()
     {
@@ -84,41 +87,104 @@ public class Inventory
         return Names;
     }
 
-    /**
-     * Note: Once the images have been included, they'll need to be added to the constructors of all of the
-     * items below. (of type String, e.g. "R.Drawable.Coffee" (I think))
-     *
-     * Note: Need to add a quantity (or bool owned) value to equipment
-     */
+    String[] getEquipmentList()
+    {
+        /**
+         * Dan's edit
+         * Commented out the first line and replaced with the next one
+         */
+        //Set<String> names = Collections.emptySet();
+        Set<String> names = new HashSet();
+
+        for(Map.Entry<String, Equipment> entry: MyEquipment.entrySet())
+        {
+            if(entry.getValue().getItemQuantity() > 0)
+            {
+                names.add(entry.getKey());
+            }
+        }
+
+        String[] Names = names.toArray(new String[names.size()]);
+        return Names;
+    }
+
+    String getItemImage(String item)
+    {
+        if(MyCombatInv.containsKey(item))
+        {
+            return MyCombatInv.get(item).getItemImage();
+        }
+        else
+        {
+            return MyEquipment.get(item).getItemImage();
+        }
+    }
+
+    String getItemText(String item)
+    {
+        if(MyCombatInv.containsKey(item))
+        {
+            return MyCombatInv.get(item).getItemText();
+        }
+        else
+        {
+            return MyEquipment.get(item).getItemText();
+        }
+    }
+
+    String getItemType(String item)
+    {
+        if(MyCombatInv.containsKey(item))
+        {
+            return MyCombatInv.get(item).getItemType();
+        }
+        else
+        {
+            return MyEquipment.get(item).getItemType();
+        }
+    }
+
+    int getItemQuantity(String item)
+    {
+        if(MyCombatInv.containsKey(item))
+        {
+            return MyCombatInv.get(item).getItemQuantity();
+        }
+        else
+        {
+            return MyEquipment.get(item).getItemQuantity();
+        }
+    }
+
     void loadInventory()
     {
         /**
          * Constructor for combat items is (Type, Text, Health, Energy, Quantity)
          */
         CombatItem Coffee, EnergyDrink, Noodles, ChickenRoll;
-        Coffee = new CombatItem("Energy", "Mmm that's good coffee!", 0, 10, 10);
-        EnergyDrink = new CombatItem("Energy", "Buzzing!", 0, 10, 0);
-        Noodles = new CombatItem("Health", "Instant Goodness", 10, 0, 10);
-        ChickenRoll = new CombatItem("Health", "Needs more mayo!", 10, 0, 0);
+
+        Coffee = new CombatItem("Energy", "Energy Item. Restores 10 energy. Mmm that's good coffee!", 0, 10, 10, "Coffee_cup.png");
+        EnergyDrink = new CombatItem("Energy", "Energy Item. Restores 10 energy. Buzzing!", 0, 10, 10, "badlogic.jpg");
+        Noodles = new CombatItem("Health", "Health Item. Restores 10 HP. Instant Goodness", 10, 0, 10, "badlogic.jpg");
+        ChickenRoll = new CombatItem("Health", "Health Item. Restores 10 HP. Needs more mayo!", 10, 0, 10, "badlogic.jpg");
 
         MyCombatInv.put("Coffee", Coffee);
-        MyCombatInv.put("EnergyDrink", EnergyDrink);
+        MyCombatInv.put("Energy Drink", EnergyDrink);
         MyCombatInv.put("Noodles", Noodles);
-        MyCombatInv.put("ChickenRoll", ChickenRoll);
+        MyCombatInv.put("Chicken Roll", ChickenRoll);
 
         /**
-         * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health)
+         * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)
          */
         Equipment Tsquare, Scarf, Macshield, Bookshield;
-        Tsquare = new Equipment("Weapon", "The sign of a true engineer.", 10, 5, 0, 0);
-        Scarf = new Equipment("Weapon", "McDonalds Manager, here I come!", 5, 10, 0, 0);
-        Macshield = new Equipment("Armour", "Overpriced shield!", 0, 0, 10, 5);
-        Bookshield = new Equipment("Armour", "Is there a fine if it's damaged on return?", 0, 0, 5, 10);
+        Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, 1, "tsquare.png");
+        Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, 1, "badlogic.jpg");
+        Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, 1, "badlogic.jpg");
+        Bookshield = new Equipment("Armour", "Armour. +5 Defence. Is there a fine if it's damaged on return?", 0, 0, 5, 0, 1, "badlogic.jpg");
 
         MyEquipment.put("Tsquare", Tsquare);
         MyEquipment.put("Scarf", Scarf);
         MyEquipment.put("Macshield", Macshield);
         MyEquipment.put("Bookshield", Bookshield);
     }
-
 }

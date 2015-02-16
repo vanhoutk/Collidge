@@ -8,11 +8,13 @@ package com.collidge;
 
 public class Item
 {
-    //String itemName;
     String itemType;
     String itemText;
-    /**
-     * Need to implement image still, same as text and type, just need to pass the image names
-     */
     String itemImage;
+    int itemQuantity;
+
+    String getItemImage() { return itemImage;}
+    String getItemText() { return itemText;}
+    String getItemType() { return itemType;}
+    int getItemQuantity() { return itemQuantity;}
 }

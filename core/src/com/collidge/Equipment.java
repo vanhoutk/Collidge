@@ -29,13 +29,14 @@ public class Equipment extends Item
         //itemName = name;
         itemType = " ";
         itemText = " ";
+        itemImage = "";
     }
 
     /**
      * Constructor will need to have String itemImage added to it once the images are done (or once the inventoryMenu
      * class has been started)
      */
-    Equipment(/*String name, */ String type, String text, int attack, int energy, int defence, int health)
+    Equipment(/*String name, */ String type, String text, int attack, int energy, int defence, int health, int quantity, String image)
     {
         //itemName = name;
         itemText = text;
@@ -44,6 +45,8 @@ public class Equipment extends Item
         energybonus = energy;
         defencebonus = defence;
         healthbonus = health;
+        itemQuantity = quantity;
+        itemImage = image;
     }
 
     int getAttackbonus()
@@ -64,5 +67,15 @@ public class Equipment extends Item
     int getDefencebonus()
     {
         return defencebonus;
+    }
+
+    int getItemQuantity()
+    {
+        return itemQuantity;
+    }
+
+    void setItemQuantity(int quantity)
+    {
+        itemQuantity = quantity;
     }
 }

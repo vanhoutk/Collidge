@@ -256,7 +256,7 @@ public class FightMenu
     {
         if(x<.5)
         {
-            System.out.println(y);
+           // System.out.println(y);
             if (y < .6 && y > .45)
             {
                 Select();
