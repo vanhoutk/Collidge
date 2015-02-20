@@ -48,7 +48,7 @@ public class Play extends GameState {
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,w,h);
+        camera.setToOrtho(false,500,500*(h/w));
         camera.update();
 
         font = new BitmapFont();
