@@ -27,6 +27,8 @@ public class Combo
     double swipeSkill;
     int tapTotal;
     int tapsLeft;
+    long timer=0;
+    long lastCheck;
     double skill;
     Texture texture;
     Sprite screenMask,dot;
@@ -47,8 +49,19 @@ public class Combo
 
     void update()
     {
-        dot.setPosition((float)targetX-Gdx.graphics.getWidth()*.05f,(float)targetY-Gdx.graphics.getWidth()*.05f);
+        if(TimeUtils.timeSinceMillis(lastCheck)>=150)
+        {
+            timer++;
+
+        }
+        else
+        {
+            timer+=TimeUtils.timeSinceMillis(lastCheck);
+        }
+        lastCheck=TimeUtils.millis();
         checkTimer();
+        dot.setPosition((float)targetX-Gdx.graphics.getWidth()*.05f,(float)targetY-Gdx.graphics.getWidth()*.05f);
+
     }
     void draw(SpriteBatch batch)
     {
@@ -58,6 +71,8 @@ public class Combo
     }
     void initiateCombo(int moveId,Fight fight)
     {
+        timer=0;
+        lastCheck=TimeUtils.millis();
         switch(moveId)
         {
             case 0:
@@ -135,11 +150,12 @@ public class Combo
         {
             return;
         }
-        else if(TimeUtils.timeSinceMillis(startTime)>allowedTime)
+        else if(timer>allowedTime)
         {
 
             skill/=tapTotal;
             comboing=false;
+            timer=0;
         }
     }
 

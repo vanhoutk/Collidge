@@ -3,9 +3,15 @@ package com.collidge;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
@@ -13,16 +19,32 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 {
     GameStateManager gsm;
 
+    private boolean backKey=false;
+    private boolean quit=false;
+    private BitmapFont quitFont;
+    private Sprite screenMask;
+    private Texture texture;
+    private SpriteBatch batch;
     @Override
     public void create ()
     {
 
 
+        Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GestureDetector(this));
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
         gsm = new GameStateManager();
+        quitFont=new BitmapFont();
+        quitFont.setScale(Gdx.graphics.getWidth()/300f,Gdx.graphics.getHeight()/300f);
+        quitFont.setColor(Color.WHITE);
+        texture=new Texture("blackSquare.png");
+        screenMask=new Sprite(texture);
+        screenMask.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        screenMask.setPosition(0f,0f);
+        screenMask.setAlpha(.8f);
+        batch=new SpriteBatch();
        // Gdx.input.setInputProcessor(this);
         //Gdx.input.setInputProcessor(new GestureDetector(this));
         //setScreen(new Play());
@@ -31,15 +53,41 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public void render ()
     {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(quit)
+        {
 
-        gsm.update();
-        gsm.draw();
+            Gdx.app.exit();
+        }
+        else
+        {
+            Gdx.gl.glClearColor(1, 1, 1, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+            if(!backKey)
+            {
+                gsm.update();
+            }
+            gsm.draw();
+            if(backKey)
+            {
+
+                batch.begin();
+                screenMask.draw(batch);
+                quitFont.draw(batch, "Do you want to Quit?", 4*Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
+                quitFont.draw(batch, "Yes, I hate fun", 1*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
+                quitFont.draw(batch, "Not just yet!", 8*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
+                batch.end();
+            }
+        }
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().touchDown(screenX, screenY, pointer, button);
     }
 
@@ -50,6 +98,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().touchDragged(screenX, screenY, pointer);
     }
 
@@ -104,7 +156,18 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     @Override
     public boolean keyDown(int keycode) {
-        // gsm.get
+        if(keycode == Input.Keys.BACK)
+        {
+            if(backKey==true)
+            {
+                backKey=false;
+                return true;
+            }
+            // Optional back button handling (e.g. ask for confirmation)
+            backKey=true;
+
+
+        }
         return false;
     }
 
@@ -117,18 +180,46 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public boolean touchDown(float x, float y, int pointer, int button)
     {
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().touchDown(x,y, pointer,button);
     }
 
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
-       return gsm.returnCurrentState().tap(x,y,count,button);
+        if(backKey)
+        {
+            if(y<.65*Gdx.graphics.getHeight()&&y>.45*Gdx.graphics.getHeight())
+            {
+                if (x > Gdx.graphics.getWidth() / 10 && x < Gdx.graphics.getWidth()*.375)
+                {
+                    quit = true;
+                    backKey=false;
+
+                } else if (x > 2*Gdx.graphics.getWidth()/3 && x < .9*Gdx.graphics.getWidth())
+                {
+                    backKey = false;
+
+
+                }
+            }
+            return true;
+        }
+
+
+        return gsm.returnCurrentState().tap(x,y,count,button);
     }
 
     @Override
     public boolean longPress(float x, float y)
     {
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().longPress(x,y);
     }
 
@@ -136,6 +227,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean fling(float velocityX, float velocityY, int button)
     {
 
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().fling(velocityX,velocityY,button);
     }
 
@@ -143,6 +238,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean pan(float x, float y, float deltaX, float deltaY)
     {
 
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().pan(x,y,deltaX,deltaY);
     }
 
@@ -150,18 +249,27 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean panStop(float x, float y, int pointer, int button)
     {
 
+
         return gsm.returnCurrentState().panStop(x,y,pointer,button);
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance)
     {
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().zoom(initialDistance,distance);
     }
 
     @Override
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2)
     {
+        if(backKey)
+        {
+            return true;
+        }
         return gsm.returnCurrentState().pinch(initialPointer1,initialPointer2,pointer1,pointer2);
     }
 }

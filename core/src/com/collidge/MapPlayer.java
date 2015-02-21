@@ -296,7 +296,6 @@ public class MapPlayer extends Sprite
 
         velocity.x=500*((screenX-(width/2))/(float)width);
         velocity.y=500*((-(screenY-(height/2)))/(float)height);
-        System.out.println(velocity.x+", "+velocity.y);
         getDirection();
 
 
