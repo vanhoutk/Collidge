@@ -43,7 +43,7 @@ public class Fight extends GameState
 
 
     SpriteBatch batch;
-    Texture texture,textureMenu ;
+    Texture texture ;
     Sprite healthBar, healthBackground;
     Sprite menuContainer;
 
@@ -57,8 +57,19 @@ public class Fight extends GameState
     {
         super(gsm);
         playr=player;
+        EnemySets BasicSet=new EnemySets();
+        enemies=BasicSet.getEnemies("Pack");           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
+
     }
 
+    Fight(GameStateManager gsm,Player player,String Enemy)
+    {
+        super(gsm);
+        playr=player;
+        EnemySets BasicSet=new EnemySets();
+        enemies=BasicSet.getEnemies(Enemy);           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
+
+    }
 
     @Override
     public void initialize()
@@ -68,12 +79,11 @@ public class Fight extends GameState
 
 
         //gets the number and type of enemies to fight
-        EnemySets BasicSet=new EnemySets();
-        enemies=BasicSet.getEnemies("Pack");           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
 
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
         damage=new int[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
+
         move=new Attack();        //calls the attack class
 
         //enemies=new Enemy[enemyCount];
@@ -120,18 +130,19 @@ public class Fight extends GameState
             public void run()
             {
 
+
                 //if damage was dealt to the player, subtract health
                 if (damage[0] > 0)
                 {
+
                     damage[0]--;
                     playr.changeHealth(-1);
                     //check if the player died, if he did, end the fight
                     if (playr.getCurrentHealth() <= 0)
                     {
                         combo.delete();
-                        gsm.endFight();
-                        damage[0] = 0;
-                        cancel();
+                        endFight();
+
 
 
                     }
@@ -140,8 +151,10 @@ public class Fight extends GameState
                 //changes enemy health based on damage done, if enemies die, give their experience to the player and kill them
                 for(int i=1;i<damage.length;i++)
                 {
+
                     if ((!enemies[i-1].getDead())&&damage[i] > 0)
                     {
+
                         damage[i]--;
                         enemies[i-1].changeHealth(-1);
                         if (enemies[i-1].getHealth() <= 0)
@@ -153,12 +166,13 @@ public class Fight extends GameState
                             enemiesLeft--;
                             if(enemiesLeft<=0)
                             {
-                                gsm.endFight();
-                                cancel();
+                                endFight();
+
                             }
                         }
 
                     }
+
                 }
 
 
@@ -166,19 +180,13 @@ public class Fight extends GameState
             }
         }
                 , 0, .1f);
+        Timer.instance().start();
     }
 
 
     public void update()
     {
 //(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
-
-
-        if(gsm.returnCurrentState()!=this)
-        {
-            Timer.instance().clear();
-            Timer.instance().stop();
-        }
         if(combo.comboing)
         {
             comboing=true;
@@ -219,50 +227,7 @@ public class Fight extends GameState
         //if no action has been selected in the fight menu, draws the fight menu
         if(!fMenu.actionSelected)
         {
-
-
-
-            menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*1.2f);
-            menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
-            menuContainer.draw(batch);
-
-            menuContainer.setPosition( screenWidth/6,screenHeight/2);
-            menuContainer.draw(batch);
-
-            menuContainer.setPosition( screenWidth/6,screenHeight/2-(battleFont.getLineHeight()*2));
-            menuContainer.draw(batch);
-
-            if(fMenu.getAboveIcon().endsWith("*"))
-            {
-                battleFont.setColor(Color.RED);
-            }
-            else
-            {
-                battleFont.setColor(Color.BLACK);
-            }
-            battleFont.draw(batch, fMenu.getAboveIcon(), screenWidth/5,screenHeight/2+battleFont.getLineHeight());
-            if(fMenu.getCurrentIcon().endsWith("*"))
-            {
-                battleFont.setColor(Color.RED);
-            }
-            else
-            {
-                battleFont.setColor(Color.BLACK);
-            }
-            battleFont.draw(batch, fMenu.getCurrentIcon(), screenWidth/5,screenHeight/2);
-            if(fMenu.getBelowIcon().endsWith("*"))
-            {
-                battleFont.setColor(Color.RED);
-            }
-            else
-            {
-                battleFont.setColor(Color.BLACK);
-            }
-            battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
-
-            battleFont.draw(batch, fMenu.getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
-
-
+            fMenu.draw(batch,screenWidth,screenHeight);
         }
 
         battleFont.setColor(Color.BLACK);
@@ -279,6 +244,8 @@ public class Fight extends GameState
             if(!enemies[i].getDead())
             {
 
+
+
                 healthBackground.setPosition((int) (3.0 * screenWidth / 5), screenHeight - (battleFont.getLineHeight() * ((i * 2) + 1)));
                 healthBackground.setSize(enemies[i].getMaxHealth() * ((screenWidth / 8) / enemies[i].getMaxHealth()), battleFont.getLineHeight() / 2);
                 healthBackground.draw(batch);
@@ -292,12 +259,13 @@ public class Fight extends GameState
         }
 
         //moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
+        //TODO replace placeholder
         if(targeting)
         {
             battleFont.setColor(Color.BLACK);
             battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
         }
-
+        //TODO replace Placeholder
         else if(combo.comboing) //if in combo phase
         {
             battleFont.setColor(Color.WHITE);
@@ -327,7 +295,6 @@ public class Fight extends GameState
 
 
         }
-
         batch.end();
     }
 
@@ -465,7 +432,9 @@ public class Fight extends GameState
             if(fMenu.getMoveString(ActionType,ActionId)=="Flee")
             {
                 combo.delete();
-                gsm.endFight();
+                endFight();
+                return;
+
             }
         }
 
@@ -524,7 +493,8 @@ public class Fight extends GameState
         else
         {
             combo.delete();
-            gsm.endFight();
+            endFight();
+
         }
         fMenu.refreshMenus(playr);
     }
@@ -543,10 +513,12 @@ public class Fight extends GameState
                 {
             //        System.out.println("Damage by monster " + i + " resisted");
                     damage[0]++;
+
                 }
                 else
                 {
                     damage[0]+=dam;
+
                     //player.changeHealth(-(damage));
               //      System.out.println("Enemy " + i + " deals " + (dam) + " damage");
                     if (player.getCurrentHealth() <= 0)
@@ -570,6 +542,16 @@ public class Fight extends GameState
         }
     }
 
+
+
+    private void endFight()
+    {
+        damage[0]=0;
+        Timer.instance().clear();
+        Timer.instance().stop();
+        gsm.endFight();
+        return;
+    }
 
 }
 

@@ -68,6 +68,7 @@ public class Play extends GameState {
     @Override
     public void draw()
     {
+
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
         camera.update();
 
@@ -141,8 +142,27 @@ public class Play extends GameState {
             //gsm.openInventory(userCharacter);
 
 
-            userCharacter.healAll();
-            gsm.startFight(userCharacter);
+
+            if(userCharacter.getCurrentHealth()<=0)
+            {
+                userCharacter.healAll();
+            }
+            if(player.direction==0)
+            {
+                gsm.startFight(userCharacter, "Pack");
+            }
+            else if(player.direction==1)
+            {
+                gsm.startFight(userCharacter, "Preppy");
+            }
+            else if(player.direction==2)
+            {
+                gsm.startFight(userCharacter, "Pledge");
+            }
+            else if(player.direction==3)
+            {
+                gsm.startFight(userCharacter, "Full Set");
+            }
             player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
 
 

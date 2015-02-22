@@ -20,6 +20,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     GameStateManager gsm;
 
     private boolean backKey=false;
+    private boolean backDown=false;
     private boolean quit=false;
     private BitmapFont quitFont;
     private Sprite screenMask;
@@ -150,20 +151,31 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     @Override
     public boolean keyUp(int keycode) {
-        // TODO Auto-generated method stub
+        if(keycode == Input.Keys.BACK)
+        {
+            if(backKey==true&&backDown)
+            {
+                quit=true;
+                return true;
+            }
+            backDown=true;
+
+
+        }
         return false;
     }
 
     @Override
-    public boolean keyDown(int keycode) {
+    public boolean keyDown(int keycode)
+    {
+
         if(keycode == Input.Keys.BACK)
         {
             if(backKey==true)
             {
-                backKey=false;
                 return true;
             }
-            // Optional back button handling (e.g. ask for confirmation)
+
             backKey=true;
 
 

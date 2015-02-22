@@ -76,6 +76,12 @@ public class GameStateManager
         changeState(gameStates.size()-1);
     }
 
+    public void startFight(Player player,String Enemy)
+    {
+        gameStates.add(new Fight(this,player,Enemy));
+        changeState(gameStates.size()-1);
+    }
+
     public void endFight()
     {
 

@@ -2,6 +2,12 @@ package com.collidge;
 
 //import android.view.MotionEvent;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  * Created by Daniel on 26/01/2015.
  */
@@ -17,9 +23,16 @@ public class FightMenu
     private int selectedIcon;
     private int currentMenu;
     public boolean actionSelected;
+    private BitmapFont battleFont;
+    private Sprite menuContainer;
+    private Texture texture;
 
     FightMenu(Player player)
     {
+        battleFont = new BitmapFont();
+        texture = new Texture("panelInset_beige.png");
+
+        menuContainer = new Sprite(texture);
         previousMenus=new int[3];   //array to store previous menus (for use with back button)
         previousMenus[0]=50;
         previousMenus[1]=50;
@@ -247,6 +260,54 @@ public class FightMenu
         }
         menuWords[2][1]="Recharge";
         menuWords[2][2]="Flee";
+
+
+    }
+
+
+    public void draw(SpriteBatch batch, int screenWidth, int screenHeight)
+    {
+        battleFont.setScale(screenWidth/250.0f,screenHeight/250.0f);
+
+        menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*1.2f);
+        menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
+        menuContainer.draw(batch);
+
+        menuContainer.setPosition( screenWidth/6,screenHeight/2);
+        menuContainer.draw(batch);
+
+        menuContainer.setPosition( screenWidth/6,screenHeight/2-(battleFont.getLineHeight()*2));
+        menuContainer.draw(batch);
+
+        if(getAboveIcon().endsWith("*"))
+        {
+            battleFont.setColor(Color.RED);
+        }
+        else
+        {
+            battleFont.setColor(Color.BLACK);
+        }
+        battleFont.draw(batch, getAboveIcon(), screenWidth/5,screenHeight/2+battleFont.getLineHeight());
+        if(getCurrentIcon().endsWith("*"))
+        {
+            battleFont.setColor(Color.RED);
+        }
+        else
+        {
+            battleFont.setColor(Color.BLACK);
+        }
+        battleFont.draw(batch, getCurrentIcon(), screenWidth/5,screenHeight/2);
+        if(getBelowIcon().endsWith("*"))
+        {
+            battleFont.setColor(Color.RED);
+        }
+        else
+        {
+            battleFont.setColor(Color.BLACK);
+        }
+        battleFont.draw(batch, getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
+
+        battleFont.draw(batch, getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
 
 
     }
