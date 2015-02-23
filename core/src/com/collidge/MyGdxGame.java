@@ -214,6 +214,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 } else if (x > 2*Gdx.graphics.getWidth()/3 && x < .9*Gdx.graphics.getWidth())
                 {
                     backKey = false;
+                    backDown=false;
 
 
                 }
