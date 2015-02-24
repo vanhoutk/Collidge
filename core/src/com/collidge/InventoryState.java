@@ -1,7 +1,5 @@
 package com.collidge;
 
-
-//import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,10 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-//import javax.sound.midi.MidiDevice;
-
 /**
- * Created by Kris on 24-Jan-15.
+ * Created by Kris on 24-Jan-15. Last modified 24-Feb-15.
  *
  * Will contain all of the drawing and display involved with the InventoryState
  *

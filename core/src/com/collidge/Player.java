@@ -6,7 +6,6 @@ package com.collidge;
 public class Player
 {
     private int level;
-
     private int expTarget;
     private int health;
     private int currentHealth;
@@ -19,7 +18,8 @@ public class Player
     public Inventory items;
 
     /**
-     * Kris -- Added in variables for equipped Weapon and equipped Armour
+     * Kris Added
+     * - Variables for equipped Weapon and equipped Armour
      */
     String equippedWeapon;
     String equippedArmour;
@@ -44,7 +44,8 @@ public class Player
     }
 
     /**
-     * Kris -- Added in getEquipList to return a list of the Equipment items owned for use in the InventoryState
+     * Kris Added
+     * - String[] getEquipList() -> returns a list of the Equipment items owned for use in the InventoryState
      */
     public String[] getEquipList(){return items.getEquipmentList();}
 
@@ -57,7 +58,7 @@ public class Player
 
     Player()
     {
-        items=new Inventory();
+        items = new Inventory();
         items.loadInventory();
 
         level=4;
@@ -239,7 +240,8 @@ public class Player
     }
 
     /**
-     * Kris -- added functions for equipping / unequipping items
+     * Kris -- Start
+     * Added functions for equipping / unequipping items
      */
     public void equipItem(String item)
     {
@@ -290,5 +292,8 @@ public class Player
             equippedArmour = "None";
         }
     }
+    /**
+     * Kris -- end
+     */
 }
 

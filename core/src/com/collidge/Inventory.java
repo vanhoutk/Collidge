@@ -1,20 +1,18 @@
 package com.collidge;
 
 /**
- * Created by Kris on 24-Jan-15.
+ * Created by Kris on 24-Jan-15. Last modified 24-Feb-15.
  *
- * So far all code in this class was written by Kris, with two edits by Dan marked as "Dan's edit"
+ * So far all code in this class was written by Kris, with three edits by Dan marked as "Dan's edit"
  *
  * Functions in this class:
+ * - void useItem(String item)      -> uses a Combat item to restore either the Player's Health or Energy
+ * - String[] getList()             -> returns a String array of items of which we have a quantity greater than zero
+ * - void loadInventory()           -> sets up the inventory in the first place, initialising all of the items
  *
- * void useItem(String item) - uses a Combat item to restore either the Player's Health or Energy
- * void equipItem(String item) - equips an item which increases a number of Attack, Defence, Energy, Health
- * String[] getList() - returns a String array of items of which we have a quantity greater than zero
- * void loadInventory() - sets up the inventory in the first place, initialising all of the items
- *
- * loadInventory should be called when the inventory is initialised originally
- * Combat will call the useItem and getList functions
- * The InventoryMenu (working title, may change to InventoryGameState) will call the equipItem function
+ * Notes:
+ * - TODO: May either move useItem into player, or equipItem into inventory. Will see.
+ * - TODO: Rebalance items
  */
 
 import java.util.HashMap;
@@ -30,16 +28,8 @@ public class Inventory
      */
     private HashMap<String, CombatItem> MyCombatInv = new HashMap();
     private HashMap<String, Equipment> MyEquipment = new HashMap();
-    //private Map<String, CombatItem> MyCombatInv;
 
     /**
-<<<<<<< HEAD
-=======
-     * Note: Currently the inventory is being created in the Player class, will need to see if this continues
-     * to work fine when trying to access the inventory from the InventoryState class or if it'll need
-     * to be created in the main function somewhere.
-     *
->>>>>>> f8e1fd527870d530c737465f5aa68d2c1a0e7814
      * Dan's edit
      * Changed to have Player player passed in.
      */
@@ -50,6 +40,9 @@ public class Inventory
         MyCombatInv.get(item).changeItemQuantity(-1);
     }
 
+    /**
+     * This is currently implemented within player rather than in inventory
+     */
 //    void equipItem(String item)
 //    {
 //        player.setattack(MyEquipment.get(item).getAttackbonus());
@@ -63,9 +56,6 @@ public class Inventory
     int getDefenceBonus(String item){ return MyEquipment.get(item).getDefencebonus();}
     int getHealthBonus(String item){ return MyEquipment.get(item).getHealthbonus();}
 
-    /**
-     *
-     */
     String[] getList()
     {
         /**

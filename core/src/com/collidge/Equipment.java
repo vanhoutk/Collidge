@@ -1,14 +1,25 @@
 package com.collidge;
 
 /**
- * Created by Kris on 25-Jan-15.
+ * Created by Kris on 25-Jan-15. Last modified 24-Feb-15.
  *
- * Class which contains all of the weapons and armour
+ * All code in this class was written by Kris.
  *
- * Variables in this function: attackbonus, energybonus, healthbonus, defencebonus.
- * Armour will have values for health and defence bonus
- * Weapons will have values for attack and energy bonus
- * Subject to change if the combat team want different attributes to be increased
+ * Equipment Class:
+ * - Equipment refers to items worn to increase stats (i.e. weapons and armour)
+ * - This class extends (inherits from) the Item class
+ *
+ * Functions in this class:
+ * - Equipment(String type, String text, int attack, int energy, int defence, int health, int quantity, String image) -> Constructor
+ * - int getAttackBonus()           -> returns the attack bonus of the item
+ * - int getHealthBonus()           -> returns the health bonus of the item
+ * - int getEnergyBonus()           -> returns the energy bonus of the item
+ * - int getDefenceBonus()          -> returns the defence bonus of the item
+ *
+ * Notes:
+ * - Currently weapons only add to attack and armour only adds to defence.
+ * - TODO: May change the health/energy bonus to increase other stats instead
+ * - TODO: May add other equipment types, i.e. accessories
  */
 public class Equipment extends Item
 {
@@ -17,28 +28,8 @@ public class Equipment extends Item
     private int healthbonus;
     private int defencebonus;
 
-    /**
-     * Empty Constructor
-     */
-    Equipment(/*String name*/)
+    Equipment(String type, String text, int attack, int energy, int defence, int health, int quantity, String image)
     {
-        attackbonus = 0;
-        energybonus = 0;
-        healthbonus = 0;
-        defencebonus = 0;
-        //itemName = name;
-        itemType = " ";
-        itemText = " ";
-        itemImage = "";
-    }
-
-    /**
-     * Constructor will need to have String itemImage added to it once the images are done (or once the inventoryMenu
-     * class has been started)
-     */
-    Equipment(/*String name, */ String type, String text, int attack, int energy, int defence, int health, int quantity, String image)
-    {
-        //itemName = name;
         itemText = text;
         itemType = type;
         attackbonus = attack;
@@ -53,29 +44,16 @@ public class Equipment extends Item
     {
         return attackbonus;
     }
-
     int getEnergybonus()
     {
         return energybonus;
     }
-
     int getHealthbonus()
     {
         return healthbonus;
     }
-
     int getDefencebonus()
     {
         return defencebonus;
-    }
-
-    int getItemQuantity()
-    {
-        return itemQuantity;
-    }
-
-    void setItemQuantity(int quantity)
-    {
-        itemQuantity = quantity;
     }
 }

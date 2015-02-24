@@ -1,7 +1,20 @@
 package com.collidge;
 
 /**
- * Created by Kris on 25-Jan-15.
+ * Created by Kris on 25-Jan-15. Last modified 24-Feb-15.
+ *
+ * All code in this class was written by Kris.
+ *
+ * Combat Item Class:
+ * - Combat Items are those items usable in combat (i.e. health potions and energy potions)
+ * - This class extends (inherits from) the Item class
+ *
+ * Functions in this class:
+ * - CombatItem(String type, String text, int health, int energy, int quantity, String image) -> Constructor
+ * - int getHealthRestore()         -> returns the amount of health an item restores
+ * - int getEnergyRestore()         -> returns the amount of energy an item restores
+ *
+ * Notes:
  */
 public class CombatItem extends Item
 {
@@ -9,21 +22,8 @@ public class CombatItem extends Item
     private int energyRestore;
     private int itemQuantity;
 
-
-    CombatItem(/*String name*/)
+    CombatItem(String type, String text, int health, int energy, int quantity, String image)
     {
-        //itemName = name;
-        itemType = " ";
-        itemText = " ";
-        healthRestore = 0;
-        energyRestore = 0;
-        itemQuantity = 0;
-        itemImage = "";
-    }
-
-    CombatItem(/*String name, */String type, String text, int health, int energy, int quantity, String image)
-    {
-        //itemName = name;
         itemType = type;
         itemText = text;
         healthRestore = health;
@@ -40,24 +40,5 @@ public class CombatItem extends Item
     int getEnergyRestore()
     {
         return energyRestore;
-    }
-
-    int getItemQuantity()
-    {
-        return itemQuantity;
-    }
-
-    void setItemQuantity(int quantity)
-    {
-        itemQuantity = quantity;
-    }
-
-    void changeItemQuantity(int dQ)
-    {
-        itemQuantity += dQ;
-        if(itemQuantity <= 0)
-        {
-            itemQuantity = 0;
-        }
     }
 }
