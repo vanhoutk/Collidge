@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by Kris on 24-Jan-15. Last modified 24-Feb-15.
+ * Created by Kris on 24-Jan-15. Last modified 25-Feb-15.
  *
  * Will contain all of the drawing and display involved with the InventoryState
  *
  * TODO: Comment code
  * TODO: Clean up code
+ * TODO: Stop items being used when you have full health / energy
  */
 public class InventoryState extends GameState
 {
@@ -24,8 +25,8 @@ public class InventoryState extends GameState
     Player player;
     SpriteBatch batch;
     Texture texture;
-    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle;
-    String[] itemInfoText, itemNameText, itemEquipText;
+    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle, healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon;;
+    String[] itemInfoText, itemNameText, itemEquipText, playerInfoText;
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
 
@@ -46,8 +47,15 @@ public class InventoryState extends GameState
         backButton = new Sprite(new Texture("back_button.png"));
         greenCircle = new Sprite(new Texture("greenCircleBlack.png"));
         greenSquare = new Sprite(new Texture("greenSquareBlack.jpg"));
+        healthIcon=new Sprite(new Texture("techno-heart.png"));
+        defenceIcon=new Sprite(new Texture("edged-shield.png"));
+        attackIcon=new Sprite(new Texture("shard-sword.png"));
+        energyIcon=new Sprite(new Texture("battery-pack.png"));
+        intelligenceIcon=new Sprite(new Texture("brain.png"));
+
         batch = new SpriteBatch();
         infoFont = new BitmapFont();
+        playerInfoText = new String[5];
 
         bitNumbers = new Sprite[10];
         bitNumbers[0] = new Sprite(new Texture("zero.png"));
@@ -60,6 +68,12 @@ public class InventoryState extends GameState
         bitNumbers[7] = new Sprite(new Texture("seven.png"));
         bitNumbers[8] = new Sprite(new Texture("eight.png"));
         bitNumbers[9] = new Sprite(new Texture("nine.png"));
+
+        playerInfoText[0] = player.getCurrentHealth() + "/" + player.getHealth();
+        playerInfoText[1] = player.getCurrentEnergy() + "/" + player.getEnergy();
+        playerInfoText[2] = String.valueOf(player.getAttack());
+        playerInfoText[3] = String.valueOf(player.getDefence());
+        playerInfoText[4] = String.valueOf(player.getIntelligence());
 
         initialize();
     }
@@ -141,7 +155,11 @@ public class InventoryState extends GameState
     @Override
     public void update()
     {
-
+        playerInfoText[0] = player.getCurrentHealth() + "/" + player.getHealth();
+        playerInfoText[1] = player.getCurrentEnergy() + "/" + player.getEnergy();
+        playerInfoText[2] = String.valueOf(player.getAttack());
+        playerInfoText[3] = String.valueOf(player.getDefence());
+        playerInfoText[4] = String.valueOf(player.getIntelligence());
     }
 
     //after updating has occured in that single frame. Both what or what hasn't been changed has to be drawn/redrawn
@@ -169,23 +187,23 @@ public class InventoryState extends GameState
         itemSquare.setPosition((5 * spacing) + 4 * sqSide, screenHeight - (sqSide + spacing/2));
         itemSquare.draw(batch);
 
-        itemSquare.setPosition(spacing, screenHeight - 2 * (sqSide + spacing/2));
+        itemSquare.setPosition(spacing, screenHeight - (2 * (sqSide) + 3 * (spacing/4)));
         itemSquare.draw(batch);
 
         //coffeeCup.setSize(8 * sqSide/10, 8 * sqSide/10);
         //coffeeCup.setPosition(spacing + sqSide / 10, screenHeight - ((192 * sqSide / 100) + spacing));
         //coffeeCup.draw(batch);
 
-        itemSquare.setPosition((2 * spacing) + sqSide, screenHeight - 2 * (sqSide + spacing/2));
+        itemSquare.setPosition((2 * spacing) + sqSide, screenHeight - (2 * (sqSide) + 3 * (spacing/4)));
         itemSquare.draw(batch);
 
-        itemSquare.setPosition((3 * spacing) + 2 * sqSide, screenHeight - 2 * (sqSide + spacing/2));
+        itemSquare.setPosition((3 * spacing) + 2 * sqSide, screenHeight - (2 * (sqSide) + 3 * (spacing/4)));
         itemSquare.draw(batch);
 
-        itemSquare.setPosition((4 * spacing) + 3 * sqSide, screenHeight - 2 * (sqSide + spacing/2));
+        itemSquare.setPosition((4 * spacing) + 3 * sqSide, screenHeight - (2 * (sqSide) + 3 * (spacing/4)));
         itemSquare.draw(batch);
 
-        itemSquare.setPosition((5 * spacing) + 4 * sqSide, screenHeight - 2 * (sqSide + spacing/2));
+        itemSquare.setPosition((5 * spacing) + 4 * sqSide, screenHeight - (2 * (sqSide) + 3 * (spacing/4)));
         itemSquare.draw(batch);
 
         //itemImages[0].setSize(8 * sqSide/10, 8 * sqSide/10);
@@ -202,18 +220,18 @@ public class InventoryState extends GameState
             int y = i % 2;
 
             itemImages[i].setSize(8 * sqSide/10, 8 * sqSide/10);
-            itemImages[i].setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 100) + 90) * sqSide/100) + (y + 1) * spacing / 2));
+            itemImages[i].setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 100) + 90) * sqSide/100) + (y + 2) * spacing / 4));
             itemImages[i].draw(batch);
 
             if(player.items.getItemType(itemNames[i]).equals("Energy") || player.items.getItemType(itemNames[i]).equals("Health"))
             {
                 int quantity = player.items.getItemQuantity(itemNames[i]);
                 bitNumbers[quantity/10].setSize(10 * sqSide/75, 10 * sqSide/75);
-                bitNumbers[quantity/10].setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 1) * spacing / 2));
+                bitNumbers[quantity/10].setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 2) * spacing / 4));
                 bitNumbers[quantity/10].draw(batch);
 
                 bitNumbers[quantity%10].setSize(10 * sqSide/75, 10 * sqSide/75);
-                bitNumbers[quantity%10].setPosition((spacing + sqSide/10) + x * (spacing + sqSide) + 3 * bitNumbers[quantity/10].getWidth() / 4, screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 1) * spacing / 2));
+                bitNumbers[quantity%10].setPosition((spacing + sqSide/10) + x * (spacing + sqSide) + 3 * bitNumbers[quantity/10].getWidth() / 4, screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 2) * spacing / 4));
                 bitNumbers[quantity%10].draw(batch);
             }
             else if(player.items.getItemType(itemNames[i]).equals("Weapon"))
@@ -221,7 +239,7 @@ public class InventoryState extends GameState
                 if(itemNames[i].equals(player.equippedWeapon))
                 {
                     greenSquare.setSize(12 * sqSide / 75, 12 * sqSide / 75);
-                    greenSquare.setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 1) * spacing / 2));
+                    greenSquare.setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 2) * spacing / 4));
                     greenSquare.draw(batch);
                     itemEquipText[i + 1] = "UnEquip";
                 }
@@ -235,7 +253,7 @@ public class InventoryState extends GameState
                 if(itemNames[i].equals(player.equippedArmour))
                 {
                     greenCircle.setSize(12 * sqSide / 75, 12 * sqSide / 75);
-                    greenCircle.setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 1) * spacing / 2));
+                    greenCircle.setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 10) + 9) * sqSide/10) + (y + 2) * spacing / 4));
                     greenCircle.draw(batch);
                     itemEquipText[i + 1] = "UnEquip";
                 }
@@ -292,6 +310,41 @@ public class InventoryState extends GameState
             infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (6 * spacing / 4 + sqSide), sqSide - infoFont.getLineHeight()/2, sqSide, BitmapFont.HAlignment.CENTER);
         }
 
+        healthIcon.setSize(spacing, spacing);
+        healthIcon.setPosition(1 * spacing, sqSide + 3 * spacing/4);
+        healthIcon.draw(batch);
+
+        infoFont.setColor(Color.GREEN);
+        infoFont.setScale(screenWidth / 300f, screenHeight / 300f);
+        infoFont.draw(batch, playerInfoText[0], (9 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
+
+        energyIcon.setSize(spacing, spacing);
+        energyIcon.setPosition((6 * spacing), sqSide + 3 * spacing/4);
+        energyIcon.draw(batch);
+
+        infoFont.setColor(Color.YELLOW);
+        infoFont.draw(batch, playerInfoText[1], (29 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
+
+        attackIcon.setSize(spacing, spacing);
+        attackIcon.setPosition((11 * spacing), sqSide + 3 * spacing/4);
+        attackIcon.draw(batch);
+
+        infoFont.setColor(Color.RED);
+        infoFont.draw(batch, playerInfoText[2], (49 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
+
+        defenceIcon.setSize(spacing, spacing);
+        defenceIcon.setPosition((29 * spacing/2), sqSide + 3 * spacing/4);
+        defenceIcon.draw(batch);
+
+        infoFont.setColor(Color.BLUE);
+        infoFont.draw(batch, playerInfoText[3], (63 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
+
+        intelligenceIcon.setSize(spacing, spacing);
+        intelligenceIcon.setPosition((18 * spacing), sqSide + 3 * spacing/4);
+        intelligenceIcon.draw(batch);
+
+        infoFont.setColor(Color.PURPLE);
+        infoFont.draw(batch, playerInfoText[4], (77 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
 
         batch.end();
     }
