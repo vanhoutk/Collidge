@@ -17,6 +17,10 @@ public class Player
     private int experience;
     public Inventory items;
 
+
+    private int levelUpCounter=0;
+    private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
+
     /**
      * Kris Added
      * - Variables for equipped Weapon and equipped Armour
@@ -42,7 +46,36 @@ public class Player
     {
         return items.getList();
     }
+    public int getLevelUpCounter()
+    {
+        return levelUpCounter;
+    }
 
+
+    public void addStat(int statId)
+    {
+        switch(statId)
+        {
+            case 0:
+                healthPoints++;
+                break;
+            case 1:
+                defencePoints++;
+                break;
+            case 2:
+                attackPoints++;
+                break;
+            case 3:
+                energyPoints++;
+                break;
+            case 4:
+                intelligencePoints++;
+                break;
+        }
+        levelUpCounter--;
+        levelUp();
+
+    }
     /**
      * Kris Added
      * - String[] getEquipList() -> returns a list of the Equipment items owned for use in the InventoryState
@@ -51,7 +84,6 @@ public class Player
 
 
     private int movesKnown=2;
-    private boolean[] attacksList;
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
@@ -61,15 +93,16 @@ public class Player
         items = new Inventory();
         items.loadInventory();
 
-        level=4;
-        attacksList=new boolean[5];
-        attacksList[0]=true;
-        attacksList[1]=false;
-        attacksList[2]=false;
-        attacksList[3]=false;
-        attacksList[4]=false;
+        level=1;
 
 
+
+
+        attackPoints=0;
+        defencePoints=0;
+        intelligencePoints=0;
+        healthPoints=0;
+        energyPoints=0;
 
         //Kris -- Start off with no armour/weapons equipped
         equippedWeapon = "None";
@@ -96,16 +129,7 @@ public class Player
 
     public void learnMove(int moveId)
     {
-        if(moveId<attacksList.length)
-        {
-            System.out.println("Trying to access the hidden technique (outside range of move array)");
-
-        }
-        else
-        {
-            attacksList[moveId]=true;
-            movesKnown++;
-        }
+        movesKnown++;
     }
 
     public void healAll()
@@ -178,11 +202,7 @@ public class Player
         while(experience>=expTarget)
         {
             experience-=expTarget;
-            levelUp();
-
-
-
-
+            levelUpCounter++;
         }
 
     }
@@ -190,9 +210,11 @@ public class Player
     private void levelUp()
     {
         level++;
+        currentEnergy+=health/3;
+        currentHealth+=health/3;
         updateStats();
-        currentEnergy+=health/4;
-        currentHealth+=health/4;
+
+
     }
 
     private void updateStats()
@@ -203,15 +225,18 @@ public class Player
         armour=equippedArmour;
         unequipItem(equippedWeapon);
         unequipItem(equippedArmour);
-        attack=5+(level);
+        attack=5+(level+attackPoints);
 
-        defence=0;
-        health=5+(level*15);
+        defence=defencePoints/2+1;
+        health=20+((level+healthPoints)*5);
 
-        intelligence=(int)(level/2.5);
+        intelligence=(level/3)+intelligencePoints+1;
 
-        energy=level*5;
-        expTarget=(int)(level*level/1.2)+55;
+        energy=(level+energyPoints)*5;
+        //TODO put actual exp value back in after testing is over
+        //expTarget=(level*level)+20;
+        expTarget=1;
+
         equipItem(weapon);
         equipItem(armour);
 

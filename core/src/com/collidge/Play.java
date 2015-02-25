@@ -170,7 +170,7 @@ public class Play extends GameState {
             }
             if(player.direction==0)
             {
-                gsm.startFight(userCharacter, "Pack");
+                gsm.startFight(userCharacter, "Loner");
             }
             else if(player.direction==1)
             {

@@ -32,6 +32,7 @@ public class Combo
     double skill;
     Texture texture;
     Sprite screenMask,dot;
+    int comboId;
 
     Combo()
     {
@@ -66,7 +67,14 @@ public class Combo
     void draw(SpriteBatch batch)
     {
         screenMask.draw(batch);
-        dot.draw(batch);
+        if(comboId==0)
+        {
+            dot.draw(batch);
+        }
+        else if(comboId==1)
+        {
+            dot.draw(batch);
+        }
 
     }
     void initiateCombo(int moveId,Fight fight)
@@ -90,6 +98,7 @@ public class Combo
         targetX=(int)(rand.nextDouble()*Gdx.graphics.getWidth());
         targetY=(int)(rand.nextDouble()*Gdx.graphics.getHeight());
 
+        comboId=0;
         tapTotal=10;
         tapsLeft=tapTotal-1;
 
@@ -103,7 +112,7 @@ public class Combo
 
     }
 
-    private void tapCombo(int x, int y, double targetx, double targety)
+    private void tapCombo(int x, int y, double targetx, double targety)//Id:0
     {
 
         if(Math.abs(x-targetx)<=(Gdx.graphics.getWidth()*.1)&&Math.abs(y-targety)<=(Gdx.graphics.getWidth()*.1))
@@ -134,7 +143,6 @@ public class Combo
 
     }
 
-
     void tap(int x, int y)
     {
         if(tapTotal>0)
@@ -153,7 +161,10 @@ public class Combo
         else if(timer>allowedTime)
         {
 
-            skill/=tapTotal;
+            if(comboId==0)
+            {
+                skill /= tapTotal;
+            }
             comboing=false;
             timer=0;
         }

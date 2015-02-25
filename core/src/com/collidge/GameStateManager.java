@@ -27,12 +27,13 @@ public class GameStateManager
     //Constructor creates all states and adds them to the list. Sets current state and loads it.
     public GameStateManager()
     {
+
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
         GameState state1 = new Play(this);
-        GameState state2 = new TestState2(this);
+       // GameState state2 = new TestState2(this);
         gameStates.add(state1);
-        gameStates.add(state2);
+       //gameStates.add(state2);
 
         //currentState = MENUSTATE;
 
@@ -90,6 +91,13 @@ public class GameStateManager
 
         //TODO add previous state class stuff
         changeState(0);
+    }
+    public void levelUpState(Player player)
+    {
+        gameStates.get(gameStates.size()-1).dispose();
+        gameStates.remove(gameStates.size()-1);
+        gameStates.add(new LevelUpSplash(this,player));
+        changeState(gameStates.size()-1);
     }
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.
     public void update()

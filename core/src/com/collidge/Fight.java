@@ -35,6 +35,66 @@ public class Fight extends GameState
     private int ActionId;
     private boolean comboing;
     private boolean targeting=false;
+    private int expEarned;
+
+    Timer.Task damager=new Timer.Task()
+    {
+        @Override
+        public void run()
+        {
+
+
+            //if damage was dealt to the player, subtract health
+            if (damage[0] > 0)
+            {
+
+                damage[0]--;
+                playr.changeHealth(-1);
+                //check if the player died, if he did, end the fight
+                if (playr.getCurrentHealth() <= 0)
+                {
+
+                    expEarned=0;
+                    endFight();
+
+
+
+                }
+
+            }
+            //changes enemy health based on damage done, if enemies die, give their experience to the player and kill them
+            for(int i=1;i<damage.length;i++)
+            {
+
+                if ((!enemies[i-1].getDead())&&damage[i] > 0)
+                {
+
+                    damage[i]--;
+                    enemies[i-1].changeHealth(-1);
+                    if (enemies[i-1].getHealth() <= 0)
+                    {
+
+                        damage[i]=0;
+                        expEarned+=enemies[i-1].getExpValue();
+
+                        enemiesLeft--;
+                        if(enemiesLeft<=0)
+                        {
+                            endFight();
+
+                        }
+                    }
+
+                }
+
+            }
+
+
+
+        }
+    };
+
+
 
     private FightMenu fMenu;
     private int enemyCount,enemiesLeft;
@@ -77,6 +137,7 @@ public class Fight extends GameState
 
         combo=new Combo();
 
+        expEarned=0;
 
         //gets the number and type of enemies to fight
 
@@ -124,62 +185,7 @@ public class Fight extends GameState
         battleFont = new BitmapFont();
 
 
-        Timer.schedule(new Timer.Task()
-        {
-            @Override
-            public void run()
-            {
 
-
-                //if damage was dealt to the player, subtract health
-                if (damage[0] > 0)
-                {
-
-                    damage[0]--;
-                    playr.changeHealth(-1);
-                    //check if the player died, if he did, end the fight
-                    if (playr.getCurrentHealth() <= 0)
-                    {
-                        combo.delete();
-                        endFight();
-
-
-
-                    }
-
-                }
-                //changes enemy health based on damage done, if enemies die, give their experience to the player and kill them
-                for(int i=1;i<damage.length;i++)
-                {
-
-                    if ((!enemies[i-1].getDead())&&damage[i] > 0)
-                    {
-
-                        damage[i]--;
-                        enemies[i-1].changeHealth(-1);
-                        if (enemies[i-1].getHealth() <= 0)
-                        {
-
-                            damage[i]=0;
-                            playr.addExperience(enemies[i-1].getExpValue());
-
-                            enemiesLeft--;
-                            if(enemiesLeft<=0)
-                            {
-                                endFight();
-
-                            }
-                        }
-
-                    }
-
-                }
-
-
-
-            }
-        }
-                , 0, .1f);
         Timer.instance().start();
     }
 
@@ -197,6 +203,9 @@ public class Fight extends GameState
             comboing=false;
             playerTurnPart3();
         }
+        Timer.instance().clear();
+        Timer.instance().start();
+        Timer.instance().postTask(damager);
         healthBackground.setSize((int) ((playr.getHealth() * (4 * (screenWidth / 10))) / ((double) playr.getHealth())), (int) (screenHeight / 20.0));
         healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/20.0));
 
@@ -431,7 +440,8 @@ public class Fight extends GameState
 
             if(fMenu.getMoveString(ActionType,ActionId)=="Flee")
             {
-                combo.delete();
+
+                expEarned=0;
                 endFight();
                 return;
 
@@ -467,8 +477,11 @@ public class Fight extends GameState
     private void playerTurnPart3()      //Doing the combo
     {
         PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+      //  System.out.println("Dam: "+PlayerDam);
         PlayerDam*=(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence());
+      //  System.out.println("Atk: "+playr.getAttack()+"   Def: "+ enemies[targetPicker.getSelectedTarget()].getDefence());
         PlayerDam *= Math.abs(combo.skill);
+     //   System.out.println("After Mult: "+PlayerDam);
         if(PlayerDam<1)
         {
             PlayerDam=1;
@@ -492,7 +505,7 @@ public class Fight extends GameState
         }
         else
         {
-            combo.delete();
+
             endFight();
 
         }
@@ -547,9 +560,18 @@ public class Fight extends GameState
     private void endFight()
     {
         damage[0]=0;
+        combo.delete();
         Timer.instance().clear();
         Timer.instance().stop();
-        gsm.endFight();
+        playr.addExperience(expEarned);
+        if(playr.getLevelUpCounter()<=0)
+        {
+            gsm.endFight();
+        }
+        else
+        {
+            gsm.levelUpState(playr);
+        }
         return;
     }
 
