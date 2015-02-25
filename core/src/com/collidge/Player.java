@@ -213,6 +213,8 @@ public class Player
         currentEnergy+=health/3;
         currentHealth+=health/3;
         updateStats();
+        changeHealth(0);
+        changeEnergy(0);
 
 
     }
