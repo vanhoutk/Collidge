@@ -326,25 +326,25 @@ public class InventoryState extends GameState
         infoFont.draw(batch, playerInfoText[1], (29 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
 
         attackIcon.setSize(spacing, spacing);
-        attackIcon.setPosition((11 * spacing), sqSide + 3 * spacing/4);
+        attackIcon.setPosition((45 * spacing/4), sqSide + 3 * spacing/4);
         attackIcon.draw(batch);
 
         infoFont.setColor(Color.RED);
         infoFont.draw(batch, playerInfoText[2], (49 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
 
         defenceIcon.setSize(spacing, spacing);
-        defenceIcon.setPosition((29 * spacing/2), sqSide + 3 * spacing/4);
+        defenceIcon.setPosition((57 * spacing/4), sqSide + 3 * spacing/4);
         defenceIcon.draw(batch);
 
         infoFont.setColor(Color.BLUE);
-        infoFont.draw(batch, playerInfoText[3], (63 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
+        infoFont.draw(batch, playerInfoText[3], (61 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
 
         intelligenceIcon.setSize(spacing, spacing);
-        intelligenceIcon.setPosition((18 * spacing), sqSide + 3 * spacing/4);
+        intelligenceIcon.setPosition((35 * spacing/2), sqSide + 3 * spacing/4);
         intelligenceIcon.draw(batch);
 
         infoFont.setColor(Color.PURPLE);
-        infoFont.draw(batch, playerInfoText[4], (77 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
+        infoFont.draw(batch, playerInfoText[4], (74 * spacing/4), sqSide + 3 * spacing / 4 + infoFont.getLineHeight());
 
         batch.end();
     }
