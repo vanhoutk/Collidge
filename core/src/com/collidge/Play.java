@@ -69,9 +69,30 @@ public class Play extends GameState {
     public void draw()
     {
 
-        camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
-        camera.update();
 
+        float cameraX=player.getX() + player.getWidth() / 2;
+        float cameraY=player.getY() + player.getHeight() / 2;
+        if((cameraX+camera.viewportWidth/2)>(player.getCollisionLayer().getTileWidth()*player.getCollisionLayer().getWidth()))
+        {
+            cameraX=(player.getCollisionLayer().getTileWidth()*player.getCollisionLayer().getWidth())-(camera.viewportWidth/2);
+        }
+        else if((cameraX-camera.viewportWidth/2)<0)
+        {
+            cameraX=camera.viewportWidth/2;
+        }
+        if((cameraY+camera.viewportHeight/2)>(player.getCollisionLayer().getTileHeight()*player.getCollisionLayer().getHeight()))
+        {
+            cameraY=(player.getCollisionLayer().getTileHeight()*player.getCollisionLayer().getHeight())-(camera.viewportHeight/2);
+        }
+        else if((cameraY-camera.viewportHeight/2)<0)
+        {
+            cameraY=camera.viewportHeight/2;
+        }
+
+        camera.position.set(cameraX,cameraY, 0);
+
+        camera.update();
+        
         renderer.setView(camera);
         renderer.render();
 
