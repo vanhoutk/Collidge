@@ -92,7 +92,7 @@ public class Play extends GameState {
         camera.position.set(cameraX,cameraY, 0);
 
         camera.update();
-        
+
         renderer.setView(camera);
         renderer.render();
 

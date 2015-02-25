@@ -198,6 +198,9 @@ public class Player
     private void updateStats()
     {
         //TODO add levelUp selections
+        String weapon,armour;
+        weapon=equippedWeapon;
+        armour=equippedArmour;
         unequipItem(equippedWeapon);
         unequipItem(equippedArmour);
         attack=5+(level);
@@ -209,8 +212,8 @@ public class Player
 
         energy=level*5;
         expTarget=(int)(level*level/1.2)+55;
-        equipItem(equippedArmour);
-        equipItem(equippedWeapon);
+        equipItem(weapon);
+        equipItem(armour);
 
     }
 
