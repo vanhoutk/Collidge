@@ -11,10 +11,13 @@ package com.collidge;
  *
  * Functions in this class:
  * - Equipment(String type, String text, int attack, int energy, int defence, int health, int quantity, String image) -> Constructor
- * - int getAttackBonus()           -> returns the attack bonus of the item
- * - int getHealthBonus()           -> returns the health bonus of the item
- * - int getEnergyBonus()           -> returns the energy bonus of the item
- * - int getDefenceBonus()          -> returns the defence bonus of the item
+ * - int getAttackBonus()               -> returns the attack bonus of the item
+ * - int getHealthBonus()               -> returns the health bonus of the item
+ * - int getEnergyBonus()               -> returns the energy bonus of the item
+ * - int getDefenceBonus()              -> returns the defence bonus of the item
+ * - int getItemQuantity()              -> returns the quantity of the item
+ * - void setItemQuantity(int quantity) -> sets the quantity of the item
+ * - void changeItemQuantity(int dQ)    -> increases/decreases the item quantity by dQ
  *
  * Notes:
  * - Currently weapons only add to attack and armour only adds to defence.
@@ -55,5 +58,21 @@ public class Equipment extends Item
     int getDefencebonus()
     {
         return defencebonus;
+    }
+
+    int getItemQuantity() { return itemQuantity;}
+
+    void setItemQuantity(int quantity)
+    {
+        itemQuantity = quantity;
+    }
+
+    void changeItemQuantity(int dQ)
+    {
+        itemQuantity += dQ;
+        if(itemQuantity <= 0)
+        {
+            itemQuantity = 0;
+        }
     }
 }

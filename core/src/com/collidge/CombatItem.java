@@ -11,8 +11,11 @@ package com.collidge;
  *
  * Functions in this class:
  * - CombatItem(String type, String text, int health, int energy, int quantity, String image) -> Constructor
- * - int getHealthRestore()         -> returns the amount of health an item restores
- * - int getEnergyRestore()         -> returns the amount of energy an item restores
+ * - int getHealthRestore()             -> returns the amount of health an item restores
+ * - int getEnergyRestore()             -> returns the amount of energy an item restores
+ * - int getItemQuantity()              -> returns the quantity of the item
+ * - void setItemQuantity(int quantity) -> sets the quantity of the item
+ * - void changeItemQuantity(int dQ)    -> increases/decreases the item quantity by dQ
  *
  * Notes:
  */
@@ -40,5 +43,21 @@ public class CombatItem extends Item
     int getEnergyRestore()
     {
         return energyRestore;
+    }
+
+    int getItemQuantity() { return itemQuantity;}
+
+    void setItemQuantity(int quantity)
+    {
+        itemQuantity = quantity;
+    }
+
+    void changeItemQuantity(int dQ)
+    {
+        itemQuantity += dQ;
+        if(itemQuantity <= 0)
+        {
+            itemQuantity = 0;
+        }
     }
 }

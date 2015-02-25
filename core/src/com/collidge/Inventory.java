@@ -149,7 +149,7 @@ public class Inventory
     void loadInventory()
     {
         /**
-         * Constructor for combat items is (Type, Text, Health, Energy, Quantity)
+         * Constructor for combat items is (Type, Text, Health, Energy, Quantity, Image)
          */
         CombatItem Coffee, EnergyDrink, Noodles, ChickenRoll;
 
