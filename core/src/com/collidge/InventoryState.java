@@ -25,7 +25,7 @@ public class InventoryState extends GameState
     Player player;
     SpriteBatch batch;
     Texture texture;
-    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle, healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon;;
+    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle, healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon;
     String[] itemInfoText, itemNameText, itemEquipText, playerInfoText;
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
@@ -75,14 +75,6 @@ public class InventoryState extends GameState
         playerInfoText[3] = String.valueOf(player.getDefence());
         playerInfoText[4] = String.valueOf(player.getIntelligence());
 
-        initialize();
-    }
-
-
-    //initialize is the same as constructor but sometimes you want to reset an object without rebuilding it.
-    @Override
-    public void initialize()
-    {
         itemInfoText = new String[11];
         itemNameText = new String[11];
         itemEquipText = new String[11];
@@ -134,6 +126,15 @@ public class InventoryState extends GameState
                 }
             }
         }
+
+        initialize();
+    }
+
+
+    //initialize is the same as constructor but sometimes you want to reset an object without rebuilding it.
+    @Override
+    public void initialize()
+    {
         for(int i = 0; i < itemNum; i++)
         {
             itemNames[equipNum + i] = player.getItemList()[i];
@@ -147,7 +148,18 @@ public class InventoryState extends GameState
              * Kris -- Commented out to be replaced with usable combat items code
              */
             //itemEquipText[equipNum + i + 1] = "Cannot use outside of combat";
-            itemEquipText[equipNum + i + 1] = "Use item";
+            if(player.items.getItemType(itemNames[equipNum + i]).equals("Energy") && (player.getCurrentEnergy() == player.getEnergy()))
+            {
+                itemEquipText[equipNum + i + 1] = "Energy Full";
+            }
+            else if(player.items.getItemType(itemNames[equipNum + i]).equals("Health") && (player.getCurrentHealth() == player.getHealth()))
+            {
+                itemEquipText[equipNum + i + 1] = "Health Full";
+            }
+            else
+            {
+                itemEquipText[equipNum + i + 1] = "Use item";
+            }
         }
     }
 
@@ -298,14 +310,15 @@ public class InventoryState extends GameState
         else if(itemEquipText[selectedItem].equals("UnEquip"))
         {
             infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
-            infoFont.draw(batch, "UnEquip", screenWidth - (5 * spacing / 3 + sqSide), sqSide - 9 * infoFont.getLineHeight() / 8);
+            infoFont.draw(batch, "UnEquip", screenWidth - (5 * spacing / 3 + sqSide), sqSide - 5 * infoFont.getLineHeight() / 4);
+        }
+        else if(itemEquipText[selectedItem].equals("Energy Full") || itemEquipText[selectedItem].equals("Health Full"))
+        {
+            infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
+            infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (6 * spacing / 4 + sqSide), sqSide - 3* infoFont.getLineHeight()/4, sqSide, BitmapFont.HAlignment.CENTER);
         }
         else
         {
-            /**
-             * Kris -- Commented out to be replaced with usable combat items
-             */
-            //infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (7 * spacing / 4 + sqSide), sqSide, 7 * sqSide / 6, BitmapFont.HAlignment.CENTER);
             infoFont.setScale(screenWidth / 300f, screenHeight / 300f);
             infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (6 * spacing / 4 + sqSide), sqSide - infoFont.getLineHeight()/2, sqSide, BitmapFont.HAlignment.CENTER);
         }
@@ -462,8 +475,9 @@ public class InventoryState extends GameState
                     player.useItem(itemNames[selectedItem - 1]);
                     if(player.items.getItemQuantity(itemNames[selectedItem-1]) == 0)
                     {
-                        initialize();
+                       selectedItem = 0;
                     }
+                    initialize();
                 }
             }
         }
