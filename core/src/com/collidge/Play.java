@@ -1,12 +1,10 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -15,7 +13,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
-import java.awt.Font;
+
 
 /**
  * Created by Gary on 26/01/2015.
@@ -28,11 +26,10 @@ public class Play extends GameState {
     private OrthographicCamera camera;
     private OrthographicCamera camera2;
     private MapPlayer player;
-    private Sprite player2;
-    private Texture texture;
+
     private SpriteBatch  batch;
-    private Batch spriteBatch;
-    private BitmapFont font;
+
+
 
     Play(GameStateManager gsm)
     {
@@ -47,11 +44,12 @@ public class Play extends GameState {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false,500,500*(h/w));
         camera.update();
 
-        font = new BitmapFont();
+
 
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
@@ -99,6 +97,7 @@ public class Play extends GameState {
         renderer.getBatch().begin();
 
        // player.draw(renderer.getBatch());
+
         player.draw2(renderer.getBatch(), 5);
         renderer.getBatch().end();
 
@@ -110,6 +109,8 @@ public class Play extends GameState {
         //player.draw(renderer.getBatch());
         /*font.draw(batch, "blaaa", 50, 50);
         player2.draw(batch);*/
+
+
         batch.end();
     }
 
@@ -141,8 +142,13 @@ public class Play extends GameState {
     public void dispose()
     {
         map.dispose();
+        batch.dispose();
         renderer.dispose();
         player.getTexture().dispose();
+
+
+
+
     }
 
    /* @Override
@@ -154,6 +160,7 @@ public class Play extends GameState {
     @Override
     public void update()
     {
+
 
 
 

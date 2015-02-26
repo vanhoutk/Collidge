@@ -51,6 +51,7 @@ public class MapPlayer extends Sprite
 
     public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer)
     {
+
         super(sprite);
         walkingTextures = new Texture[4];
         walkingTextures[UP] = new Texture("walking_back_animation.png");

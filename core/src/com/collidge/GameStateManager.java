@@ -38,13 +38,19 @@ public class GameStateManager
         //currentState = MENUSTATE;
 
         currentState = 0;
-        changeState(currentState);
+        gameStates.get(currentState).initialize();
+
+
     }
 
     //change state to any other state. Alternatively we could make a new object each time instead of keeping them in memory.
     public void changeState(int state)
     {
-        if (state >= gameStates.size()) state = 0;
+        if (state >= gameStates.size())
+        {
+            state = 0;
+        }
+        gameStates.get(currentState).dispose();
         currentState = state;
         gameStates.get(currentState).initialize();
 //        if(state == MENUSTATE)
@@ -86,11 +92,12 @@ public class GameStateManager
     public void endFight()
     {
 
+        //TODO add previous state class stuff
+        changeState(0);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
 
-        //TODO add previous state class stuff
-        changeState(0);
+
     }
     public void levelUpState(Player player)
     {

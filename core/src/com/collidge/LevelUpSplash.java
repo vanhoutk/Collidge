@@ -192,12 +192,17 @@ public class LevelUpSplash extends GameState
             if (selected < 5 && selected >= 0)
             {
                 player.addStat(selected);
+                batch.dispose();
+                texture.dispose();
+                text.dispose();
                 if (player.getLevelUpCounter() > 0)
                 {
+
                     this.initialize();
                 }
                 else
                 {
+
                     gsm.endFight();
                 }
             }
