@@ -132,7 +132,7 @@ public class MapPlayer extends Sprite
         }
 
         //react to x collision
-        if(collisionX)
+        if(collisionX||getX()>collisionlayer.getWidth()*collisionlayer.getTileWidth()||getX()<0)
         {
             setX(oldX);
             velocity.x = 0;
@@ -164,11 +164,12 @@ public class MapPlayer extends Sprite
         }
 
         //react to y collision
-        if(collisionY)
+        if(collisionY||getY()>collisionlayer.getHeight()*collisionlayer.getTileHeight()||getY()<0)
         {
             setY(oldY);
             velocity.y = 0;
         }
+
 
 
     }
@@ -255,6 +256,7 @@ public class MapPlayer extends Sprite
 
 
         velocity.x=500*((screenX-(width/2))/(float)width);
+
         velocity.y=500*((-(screenY-(height/2)))/(float)height);
         getDirection();
 
