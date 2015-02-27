@@ -132,7 +132,7 @@ public class MapPlayer extends Sprite
         }
 
         //react to x collision
-        if(collisionX||getX()>collisionlayer.getWidth()*collisionlayer.getTileWidth()||getX()<0)
+        if(collisionX||getX()>(collisionlayer.getWidth()-1)*collisionlayer.getTileWidth()||getX()<0)
         {
             setX(oldX);
             velocity.x = 0;
@@ -164,7 +164,7 @@ public class MapPlayer extends Sprite
         }
 
         //react to y collision
-        if(collisionY||getY()>collisionlayer.getHeight()*collisionlayer.getTileHeight()||getY()<0)
+        if(collisionY||getY()>(collisionlayer.getHeight()-1)*collisionlayer.getTileHeight()||getY()<0)
         {
             setY(oldY);
             velocity.y = 0;
