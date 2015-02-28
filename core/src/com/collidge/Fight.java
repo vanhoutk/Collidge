@@ -109,7 +109,6 @@ public class Fight extends GameState
     Sprite menuContainer;
     Sprite selector;
     Sprite player;
-    Texture[] tex_enemy;
     Sprite[] sprite_enemy;
     Combo combo;
     private BitmapFont battleFont;
@@ -142,6 +141,7 @@ public class Fight extends GameState
         expEarned=0;
 
         //gets the number and type of enemies to fight
+        sprite_enemy = new Sprite[enemies.length];
         addTextures(sprite_enemy,enemies);          //loads the textures for each of the enemies into an array
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
@@ -298,7 +298,7 @@ public class Fight extends GameState
             //battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
 
             selector.setSize((float)(2.0*screenWidth/5.0), battleFont.getLineHeight()*2);
-            selector.setPosition((float)(3.0*screenWidth/5.0),screenHeight-(battleFont.getLineHeight()*((targetPicker.getCurrentTarget()+1)*2)));
+            selector.setPosition((float) (3.0 * screenWidth / 5.0), screenHeight - (battleFont.getLineHeight() * ((targetPicker.getCurrentTarget() + 1) * 2)));
             selector.draw(batch);
         }
         //TODO replace Placeholder
@@ -645,29 +645,33 @@ public class Fight extends GameState
 
     private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
     {
-        for (int i = 0; i< enemies.length; i++)
-        {
-            switch(enemies[i].getName())
+        for (int i = 0; i< enemies.length; i++) {
+            if (enemies[i].getName() == "Fresher")
             {
-                case "Fresher":
-                    texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
-                    sprite_enemy[i] = new Sprite(texture);
-                    break;
+                texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
+                sprite_enemy[i] = new Sprite(texture);
+            }
+            else if (enemies[i].getName() == "Frat boy")
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
+            }
 
-                case "Frat boy":
-                    texture = new Texture("badlogic.jpg");
-                    sprite_enemy[i] = new Sprite(texture);
-                    break;
+            else if (enemies[i].getName() == "Master Debater")
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
+            }
 
-                case "Master Debater":
-                    texture = new Texture("badlogic.jpg");
-                    sprite_enemy[i] = new Sprite(texture);
-                    break;
-
-                case "Lecturer":
-                    texture = new Texture("badlogic.jpg");
-                    sprite_enemy[i] = new Sprite(texture);
-                    break;
+            else if (enemies[i].getName() == "Lecturer")
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
+            }
+            else
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
             }
 
         }
