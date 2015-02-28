@@ -1,0 +1,145 @@
+
+spritesheet.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 1, 651
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0002
+  rotate: false
+  xy: 1, 521
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0003
+  rotate: false
+  xy: 195, 651
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0004
+  rotate: false
+  xy: 1, 391
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0005
+  rotate: false
+  xy: 195, 521
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0006
+  rotate: false
+  xy: 389, 651
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0007
+  rotate: false
+  xy: 1, 261
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0008
+  rotate: false
+  xy: 195, 391
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0009
+  rotate: false
+  xy: 389, 521
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0010
+  rotate: false
+  xy: 583, 651
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0011
+  rotate: false
+  xy: 1, 131
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0012
+  rotate: false
+  xy: 195, 261
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0013
+  rotate: false
+  xy: 389, 391
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0014
+  rotate: false
+  xy: 583, 521
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0015
+  rotate: false
+  xy: 777, 651
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0016
+  rotate: false
+  xy: 1, 1
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0017
+  rotate: false
+  xy: 195, 131
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0018
+  rotate: false
+  xy: 389, 261
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0019
+  rotate: false
+  xy: 583, 391
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+0020
+  rotate: false
+  xy: 777, 521
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
