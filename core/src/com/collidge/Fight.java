@@ -2,7 +2,6 @@ package com.collidge;
 
 //import android.view.MotionEvent;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -14,33 +13,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+
+
+
 
 /**
  * Created by Daniel on 20/01/2015.
  */
 public class Fight extends GameState
 {
-    public class Player_sprite extends Actor {
-        Texture texture = new Texture(Gdx.files.internal("data/jet.png"));
-        float actorX = 0, actorY = 0;
-        public boolean started = false;
 
-        public Player_sprite()
-        {
-            setBounds(actorX, actorY, texture.getWidth(), texture.getHeight());
-            addListener (new InputListener() {
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    ((Player_sprite) event.getTarget()).started = true;
-                    return true;
-                }
-            });
-        }
-    }
+
 
     private int PlayerDam;
     Player playr;
@@ -53,6 +36,7 @@ public class Fight extends GameState
     private boolean targeting=false;
     private int expEarned;
     private int monsterCode=-1;
+
 
     Timer.Task damager=new Timer.Task()
     {
@@ -117,13 +101,17 @@ public class Fight extends GameState
     private int enemyCount,enemiesLeft;
     private Enemy[] enemies;
     Attack move;
+
+
     SpriteBatch batch;
     Texture texture ;
     Sprite healthBar, healthBackground;
     Sprite menuContainer;
-    Combo combo;
     Sprite selector;
-
+    Sprite player;
+    Texture[] tex_enemy;
+    Sprite[] sprite_enemy;
+    Combo combo;
     private BitmapFont battleFont;
     private TargetPicker targetPicker;
 
@@ -179,10 +167,8 @@ public class Fight extends GameState
         texture = new Texture("barHorizontal_red_mid.png");
         healthBackground = new Sprite(texture);
 
-        //Added by Michael
         texture = new Texture("Transparant_Button.png");
         selector = new Sprite(texture);
-        //End of Michael
 
         healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), 25 * screenHeight / 30);
         healthBar.setSize((4 * (screenWidth / 10)), screenHeight / 10);
@@ -220,8 +206,7 @@ public class Fight extends GameState
         }
         else if(comboing)
         {
-
-           if(monsterCode==-1)
+            if(monsterCode==-1)
             {
                 comboing=false;
             }
@@ -275,10 +260,14 @@ public class Fight extends GameState
 
 
         //scales the battle font for drawing enemy names to be smaller if there are more than 4 enemies
+        /**     Michael took this out because it was garbage, names won't on the screen unless you have it this size all the time
         if(enemies.length>4)
         {
             battleFont.setScale(screenWidth / (enemies.length * 40f), screenHeight / (enemies.length * 40f));
         }
+        */
+
+        battleFont.setScale(screenWidth / (8* 40f), screenHeight / (8* 40f));
         //draws enemy names, enemy hp
         for(int i=0;i<enemies.length;i++)
         {
@@ -293,28 +282,33 @@ public class Fight extends GameState
                 healthBar.setPosition((int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*((i*2)+1)));
                 healthBar.setSize(enemies[i].getHealth()*((screenWidth/8)/enemies[i].getMaxHealth()),battleFont.getLineHeight()/2);
                 healthBar.draw(batch);
-                battleFont.draw(batch,enemies[i].getName()+": ",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+                battleFont.draw(batch,enemies[i].getName(),(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
                 battleFont.draw(batch, enemies[i].getHealth() + "Hp", 3 * screenWidth / 5, (screenHeight - battleFont.getLineHeight() - (battleFont.getLineHeight() * (i * 2))));
 
             }
+            else
+                battleFont.draw(batch,"Defeated",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+
         }
 
         //moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
         //TODO replace placeholder
         if(targeting)
         {
-            battleFont.setColor(Color.BLACK);
-            battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
+            //battleFont.setColor(Color.BLACK);
+            //battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
+
+            selector.setSize((float)(2.0*screenWidth/5.0), battleFont.getLineHeight()*2);
+            selector.setPosition((float)(3.0*screenWidth/5.0),screenHeight-(battleFont.getLineHeight()*((targetPicker.getCurrentTarget()+1)*2)));
             selector.draw(batch);
         }
         //TODO replace Placeholder
         else if(combo.comboing) //if in combo phase
         {
-            battleFont.setColor(Color.WHITE);
+
             combo.draw(batch);
             /*
             battleFont.setColor(Color.WHITE);
->>>>>>> 6d27e5b6255009bf161ca9384b41661bc75a5abf
             if(combo.skill/combo.tapTotal<.2)
             {
                 battleFont.draw(batch,"Bad",(int)(2*screenWidth/5),battleFont.getLineHeight());
@@ -334,9 +328,6 @@ public class Fight extends GameState
             else
             {
                 battleFont.draw(batch,"Perfect",(int)(2*screenWidth/5),battleFont.getLineHeight());
-<<<<<<< HEAD
-            }
-=======
             }*/
            // battleFont.draw(batch,((combo.skill/combo.tapTotal))+"",(int)(2*screenWidth/5),battleFont.getLineHeight());
 
@@ -472,6 +463,7 @@ public class Fight extends GameState
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
+
         monsterCode=-2;
         if(ActionType==2)       //flee
         {
@@ -507,12 +499,10 @@ public class Fight extends GameState
     {
 
 
-
         combo.initiateCombo(ActionId-1,this);
         comboing=true;
         return;
     }
-
 
     private void playerTurnPart3()      //After the combo, applying the multipliers
     {
@@ -649,6 +639,8 @@ public class Fight extends GameState
             System.out.println(monsterCode+":X");
             enemyTurn(player,monsters,monsterCode);
         }
+
+
     }
 
 

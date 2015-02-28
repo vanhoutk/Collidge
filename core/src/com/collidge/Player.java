@@ -83,11 +83,7 @@ public class Player
     public String[] getEquipList(){return items.getEquipmentList();}
 
 
-<<<<<<< HEAD
-    private int movesKnown=2;
-=======
     private int movesKnown=5;
->>>>>>> 6d27e5b6255009bf161ca9384b41661bc75a5abf
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
@@ -114,8 +110,6 @@ public class Player
         updateStats();
         healAll();
     }
-<<<<<<< HEAD
-=======
     Player(int Level, int ATK,int DEF, int INT,int HP,int EN)
     {
         items = new Inventory();
@@ -135,7 +129,6 @@ public class Player
         updateStats();
         healAll();
     }
->>>>>>> 6d27e5b6255009bf161ca9384b41661bc75a5abf
 
     public int[] getAttackEnergyCosts()
     {
@@ -253,11 +246,7 @@ public class Player
         armour=equippedArmour;
         unequipItem(equippedWeapon);
         unequipItem(equippedArmour);
-<<<<<<< HEAD
-        attack=5+(level+attackPoints);
-=======
         attack=3+((level/2)+attackPoints);
->>>>>>> 6d27e5b6255009bf161ca9384b41661bc75a5abf
 
         defence=defencePoints/2+1;
         health=20+((level+healthPoints)*5);

@@ -3,7 +3,6 @@ package com.collidge;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -37,8 +36,10 @@ public class Combo
     Sprite screenMask,dot;
     int comboId;
     BitmapFont font;
+
     Combo()
     {
+
         font=new BitmapFont();
         texture=new Texture("blackSquare.png");
         screenMask=new Sprite(texture);
@@ -57,12 +58,12 @@ public class Combo
         {
             timer++;
 
+
         }
         else
         {
             timer+=TimeUtils.timeSinceMillis(lastCheck);
         }
-
         if(comboId==1)
         {
             startX+=(Gdx.graphics.getWidth()/2000f)*(TimeUtils.timeSinceMillis(lastCheck));
@@ -71,11 +72,11 @@ public class Combo
         checkTimer();
         dot.setPosition((float)targetX-Gdx.graphics.getWidth()*.05f,(float)targetY-Gdx.graphics.getWidth()*.05f);
 
+
     }
     void draw(SpriteBatch batch)
     {
         screenMask.draw(batch);
-
         if(comboId==-1)
         {
             font.draw(batch,"Tap to defend! "+(int)skill+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
@@ -89,6 +90,7 @@ public class Combo
         }
         else if(comboId==1)
         {
+
             font.draw(batch,"Tap when they overlap",Gdx.graphics.getWidth()/3,font.getLineHeight());
 
             dot.draw(batch);
@@ -142,6 +144,7 @@ public class Combo
         comboId=0;
         tapTotal=10;
         tapsLeft=tapTotal;
+
         allowedTime=5000;
         startTime=TimeUtils.millis();
 
@@ -151,6 +154,7 @@ public class Combo
         return;
 
     }
+
     private void attack1()
     {
         skill=0;
@@ -161,6 +165,7 @@ public class Combo
         startTime=TimeUtils.millis();
         allowedTime=3000;
     }
+
     private void tapCombo(int x, int y, double targetx, double targety)//Id:0
     {
 
@@ -216,6 +221,8 @@ public class Combo
             }
             comboing=false;
         }
+
+
     }
     void checkTimer()
     {
