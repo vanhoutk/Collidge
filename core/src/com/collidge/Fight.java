@@ -20,12 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-
-
 /**
  * Created by Daniel on 20/01/2015.
  */
-
 public class Fight extends GameState
 {
     public class Player_sprite extends Actor {
@@ -45,7 +42,6 @@ public class Fight extends GameState
         }
     }
 
-
     private int PlayerDam;
     Player playr;
     boolean waitingForTouch=false;
@@ -56,6 +52,7 @@ public class Fight extends GameState
     private boolean comboing;
     private boolean targeting=false;
     private int expEarned;
+    private int monsterCode=-1;
 
     Timer.Task damager=new Timer.Task()
     {
@@ -126,6 +123,7 @@ public class Fight extends GameState
     Sprite menuContainer;
     Combo combo;
     Sprite selector;
+
     private BitmapFont battleFont;
     private TargetPicker targetPicker;
 
@@ -222,8 +220,20 @@ public class Fight extends GameState
         }
         else if(comboing)
         {
-            comboing=false;
-            playerTurnPart3();
+
+           if(monsterCode==-1)
+            {
+                comboing=false;
+            }
+            else if(monsterCode==-2)
+            {
+                comboing = false;
+                playerTurnPart3();
+            }
+            else if(monsterCode<enemies.length)
+            {
+                defendTurn(playr,enemies,monsterCode);
+            }
         }
         Timer.instance().clear();
         Timer.instance().start();
@@ -285,6 +295,7 @@ public class Fight extends GameState
                 healthBar.draw(batch);
                 battleFont.draw(batch,enemies[i].getName()+": ",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
                 battleFont.draw(batch, enemies[i].getHealth() + "Hp", 3 * screenWidth / 5, (screenHeight - battleFont.getLineHeight() - (battleFont.getLineHeight() * (i * 2))));
+
             }
         }
 
@@ -301,7 +312,9 @@ public class Fight extends GameState
         {
             battleFont.setColor(Color.WHITE);
             combo.draw(batch);
-
+            /*
+            battleFont.setColor(Color.WHITE);
+>>>>>>> 6d27e5b6255009bf161ca9384b41661bc75a5abf
             if(combo.skill/combo.tapTotal<.2)
             {
                 battleFont.draw(batch,"Bad",(int)(2*screenWidth/5),battleFont.getLineHeight());
@@ -321,7 +334,10 @@ public class Fight extends GameState
             else
             {
                 battleFont.draw(batch,"Perfect",(int)(2*screenWidth/5),battleFont.getLineHeight());
+<<<<<<< HEAD
             }
+=======
+            }*/
            // battleFont.draw(batch,((combo.skill/combo.tapTotal))+"",(int)(2*screenWidth/5),battleFont.getLineHeight());
 
 
@@ -456,7 +472,7 @@ public class Fight extends GameState
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
-
+        monsterCode=-2;
         if(ActionType==2)       //flee
         {
 
@@ -491,19 +507,22 @@ public class Fight extends GameState
     {
 
 
-        combo.initiateCombo(0,this);
+
+        combo.initiateCombo(ActionId-1,this);
         comboing=true;
         return;
     }
 
-    private void playerTurnPart3()      //Doing the combo
+
+    private void playerTurnPart3()      //After the combo, applying the multipliers
     {
+        //TODO remove system outs left for debugging of combos
         PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-      //  System.out.println("Dam: "+PlayerDam);
+        System.out.println("Dam: "+PlayerDam);
         PlayerDam*=(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence());
-      //  System.out.println("Atk: "+playr.getAttack()+"   Def: "+ enemies[targetPicker.getSelectedTarget()].getDefence());
+        System.out.println("Atk: "+playr.getAttack()+"   Def: "+ enemies[targetPicker.getSelectedTarget()].getDefence());
         PlayerDam *= Math.abs(combo.skill);
-     //   System.out.println("After Mult: "+PlayerDam);
+        System.out.println("After Mult of "+combo.skill+": "+PlayerDam);
         if(PlayerDam<1)
         {
             PlayerDam=1;
@@ -523,7 +542,8 @@ public class Fight extends GameState
 
         if(enemiesLeft>0&&playr.getCurrentHealth()>=0)
         {
-            enemyTurn(playr, enemies);
+            monsterCode=-1;
+            enemyTurn(playr, enemies,0);
         }
         else
         {
@@ -534,46 +554,100 @@ public class Fight extends GameState
         fMenu.refreshMenus(playr);
     }
 
-    private void enemyTurn(Player player,Enemy[] monsters)
+    private void enemyTurn(Player player,Enemy[] monsters,int monsterId)
     {
 
-        int dam;
-        for(int i=0;i<monsters.length;i++)
+
+        monsterCode=monsterId;
+        System.out.println("Monster:"+monsterId);
+        if(monsterId<=monsters.length-1&&!monsters[monsterId].getDead())
         {
-            if(!monsters[i].getDead()&&player.getCurrentHealth()>0)
+            System.out.println("X");
+            combo.initiateCombo(-1, this);
+            comboing = true;
+        }
+        else
+        {
+            boolean fight=false;
+            while(monsterId<monsters.length)
             {
-                dam=(monsters[i].getAttack() - player.getDefence());
-          //      System.out.println("Monster " + i + " attacks");
-                if (dam <= 0)
+                monsterId++;
+                if(!monsters[monsterId].getDead())
                 {
-            //        System.out.println("Damage by monster " + i + " resisted");
-                    damage[0]++;
-
+                    monsterCode=monsterId;
+                    fight=true;
+                    monsterId=monsters.length;
                 }
-                else
+            }
+            if(fight)
+            {
+                enemyTurn(player, monsters, monsterCode);
+            }
+            else
+            {
+                waitingForTouch=true;
+                fMenu.actionSelected=false;
+            }
+        }
+
+    }
+    private void defendTurn(Player player,Enemy[] monsters,int monsterId)
+    {
+        double dam=-1;
+        System.out.println("Id: "+monsterId+"/"+monsters.length);
+        if(monsterId>=monsters.length||monsterId<0)
+        {
+
+        }
+        else if(!monsters[monsterId].getDead()&&player.getCurrentHealth()>0)
+        {
+            dam=(monsters[monsterId].getAttack() - player.getDefence());
+            System.out.println("Damage from "+monsters[monsterId].getName()+": "+dam);
+            dam*=(1-(combo.skill/2));
+
+            //      System.out.println("Monster " + i + " attacks");
+            if (dam <= 1)
+            {
+                //        System.out.println("Damage by monster " + i + " resisted");
+                damage[0]++;
+
+            }
+            else
+            {
+                damage[0]+=dam;
+
+                //player.changeHealth(-(damage));
+                //      System.out.println("Enemy " + i + " deals " + (dam) + " damage");
+                if (player.getCurrentHealth() <= 0)
                 {
-                    damage[0]+=dam;
-
-                    //player.changeHealth(-(damage));
-              //      System.out.println("Enemy " + i + " deals " + (dam) + " damage");
-                    if (player.getCurrentHealth() <= 0)
-                    {
-                        enemiesLeft = -1;
-                //        System.out.println("you lose");
-                        i = enemiesLeft;
-                    }
-
+                    enemiesLeft = -1;
+                    //        System.out.println("you lose");
+                    monsterCode=-1;
                 }
 
             }
+
         }
-       // System.out.println("Player- Lvl: \t"+player.getLevel()+" \tExp:\t"+player.getExperience());
+
+        System.out.println("Skill: "+combo.skill+" >damage: "+dam);
+        monsterCode++;
+        if(monsterCode>=monsters.length)
+        {
+            monsterCode=-1;
+        }
+        // System.out.println("Player- Lvl: \t"+player.getLevel()+" \tExp:\t"+player.getExperience());
         //System.out.print("Hp: \t"+player.getCurrentHealth()+"/"+player.getHealth());
         //System.out.println("\tEn:\t "+player.getCurrentEnergy()+"/"+player.getEnergy());
-        if(enemiesLeft>0)
+        if(enemiesLeft>0&&monsterCode==-1)
         {
+
             waitingForTouch=true;
             fMenu.actionSelected=false;
+        }
+        else
+        {
+            System.out.println(monsterCode+":X");
+            enemyTurn(player,monsters,monsterCode);
         }
     }
 
