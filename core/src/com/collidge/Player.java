@@ -227,7 +227,7 @@ public class Player
         armour=equippedArmour;
         unequipItem(equippedWeapon);
         unequipItem(equippedArmour);
-        attack=5+(level+attackPoints);
+        attack=3+((level/2)+attackPoints);
 
         defence=defencePoints/2+1;
         health=20+((level+healthPoints)*5);

@@ -277,9 +277,10 @@ public class Fight extends GameState
         //TODO replace Placeholder
         else if(combo.comboing) //if in combo phase
         {
-            battleFont.setColor(Color.WHITE);
-            combo.draw(batch);
 
+            combo.draw(batch);
+            /*
+            battleFont.setColor(Color.WHITE);
             if(combo.skill/combo.tapTotal<.2)
             {
                 battleFont.draw(batch,"Bad",(int)(2*screenWidth/5),battleFont.getLineHeight());
@@ -299,7 +300,7 @@ public class Fight extends GameState
             else
             {
                 battleFont.draw(batch,"Perfect",(int)(2*screenWidth/5),battleFont.getLineHeight());
-            }
+            }*/
            // battleFont.draw(batch,((combo.skill/combo.tapTotal))+"",(int)(2*screenWidth/5),battleFont.getLineHeight());
 
 
@@ -469,19 +470,20 @@ public class Fight extends GameState
     {
 
 
-        combo.initiateCombo(0,this);
+        combo.initiateCombo(ActionId-1,this);
         comboing=true;
         return;
     }
 
-    private void playerTurnPart3()      //Doing the combo
+    private void playerTurnPart3()      //After the combo, applying the multipliers
     {
+        //TODO remove system outs left for debugging of combos
         PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-      //  System.out.println("Dam: "+PlayerDam);
+        System.out.println("Dam: "+PlayerDam);
         PlayerDam*=(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence());
-      //  System.out.println("Atk: "+playr.getAttack()+"   Def: "+ enemies[targetPicker.getSelectedTarget()].getDefence());
+        System.out.println("Atk: "+playr.getAttack()+"   Def: "+ enemies[targetPicker.getSelectedTarget()].getDefence());
         PlayerDam *= Math.abs(combo.skill);
-     //   System.out.println("After Mult: "+PlayerDam);
+        System.out.println("After Mult of "+combo.skill+": "+PlayerDam);
         if(PlayerDam<1)
         {
             PlayerDam=1;

@@ -3,6 +3,7 @@ package com.collidge;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -54,14 +55,21 @@ public class Combo
         {
             timer++;
 
+
         }
         else
         {
             timer+=TimeUtils.timeSinceMillis(lastCheck);
         }
+        if(comboId==1)
+        {
+            startX+=(Gdx.graphics.getWidth()/3000f)*(TimeUtils.timeSinceMillis(lastCheck));
+            System.out.println(startX);
+        }
         lastCheck=TimeUtils.millis();
         checkTimer();
         dot.setPosition((float)targetX-Gdx.graphics.getWidth()*.05f,(float)targetY-Gdx.graphics.getWidth()*.05f);
+
 
     }
     void draw(SpriteBatch batch)
@@ -73,7 +81,13 @@ public class Combo
         }
         else if(comboId==1)
         {
+
             dot.draw(batch);
+            dot.setColor(Color.GRAY);
+            dot.setPosition((float)startX-Gdx.graphics.getWidth()*.05f,(float)targetY-Gdx.graphics.getWidth()*.05f);
+            dot.draw(batch);
+            dot.setColor(Color.WHITE);
+
         }
 
     }
@@ -81,17 +95,21 @@ public class Combo
     {
         timer=0;
         lastCheck=TimeUtils.millis();
+        comboId=moveId;
         switch(moveId)
         {
             case 0:
-                basicAttack(fight);
+                basicAttack();
                 return;
+            case 1:
+
+                attack1();
             default:
                 return;
         }
     }
 
-    void basicAttack(Fight fight)
+    void basicAttack()
     {
         skill=0;
         comboing=true;
@@ -100,7 +118,7 @@ public class Combo
 
         comboId=0;
         tapTotal=10;
-        tapsLeft=tapTotal-1;
+        tapsLeft=tapTotal;
 
         allowedTime=5000;
         startTime=TimeUtils.millis();
@@ -110,6 +128,17 @@ public class Combo
 
         return;
 
+    }
+
+    private void attack1()
+    {
+        skill=0;
+        comboing=true;
+        targetX=(rand.nextDouble()*Gdx.graphics.getWidth()/2)+(Gdx.graphics.getWidth()/3);
+        targetY=Gdx.graphics.getHeight()/2;
+        startX=Gdx.graphics.getWidth()/20;
+        startTime=TimeUtils.millis();
+        allowedTime=3000;
     }
 
     private void tapCombo(int x, int y, double targetx, double targety)//Id:0
@@ -145,9 +174,22 @@ public class Combo
 
     void tap(int x, int y)
     {
-        if(tapTotal>0)
+        if(tapTotal>0&&comboId==0)
         {
             tapCombo(x,y,targetX,-targetY+Gdx.graphics.getHeight());
+        }
+        else if(comboId==1)
+        {
+            skill=Math.abs((startX/Gdx.graphics.getWidth())-(targetX/Gdx.graphics.getWidth()));
+            skill*=2;
+            skill=1-skill;
+            skill=skill*skill*skill*skill;
+            if(skill>.8)
+            {
+
+                pop1.play();
+            }
+            comboing=false;
         }
 
 

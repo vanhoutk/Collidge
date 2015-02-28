@@ -23,7 +23,7 @@ public class EnemyTypes
         Enemy temp;
         //TODO rebalance and add more enemies (maybe add enemyMoves/ enemyDescriptions)
         //temp = new Enemy(String name, int health, int attack, int defence,int experianceForKilled);
-        temp=new Enemy("Fresher",10,3,1,5);
+        temp=new Enemy("Fresher",10,3,0,5);
         EnemyCatalog.put(temp.getName(), temp);
         temp=new Enemy("Master Debater",30,7,0,10);
         EnemyCatalog.put(temp.getName(), temp);
