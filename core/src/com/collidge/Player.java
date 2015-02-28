@@ -83,7 +83,7 @@ public class Player
     public String[] getEquipList(){return items.getEquipmentList();}
 
 
-    private int movesKnown=2;
+    private int movesKnown=5;
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
@@ -103,6 +103,25 @@ public class Player
         intelligencePoints=0;
         healthPoints=0;
         energyPoints=0;
+
+        //Kris -- Start off with no armour/weapons equipped
+        equippedWeapon = "None";
+        equippedArmour = "None";
+        updateStats();
+        healAll();
+    }
+    Player(int Level, int ATK,int DEF, int INT,int HP,int EN)
+    {
+        items = new Inventory();
+        items.loadInventory();
+
+        level=Level;
+
+        attackPoints=ATK;
+        defencePoints=DEF;
+        intelligencePoints=INT;
+        healthPoints=HP;
+        energyPoints=EN;
 
         //Kris -- Start off with no armour/weapons equipped
         equippedWeapon = "None";

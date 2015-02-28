@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
@@ -34,10 +35,12 @@ public class Combo
     Texture texture;
     Sprite screenMask,dot;
     int comboId;
+    BitmapFont font;
 
     Combo()
     {
 
+        font=new BitmapFont();
         texture=new Texture("blackSquare.png");
         screenMask=new Sprite(texture);
         screenMask.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -63,8 +66,7 @@ public class Combo
         }
         if(comboId==1)
         {
-            startX+=(Gdx.graphics.getWidth()/3000f)*(TimeUtils.timeSinceMillis(lastCheck));
-            System.out.println(startX);
+            startX+=(Gdx.graphics.getWidth()/2000f)*(TimeUtils.timeSinceMillis(lastCheck));
         }
         lastCheck=TimeUtils.millis();
         checkTimer();
@@ -75,12 +77,21 @@ public class Combo
     void draw(SpriteBatch batch)
     {
         screenMask.draw(batch);
+        if(comboId==-1)
+        {
+            font.draw(batch,"Tap to defend! "+(int)skill+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
+            dot.draw(batch);
+        }
         if(comboId==0)
         {
+            font.draw(batch,"Tap to power up your attack! "+(int)skill+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
+
             dot.draw(batch);
         }
         else if(comboId==1)
         {
+
+            font.draw(batch,"Tap when they overlap",Gdx.graphics.getWidth()/3,font.getLineHeight());
 
             dot.draw(batch);
             dot.setColor(Color.GRAY);
@@ -96,19 +107,33 @@ public class Combo
         timer=0;
         lastCheck=TimeUtils.millis();
         comboId=moveId;
+        skill=0;
         switch(moveId)
         {
             case 0:
                 basicAttack();
-                return;
+                break;
             case 1:
 
                 attack1();
+                break;
             default:
-                return;
+                defaultAttack(25);
+                comboId=-1;
+                break;
         }
     }
 
+    void defaultAttack(int numTaps)//currently used to defend
+    {
+        tapTotal=numTaps;
+        tapsLeft=numTaps;
+        allowedTime=2000;
+        startTime=TimeUtils.millis();
+        comboing=true;
+        targetX=Gdx.graphics.getWidth()/2;
+        targetY=Gdx.graphics.getHeight()/2;
+    }
     void basicAttack()
     {
         skill=0;
@@ -174,7 +199,12 @@ public class Combo
 
     void tap(int x, int y)
     {
-        if(tapTotal>0&&comboId==0)
+        if(tapsLeft>0&&comboId==-1)
+        {
+            skill+=1;
+            tapsLeft--;
+        }
+        else if(tapTotal>0&&comboId==0)
         {
             tapCombo(x,y,targetX,-targetY+Gdx.graphics.getHeight());
         }
@@ -203,7 +233,7 @@ public class Combo
         else if(timer>allowedTime)
         {
 
-            if(comboId==0)
+            if(comboId==0||comboId==-1)
             {
                 skill /= tapTotal;
             }
