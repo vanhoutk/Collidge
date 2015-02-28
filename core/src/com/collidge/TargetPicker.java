@@ -68,7 +68,7 @@ public class TargetPicker
                 enemyCount++;
             }
         }
-        if(enemyCount>1)
+        if(enemyCount>=1)
         {
             monsters=enemies;
             targetSelected=false;

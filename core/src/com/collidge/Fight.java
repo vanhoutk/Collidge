@@ -259,15 +259,16 @@ public class Fight extends GameState
         battleFont.setColor(Color.BLACK);
 
 
+        battleFont.setScale(screenWidth / (8* 40f), screenHeight / (8* 40f));
         //scales the battle font for drawing enemy names to be smaller if there are more than 4 enemies
-        /**     Michael took this out because it was garbage, names won't on the screen unless you have it this size all the time
+        /**     Michael took this out because it was garbage, names won't on the screen unless you have it this size all the time*/
         if(enemies.length>4)
         {
             battleFont.setScale(screenWidth / (enemies.length * 40f), screenHeight / (enemies.length * 40f));
         }
-        */
 
-        battleFont.setScale(screenWidth / (8* 40f), screenHeight / (8* 40f));
+
+
         //draws enemy names, enemy hp
         for(int i=0;i<enemies.length;i++)
         {
@@ -559,15 +560,16 @@ public class Fight extends GameState
         else
         {
             boolean fight=false;
-            while(monsterId<monsters.length)
+            while(monsterId<monsters.length-1)
             {
-                monsterId++;
+
                 if(!monsters[monsterId].getDead())
                 {
                     monsterCode=monsterId;
                     fight=true;
                     monsterId=monsters.length;
                 }
+                monsterId++;
             }
             if(fight)
             {
