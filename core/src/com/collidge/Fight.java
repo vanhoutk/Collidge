@@ -123,7 +123,6 @@ public class Fight extends GameState
         playr=player;
         EnemySets BasicSet=new EnemySets();
         enemies=BasicSet.getEnemies("Pack");           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
-
     }
 
     Fight(GameStateManager gsm,Player player,String Enemy)
@@ -132,7 +131,6 @@ public class Fight extends GameState
         playr=player;
         EnemySets BasicSet=new EnemySets();
         enemies=BasicSet.getEnemies(Enemy);           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
-
     }
 
     @Override
@@ -144,7 +142,7 @@ public class Fight extends GameState
         expEarned=0;
 
         //gets the number and type of enemies to fight
-
+        addTextures(sprite_enemy,enemies);          //loads the textures for each of the enemies into an array
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
         damage=new int[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
@@ -643,7 +641,35 @@ public class Fight extends GameState
 
     }
 
+    private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
+    {
+        for (int i = 0; i< enemies.length; i++)
+        {
+            switch(enemies[i].getName())
+            {
+                case "Fresher":
+                    texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
+                    sprite_enemy[i] = new Sprite(texture);
+                    break;
 
+                case "Frat boy":
+                    texture = new Texture("badlogic.jpg");
+                    sprite_enemy[i] = new Sprite(texture);
+                    break;
+
+                case "Master Debater":
+                    texture = new Texture("badlogic.jpg");
+                    sprite_enemy[i] = new Sprite(texture);
+                    break;
+
+                case "Lecturer":
+                    texture = new Texture("badlogic.jpg");
+                    sprite_enemy[i] = new Sprite(texture);
+                    break;
+            }
+
+        }
+    };
 
     private void endFight()
     {
