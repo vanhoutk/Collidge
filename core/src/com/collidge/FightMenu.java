@@ -324,7 +324,7 @@ public class FightMenu
         if(x<0.1)
         {
            // System.out.println(y);
-            if (y > 0.5+(battleFont.getLineHeight())/screenHeight && y < 0.5+(battleFont.getLineHeight())/screenHeight)
+            if (y > 0.5+(battleFont.getLineHeight())/screenHeight)
             {
 
                 Up();
