@@ -75,6 +75,7 @@ public class MapPlayer extends Sprite
         startTime = System.currentTimeMillis();
         currentTime = startTime;
         this.collisionlayer = collisionlayer;
+
     }
 
     @Override
@@ -97,7 +98,8 @@ public class MapPlayer extends Sprite
         walkingAnimation[direction].update(Gdx.graphics.getDeltaTime());
      //   super.draw(spritebatch);
 
-        spritebatch.draw(walkingAnimation[direction].getFrame(), getX(), getY());
+
+        spritebatch.draw(walkingAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
     }
 
     public void update(float delta)

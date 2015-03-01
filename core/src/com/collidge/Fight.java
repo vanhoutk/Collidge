@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 
@@ -36,6 +37,7 @@ public class Fight extends GameState
     private boolean targeting=false;
     private int expEarned;
     private int monsterCode=-1;
+    private com.collidge.Animation testAnim;
 
 
     Timer.Task damager=new Timer.Task()
@@ -130,19 +132,20 @@ public class Fight extends GameState
         super(gsm);
         playr=player;
         EnemySets BasicSet=new EnemySets();
-        enemies=BasicSet.getEnemies(Enemy);           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
+        enemies=BasicSet.getEnemies(Enemy);
     }
 
     @Override
     public void initialize()
     {
 
+       // testAnim=new Animation("walkingRight.png",10);
         combo=new Combo();
 
         expEarned=0;
 
         //gets the number and type of enemies to fight
-        addTextures(sprite_enemy,enemies);          //loads the textures for each of the enemies into an array
+        //addTextures(sprite_enemy,enemies);          //loads the textures for each of the enemies into an array
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
         damage=new int[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
@@ -176,6 +179,12 @@ public class Fight extends GameState
         texture = new Texture("panelInset_beige.png");
 
         menuContainer = new Sprite(texture);
+        texture=new Texture("walking_right_animation.png");
+        TextureRegion[][] region = TextureRegion.split(texture,32,32);
+
+
+
+        testAnim = new com.collidge.Animation(region[0],.2f);
 
 
 
@@ -197,6 +206,8 @@ public class Fight extends GameState
     public void update()
     {
 //(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
+        testAnim.update(Gdx.graphics.getDeltaTime());
+
         if(combo.comboing)
         {
             comboing=true;
@@ -241,6 +252,7 @@ public class Fight extends GameState
         healthBackground.draw(batch);
         healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
         healthBar.draw(batch);
+        batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
 
         //Sets colour and size of battle font, draws "HP" and "EN" for player health and energy
         battleFont.setColor(Color.BLACK);
@@ -643,6 +655,8 @@ public class Fight extends GameState
 
     }
 
+    /*  Removed because all it does is cause an error
+        Also might be a better fit in the enemy class itself
     private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
     {
         for (int i = 0; i< enemies.length; i++)
@@ -671,7 +685,7 @@ public class Fight extends GameState
             }
 
         }
-    };
+    }*/
 
     private void endFight()
     {
