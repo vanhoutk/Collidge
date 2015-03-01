@@ -60,7 +60,7 @@ public class Fight extends GameState
     {
         @Override
         public void run()
-        {
+        {                                                                                               
 
 
             //if damage was dealt to the player, subtract health
@@ -250,13 +250,13 @@ public class Fight extends GameState
         healthBar.draw(batch);
         batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
 
-        EnergyIcon.setSize((float)(screenHeight / 16.0),(float)(screenHeight / 16.0));      /**Code Allowing for generation of Energy Icons  */
+        EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f));      /**Code Allowing for generation of Energy Icons  */
         for (int i = 0; i < playr.getCurrentEnergy(); i++)
         {
             if (i<16)
-                EnergyIcon.setPosition((float)(4*screenWidth /75 + i*screenHeight/16.0), 209 * screenHeight / 240);
+                EnergyIcon.setPosition((4f*screenWidth /75f + i*screenHeight/20f), 209 * screenHeight / 240);
             else
-                EnergyIcon.setPosition((float)(4*screenWidth /75 + i*screenHeight/16.0), 97 * screenHeight / 120);
+                EnergyIcon.setPosition((4f*screenWidth /75f + i*screenHeight/20f), 97 * screenHeight / 120);
 
             EnergyIcon.draw(batch);
         }
@@ -302,12 +302,12 @@ public class Fight extends GameState
                 healthBar.setPosition((int)(4.0*screenWidth/5),screenHeight - (battleFont.getLineHeight() * (( i + 1 ) * 2 )));
                 healthBar.setSize(enemies[i+1].getHealth()*((2*screenWidth/15f)/enemies[i+1].getMaxHealth()),battleFont.getLineHeight());
                 healthBar.draw(batch);
-                battleFont.draw(batch,enemies[i+1].getName(),(int)(4.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+                battleFont.draw(batch,enemies[i+1].getName(),(4f*screenWidth/5f),screenHeight-(battleFont.getLineHeight()*(i*2)));
                 battleFont.draw(batch, enemies[i+1].getHealth() + "", 4 * screenWidth / 5, (screenHeight - battleFont.getLineHeight() - (battleFont.getLineHeight() * (i * 2))));
 
             }
             else
-                battleFont.draw(batch,"Defeated",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+                battleFont.draw(batch,"Defeated",(4f*screenWidth/5f),screenHeight-(battleFont.getLineHeight()*(i*2)));
         }
 
         //moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
@@ -672,28 +672,28 @@ public class Fight extends GameState
     }
 
     /*  Removed because all it does is cause an error
-        Also might be a better fit in the enemy class itself
+        Also might be a better fit in the enemy class itself*/
     private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
     {
         for (int i = 0; i< enemies.length; i++) {
-            if (enemies[i].getName() == "Fresher")
+            if (enemies[i].getName().equals("Fresher"))
             {
                 texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
                 sprite_enemy[i] = new Sprite(texture);
             }
-            else if (enemies[i].getName() == "Frat boy")
+            else if (enemies[i].getName().equals("Frat boy"))
             {
                 texture = new Texture("badlogic.jpg");
                 sprite_enemy[i] = new Sprite(texture);
             }
 
-            else if (enemies[i].getName() == "Debater")
+            else if (enemies[i].getName().equals("Debater"))
             {
                 texture = new Texture("badlogic.jpg");
                 sprite_enemy[i] = new Sprite(texture);
             }
 
-            else if (enemies[i].getName() == "Lecturer")
+            else if (enemies[i].getName().equals("Lecturer"))
             {
                 texture = new Texture("badlogic.jpg");
                 sprite_enemy[i] = new Sprite(texture);
@@ -705,7 +705,7 @@ public class Fight extends GameState
             }
 
         }
-    }*/
+    }
 
     private void endFight()
     {
