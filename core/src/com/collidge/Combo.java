@@ -23,10 +23,8 @@ public class Combo
     long startTime,allowedTime;
     Random rand=new Random();
     double startX,startY;
-    double endX,endY;
     double targetX, targetY;
     boolean comboing;
-    double swipeSkill;
     int tapTotal;
     int tapsLeft;
     long timer=0;
@@ -39,6 +37,7 @@ public class Combo
     float dx,dy;
     double swipeAngle=-45;
     float targetDx,targetDy;
+    int numSwipes,numSwipesLeft;
 
     Combo()
     {
@@ -54,7 +53,7 @@ public class Combo
         dot.setSize(Gdx.graphics.getWidth()/10f,Gdx.graphics.getWidth()/10f);
         texture=new Texture("swipeArrowWhite.png");
         swipe=new Sprite(texture);
-        swipe.setSize(Gdx.graphics.getWidth()/15,Gdx.graphics.getHeight());
+        swipe.setSize(Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight());
         swipe.setOriginCenter();
 
 
@@ -87,12 +86,12 @@ public class Combo
         screenMask.draw(batch);
         if(comboId==-1)
         {
-            font.draw(batch,"Tap to defend! "+(int)skill+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
+            font.draw(batch,"Tap to defend! "+(int)(skill*tapTotal)+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
             dot.draw(batch);
         }
         if(comboId==0)
         {
-            font.draw(batch,"Tap to power up your attack! "+(int)skill+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
+            font.draw(batch,"Tap to power up your attack! "+(int)(skill*tapTotal)+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
 
             dot.draw(batch);
         }
@@ -111,7 +110,7 @@ public class Combo
         else if(comboId==2)
         {
 
-            swipe.setPosition(Gdx.graphics.getWidth()/2,0);
+            swipe.setPosition(Gdx.graphics.getWidth()/2-Gdx.graphics.getWidth()/20,0);
             swipe.setRotation((float)swipeAngle);
             swipe.draw(batch);
         }
@@ -122,7 +121,7 @@ public class Combo
         timer=0;
         lastCheck=TimeUtils.millis();
         comboId=moveId;
-        skill=0;
+        skill=0.0001;
         switch(moveId)
         {
             case 0:
@@ -133,7 +132,7 @@ public class Combo
                 attack1();
                 break;
             case 2:
-                attack2();
+                attack2(2);
                 break;
             default:
                 defaultAttack(25);
@@ -154,7 +153,7 @@ public class Combo
     }
     void basicAttack()
     {
-        skill=0;
+
         comboing=true;
         targetX=(int)(rand.nextDouble()*Gdx.graphics.getWidth());
         targetY=(int)(rand.nextDouble()*Gdx.graphics.getHeight());
@@ -175,7 +174,7 @@ public class Combo
 
     private void attack1()
     {
-        skill=0;
+
         comboing=true;
         targetX=(rand.nextDouble()*Gdx.graphics.getWidth()/2)+(Gdx.graphics.getWidth()/3);
         targetY=Gdx.graphics.getHeight()/2;
@@ -183,17 +182,14 @@ public class Combo
         startTime=TimeUtils.millis();
         allowedTime=3000;
     }
-    private void attack2()
+    private void attack2(int swipeTot)
     {
-        skill=0;
+        generateSwipe();
         comboing=true;
-        dx=0;
-        dy=0;
-        targetDx=rand.nextInt();
-        targetDy=rand.nextInt();
-        swipeAngle=Math.toDegrees(Math.atan2(targetDx,targetDy));
+        numSwipes=swipeTot;
+        numSwipesLeft=numSwipes;
         startTime=TimeUtils.millis();
-        allowedTime=3000;
+        allowedTime=5000;
     }
 
     private void tapCombo(int x, int y, double targetx, double targety)//Id:0
@@ -201,7 +197,7 @@ public class Combo
 
         if(Math.abs(x-targetx)<=(Gdx.graphics.getWidth()*.1)&&Math.abs(y-targety)<=(Gdx.graphics.getWidth()*.1))
         {
-            skill+=1;
+            skill+=1.0/tapTotal;
 
             pop1.play();
 
@@ -218,7 +214,7 @@ public class Combo
 
         if(tapsLeft==0)
         {
-            skill/=tapTotal;
+
             tapTotal=0;
             comboing=false;
         }
@@ -227,11 +223,20 @@ public class Combo
 
     }
 
+    private void generateSwipe()
+    {
+        dx=0;
+        dy=0;
+        targetDx=rand.nextInt();
+        targetDy=rand.nextInt();
+        swipeAngle=Math.toDegrees(Math.atan2(targetDx,targetDy));
+    }
+
     void tap(int x, int y)
     {
         if(tapsLeft>0&&comboId==-1)
         {
-            skill+=1;
+            skill+=1.0/tapTotal;
             tapsLeft--;
         }
         else if(tapTotal>0&&comboId==0)
@@ -262,24 +267,33 @@ public class Combo
         }
         else if(timer>allowedTime)
         {
-
-            if(comboId==0||comboId==-1)
-            {
-                skill /= tapTotal;
-            }
             comboing=false;
             timer=0;
         }
+    }
+
+    private void evaluateSwipe()
+    {
+        double angle=Math.toDegrees(Math.atan2(dx,dy));
+        System.out.print("Skill: "+skill+">");
+        if(angle-swipeAngle>10)
+        {
+
+        }
+        else
+        {
+            angle=Math.abs(angle-swipeAngle);
+            skill +=(( 1 - (angle / 10))/numSwipes);
+        }
+        System.out.println(skill);
     }
 
     public boolean pan(float x, float y, float deltaX, float deltaY)
     {
         if(comboId==2)
         {
-            System.out.println("pan:"+deltaX+""+deltaY);
             dx+=deltaX;
             dy+=deltaY;
-            System.out.println(dx+", "+dy);
             return true;
         }
         return false;
@@ -290,19 +304,16 @@ public class Combo
     {
         if(comboId==2)
         {
-            double angle=Math.toDegrees(Math.atan2(dx,dy));
-            System.out.println("Angle: "+(int)angle);
-            skill=Math.abs(angle-swipeAngle);
-
-            if(skill>25)
+            evaluateSwipe();
+            if(numSwipesLeft==1)
             {
-                skill=0;
+                comboing=false;
             }
             else
             {
-                skill = 1 - (skill / 25);
+                numSwipesLeft--;
+                generateSwipe();
             }
-            comboing=false;
             return true;
         }
         return false;

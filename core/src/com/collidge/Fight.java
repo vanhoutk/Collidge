@@ -585,7 +585,7 @@ public class Fight extends GameState
         else
         {
             boolean fight=false;
-            while(monsterId<monsters.length-1)
+            while(monsterId<monsters.length)
             {
 
                 if(!monsters[monsterId].getDead())
