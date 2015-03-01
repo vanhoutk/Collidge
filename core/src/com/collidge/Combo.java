@@ -33,9 +33,12 @@ public class Combo
     long lastCheck;
     double skill;
     Texture texture;
-    Sprite screenMask,dot;
+    Sprite screenMask,dot,swipe;
     int comboId;
     BitmapFont font;
+    float dx,dy;
+    double swipeAngle=-45;
+    float targetDx,targetDy;
 
     Combo()
     {
@@ -49,6 +52,11 @@ public class Combo
         texture=new Texture("buttonRound_grey.png");
         dot=new Sprite(texture);
         dot.setSize(Gdx.graphics.getWidth()/10f,Gdx.graphics.getWidth()/10f);
+        texture=new Texture("swipeArrowWhite.png");
+        swipe=new Sprite(texture);
+        swipe.setSize(Gdx.graphics.getWidth()/15,Gdx.graphics.getHeight());
+        swipe.setOriginCenter();
+
 
     }
 
@@ -100,6 +108,13 @@ public class Combo
             dot.setColor(Color.WHITE);
 
         }
+        else if(comboId==2)
+        {
+
+            swipe.setPosition(Gdx.graphics.getWidth()/2,0);
+            swipe.setRotation((float)swipeAngle);
+            swipe.draw(batch);
+        }
 
     }
     void initiateCombo(int moveId,Fight fight)
@@ -116,6 +131,9 @@ public class Combo
             case 1:
 
                 attack1();
+                break;
+            case 2:
+                attack2();
                 break;
             default:
                 defaultAttack(25);
@@ -162,6 +180,18 @@ public class Combo
         targetX=(rand.nextDouble()*Gdx.graphics.getWidth()/2)+(Gdx.graphics.getWidth()/3);
         targetY=Gdx.graphics.getHeight()/2;
         startX=Gdx.graphics.getWidth()/20;
+        startTime=TimeUtils.millis();
+        allowedTime=3000;
+    }
+    private void attack2()
+    {
+        skill=0;
+        comboing=true;
+        dx=0;
+        dy=0;
+        targetDx=rand.nextInt();
+        targetDy=rand.nextInt();
+        swipeAngle=Math.toDegrees(Math.atan2(targetDx,targetDy));
         startTime=TimeUtils.millis();
         allowedTime=3000;
     }
@@ -242,6 +272,41 @@ public class Combo
         }
     }
 
+    public boolean pan(float x, float y, float deltaX, float deltaY)
+    {
+        if(comboId==2)
+        {
+            System.out.println("pan:"+deltaX+""+deltaY);
+            dx+=deltaX;
+            dy+=deltaY;
+            System.out.println(dx+", "+dy);
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean panStop(float x, float y, int pointer, int button)
+    {
+        if(comboId==2)
+        {
+            double angle=Math.toDegrees(Math.atan2(dx,dy));
+            System.out.println("Angle: "+(int)angle);
+            skill=Math.abs(angle-swipeAngle);
+
+            if(skill>25)
+            {
+                skill=0;
+            }
+            else
+            {
+                skill = 1 - (skill / 25);
+            }
+            comboing=false;
+            return true;
+        }
+        return false;
+    }
     void delete()
     {
         pop1.dispose();

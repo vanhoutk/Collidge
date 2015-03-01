@@ -35,6 +35,8 @@ public class Play extends GameState {
     {
         super(gsm);
 
+
+
         userCharacter=new Player();
     }
 
@@ -54,6 +56,7 @@ public class Play extends GameState {
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load("TrinityMap1.tmx");
+
 
         renderer = new OrthogonalTiledMapRenderer(map);
 

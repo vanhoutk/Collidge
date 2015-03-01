@@ -93,7 +93,7 @@ public class Player
         items = new Inventory();
         items.loadInventory();
 
-        level=1;
+        level=3;
 
 
 
@@ -255,8 +255,8 @@ public class Player
 
         energy=(level+energyPoints)*5;
         //TODO put actual exp value back in after testing is over
-        //expTarget=(level*level)+20;
-        expTarget=1;
+        expTarget=(level*level)+20;
+        //expTarget=1;
 
         equipItem(weapon);
         equipItem(armour);

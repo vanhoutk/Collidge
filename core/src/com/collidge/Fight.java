@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 
@@ -28,7 +29,6 @@ public class Fight extends GameState
     private int PlayerDam;
     Player playr;
     boolean waitingForTouch=false;
-    int action;
     private int[] damage;
     private int ActionType;
     private int ActionId;
@@ -36,6 +36,24 @@ public class Fight extends GameState
     private boolean targeting=false;
     private int expEarned;
     private int monsterCode=-1;
+    private com.collidge.Animation testAnim;
+
+    private FightMenu fMenu;
+    private int enemyCount,enemiesLeft;
+    private Enemy[] enemies;
+    Attack move;
+
+
+    SpriteBatch batch;
+    Texture texture ;
+    Sprite healthBar, healthBackground, EnergyIcon;
+    Sprite menuContainer;
+    Sprite selector;
+    Sprite player;
+    Sprite[] sprite_enemy;
+    Combo combo;
+    private BitmapFont battleFont;
+    private TargetPicker targetPicker;
 
 
     Timer.Task damager=new Timer.Task()
@@ -97,22 +115,6 @@ public class Fight extends GameState
 
 
 
-    private FightMenu fMenu;
-    private int enemyCount,enemiesLeft;
-    private Enemy[] enemies;
-    Attack move;
-
-
-    SpriteBatch batch;
-    Texture texture ;
-    Sprite healthBar, healthBackground, EnergyIcon;
-    Sprite menuContainer;
-    Sprite selector;
-    Sprite player;
-    Sprite[] sprite_enemy;
-    Combo combo;
-    private BitmapFont battleFont;
-    private TargetPicker targetPicker;
 
 
     //allows the overall player class to be changed within the fight, so that e.g. it can gain experience
@@ -129,20 +131,20 @@ public class Fight extends GameState
         super(gsm);
         playr=player;
         EnemySets BasicSet=new EnemySets();
-        enemies=BasicSet.getEnemies(Enemy);           //Uses the "Pack" EnemyCollection from the EnemySets class. Pack contains up to 7 Freshers.
+        enemies=BasicSet.getEnemies(Enemy);
     }
 
     @Override
     public void initialize()
     {
 
+       // testAnim=new Animation("walkingRight.png",10);
         combo=new Combo();
 
         expEarned=0;
 
         //gets the number and type of enemies to fight
-        sprite_enemy = new Sprite[enemies.length];
-        addTextures(sprite_enemy,enemies);          //loads the textures for each of the enemies into an array
+
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
         damage=new int[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
@@ -178,6 +180,12 @@ public class Fight extends GameState
         texture = new Texture("panelInset_beige.png");
 
         menuContainer = new Sprite(texture);
+        texture=new Texture("walking_right_animation.png");
+        TextureRegion[][] region = TextureRegion.split(texture,32,32);
+
+
+
+        testAnim = new com.collidge.Animation(region[0],.2f);
 
 
 
@@ -199,6 +207,8 @@ public class Fight extends GameState
     public void update()
     {
 //(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
+        testAnim.update(Gdx.graphics.getDeltaTime());
+
         if(combo.comboing)
         {
             comboing=true;
@@ -238,6 +248,7 @@ public class Fight extends GameState
         healthBackground.draw(batch);
         healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), 28 * screenHeight / 30);
         healthBar.draw(batch);
+        batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
 
         EnergyIcon.setSize((float)(screenHeight / 16.0),(float)(screenHeight / 16.0));      /**Code Allowing for generation of Energy Icons  */
         for (int i = 0; i < playr.getCurrentEnergy(); i++)
@@ -387,12 +398,22 @@ public class Fight extends GameState
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY)
     {
+        if(combo.comboing)
+        {
+            combo.pan(x,y,deltaX,deltaY);
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button)
     {
+        if(combo.comboing)
+        {
+            combo.panStop(x,y,pointer,button);
+            return true;
+        }
         return false;
     }
 
@@ -650,6 +671,8 @@ public class Fight extends GameState
 
     }
 
+    /*  Removed because all it does is cause an error
+        Also might be a better fit in the enemy class itself
     private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
     {
         for (int i = 0; i< enemies.length; i++) {
@@ -682,7 +705,7 @@ public class Fight extends GameState
             }
 
         }
-    };
+    }*/
 
     private void endFight()
     {
