@@ -105,7 +105,7 @@ public class Fight extends GameState
 
     SpriteBatch batch;
     Texture texture ;
-    Sprite healthBar, healthBackground;
+    Sprite healthBar, healthBackground, EnergyIcon;
     Sprite menuContainer;
     Sprite selector;
     Sprite player;
@@ -168,6 +168,8 @@ public class Fight extends GameState
         texture = new Texture("Transparant_Button.png");
         selector = new Sprite(texture);
 
+        texture = new Texture("blue_circle.png");
+        EnergyIcon = new Sprite(texture);
         healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), 25 * screenHeight / 30);
         healthBar.setSize((4 * (screenWidth / 10)), screenHeight / 10);
         healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 10 * screenHeight / 30);
@@ -221,32 +223,34 @@ public class Fight extends GameState
         Timer.instance().clear();
         Timer.instance().start();
         Timer.instance().postTask(damager);
-        healthBackground.setSize((int) ((playr.getHealth() * (4 * (screenWidth / 10))) / ((double) playr.getHealth())), (int) (screenHeight / 20.0));
-        healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/20.0));
-
-
-
+        healthBackground.setSize((int) ((playr.getHealth() * (4 * (screenWidth / 10))) / ((double) playr.getHealth())), (int) (screenHeight / 16.0));
+        healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/16.0));
     }
 
     @Override
-    public void draw()
-    {
+    public void draw() {
 
         batch.begin();
 
 
-
         //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
-        healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 25 * screenHeight / 30);
+        healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 28 * screenHeight / 30);
         healthBackground.draw(batch);
-        healthBar.setPosition(screenWidth/30+(screenWidth/50),25*screenHeight/30);
+        healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), 28 * screenHeight / 30);
         healthBar.draw(batch);
 
+        EnergyIcon.setSize((float)(screenHeight / 16.0),(float)(screenHeight / 16.0));      /**Code Allowing for generation of Energy Icons  */
+        for (int i = 0; i < playr.getCurrentEnergy(); i++)
+        {
+            if (i<16)
+                EnergyIcon.setPosition((float)(4*screenWidth /75 + i*screenHeight/16.0), 209 * screenHeight / 240);
+            else
+                EnergyIcon.setPosition((float)(4*screenWidth /75 + i*screenHeight/16.0), 97 * screenHeight / 120);
+
+            EnergyIcon.draw(batch);
+        }
         //Sets colour and size of battle font, draws "HP" and "EN" for player health and energy
         battleFont.setColor(Color.BLACK);
-        battleFont.setScale(screenWidth/200.0f,screenHeight/200.0f);
-        battleFont.draw(batch, playr.getCurrentHealth()+" Hp", screenWidth/5,9*screenHeight/10);
-        battleFont.draw(batch, playr.getCurrentEnergy()+" En", screenWidth/5,(9*screenHeight/10)-battleFont.getLineHeight());
 
         //if no action has been selected in the fight menu, draws the fight menu
         if(!fMenu.actionSelected)
@@ -256,49 +260,54 @@ public class Fight extends GameState
 
         battleFont.setColor(Color.BLACK);
 
+        battleFont.setScale(screenWidth / (9 * 40f), screenHeight / (9 * 40f));
 
-        battleFont.setScale(screenWidth / (8* 40f), screenHeight / (8* 40f));
-        //scales the battle font for drawing enemy names to be smaller if there are more than 4 enemies
-        /**     Michael took this out because it was garbage, names won't on the screen unless you have it this size all the time*/
-        if(enemies.length>4)
-        {
-            battleFont.setScale(screenWidth / (enemies.length * 40f), screenHeight / (enemies.length * 40f));
-        }
-
-
-
-        //draws enemy names, enemy hp
-        for(int i=0;i<enemies.length;i++)
+        /*********************** Enemy Generation Loop **********************/
+        for(int i=0;i<enemies.length;i=i+2)
         {
             if(!enemies[i].getDead())
             {
 
-
-
-                healthBackground.setPosition((int) (3.0 * screenWidth / 5), screenHeight - (battleFont.getLineHeight() * ((i * 2) + 1)));
-                healthBackground.setSize(enemies[i].getMaxHealth() * ((screenWidth / 8) / enemies[i].getMaxHealth()), battleFont.getLineHeight() / 2);
+                healthBackground.setPosition((int) (3.0 * screenWidth / 5), screenHeight - (battleFont.getLineHeight() * (( i + 1 ) * 2 )));
+                healthBackground.setSize(2*screenWidth/15f, battleFont.getLineHeight());
                 healthBackground.draw(batch);
-                healthBar.setPosition((int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*((i*2)+1)));
-                healthBar.setSize(enemies[i].getHealth()*((screenWidth/8)/enemies[i].getMaxHealth()),battleFont.getLineHeight()/2);
+                healthBar.setPosition((int)(3.0*screenWidth/5),screenHeight - (battleFont.getLineHeight() * (( i + 1 ) * 2 )));
+                healthBar.setSize(enemies[i].getHealth()*((2*screenWidth/15f)/enemies[i].getMaxHealth()),battleFont.getLineHeight());
                 healthBar.draw(batch);
                 battleFont.draw(batch,enemies[i].getName(),(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
-                battleFont.draw(batch, enemies[i].getHealth() + "Hp", 3 * screenWidth / 5, (screenHeight - battleFont.getLineHeight() - (battleFont.getLineHeight() * (i * 2))));
+                battleFont.draw(batch, enemies[i].getHealth() + "", 3 * screenWidth / 5, (screenHeight - battleFont.getLineHeight() - (battleFont.getLineHeight() * (i * 2))));
 
             }
             else
                 battleFont.draw(batch,"Defeated",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+            if (i+1 >= enemies.length)
+                break;
+            if(!enemies[i+1].getDead())
+            {
 
+                healthBackground.setPosition((int) (4.0 * screenWidth / 5), screenHeight - (battleFont.getLineHeight() * (( i + 1 ) * 2 )));
+                healthBackground.setSize(2*screenWidth/15f, battleFont.getLineHeight());
+                healthBackground.draw(batch);
+                healthBar.setPosition((int)(4.0*screenWidth/5),screenHeight - (battleFont.getLineHeight() * (( i + 1 ) * 2 )));
+                healthBar.setSize(enemies[i+1].getHealth()*((2*screenWidth/15f)/enemies[i+1].getMaxHealth()),battleFont.getLineHeight());
+                healthBar.draw(batch);
+                battleFont.draw(batch,enemies[i+1].getName(),(int)(4.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
+                battleFont.draw(batch, enemies[i+1].getHealth() + "", 4 * screenWidth / 5, (screenHeight - battleFont.getLineHeight() - (battleFont.getLineHeight() * (i * 2))));
+
+            }
+            else
+                battleFont.draw(batch,"Defeated",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i*2)));
         }
 
         //moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
-        //TODO replace placeholder
         if(targeting)
         {
-            //battleFont.setColor(Color.BLACK);
-            //battleFont.draw(batch,">",(int)(2.7*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(targetPicker.getCurrentTarget()*2)));
+            selector.setSize((float)(3.0*screenWidth/20.0), battleFont.getLineHeight()*2);
+            if (targetPicker.getCurrentTarget()%2 ==0)      /**Determines what column the Enemy's data should be in **/
+                selector.setPosition(3f/5f*screenWidth,screenHeight-(battleFont.getLineHeight()*((targetPicker.getCurrentTarget()+1)*2)));
+            else
+                selector.setPosition(4f/5f*screenWidth,screenHeight-(battleFont.getLineHeight()*((targetPicker.getCurrentTarget())*2)));
 
-            selector.setSize((float)(2.0*screenWidth/5.0), battleFont.getLineHeight()*2);
-            selector.setPosition((float) (3.0 * screenWidth / 5.0), screenHeight - (battleFont.getLineHeight() * ((targetPicker.getCurrentTarget() + 1) * 2)));
             selector.draw(batch);
         }
         //TODO replace Placeholder
@@ -342,7 +351,6 @@ public class Fight extends GameState
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-
         return false;
     }
 
@@ -412,7 +420,7 @@ public class Fight extends GameState
             if(fMenu.actionSelected==false)
             {
                 //tap the menu to select an action
-                fMenu.touchDown((float)x/screenWidth,(float)y/screenHeight);
+                fMenu.touchDown(x/screenWidth,y/screenHeight, screenHeight);
                 if(fMenu.actionSelected)
                 {
                     ActionId=fMenu.getActionId();
@@ -457,7 +465,6 @@ public class Fight extends GameState
 
         return false;
     }
-
 
     private void playerTurn(Player player,Enemy[] monsters)
     {
@@ -521,7 +528,6 @@ public class Fight extends GameState
 
         playerTurnEnd();
     }
-
     //at the end of the player's turn, if there are enemies left, start the enemy's turn, otherwise if all are dead end the fight
     private void playerTurnEnd()
     {
@@ -581,6 +587,7 @@ public class Fight extends GameState
         }
 
     }
+
     private void defendTurn(Player player,Enemy[] monsters,int monsterId)
     {
         double dam=-1;
@@ -657,7 +664,7 @@ public class Fight extends GameState
                 sprite_enemy[i] = new Sprite(texture);
             }
 
-            else if (enemies[i].getName() == "Master Debater")
+            else if (enemies[i].getName() == "Debater")
             {
                 texture = new Texture("badlogic.jpg");
                 sprite_enemy[i] = new Sprite(texture);

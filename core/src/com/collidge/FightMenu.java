@@ -24,15 +24,21 @@ public class FightMenu
     private int currentMenu;
     public boolean actionSelected;
     private BitmapFont battleFont;
-    private Sprite menuContainer;
+    private Sprite menuContainer, arrow_down, arrow_up;
     private Texture texture;
 
     FightMenu(Player player)
     {
         battleFont = new BitmapFont();
-        texture = new Texture("panelInset_beige.png");
 
+        texture = new Texture("panel_beige.png");
         menuContainer = new Sprite(texture);
+
+        texture = new Texture("arrowBeige_down.png");
+        arrow_down = new Sprite(texture);
+
+        texture = new Texture("arrowBeige_up.png");
+        arrow_up = new Sprite(texture);
         previousMenus=new int[3];   //array to store previous menus (for use with back button)
         previousMenus[0]=50;
         previousMenus[1]=50;
@@ -267,77 +273,72 @@ public class FightMenu
 
     public void draw(SpriteBatch batch, int screenWidth, int screenHeight)
     {
-        battleFont.setScale(screenWidth/250.0f,screenHeight/250.0f);
+        battleFont.setScale(screenWidth/300.0f,screenHeight/250.0f);
 
-        menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*1.2f);
-        menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
+        menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*3.3f);
+
+
+        arrow_down.setSize(screenWidth/12f,screenWidth/12f);
+        arrow_down.setPosition(screenHeight / 20, screenHeight / 2 - (2.3f * battleFont.getLineHeight()));
+        arrow_down.draw(batch);
+
+        arrow_up.setSize(screenWidth/12f,screenWidth/12f);
+        arrow_up.setPosition( screenHeight / 20,screenHeight/2+(1.3f*battleFont.getLineHeight()));
+        arrow_up.draw(batch);
+        //menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
+        //menuContainer.draw(batch);
+
+       // menuContainer.setPosition( screenWidth/6,screenHeight/2);
+       // menuContainer.draw(batch);
+
+        menuContainer.setPosition( screenWidth/8,screenHeight/2-(battleFont.getLineHeight()));
         menuContainer.draw(batch);
-
-        menuContainer.setPosition( screenWidth/6,screenHeight/2);
-        menuContainer.draw(batch);
-
-        menuContainer.setPosition( screenWidth/6,screenHeight/2-(battleFont.getLineHeight()*2));
-        menuContainer.draw(batch);
-
-        if(getAboveIcon().endsWith("*"))
         {
-            battleFont.setColor(Color.RED);
-        }
-        else
-        {
-            battleFont.setColor(Color.BLACK);
-        }
-        battleFont.draw(batch, getAboveIcon(), screenWidth/5,screenHeight/2+battleFont.getLineHeight());
-        if(getCurrentIcon().endsWith("*"))
-        {
-            battleFont.setColor(Color.RED);
-        }
-        else
-        {
-            battleFont.setColor(Color.BLACK);
-        }
-        battleFont.draw(batch, getCurrentIcon(), screenWidth/5,screenHeight/2);
-        if(getBelowIcon().endsWith("*"))
-        {
-            battleFont.setColor(Color.RED);
-        }
-        else
-        {
-            battleFont.setColor(Color.BLACK);
-        }
-        battleFont.draw(batch, getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
+            if (getAboveIcon().endsWith("*")) {
+                battleFont.setColor(Color.RED);
+            } else {
+                battleFont.setColor(Color.BLACK);
+            }
+            battleFont.draw(batch, getAboveIcon(), screenWidth / 7, screenHeight / 2 + 2 * battleFont.getLineHeight());
 
-        battleFont.draw(batch, getBelowIcon(), screenWidth/5,screenHeight/2-battleFont.getLineHeight());
+            if (getCurrentIcon().endsWith("*")) {
+                battleFont.setColor(Color.RED);
+            } else {
+                battleFont.setColor(Color.BLACK);
+            }
+            battleFont.draw(batch, getCurrentIcon(), screenWidth / 7, screenHeight / 2 + battleFont.getLineHeight());
 
-
+            if (getBelowIcon().endsWith("*")) {
+                battleFont.setColor(Color.RED);
+            } else {
+                battleFont.setColor(Color.BLACK);
+            }
+            battleFont.draw(batch, getBelowIcon(), screenWidth / 7, screenHeight / 2);
+        }
     }
 
 
-    public void touchDown(float x, float y)
+    public void touchDown(float x, float y, int screenHeight)
     {
-        if(x<.5)
+        System.out.println(x + " " + y + " " + 0.5+(battleFont.getLineHeight())/screenHeight);
+        if(x<0.1)
         {
            // System.out.println(y);
-            if (y < .6 && y > .45)
-            {
-                Select();
-            } else if (y < 0.35)
-            {
-
-                Down();
-
-            } else if (y > 0.65)
+            if (y > 0.5+(battleFont.getLineHeight())/screenHeight && y < 0.5+(battleFont.getLineHeight())/screenHeight)
             {
 
                 Up();
 
+            } else //if (y < 1/ 2 - (2.3f * battleFont.getLineHeight()))
+            {
+
+                Down();
+
             }
         }
-        /*System.out.println("_______________________________________");
-        System.out.println("  "+menuWords[currentMenu][aboveIcon]);
-        System.out.println(">>"+menuWords[currentMenu][currentIcon]+"\t <<");
-        System.out.println("  "+menuWords[currentMenu][belowIcon]);*/
-
+        else if (x > 0.1 && x < 0.433)
+            if (y < .6 && y > .35)
+                Select();
     }
 
 
