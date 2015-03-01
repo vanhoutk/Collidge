@@ -29,7 +29,6 @@ public class Fight extends GameState
     private int PlayerDam;
     Player playr;
     boolean waitingForTouch=false;
-    int action;
     private int[] damage;
     private int ActionType;
     private int ActionId;
@@ -38,6 +37,23 @@ public class Fight extends GameState
     private int expEarned;
     private int monsterCode=-1;
     private com.collidge.Animation testAnim;
+
+    private FightMenu fMenu;
+    private int enemyCount,enemiesLeft;
+    private Enemy[] enemies;
+    Attack move;
+
+
+    SpriteBatch batch;
+    Texture texture ;
+    Sprite healthBar, healthBackground, EnergyIcon;
+    Sprite menuContainer;
+    Sprite selector;
+    Sprite player;
+    Sprite[] sprite_enemy;
+    Combo combo;
+    private BitmapFont battleFont;
+    private TargetPicker targetPicker;
 
 
     Timer.Task damager=new Timer.Task()
@@ -99,22 +115,6 @@ public class Fight extends GameState
 
 
 
-    private FightMenu fMenu;
-    private int enemyCount,enemiesLeft;
-    private Enemy[] enemies;
-    Attack move;
-
-
-    SpriteBatch batch;
-    Texture texture ;
-    Sprite healthBar, healthBackground, EnergyIcon;
-    Sprite menuContainer;
-    Sprite selector;
-    Sprite player;
-    Sprite[] sprite_enemy;
-    Combo combo;
-    private BitmapFont battleFont;
-    private TargetPicker targetPicker;
 
 
     //allows the overall player class to be changed within the fight, so that e.g. it can gain experience
@@ -398,12 +398,22 @@ public class Fight extends GameState
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY)
     {
+        if(combo.comboing)
+        {
+            combo.pan(x,y,deltaX,deltaY);
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button)
     {
+        if(combo.comboing)
+        {
+            combo.panStop(x,y,pointer,button);
+            return true;
+        }
         return false;
     }
 
