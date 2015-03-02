@@ -2,10 +2,12 @@ package com.collidge;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +16,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor, ApplicationListener,GestureDetector.GestureListener
 {
@@ -26,10 +34,63 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     private Sprite screenMask;
     private Texture texture;
     private SpriteBatch batch;
+
+
+
     @Override
     public void create ()
     {
 
+
+
+        /*if(Gdx.files.isLocalStorageAvailable())
+        {
+            OutputStream out=Gdx.files.local( "data/save.txt" ).write(false);
+            try
+            {
+                out.write("test".getBytes());
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        InputStream in=Gdx.files.local( "data/save.txt" ).read();
+        InputStreamReader is = new InputStreamReader(in);
+        StringBuilder sb=new StringBuilder();
+        BufferedReader br = new BufferedReader(is);
+        String read = null;
+        try
+        {
+            read = br.readLine();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        while(read != null) {
+            //System.out.println(read);
+            sb.append(read);
+            try
+            {
+                read =br.readLine();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        System.out.println(sb.toString());
+*/
 
         Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
@@ -56,6 +117,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     {
         if(quit)
         {
+
 
             Gdx.app.exit();
         }
@@ -116,6 +178,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public void dispose()
     {
       //  super.dispose();
+
     }
 
     @Override

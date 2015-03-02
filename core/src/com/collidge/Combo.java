@@ -26,6 +26,7 @@ public class Combo
     double targetX, targetY;
     boolean comboing;
     int tapTotal;
+    boolean defending=false;
     int tapsLeft;
     long timer=0;
     long lastCheck;
@@ -41,7 +42,6 @@ public class Combo
 
     Combo()
     {
-
         font=new BitmapFont();
         texture=new Texture("blackSquare.png");
         screenMask=new Sprite(texture);
@@ -64,8 +64,6 @@ public class Combo
         if(TimeUtils.timeSinceMillis(lastCheck)>=150)
         {
             timer++;
-
-
         }
         else
         {
@@ -79,11 +77,32 @@ public class Combo
         checkTimer();
         dot.setPosition((float)targetX-Gdx.graphics.getWidth()*.05f,(float)targetY-Gdx.graphics.getWidth()*.05f);
 
+        if(defending)
+        {
+            System.out.println("XXX");
+            swipe.setColor(Color.TEAL);
+            dot.setColor(Color.TEAL);
+            float alpha=(1-((float)timer/allowedTime));
+            if(alpha<.2)
+            {
+                alpha=.2f;
+            }
+            swipe.setAlpha(alpha);
+            dot.setAlpha(alpha);
+        }
+        else
+        {
+            swipe.setAlpha(1);
+            dot.setAlpha(1);
+            swipe.setColor(Color.WHITE);
+            dot.setColor(Color.WHITE);
+        }
 
     }
     void draw(SpriteBatch batch)
     {
         screenMask.draw(batch);
+
         if(comboId==-1)
         {
             font.draw(batch,"Tap to defend! "+(int)(skill*tapTotal)+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
@@ -110,10 +129,12 @@ public class Combo
         else if(comboId==2)
         {
 
+
             swipe.setPosition(Gdx.graphics.getWidth()/2-Gdx.graphics.getWidth()/20,0);
             swipe.setRotation((float)swipeAngle);
             swipe.draw(batch);
         }
+
 
     }
     void initiateCombo(int moveId,Fight fight)
@@ -121,37 +142,40 @@ public class Combo
         timer=0;
         lastCheck=TimeUtils.millis();
         comboId=moveId;
+        defending=false;
         skill=0.0001;
         switch(moveId)
         {
             case 0:
-                basicAttack();
+                defaultAttack(10,5000);
                 break;
             case 1:
 
                 attack1();
                 break;
             case 2:
-                attack2(2);
+                attack2(2,3000);
                 break;
             default:
-                defaultAttack(25);
-                comboId=-1;
+                System.out.println("D "+defending);
+                defending=true;
+                attack2(3,4000);
+                comboId=2;
                 break;
         }
     }
 
-    void defaultAttack(int numTaps)//currently used to defend
+    void defaultAttack(int numTaps,int timeMillis)//currently used to defend
     {
         tapTotal=numTaps;
         tapsLeft=numTaps;
-        allowedTime=2000;
+        allowedTime=timeMillis;
         startTime=TimeUtils.millis();
         comboing=true;
         targetX=Gdx.graphics.getWidth()/2;
         targetY=Gdx.graphics.getHeight()/2;
     }
-    void basicAttack()
+    void basicAttack(int targetTap,int timeMilli)
     {
 
         comboing=true;
@@ -159,10 +183,10 @@ public class Combo
         targetY=(int)(rand.nextDouble()*Gdx.graphics.getHeight());
 
         comboId=0;
-        tapTotal=10;
+        tapTotal=targetTap;
         tapsLeft=tapTotal;
 
-        allowedTime=5000;
+        allowedTime=timeMilli;
         startTime=TimeUtils.millis();
 
 
@@ -182,14 +206,14 @@ public class Combo
         startTime=TimeUtils.millis();
         allowedTime=3000;
     }
-    private void attack2(int swipeTot)
+    private void attack2(int swipeTot,int timeMilli)
     {
         generateSwipe();
         comboing=true;
         numSwipes=swipeTot;
         numSwipesLeft=numSwipes;
         startTime=TimeUtils.millis();
-        allowedTime=5000;
+        allowedTime=timeMilli;
     }
 
     private void tapCombo(int x, int y, double targetx, double targety)//Id:0
@@ -283,7 +307,7 @@ public class Combo
         else
         {
             angle=Math.abs(angle-swipeAngle);
-            skill +=(( 1 - (angle / 10))/numSwipes);
+            skill +=Math.abs(( 1 - (angle / 10))/numSwipes);
         }
         System.out.println(skill);
     }

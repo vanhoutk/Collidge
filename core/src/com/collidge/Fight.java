@@ -152,7 +152,6 @@ public class Fight extends GameState
         move=new Attack();        //calls the attack class
 
         //enemies=new Enemy[enemyCount];
-
         //allows the player to select a particular enemy to attack
         targetPicker=new TargetPicker(enemies);
         sprite_enemy = new Sprite[enemies.length];
@@ -272,7 +271,7 @@ public class Fight extends GameState
         battleFont.setColor(Color.BLACK);
 
         battleFont.draw(batch,"MR MAN",3*screenWidth/30,119*screenHeight/120);
-        battleFont.draw(batch, playr.getCurrentHealth() + "HP" ,7*screenWidth/60,112*screenHeight/120);
+        battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,7*screenWidth/60,112*screenHeight/120);
 
         //if no action has been selected in the fight menu, draws the fight menu
         if(!fMenu.actionSelected)
