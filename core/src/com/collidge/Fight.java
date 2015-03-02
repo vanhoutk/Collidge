@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.Timer;
 
 
 
-/**
+/*
  * Created by Daniel on 20/01/2015.
  */
 public class Fight extends GameState
@@ -282,27 +282,41 @@ public class Fight extends GameState
         battleFont.setScale(screenWidth / (13 * 40f), screenHeight / (13 * 40f));
 
         /*********************** Enemy Generation Loop **********************/
-        for(int i=0;i<enemies.length;i=i+2)
+        for(int i=0;i<enemies.length;i++)
         {
             if(!enemies[i].getDead())
             {
 
-                sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
-                sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
-                sprite_enemy[i].draw(batch);
-                healthBackground.setPosition((1f * screenWidth /2f), screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
-                healthBackground.setSize(2*screenWidth/15f, battleFont.getLineHeight());
-                healthBackground.draw(batch);
-                healthBar.setPosition((1f * screenWidth /2f),screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
-                healthBar.setSize(enemies[i].getHealth()*((2*screenWidth/15f)/enemies[i].getMaxHealth()),battleFont.getLineHeight());
-                healthBar.draw(batch);
-                battleFont.draw(batch,enemies[i].getName(),(1f * screenWidth /2f),screenHeight-battleFont.getLineHeight() - (battleFont.getLineHeight()*(i)));
-                battleFont.draw(batch, enemies[i].getHealth() + "", (1f * screenWidth /2f), (screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (i))));
 
+                batch.draw(enemies[i].animation.getFrame(),((int)(screenWidth/2+(i*(screenWidth/(double)(2*enemyCount)))))-screenWidth/20,screenHeight/10+(int)((((enemyCount)-(i+1))/(double)(enemyCount))*(screenHeight/2)),enemies[i].width,enemies[i].height);
+                /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
+                sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
+                sprite_enemy[i].draw(batch);*/
+
+                if(targeting&&targetPicker.getCurrentTarget()==i)
+                {
+                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
+                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(2*enemyCount)))))-screenWidth/20,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
+                    selector.setSize(enemies[i].width,enemies[i].height);
+                    selector.draw(batch);
+                    healthBackground.setPosition((1f * screenWidth /2f), screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
+                    healthBackground.setSize(2*screenWidth/15f, battleFont.getLineHeight());
+                    healthBackground.draw(batch);
+                    healthBar.setPosition((1f * screenWidth /2f),screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
+                    healthBar.setSize(enemies[i].getHealth()*((2*screenWidth/15f)/enemies[i].getMaxHealth()),battleFont.getLineHeight());
+                    healthBar.draw(batch);
+                    battleFont.draw(batch,enemies[i].getName(),(1f * screenWidth /2f),screenHeight-battleFont.getLineHeight() - (battleFont.getLineHeight()*(i)));
+                    battleFont.draw(batch, enemies[i].getHealth() + "", (1f * screenWidth /2f), (screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (i))));
+
+                }
+                else
+                {
+                    enemies[i].animation.pause();
+                }
             }
             else
                 battleFont.draw(batch,"Defeated",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i)));
-            if (i+1 >= enemies.length)
+            /*if (i+1 >= enemies.length)
                 break;
             if(!enemies[i+1].getDead())
             {
@@ -318,22 +332,22 @@ public class Fight extends GameState
 
             }
             else
-                battleFont.draw(batch,"Defeated",(4f*screenWidth/5f),screenHeight-(battleFont.getLineHeight()*(i)));
+                battleFont.draw(batch,"Defeated",(4f*screenWidth/5f),screenHeight-(battleFont.getLineHeight()*(i)));*/
         }
 
-        //moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
+        /*//moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
         if(targeting)
         {
             selector.setSize((screenWidth/5f), battleFont.getLineHeight()*2);
-            if (targetPicker.getCurrentTarget()%2 ==0)      /**Determines what column the Enemy's data should be in **/
+            if (targetPicker.getCurrentTarget()%2 ==0)      //Determines what column the Enemy's data should be in
                 selector.setPosition(1f/2f*screenWidth,screenHeight-2*battleFont.getLineHeight() - (battleFont.getLineHeight()*((targetPicker.getCurrentTarget()+1))));
             else
                 selector.setPosition(1f/5f*screenWidth+1f/2f*screenWidth,screenHeight-2*battleFont.getLineHeight() - (battleFont.getLineHeight()*((targetPicker.getCurrentTarget()))));
 
             selector.draw(batch);
-        }
+        }*/
         //TODO replace Placeholder
-        else if(combo.comboing) //if in combo phase
+        if(combo.comboing) //if in combo phase
         {
 
             combo.draw(batch);

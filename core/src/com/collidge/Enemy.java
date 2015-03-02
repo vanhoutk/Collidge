@@ -1,5 +1,8 @@
 package com.collidge;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import java.util.Random;
 
 /**
@@ -10,6 +13,10 @@ public class Enemy
     private int maxHealth,currentHealth,attack,defence;
     private boolean dead;
     String name;
+    private Texture texture;
+    Animation animation;
+    int width;
+    int height;
 
     private Random rand=new Random();
     public int getExpValue()
@@ -19,7 +26,7 @@ public class Enemy
 
     private int expValue;
 
-    Enemy(String nm, int h, int a, int d,int exp)
+    Enemy(String nm, int h, int a, int d,int exp,int sizeX, int sizeY)
     {
         name=nm;
         maxHealth=h;
@@ -28,6 +35,11 @@ public class Enemy
         expValue=exp;
         currentHealth=maxHealth;
         dead=false;
+        texture=new Texture("walking_left_animation.png");
+        TextureRegion[][] region = TextureRegion.split(texture,32,32);
+        animation=new Animation(region[0],.2f);
+        width=sizeX;
+        height=sizeY;
     }
 
     Enemy(Enemy template)
@@ -38,6 +50,8 @@ public class Enemy
         defence=template.getDefence();
         expValue=template.getExpValue();
         name=template.getName();
+        width=template.width;
+        height=template.height;
 
         maxHealth+=(int)(maxHealth*(rand.nextDouble()-.5));
         attack+=(int)(attack*(rand.nextDouble()-.5));
@@ -47,6 +61,10 @@ public class Enemy
 
        // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;
+        texture=new Texture("walking_left_animation.png");
+        TextureRegion[][] region = TextureRegion.split(texture,32,32);
+        animation=new Animation(region[0],.2f);
+
 
 
 

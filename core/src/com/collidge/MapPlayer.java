@@ -95,9 +95,22 @@ public class MapPlayer extends Sprite
             direction++;
             if (direction >= 4) direction = 0;
         }*/
-        walkingAnimation[direction].update(Gdx.graphics.getDeltaTime());
+
      //   super.draw(spritebatch);
 
+        if(velocity.x==0&&velocity.y==0)
+        {
+            walkingAnimation[direction].stop();
+            if(direction!=RIGHT)
+            {
+                walkingAnimation[direction].setCurrentFrame(1);
+            }
+        }
+        else
+        {
+            walkingAnimation[direction].play();
+            walkingAnimation[direction].update(Gdx.graphics.getDeltaTime());
+        }
 
         spritebatch.draw(walkingAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
     }

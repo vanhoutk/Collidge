@@ -79,7 +79,6 @@ public class Combo
 
         if(defending)
         {
-            System.out.println("XXX");
             swipe.setColor(Color.TEAL);
             dot.setColor(Color.TEAL);
             float alpha=(1-((float)timer/allowedTime));
@@ -159,7 +158,7 @@ public class Combo
             default:
                 System.out.println("D "+defending);
                 defending=true;
-                attack2(3,4000);
+                attack2(1,1000);
                 comboId=2;
                 break;
         }

@@ -18,15 +18,15 @@ public class EnemyTypes
         Enemy temp;
         //TODO rebalance and add more enemies (maybe add enemyMoves/ enemyDescriptions)
         //temp = new Enemy(String name, int health, int attack, int defence,int experianceForKilled);
-        temp=new Enemy("Fresher",10,5,0,5);
+        temp=new Enemy("Fresher",10,5,0,5,30,30);
         EnemyCatalog.put(temp.getName(), temp);
-        temp=new Enemy("Master Debater",30,10,0,10);
+        temp=new Enemy("Master Debater",30,10,0,10,60,50);
         EnemyCatalog.put(temp.getName(), temp);
-        temp=new Enemy("Lecturer",80,15,4,25);
+        temp=new Enemy("Lecturer",80,15,4,25,65,65);
         EnemyCatalog.put(temp.getName(), temp);
-        temp=new Enemy("Frat boy",5,15,0,10);
+        temp=new Enemy("Frat boy",5,15,0,10,50,30);
         EnemyCatalog.put(temp.getName(), temp);
-        temp=new Enemy("\"Musician\"",50,5,5,20);
+        temp=new Enemy("\"Musician\"",50,5,5,20,30,10);
         EnemyCatalog.put(temp.getName(), temp);
 
 
@@ -42,7 +42,7 @@ public class EnemyTypes
             }
         }
         System.out.println("No enemy found?");
-        return (new Enemy("Fresher",10,2,1,5));
+        return (new Enemy("Fresher",10,2,1,5,10,10));
     }
 
 

@@ -15,6 +15,7 @@ public class Animation {
     private float delay; //time between each frame
     private int currentFrame;
     private int timesPlayed;
+    public boolean paused;
 
     public Animation()
     {
@@ -44,13 +45,23 @@ public class Animation {
 
     }
 
+    public void pause()
+    {
+
+        paused=false;
+
+    }
+
     public void update(float dt)
     {
-        if(delay <= 0) return;
-        time += dt;
-        while(time >= delay)
+        if(!paused)
         {
-            step();
+            if (delay <= 0) return;
+            time += dt;
+            while (time >= delay)
+            {
+                step();
+            }
         }
     }
 
@@ -63,6 +74,29 @@ public class Animation {
             currentFrame = 0;
             timesPlayed++;
         }
+    }
+
+    public void stop()
+    {
+        paused=true;
+        currentFrame=0;
+    }
+
+    public void setCurrentFrame(int i)
+    {
+        if(i<frames.length)
+        {
+            currentFrame = i;
+        }
+        else
+        {
+            System.out.println("Invalid frame accessed");
+        }
+    }
+
+    public void play()
+    {
+        paused=false;
     }
 
     public TextureRegion getFrame()
