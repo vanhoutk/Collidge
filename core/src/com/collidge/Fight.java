@@ -196,9 +196,6 @@ public class Fight extends GameState
 
 
 
-
-
-
         //calls fightMenu class
         fMenu=new FightMenu(playr);
 
@@ -456,7 +453,7 @@ public class Fight extends GameState
             if(fMenu.actionSelected==false)
             {
                 //tap the menu to select an action
-                fMenu.touchDown(x, y, screenHeight);
+                fMenu.touchDown(x, y);
                 if(fMenu.actionSelected)
                 {
                     ActionId=fMenu.getActionId();

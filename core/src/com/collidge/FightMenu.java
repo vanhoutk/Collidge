@@ -40,6 +40,7 @@ public class FightMenu
         texture = new Texture("arrow_up_blue.png");
         arrow_up = new Sprite(texture);
 
+
         previousMenus=new int[3];   //array to store previous menus (for use with back button)
         previousMenus[0]=50;
         previousMenus[1]=50;
@@ -280,12 +281,13 @@ public class FightMenu
 
 
         arrow_down.setSize(screenWidth/12f,screenWidth/12f);
-        arrow_down.setPosition(screenHeight / 20, screenHeight / 2 - (2.3f * battleFont.getLineHeight()));
+        arrow_down.setPosition(screenWidth / 28, screenHeight / 2 - (2.3f * battleFont.getLineHeight()));
         arrow_down.draw(batch);
 
         arrow_up.setSize(screenWidth/12f,screenWidth/12f);
-        arrow_up.setPosition( screenHeight / 20,screenHeight/2+(1.3f*battleFont.getLineHeight()));
+        arrow_up.setPosition( screenWidth / 28,screenHeight/2+(1.3f*battleFont.getLineHeight()));
         arrow_up.draw(batch);
+
         //menuContainer.setPosition( screenWidth/6,screenHeight/2-battleFont.getLineHeight());
         //menuContainer.draw(batch);
 
@@ -318,7 +320,7 @@ public class FightMenu
         }
     }
 
-    public void touchDown(float x, float y, int screenHeight)
+    public void touchDown(float x, float y)
     {
         if(x>arrow_up.getX() && x<arrow_up.getX() + arrow_up.getWidth())    //x co-ordinates must be on the arrow sprite
         {
@@ -335,7 +337,7 @@ public class FightMenu
         }
         //x and y co-ordinates for the menu
         else if (x > menuContainer.getX() && x < menuContainer.getX() + menuContainer.getWidth())
-            if (y < battleFont.getLineHeight()*3.3f + screenHeight/2-(battleFont.getLineHeight())  && y > screenHeight/2-(battleFont.getLineHeight()))
+            if (y > menuContainer.getY() - menuContainer.getHeight()/6 && y < menuContainer.getY() + menuContainer.getHeight()/3)
                 Select();
     }
 
