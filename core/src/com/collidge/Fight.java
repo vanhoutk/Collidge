@@ -445,7 +445,7 @@ public class Fight extends GameState
             if(fMenu.actionSelected==false)
             {
                 //tap the menu to select an action
-                fMenu.touchDown(x/screenWidth,y/screenHeight, screenHeight);
+                fMenu.touchDown(x, y, screenHeight);
                 if(fMenu.actionSelected)
                 {
                     ActionId=fMenu.getActionId();

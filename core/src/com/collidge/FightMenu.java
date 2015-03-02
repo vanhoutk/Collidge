@@ -31,14 +31,15 @@ public class FightMenu
     {
         battleFont = new BitmapFont();
 
-        texture = new Texture("panel_beige.png");
+        texture = new Texture("panel_blue.png");
         menuContainer = new Sprite(texture);
 
-        texture = new Texture("arrowBeige_down.png");
+        texture = new Texture("arrow_down_blue.png");
         arrow_down = new Sprite(texture);
 
-        texture = new Texture("arrowBeige_up.png");
+        texture = new Texture("arrow_up_blue.png");
         arrow_up = new Sprite(texture);
+
         previousMenus=new int[3];   //array to store previous menus (for use with back button)
         previousMenus[0]=50;
         previousMenus[1]=50;
@@ -317,13 +318,40 @@ public class FightMenu
         }
     }
 
-
     public void touchDown(float x, float y, int screenHeight)
     {
-        System.out.println(x + " " + y + " " + 0.5+(battleFont.getLineHeight())/screenHeight);
-        if(x<0.1)
+        if(x>arrow_up.getX() && x<arrow_up.getX() + arrow_up.getWidth())    //x co-ordinates must be on the arrow sprite
         {
-           // System.out.println(y);
+
+           //y co-ordinates for the up arrow
+            if (y < arrow_up.getY() + 0.5*arrow_up.getHeight() && y > arrow_up.getY() - 0.5*arrow_up.getHeight()) {
+                Up();
+            }
+
+            //y co-ordinates for the down arrow
+            else if (y > arrow_down.getY() - 0.5*arrow_down.getHeight() && y < arrow_down.getY() + 0.5*arrow_down.getHeight()) {
+                Down();
+            }
+        }
+        //x and y co-ordinates for the menu
+        else if (x > menuContainer.getX() && x < menuContainer.getX() + menuContainer.getWidth())
+            if (y < battleFont.getLineHeight()*3.3f + screenHeight/2-(battleFont.getLineHeight())  && y > screenHeight/2-(battleFont.getLineHeight()))
+                Select();
+    }
+
+
+    /*
+    //here x needs to be fed in (called in the fight class) as x/screenWidth and y as y/screenHeight - the current version is hopefully ok though - Toni
+    public void touchDown(float x, float y, int screenWidth, int screenHeight)
+    {
+        //System.out.println(x + " " + y + " " + 0.5+(battleFont.getLineHeight())/screenHeight);
+        System.out.println("x=" + x + " y=" + y + " " + "width=" + screenWidth + " height=" + screenHeight);
+        int sWidth = screenWidth/1000;
+        int sHeight =  screenHeight/1000;
+
+        if(x< (screenWidth/8))
+        {
+            // System.out.println(y);
             if (y > 0.5+(battleFont.getLineHeight())/screenHeight)
             {
 
@@ -339,7 +367,7 @@ public class FightMenu
         else if (x > 0.1 && x < 0.433)
             if (y < .6 && y > .35)
                 Select();
-    }
+    }*/
 
 
 
