@@ -367,7 +367,8 @@ public class FightMenu
         else if (x > 0.1 && x < 0.433)
             if (y < .6 && y > .35)
                 Select();
-    }*/
+    }
+    */
 
 
 
