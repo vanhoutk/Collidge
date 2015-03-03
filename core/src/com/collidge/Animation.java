@@ -22,23 +22,23 @@ public class Animation {
         frames = new TextureRegion[3];
     }
 
-    public Animation(TextureRegion[] frames)
+    public Animation(TextureRegion[] Frames)
     {
-        this(frames, 1 / 12f);
+        this(Frames, 1 / 12f);
         //no delay, just calls other constructor.
     }
 
-    public Animation(TextureRegion[] frames, float delay)
+    public Animation(TextureRegion[] Frames, float Delay)
     {
-        setFrames(frames, delay);
+        setFrames(Frames, Delay);
 
     }
 
-    public void setFrames(TextureRegion[] frames, float delay)
+    public void setFrames(TextureRegion[] Frames, float Delay)
     {
         //resets with new set of frames
-        this.frames = frames;
-        this.delay = delay;
+        this.frames = Frames;
+        this.delay = Delay;
         time = 0;
         currentFrame = 0;
         timesPlayed =  0;
@@ -76,6 +76,10 @@ public class Animation {
         }
     }
 
+    public void setDelay(float Delay)
+    {
+        delay=Delay;
+    }
     public void stop()
     {
         paused=true;

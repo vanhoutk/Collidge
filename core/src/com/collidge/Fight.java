@@ -154,8 +154,8 @@ public class Fight extends GameState
         //enemies=new Enemy[enemyCount];
         //allows the player to select a particular enemy to attack
         targetPicker=new TargetPicker(enemies);
-        sprite_enemy = new Sprite[enemies.length];
-        addTextures(sprite_enemy, enemies);
+        //sprite_enemy = new Sprite[enemies.length];
+        //addTextures(sprite_enemy, enemies);
 
 
 
@@ -253,7 +253,7 @@ public class Fight extends GameState
         healthBar.draw(batch);
         batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
 
-        EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f));      /**Code Allowing for generation of Energy Icons  */
+        EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f));      //Code Allowing for generation of Energy Icons
         for (int i = 0; i < playr.getCurrentEnergy(); i++) {
             if (i < 13) {
                 EnergyIcon.setPosition((4f * screenWidth / 75 + i * screenHeight / 20f), 50 * screenHeight / 60);
@@ -281,14 +281,23 @@ public class Fight extends GameState
 
         battleFont.setScale(screenWidth / (13 * 40f), screenHeight / (13 * 40f));
 
-        /*********************** Enemy Generation Loop **********************/
+        // Enemy drawing loop
         for(int i=0;i<enemies.length;i++)
         {
             if(!enemies[i].getDead())
             {
 
 
-                batch.draw(enemies[i].animation.getFrame(),((int)(screenWidth/2+(i*(screenWidth/(double)(2*enemyCount)))))-screenWidth/20,screenHeight/10+(int)((((enemyCount)-(i+1))/(double)(enemyCount))*(screenHeight/2)),enemies[i].width,enemies[i].height);
+                int target;
+                if((targeting&&targetPicker.getCurrentTarget()==i)||monsterCode==i)
+                {
+                    target=Gdx.graphics.getWidth()/10;
+                }
+                else
+                {
+                    target=0;
+                }
+                batch.draw(enemies[i].animation.getFrame(),((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)((((enemyCount)-(i+1))/(double)(enemyCount))*(screenHeight/2)),enemies[i].width,enemies[i].height);
                 /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
                 sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
                 sprite_enemy[i].draw(batch);*/
@@ -296,9 +305,10 @@ public class Fight extends GameState
                 if(targeting&&targetPicker.getCurrentTarget()==i)
                 {
                     enemies[i].animation.update(Gdx.graphics.getDeltaTime());
-                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(2*enemyCount)))))-screenWidth/20,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
+                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
                     selector.setSize(enemies[i].width,enemies[i].height);
                     selector.draw(batch);
+                    //TODO fix health bar so that it fills top of enemy side
                     healthBackground.setPosition((1f * screenWidth /2f), screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
                     healthBackground.setSize(2*screenWidth/15f, battleFont.getLineHeight());
                     healthBackground.draw(batch);
@@ -380,9 +390,9 @@ public class Fight extends GameState
         batch.end();
     }
 
-//*********************************************************************************************************************
-//******************************* these are just input methods that must be implemented *******************************
-//*********************************************************************************************************************
+//----------------------------------------------------------------------------------
+// these are just input methods that must be implemented
+//----------------------------------------------------------------------------------
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
@@ -454,8 +464,8 @@ public class Fight extends GameState
         return false;
     }
 
-//*************************************************************************************************************************
-//*************************************************************************************************************************
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
 
     @Override
     public boolean tap(float x, float y, int count, int button)
@@ -697,7 +707,7 @@ public class Fight extends GameState
     }
 
     /*  Removed because all it does is cause an error
-        Also might be a better fit in the enemy class itself*/
+        Also might be a better fit in the enemy class itself
     private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
     {
         for (int i = 0; i< enemies.length; i++) {
@@ -730,7 +740,7 @@ public class Fight extends GameState
             }
 
         }
-    }
+    }*/
 
     private void endFight()
     {

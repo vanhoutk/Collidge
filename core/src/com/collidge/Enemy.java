@@ -1,5 +1,6 @@
 package com.collidge;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -26,7 +27,7 @@ public class Enemy
 
     private int expValue;
 
-    Enemy(String nm, int h, int a, int d,int exp,int sizeX, int sizeY)
+    Enemy(String nm, int h, int a, int d,int exp,float sizeX, float sizeY)
     {
         name=nm;
         maxHealth=h;
@@ -38,8 +39,8 @@ public class Enemy
         texture=new Texture("walking_left_animation.png");
         TextureRegion[][] region = TextureRegion.split(texture,32,32);
         animation=new Animation(region[0],.2f);
-        width=sizeX;
-        height=sizeY;
+        width= (int)(Gdx.graphics.getWidth()/sizeX);
+        height=(int)(Gdx.graphics.getHeight()/sizeY);
     }
 
     Enemy(Enemy template)

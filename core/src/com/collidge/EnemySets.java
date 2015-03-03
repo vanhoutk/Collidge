@@ -32,7 +32,7 @@ public class EnemySets
         EnemyCollections.put("Pledge",fillArrays("Fresher","Frat boy","",""));
         EnemyPopulation.put("Pledge",fillArrays(5,1,0,0));
         EnemyCollections.put("Full Set",fillArrays("Fresher","Master Debater","Lecturer","Frat boy"));
-        EnemyPopulation.put("Full Set",fillArrays(2,2,1,2));
+        EnemyPopulation.put("Full Set",fillArrays(5,5,1,5));
 
 
 
