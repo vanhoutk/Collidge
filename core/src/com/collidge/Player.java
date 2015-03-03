@@ -42,18 +42,20 @@ public class Player
     {
         return movesKnown;
     }
+
     public String[] getItemList()
     {
         return items.getList();
     }
+
+    public String[] getItemDesc() { return items.getDesc();}
+
     public int getLevelUpCounter()
     {
         return levelUpCounter;
     }
 
-
-    public void addStat(int statId)
-    {
+    public void addStat(int statId) {
         switch(statId)
         {
             case 0:
@@ -87,6 +89,7 @@ public class Player
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
+    private String[] attackDesc = {"Lightly Tap em - 1 En", "Push em over - 5 En" , "Call their Mother - $5" , "Shove your Spirit down their Throat - 15 En", "Smash their Head in with a rock - ??En"};
 
     Player()
     {
@@ -140,6 +143,8 @@ public class Player
         return attacksNames;
     }
 
+    public String[] getAttackDesc(){return attackDesc;}
+
     public int getExpTarget()
     {
         return expTarget;
@@ -166,7 +171,7 @@ public class Player
     {
         for(int i=0;i<attacksNames.length;i++)
         {
-            if(moveName==attacksNames[i])
+            if(moveName.equals(attacksNames[i]))
             {
                 this.changeEnergy(-(this.attackEnergyCosts[i]));
                 return attackMultipliers[i];
@@ -298,9 +303,9 @@ public class Player
         {
             return;
         }
-        else if(items.getItemType(item) == "Weapon")
+        else if(items.getItemType(item).equals("Weapon"))
         {
-            if(equippedWeapon != "None")
+            if(equippedWeapon.equals("None"))
             {
                 unequipItem(equippedWeapon);
             }
@@ -311,7 +316,7 @@ public class Player
         }
         else
         {
-            if(equippedArmour != "None")
+            if(equippedArmour.equals("None"))
             {
                 unequipItem(equippedArmour);
             }
@@ -328,7 +333,7 @@ public class Player
         {
             return;
         }
-        else if(items.getItemType(item) == "Weapon")
+        else if(items.getItemType(item).equals("Weapon"))
         {
             attack -= items.getAttackBonus(item);
             //energy -= items.getEnergyBonus(item);

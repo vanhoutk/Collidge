@@ -16,7 +16,7 @@ public class FightMenu
 
     private String[][] menuWords;
     private int[] previousMenus;
-    private String[] attackList;
+    private String[][] attackDesc;
     private int currentIcon,aboveIcon,belowIcon,overflow;
     private int[][] menu;
     private int selectedMenu;
@@ -25,13 +25,12 @@ public class FightMenu
     public boolean actionSelected;
     private BitmapFont battleFont;
     private Sprite menuContainer, arrow_down, arrow_up;
-    private Texture texture;
 
     FightMenu(Player player)
     {
         battleFont = new BitmapFont();
 
-        texture = new Texture("panel_blue.png");
+        Texture texture = new Texture("panel_blue.png");
         menuContainer = new Sprite(texture);
 
         texture = new Texture("arrow_down_blue.png");
@@ -48,6 +47,7 @@ public class FightMenu
 
         menu=new int[7][50];        //menu array to store ids for menu
         menuWords=new String[7][50];    //string array, to store the word values for the menu
+        attackDesc = new String[7][50];
         currentMenu=0;              //id for the current menu being shown. basically menu[currentMenu]
         fillMenus(player);          //populate menus (both word and id) with values
         currentIcon=0;              //current item being pointed at. basically menu[][currentIcon]
@@ -230,12 +230,14 @@ public class FightMenu
         {
             for(int j=0;j<menuWords[0].length;j++)
             {
-                menuWords[i][j]=null;
+                menuWords[i][j]=null;   /**Initialises the String Array holding the actions**/
+                attackDesc[i][j]="Choose Your Action";  /**Initialises the String Array holding the description of actions**/
             }
         }
         menuWords[0][0]="Attack";
         menuWords[0][1]="Tactics";
         menuWords[0][2]="Items";
+
 
         //set up back
         for(int i=1;i<menuWords.length;i++)
@@ -243,33 +245,40 @@ public class FightMenu
             menuWords[i][0]="Back";
         }
         //Set up attacks
-        for(int j=1;j<=player.getAttacksNames().length&&j<=player.getMovesKnown();j++)
+        for(int j=1;j<=player.getAttacksNames().length && j<=player.getMovesKnown();j++)
         {
-            if(j<=player.getMovesKnown())
-            {
                 if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
                 {
                     menuWords[1][j]=player.getAttacksNames()[j-1]+"*";
+                    attackDesc[1][j]= "You need " + player.getAttackEnergyCosts()[j-1] + " more Energy";
                 }
                 else
 
                 {
                     menuWords[1][j] = player.getAttacksNames()[j - 1];
+                    attackDesc[1][j] = player.getAttackDesc()[j - 1 ];
                 }
-            }
         }
 
-
+        String[] demo = player.getItemDesc();
+        System.out.println("I'm not completely shit");
         //set up items
         for(int z=1;z<=player.getItemList().length;z++)
         {
             //populate with currentItems
             menuWords[3][z]=player.getItemList()[z-1];
         }
+
+        for(int z=1;z<=player.getItemDesc().length;z++)
+        {
+            //populate with currentItem Descriptions
+            attackDesc[3][z]=player.getItemDesc()[z-1];
+        }
         menuWords[2][1]="Recharge";
+        attackDesc[2][1] = "You will not attack this turn";
+
         menuWords[2][2]="Flee";
-
-
+        attackDesc[2][2] = "Run you filthy Coward";
     }
 
 
@@ -296,28 +305,50 @@ public class FightMenu
 
         menuContainer.setPosition( screenWidth/8,screenHeight/2-(battleFont.getLineHeight()));
         menuContainer.draw(batch);
-        {
-            if (getAboveIcon().endsWith("*")) {
-                battleFont.setColor(Color.RED);
-            } else {
-                battleFont.setColor(Color.BLACK);
-            }
-            battleFont.draw(batch, getAboveIcon(), screenWidth / 7, screenHeight / 2 + 2 * battleFont.getLineHeight());
 
-            if (getCurrentIcon().endsWith("*")) {
-                battleFont.setColor(Color.RED);
-            } else {
-                battleFont.setColor(Color.BLACK);
-            }
-            battleFont.draw(batch, getCurrentIcon(), screenWidth / 7, screenHeight / 2 + battleFont.getLineHeight());
-
-            if (getBelowIcon().endsWith("*")) {
-                battleFont.setColor(Color.RED);
-            } else {
-                battleFont.setColor(Color.BLACK);
-            }
-            battleFont.draw(batch, getBelowIcon(), screenWidth / 7, screenHeight / 2);
+        if (getAboveIcon().endsWith("*")) {
+            battleFont.setColor(Color.RED);
+        } else {
+            battleFont.setColor(Color.BLACK);
         }
+        battleFont.draw(batch, getAboveIcon(), screenWidth / 7, screenHeight / 2 + 2 * battleFont.getLineHeight());
+
+        if (getCurrentIcon().endsWith("*")) {
+            battleFont.setColor(Color.RED);
+        } else {
+            battleFont.setColor(Color.BLACK);
+        }
+        battleFont.draw(batch, getCurrentIcon(), screenWidth / 7, screenHeight / 2 + battleFont.getLineHeight());
+
+        if (getBelowIcon().endsWith("*")) {
+            battleFont.setColor(Color.RED);
+        } else {
+            battleFont.setColor(Color.BLACK);
+        }
+        battleFont.draw(batch, getBelowIcon(), screenWidth / 7, screenHeight / 2);
+
+        battleFont.setScale(screenWidth/400.0f,screenHeight/350.0f);
+
+        if (currentMenu == 1)
+        {
+            //System.out.println("Attack");
+            battleFont.draw(batch, attackDesc[1][currentIcon], screenWidth/7, 2*screenHeight/7);
+        }
+
+        else if (currentMenu == 2)
+        {
+            //System.out.println("Tactics");
+            battleFont.draw(batch, attackDesc[2][currentIcon], screenWidth/7, 2*screenHeight/7);
+
+        }
+
+        else if (currentMenu ==3)
+        {
+            //System.out.println("Items");
+            battleFont.draw(batch, attackDesc[3][currentIcon], screenWidth/7, 2*screenHeight/7);
+
+        }
+
     }
 
     public void touchDown(float x, float y)
@@ -404,8 +435,6 @@ public class FightMenu
     {
         return menuWords[currentMenu][belowIcon];
     }
-
-
 
 }
 

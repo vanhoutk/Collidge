@@ -24,8 +24,9 @@ public class CombatItem extends Item
     private int healthRestore;
     private int energyRestore;
     private int itemQuantity;
+    private String battleText;
 
-    CombatItem(String type, String text, int health, int energy, int quantity, String image)
+    CombatItem(String type, String text, int health, int energy, int quantity, String image, String battletext)
     {
         itemType = type;
         itemText = text;
@@ -33,6 +34,7 @@ public class CombatItem extends Item
         energyRestore = energy;
         itemQuantity = quantity;
         itemImage = image;
+        battleText = battletext;
     }
 
     int getHealthRestore()
@@ -52,8 +54,11 @@ public class CombatItem extends Item
         itemQuantity = quantity;
     }
 
-    void changeItemQuantity(int dQ)
-    {
+    String getitemText(){ return itemText;}
+
+    String getBattleText(){ return battleText;}
+
+    void changeItemQuantity(int dQ) {
         itemQuantity += dQ;
         if(itemQuantity <= 0)
         {

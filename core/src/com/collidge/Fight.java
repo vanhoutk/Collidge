@@ -4,13 +4,10 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
@@ -50,7 +47,6 @@ public class Fight extends GameState
     Sprite menuContainer;
     Sprite selector;
     Sprite player;
-    Sprite[] sprite_enemy;
     Combo combo;
     private BitmapFont battleFont;
     private TargetPicker targetPicker;
@@ -273,11 +269,6 @@ public class Fight extends GameState
         battleFont.draw(batch,"MR MAN",3*screenWidth/30,119*screenHeight/120);
         battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,7*screenWidth/60,112*screenHeight/120);
 
-        //if no action has been selected in the fight menu, draws the fight menu
-        if(!fMenu.actionSelected)
-        {
-            fMenu.draw(batch,screenWidth,screenHeight);
-        }
 
         battleFont.setScale(screenWidth / (13 * 40f), screenHeight / (13 * 40f));
 
@@ -357,6 +348,11 @@ public class Fight extends GameState
             selector.draw(batch);
         }*/
         //TODO replace Placeholder
+        //if no action has been selected in the fight menu, draws the fight menu
+        if(!fMenu.actionSelected)
+        {
+            fMenu.draw(batch,screenWidth,screenHeight);
+        }
         if(combo.comboing) //if in combo phase
         {
 
@@ -471,9 +467,9 @@ public class Fight extends GameState
     public boolean tap(float x, float y, int count, int button)
     {
         //if selecting an action from the fight menu. Actions have an ID and a type.
-        if(waitingForTouch==true)
+        if(waitingForTouch)
         {
-            if(fMenu.actionSelected==false)
+            if(!fMenu.actionSelected)
             {
                 //tap the menu to select an action
                 fMenu.touchDown(x, y);
@@ -530,7 +526,7 @@ public class Fight extends GameState
         if(ActionType==2)       //flee
         {
 
-            if(fMenu.getMoveString(ActionType,ActionId)=="Flee")
+            if(fMenu.getMoveString(ActionType,ActionId).equals("Flee"))
             {
 
                 expEarned=0;
@@ -563,7 +559,6 @@ public class Fight extends GameState
 
         combo.initiateCombo(ActionId-1,this);
         comboing=true;
-        return;
     }
 
     private void playerTurnPart3()      //After the combo, applying the multipliers
@@ -757,7 +752,6 @@ public class Fight extends GameState
         {
             gsm.levelUpState(playr);
         }
-        return;
     }
 
 }

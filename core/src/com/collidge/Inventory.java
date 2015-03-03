@@ -77,6 +77,23 @@ public class Inventory
         return Names;
     }
 
+    String[] getDesc()
+    {
+        Set<String> description = new HashSet();
+
+        for(Map.Entry<String, CombatItem> entry: MyCombatInv.entrySet())
+        {
+            if(entry.getValue().getItemQuantity() > 0)
+            {
+                description.add(entry.getValue().getBattleText());
+            }
+        }
+
+        String[] Desc = description.toArray(new String[description.size()]);
+        System.out.println("I'm working");
+        return Desc;
+    }
+
     String[] getEquipmentList()
     {
         /**
@@ -153,10 +170,10 @@ public class Inventory
          */
         CombatItem Coffee, EnergyDrink, Noodles, ChickenRoll;
 
-        Coffee = new CombatItem("Energy", "Energy Item. Restores 10 energy. Mmm that's good coffee!", 0, 10, 10, "Coffee_cup.png");
-        EnergyDrink = new CombatItem("Energy", "Energy Item. Restores 10 energy. Buzzing!", 0, 10, 10, "badlogic.jpg");
-        Noodles = new CombatItem("Health", "Health Item. Restores 10 HP. Instant Goodness", 10, 0, 10, "badlogic.jpg");
-        ChickenRoll = new CombatItem("Health", "Health Item. Restores 10 HP. Needs more mayo!", 10, 0, 10, "badlogic.jpg");
+        Coffee = new CombatItem("Energy", "Energy Item. Restores 10 energy. Mmm that's good coffee!", 0, 10, 10, "Coffee_cup.png", "Restores 10 En");
+        EnergyDrink = new CombatItem("Energy", "Energy Item. Restores 10 energy. Buzzing!", 0, 10, 10, "badlogic.jpg", "Restores 10 En");
+        Noodles = new CombatItem("Health", "Health Item. Restores 10 HP. Instant Goodness", 10, 0, 10, "badlogic.jpg", "Restores 10 Health");
+        ChickenRoll = new CombatItem("Health", "Health Item. Restores 10 HP. Needs more mayo!", 10, 0, 10, "badlogic.jpg", "Restores 10 Health");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);
