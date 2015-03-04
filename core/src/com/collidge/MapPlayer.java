@@ -109,6 +109,7 @@ public class MapPlayer extends Sprite
         else
         {
             walkingAnimation[direction].play();
+            walkingAnimation[direction].setDelay((collisionlayer.getTileWidth()/velocity.len())/2);
             walkingAnimation[direction].update(Gdx.graphics.getDeltaTime());
         }
 

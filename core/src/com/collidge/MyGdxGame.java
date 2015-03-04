@@ -143,6 +143,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 batch.end();
             }
         }
+
     }
 
     @Override
