@@ -225,11 +225,11 @@ public class Play extends GameState {
 
 
         }
-        else if(player.getY()>player.getCollisionLayer().getTileHeight()*(player.getCollisionLayer().getHeight()-2))
-        {
-            gsm.openInventory(userCharacter);
-            player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
-        }
+        //else if(player.getY()>player.getCollisionLayer().getTileHeight()*(player.getCollisionLayer().getHeight()-2))
+        //{
+        //    gsm.openInventory(userCharacter);
+        //    player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+        //}
 
 
 
