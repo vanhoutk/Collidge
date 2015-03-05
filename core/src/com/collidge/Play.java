@@ -26,6 +26,8 @@ public class Play extends GameState {
     private OrthographicCamera camera;
     private OrthographicCamera camera2;
     private MapPlayer player;
+    private Texture menuButton, inventoryButton;
+    private Sprite menuButtonSprite, inventoryButtonSprite;
 
     private SpriteBatch  batch;
 
@@ -62,6 +64,12 @@ public class Play extends GameState {
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+
+        //Adding buttons for inventory and menu to the map
+        menuButton = new Texture("android-mobile.png");
+        inventoryButton = new Texture("schoolbag.png");
+        menuButtonSprite = new Sprite(menuButton);
+        inventoryButtonSprite = new Sprite(inventoryButton);
 
 
     }
@@ -108,10 +116,22 @@ public class Play extends GameState {
         //camera.update();
         //renderer.setView(camera);
         //renderer.render();
+
+        //button sizes
+        menuButtonSprite.setSize(screenWidth/12,screenWidth/12);
+        inventoryButtonSprite.setSize(screenWidth/12,screenWidth/12);
+        //button positions
+        menuButtonSprite.setPosition(screenWidth *11/12 - menuButtonSprite.getWidth()/4,screenHeight* 11/12 - menuButtonSprite.getHeight()/2);
+        inventoryButtonSprite.setPosition(screenWidth *10/12 - inventoryButtonSprite.getWidth()/4,screenHeight*11/12 - inventoryButtonSprite.getHeight()/2);
+        //
+
         batch.begin();
         //player.draw(renderer.getBatch());
         /*font.draw(batch, "blaaa", 50, 50);
         player2.draw(batch);*/
+
+        menuButtonSprite.draw(batch);
+        inventoryButtonSprite.draw(batch);
 
 
         batch.end();
@@ -214,8 +234,13 @@ public class Play extends GameState {
     //  public void draw() {}
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        player.touchDown(screenX,screenY,screenWidth,screenHeight);
+    public boolean touchDown(int screenX, int screenY, int pointer, int button)
+    {
+
+        if(screenX<Gdx.graphics.getWidth()*8/10 && screenY<inventoryButtonSprite.getHeight())
+        {
+            player.touchDown(screenX,screenY,screenWidth,screenHeight);
+        }
         return false;
     }
 
@@ -240,6 +265,22 @@ public class Play extends GameState {
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
+        if(y < screenHeight/5)
+        {
+            if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
+            {
+                gsm.openInventory(userCharacter);
+            }
+            if(x > menuButtonSprite.getX())
+            {
+                gsm.changeState(1);
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
         return false;
     }
 
