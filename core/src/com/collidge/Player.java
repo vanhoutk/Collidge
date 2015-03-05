@@ -89,7 +89,7 @@ public class Player
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
-    private String[] attackDesc = {"Lightly Tap em - 1 En", "Push em over - 5 En" , "Call their Mother - $5" , "Shove your Spirit down their Throat - 15 En", "Smash their Head in with a rock - ??En"};
+    private String[] attackDesc = {"Lightly Tap em - 1 En", "Push em over - 5 En" , "Call their Mother - 15" , "Shove your Spirit down their Throat - 15 En", "Smash their Head in with a rock - ??En"};
 
     Player()
     {

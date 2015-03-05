@@ -50,17 +50,22 @@ public class Play extends GameState {
 
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,500,500*(h/w));
+        camera.setToOrtho(false,480,480*(h/w));
         camera.update();
 
 
 
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
+
+
+
         map = loader.load("TrinityMap1.tmx");
 
 
+
         renderer = new OrthogonalTiledMapRenderer(map);
+
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
@@ -102,7 +107,9 @@ public class Play extends GameState {
 
         camera.update();
 
+
         renderer.setView(camera);
+
         renderer.render();
 
         renderer.getBatch().begin();

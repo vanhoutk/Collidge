@@ -321,6 +321,7 @@ public class MapPlayer extends Sprite
         return true;
     }
 
+
     private void getDirection()
     {
         if(velocity.x==0||Math.abs(velocity.y)/Math.abs(velocity.x)>1)
@@ -328,6 +329,7 @@ public class MapPlayer extends Sprite
             if(velocity.y>0)
             {
                 direction=UP;
+                velocity.x=250/Gdx.graphics.getHeight();
             }
             else
             {

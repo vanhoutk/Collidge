@@ -109,7 +109,7 @@ public class LevelUpSplash extends GameState
         levelUpText.setSize(screenWidth / 3, screenHeight / 10);
         levelUpText.setPosition(screenWidth / 3, screenHeight / 1.2f);
         levelUpText.draw(batch);
-        text.draw(batch,"You've grown to level "+(player.getLevel()+1),screenWidth/4.1f,screenHeight/1.2f);
+        text.draw(batch,"You've reached to level "+(player.getLevel()+1),screenWidth/4.1f,screenHeight/1.2f);
         panel.setSize(screenWidth/11,screenWidth/11);
         for(int i=0;i<5;i++)
         {
