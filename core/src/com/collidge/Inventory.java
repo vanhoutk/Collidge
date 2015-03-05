@@ -170,7 +170,7 @@ public class Inventory
          */
         CombatItem Coffee, EnergyDrink, Noodles, Sandwich;
 
-        Coffee = new CombatItem("Energy", "Energy Item. Restores 10 energy. Mmm that's good coffee!", 0, 10, 10, "Coffee_cup.png", "Restores 10 En");
+        Coffee = new CombatItem("Energy", "Energy Item. Restores 10 energy. Mmm that's good coffee!", 0, 10, 10, "Coffee_cupSmall.png", "Restores 10 En");
         EnergyDrink = new CombatItem("Energy", "Energy Item. Restores 10 energy. Buzzing!", 0, 10, 10, "energy60.png", "Restores 10 En");
         Noodles = new CombatItem("Health", "Health Item. Restores 10 HP. Instant Goodness", 10, 0, 10, "Noodles.png", "Restores 10 Health");
         Sandwich = new CombatItem("Health", "Health Item. Restores 10 HP. Needs more mayo!", 10, 0, 10, "sandwichIcon.png", "Restores 10 Health");
@@ -184,7 +184,7 @@ public class Inventory
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)
          */
         Equipment Tsquare, Scarf, Macshield, Bookshield;
-        Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, 1, "tsquare.png");
+        Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, 1, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, 1, "Scarf.png");
         Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, 1, "macShieldIcon.png");
         Bookshield = new Equipment("Armour", "Armour. +5 Defence. Is there a fine if it's damaged on return?", 0, 0, 5, 0, 1, "bookShieldIcon.png");

@@ -305,7 +305,7 @@ public class Player
         }
         else if(items.getItemType(item).equals("Weapon"))
         {
-            if(equippedWeapon.equals("None"))
+            if(!equippedWeapon.equals("None"))
             {
                 unequipItem(equippedWeapon);
             }
@@ -316,7 +316,7 @@ public class Player
         }
         else
         {
-            if(equippedArmour.equals("None"))
+            if(!equippedArmour.equals("None"))
             {
                 unequipItem(equippedArmour);
             }
