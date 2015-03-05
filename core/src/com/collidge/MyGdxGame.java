@@ -27,6 +27,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 {
     GameStateManager gsm;
 
+
     private boolean backKey=false;
     private boolean backDown=false;
     private boolean quit=false;
@@ -42,62 +43,89 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     {
 
 
+        //FIlE INPUT
+        int i=0;
 
-        /*if(Gdx.files.isLocalStorageAvailable())
+        int[] values=new int[7];
+
+
+        if(Gdx.files.isLocalStorageAvailable()&&Gdx.files.local("data/save.txt").exists())
         {
-            OutputStream out=Gdx.files.local( "data/save.txt" ).write(false);
-            try
-            {
-                out.write("test".getBytes());
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            finally
+            InputStream in = Gdx.files.local("data/save.txt").read();
+            int temp = 0;
+            InputStreamReader is = new InputStreamReader(in);
+            while (i < 7)
             {
                 try
                 {
-                    out.close();
+
+
+                    if (temp == -4)
+                    {
+                        temp = in.read() - 48;
+
+
+                    }
+
+                    while (temp != -4)
+                    {
+
+                        if (values[i] > 0)
+                        {
+                            values[i] *= 10;
+                        }
+                        values[i] += temp;
+                        temp = in.read() - 48;
+
+                        if(temp==-49)
+                        {
+                            //if you reach the end of line character, end the loop
+                            temp=-1;
+                            while(i<values.length)
+                            {
+                                values[i]=0;
+                                i++;
+                            }
+
+                            i=500;
+
+                        }
+                    }
+
+
                 } catch (IOException e)
                 {
                     e.printStackTrace();
                 }
+                i++;
+
+            }
+            for (i = 0; i < 6; i++)
+            {
+                System.out.println(i + ": " + values[i]);
             }
         }
-        InputStream in=Gdx.files.local( "data/save.txt" ).read();
-        InputStreamReader is = new InputStreamReader(in);
-        StringBuilder sb=new StringBuilder();
-        BufferedReader br = new BufferedReader(is);
-        String read = null;
-        try
+        else
         {
-            read = br.readLine();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        while(read != null) {
-            //System.out.println(read);
-            sb.append(read);
-            try
+            values[0]=1;
+            for(i=1;i<values.length;i++)
             {
-                read =br.readLine();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
+                values[i]=0;
             }
-
         }
-        System.out.println(sb.toString());
-*/
+        //FILE INPUT END
+
+
+
 
         Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GestureDetector(this));
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
-        gsm = new GameStateManager();
+        gsm = new GameStateManager(values[0],values[1],values[2],values[3],values[4],values[5],values[6]);
+
+
         quitFont=new BitmapFont();
         quitFont.setScale(Gdx.graphics.getWidth()/300f,Gdx.graphics.getHeight()/300f);
         quitFont.setColor(Color.WHITE);
@@ -117,6 +145,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     {
         if(quit)
         {
+
+            save();
 
 
             Gdx.app.exit();
@@ -146,6 +176,35 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     }
 
+    public void save()
+    {
+        //Writes to save, we can add extra int values to the end of the string to store the values of other things (such as what stage in the game we are at, or items, etc. Equipped items might be trickier to hang onto, but im sure we can figure it out
+        if(Gdx.files.isLocalStorageAvailable())
+        {
+            OutputStream out=Gdx.files.local( "data/save.txt" ).write(false);
+            try
+            {
+                String saveVals;
+                saveVals=gsm.user.getLevel()+","+gsm.user.getAttackPoints()+","+gsm.user.getDefencePoints()+","+gsm.user.getIntelligencePoints()+","+gsm.user.getHealthPoints()
+                        +","+gsm.user.getEnergyPoints()+","+gsm.user.getExperience()+",";
+
+                out.write(saveVals.getBytes());
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(backKey)
@@ -215,7 +274,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     @Override
     public boolean keyUp(int keycode) {
-        if(keycode == Input.Keys.BACK)
+        if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
         {
             if(backKey==true&&backDown)
             {
@@ -233,7 +292,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean keyDown(int keycode)
     {
 
-        if(keycode == Input.Keys.BACK)
+        if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
         {
             if(backKey==true)
             {

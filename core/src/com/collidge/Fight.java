@@ -657,7 +657,10 @@ public class Fight extends GameState
             if (dam <= 1)
             {
                 //        System.out.println("Damage by monster " + i + " resisted");
-                damage[0]++;
+                if(combo.skill<.9)
+                {
+                    damage[0]++;
+                }
 
             }
             else

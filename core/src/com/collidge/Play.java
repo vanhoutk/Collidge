@@ -39,7 +39,7 @@ public class Play extends GameState {
 
 
 
-        userCharacter=new Player();
+        userCharacter=gsm.user;
     }
 
     @Override

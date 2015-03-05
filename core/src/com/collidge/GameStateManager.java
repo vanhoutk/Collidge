@@ -16,6 +16,7 @@ public class GameStateManager
     private ArrayList<GameState> gameStates;
     //There can only be one current state
     public int currentState;
+    public Player user;
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -27,6 +28,7 @@ public class GameStateManager
     //Constructor creates all states and adds them to the list. Sets current state and loads it.
     public GameStateManager()
     {
+
 
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
@@ -42,6 +44,33 @@ public class GameStateManager
         gameStates.get(currentState).initialize();
 
 
+    }
+
+    public GameStateManager(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP)
+    {
+
+
+        user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
+        gameStates = new ArrayList<GameState>();
+        //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
+        GameState state1 = new Play(this);
+        GameState gameMenu = new GameMenu(this);
+        // GameState state2 = new TestState2(this);
+        gameStates.add(state1);
+        gameStates.add(gameMenu);
+
+        //currentState = MENUSTATE;
+
+        currentState = 0;
+        gameStates.get(currentState).initialize();
+
+
+    }
+
+    public void setUpPlayer(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP)
+    {
+        user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
+        gameStates.get(currentState).initialize();
     }
 
     //change state to any other state. Alternatively we could make a new object each time instead of keeping them in memory.

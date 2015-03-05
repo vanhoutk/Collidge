@@ -19,6 +19,32 @@ public class Player
 
 
     private int levelUpCounter=0;
+
+    public int getAttackPoints()
+    {
+        return attackPoints;
+    }
+
+    public int getDefencePoints()
+    {
+        return defencePoints;
+    }
+
+    public int getIntelligencePoints()
+    {
+        return intelligencePoints;
+    }
+
+    public int getHealthPoints()
+    {
+        return healthPoints;
+    }
+
+    public int getEnergyPoints()
+    {
+        return energyPoints;
+    }
+
     private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
 
     /**
@@ -96,7 +122,7 @@ public class Player
         items = new Inventory();
         items.loadInventory();
 
-        level=3;
+        level=1;
 
 
 
@@ -113,7 +139,8 @@ public class Player
         updateStats();
         healAll();
     }
-    Player(int Level, int ATK,int DEF, int INT,int HP,int EN)
+
+    Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
     {
         items = new Inventory();
         items.loadInventory();
@@ -125,6 +152,7 @@ public class Player
         intelligencePoints=INT;
         healthPoints=HP;
         energyPoints=EN;
+        experience=EXP;
 
         //Kris -- Start off with no armour/weapons equipped
         equippedWeapon = "None";
@@ -132,6 +160,7 @@ public class Player
         updateStats();
         healAll();
     }
+
 
     public int[] getAttackEnergyCosts()
     {
@@ -259,8 +288,8 @@ public class Player
         intelligence=(level/3)+intelligencePoints+1;
 
         energy=(level+energyPoints)*5;
-        //TODO put actual exp value back in after testing is over
-        expTarget=(level*level)+20;
+        //TODO figure out a good curve for xp to follow
+        expTarget=((int)Math.pow(level,1.5))+5;
         //expTarget=1;
 
         equipItem(weapon);
