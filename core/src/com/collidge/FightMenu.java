@@ -280,7 +280,6 @@ public class FightMenu
         attackDesc[2][2] = "Run Away!";
     }
 
-
     public void draw(SpriteBatch batch, int screenWidth, int screenHeight)
     {
         battleFont.setScale(screenWidth/300.0f,screenHeight/250.0f);
@@ -417,8 +416,7 @@ public class FightMenu
     {
         return selectedIcon;
     }
-    public void refreshMenus(Player player)
-    {
+    public void refreshMenus(Player player) {
         fillMenus(player);
         overflow=getMenuOverflow();
     }

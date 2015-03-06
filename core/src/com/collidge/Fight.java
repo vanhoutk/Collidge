@@ -756,5 +756,9 @@ public class Fight extends GameState
         }
     }
 
+    private void closeFight()       //this function is called to check when the fight is over, and then display a splash screen
+    {
+
+    }
 }
 
