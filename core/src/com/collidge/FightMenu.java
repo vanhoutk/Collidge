@@ -15,6 +15,7 @@ public class FightMenu
 {
 
     private String[][] menuWords;
+    public String Tooltip = "blank"; //inititalising to this so some actions can have no tooltip
     private int[] previousMenus;
     private String[][] attackDesc;
     private int currentIcon,aboveIcon,belowIcon,overflow;
@@ -23,8 +24,11 @@ public class FightMenu
     private int selectedIcon;
     private int currentMenu;
     public boolean actionSelected;
+    public boolean tooltipSelected;
     private BitmapFont battleFont;
     private Sprite menuContainer, arrow_down, arrow_up;
+
+    float dx, dy;       //for pan function
 
     FightMenu(Player player)
     {
@@ -231,7 +235,7 @@ public class FightMenu
             for(int j=0;j<menuWords[0].length;j++)
             {
                 menuWords[i][j]=null;   //Initialises the String Array holding the actions
-                attackDesc[i][j]="Choose Your Action";  //Initialises the String Array holding the description of actions
+                attackDesc[i][j]="blank";  //Initialises the String Array holding the description of actions
             }
         }
         menuWords[0][0]="Attack";
@@ -274,17 +278,17 @@ public class FightMenu
             attackDesc[3][z]=player.getItemDesc()[z-1];
         }
         menuWords[2][1]="Recharge";
-        attackDesc[2][1] = "You will not attack this turn";
+        attackDesc[2][1] = "Rest- Gain 1 En";
 
         menuWords[2][2]="Flee";
-        attackDesc[2][2] = "Run Away!";
+        attackDesc[2][2] = "End fight";
     }
 
     public void draw(SpriteBatch batch, int screenWidth, int screenHeight)
     {
         battleFont.setScale(screenWidth/300.0f,screenHeight/250.0f);
 
-        menuContainer.setSize(screenWidth/3f,battleFont.getLineHeight()*3.3f);
+        menuContainer.setSize(1.2f*screenWidth/3f,battleFont.getLineHeight()*3.3f);
 
 
         arrow_down.setSize(screenWidth/12f,screenWidth/12f);
@@ -304,6 +308,7 @@ public class FightMenu
         menuContainer.setPosition( screenWidth/8,screenHeight/2-(battleFont.getLineHeight()));
         menuContainer.draw(batch);
 
+        //drawing above icon
         if (getAboveIcon().endsWith("*")) {
             battleFont.setColor(Color.RED);
         } else {
@@ -311,13 +316,21 @@ public class FightMenu
         }
         battleFont.draw(batch, getAboveIcon(), screenWidth / 7, screenHeight / 2 + 2 * battleFont.getLineHeight());
 
+        //drawing current icon
         if (getCurrentIcon().endsWith("*")) {
             battleFont.setColor(Color.RED);
         } else {
             battleFont.setColor(Color.BLACK);
         }
-        battleFont.draw(batch, getCurrentIcon(), screenWidth / 7, screenHeight / 2 + battleFont.getLineHeight());
 
+        if (tooltipSelected == true && Tooltip!="blank"){     //for drawing Tooltip
+            battleFont.draw(batch, Tooltip, screenWidth / 7, screenHeight / 2 + battleFont.getLineHeight());
+        }
+        else{
+            battleFont.draw(batch, getCurrentIcon(), screenWidth / 7, screenHeight / 2 + battleFont.getLineHeight());
+        }
+
+        //drawing below icon
         if (getBelowIcon().endsWith("*")) {
             battleFont.setColor(Color.RED);
         } else {
@@ -327,6 +340,8 @@ public class FightMenu
 
         battleFont.setScale(screenWidth/400.0f,screenHeight/350.0f);
 
+        /*
+        //for drawing text below the menu - for error messages etc maybe (you don't have enough energy)
         if (currentMenu == 1)
         {
             //System.out.println("Attack");
@@ -345,31 +360,86 @@ public class FightMenu
             //System.out.println("Items");
             battleFont.draw(batch, attackDesc[3][currentIcon], screenWidth/7, 2*screenHeight/7);
 
-        }
+        }*/
 
     }
 
-    public void touchDown(float x, float y)
+
+    public void displayTooltip() {      //assigns tooltips to the menu
+
+        if (currentMenu == 0){
+            //System.out.println("Attack");
+            Tooltip = "blank";
+        }
+
+        else if (currentMenu == 1){
+            //System.out.println("Attack");
+            Tooltip = attackDesc[1][currentIcon];
+        }
+
+        else if (currentMenu == 2){
+            //System.out.println("Tactics");
+            Tooltip = attackDesc[2][currentIcon];
+        }
+
+        else if (currentMenu ==3){
+            //System.out.println("Items");
+            Tooltip = attackDesc[3][currentIcon];
+        }
+    }
+
+
+    public void tap(float x, float y)
     {
         if(x>arrow_up.getX() && x<arrow_up.getX() + arrow_up.getWidth())    //x co-ordinates must be on the arrow sprite
         {
 
-           //y co-ordinates for the up arrow
+            //y co-ordinates for the up arrow
             if (y < arrow_up.getY() + 0.5*arrow_up.getHeight() && y > arrow_up.getY() - 0.5*arrow_up.getHeight()) {
                 Up();
+                tooltipSelected = false; //don't display tooltip anymore if arrow is clicked
             }
 
             //y co-ordinates for the down arrow
             else if (y > arrow_down.getY() - 0.5*arrow_down.getHeight() && y < arrow_down.getY() + 0.5*arrow_down.getHeight()) {
                 Down();
+                tooltipSelected = false; //don't display tooltip anymore if arrow is clicked
             }
         }
         //x and y co-ordinates for the menu
-        else if (x > menuContainer.getX() && x < menuContainer.getX() + menuContainer.getWidth())
-            if (y > menuContainer.getY() - menuContainer.getHeight()/6 && y < menuContainer.getY() + menuContainer.getHeight()/3)
+        else if (x > menuContainer.getX() && x < menuContainer.getX() + menuContainer.getWidth()) {
+            if (y > menuContainer.getY() - menuContainer.getHeight() / 6 && y < menuContainer.getY() + menuContainer.getHeight() / 3) {
                 Select();
+            }
+        }
     }
 
+
+    //pan (swipe) is for displaying tooltip - swipe right to show tooltip and swipe left to go back to action selection
+    public boolean pan(float x, float y, float deltaX, float deltaY){
+        System.out.println("deltaX=" + deltaX + " deltaY=" + deltaY);
+        if ((deltaX > 20 || deltaX < -20) && (deltaY < 20 || deltaY > -20)) {   //ignore vertical swipes or very short swipes
+            dx = deltaX;
+            dy = deltaY;
+            System.out.println("dx=" + dx + " dy=" + dy);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean panStop(float x, float y){
+        if (x > menuContainer.getX() && y > menuContainer.getY() - menuContainer.getHeight() / 6 && y < menuContainer.getY() + menuContainer.getHeight() / 3) {
+            if (dx>0){       //if the swipe was to the right, show tooltip
+                displayTooltip();
+                tooltipSelected = true;
+            }
+            else {      //if swipe was to the left, hide tooltip
+                tooltipSelected = false;
+            }
+            return true;
+        }
+        return false;
+    }
 
     /*
     //here x needs to be fed in (called in the fight class) as x/screenWidth and y as y/screenHeight - the current version is hopefully ok though - Toni
