@@ -19,6 +19,32 @@ public class Player
 
 
     private int levelUpCounter=0;
+
+    public int getAttackPoints()
+    {
+        return attackPoints;
+    }
+
+    public int getDefencePoints()
+    {
+        return defencePoints;
+    }
+
+    public int getIntelligencePoints()
+    {
+        return intelligencePoints;
+    }
+
+    public int getHealthPoints()
+    {
+        return healthPoints;
+    }
+
+    public int getEnergyPoints()
+    {
+        return energyPoints;
+    }
+
     private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
 
     /**
@@ -89,14 +115,14 @@ public class Player
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
-    private String[] attackDesc = {"Lightly Tap em - 1 En", "Push em over - 5 En" , "Call their Mother - $5" , "Shove your Spirit down their Throat - 15 En", "Smash their Head in with a rock - ??En"};
+    private String[] attackDesc = {"Lightly Tap em - 1 En", "Push em over - 5 En" , "Call their Mother - 15" , "Shove your Spirit down their Throat - 15 En", "Smash their Head in with a rock - ??En"};
 
     Player()
     {
         items = new Inventory();
         items.loadInventory();
 
-        level=3;
+        level=1;
 
 
 
@@ -113,7 +139,8 @@ public class Player
         updateStats();
         healAll();
     }
-    Player(int Level, int ATK,int DEF, int INT,int HP,int EN)
+
+    Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
     {
         items = new Inventory();
         items.loadInventory();
@@ -125,6 +152,7 @@ public class Player
         intelligencePoints=INT;
         healthPoints=HP;
         energyPoints=EN;
+        experience=EXP;
 
         //Kris -- Start off with no armour/weapons equipped
         equippedWeapon = "None";
@@ -132,6 +160,7 @@ public class Player
         updateStats();
         healAll();
     }
+
 
     public int[] getAttackEnergyCosts()
     {
@@ -259,8 +288,8 @@ public class Player
         intelligence=(level/3)+intelligencePoints+1;
 
         energy=(level+energyPoints)*5;
-        //TODO put actual exp value back in after testing is over
-        expTarget=(level*level)+20;
+        //TODO figure out a good curve for xp to follow
+        expTarget=((int)Math.pow(level,1.5))+5;
         //expTarget=1;
 
         equipItem(weapon);
@@ -305,7 +334,7 @@ public class Player
         }
         else if(items.getItemType(item).equals("Weapon"))
         {
-            if(equippedWeapon.equals("None"))
+            if(!equippedWeapon.equals("None"))
             {
                 unequipItem(equippedWeapon);
             }
@@ -316,7 +345,7 @@ public class Player
         }
         else
         {
-            if(equippedArmour.equals("None"))
+            if(!equippedArmour.equals("None"))
             {
                 unequipItem(equippedArmour);
             }

@@ -230,8 +230,8 @@ public class FightMenu
         {
             for(int j=0;j<menuWords[0].length;j++)
             {
-                menuWords[i][j]=null;   /**Initialises the String Array holding the actions**/
-                attackDesc[i][j]="Choose Your Action";  /**Initialises the String Array holding the description of actions**/
+                menuWords[i][j]=null;   //Initialises the String Array holding the actions
+                attackDesc[i][j]="Choose Your Action";  //Initialises the String Array holding the description of actions
             }
         }
         menuWords[0][0]="Attack";
@@ -278,7 +278,7 @@ public class FightMenu
         attackDesc[2][1] = "You will not attack this turn";
 
         menuWords[2][2]="Flee";
-        attackDesc[2][2] = "Run you filthy Coward";
+        attackDesc[2][2] = "Run Away!";
     }
 
     public void draw(SpriteBatch batch, int screenWidth, int screenHeight)

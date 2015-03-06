@@ -35,20 +35,151 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     private Texture texture;
     private SpriteBatch batch;
 
-
+    private static TextBox textBox;
 
     @Override
     public void create ()
     {
 
 
+        //FIlE INPUT
+        int i=0;
 
-        /*if(Gdx.files.isLocalStorageAvailable())
+        int[] values=new int[7];
+
+
+        if(Gdx.files.isLocalStorageAvailable()&&Gdx.files.local("data/save.txt").exists())
+        {
+            InputStream in = Gdx.files.local("data/save.txt").read();
+            int temp = 0;
+            InputStreamReader is = new InputStreamReader(in);
+            while (i < 7)
+            {
+                try
+                {
+                    if (temp == -4)
+                    {
+                        temp = in.read() - 48;
+                    }
+
+                    while (temp != -4)
+                    {
+                        if (values[i] > 0)
+                        {
+                            values[i] *= 10;
+                        }
+                        values[i] += temp;
+                        temp = in.read() - 48;
+
+                        if(temp==-49)
+                        {
+                            //if you reach the end of line character, end the loop
+                            temp=-1;
+                            while(i<values.length)
+                            {
+                                values[i]=0;
+                                i++;
+                            }
+                            i=500;
+                        }
+                    }
+
+
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+                i++;
+
+            }
+            for (i = 0; i < 6; i++)
+            {
+                System.out.println(i + ": " + values[i]);
+            }
+        }
+        else
+        {
+            values[0]=1;
+            for(i=1;i<values.length;i++)
+            {
+                values[i]=0;
+            }
+        }
+        //FILE INPUT END
+
+        Gdx.input.setCatchBackKey(true);
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(new GestureDetector(this));
+        multiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(multiplexer);
+        gsm = new GameStateManager(values[0],values[1],values[2],values[3],values[4],values[5],values[6]);
+
+
+        quitFont=new BitmapFont();
+        quitFont.setScale(Gdx.graphics.getWidth()/300f,Gdx.graphics.getHeight()/300f);
+        quitFont.setColor(Color.WHITE);
+        texture=new Texture("blackSquare.png");
+        screenMask=new Sprite(texture);
+        screenMask.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        screenMask.setPosition(0f,0f);
+        screenMask.setAlpha(.8f);
+        batch=new SpriteBatch();
+
+        FileHandle handle = Gdx.files.local("data/RandomText1.txt");
+        String text = handle.readString();
+        textBox = new TextBox();
+        textBox.setText(text);
+    }
+
+    @Override
+    public void render ()
+    {
+        if(quit)
+        {
+            save();
+
+            Gdx.app.exit();
+        }
+        else
+        {
+            Gdx.gl.glClearColor(0, 0, 0, 0);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+            if(!backKey)
+            {
+                gsm.update();
+            }
+            gsm.draw();
+            textBox.draw();
+            if(backKey)
+            {
+
+                batch.begin();
+                screenMask.draw(batch);
+                quitFont.draw(batch, "Do you want to Quit?", 4*Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
+                quitFont.draw(batch, "Yes, I hate fun", 1*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
+                quitFont.draw(batch, "Not just yet!", 8*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
+
+                batch.end();
+            }
+        }
+
+    }
+
+    public void save()
+    {
+        //Writes to save, we can add extra int values to the end of the string to store the values of other things (such as what stage in the game we are at, or items, etc. Equipped items might be trickier to hang onto, but im sure we can figure it out
+        if(Gdx.files.isLocalStorageAvailable())
         {
             OutputStream out=Gdx.files.local( "data/save.txt" ).write(false);
             try
             {
-                out.write("test".getBytes());
+                String saveVals;
+                saveVals=gsm.user.getLevel()+","+gsm.user.getAttackPoints()+","+gsm.user.getDefencePoints()+","+gsm.user.getIntelligencePoints()+","+gsm.user.getHealthPoints()
+                        +","+gsm.user.getEnergyPoints()+","+gsm.user.getExperience()+",";
+
+                out.write(saveVals.getBytes());
             } catch (IOException e)
             {
                 e.printStackTrace();
@@ -64,86 +195,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 }
             }
         }
-        InputStream in=Gdx.files.local( "data/save.txt" ).read();
-        InputStreamReader is = new InputStreamReader(in);
-        StringBuilder sb=new StringBuilder();
-        BufferedReader br = new BufferedReader(is);
-        String read = null;
-        try
-        {
-            read = br.readLine();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        while(read != null) {
-            //System.out.println(read);
-            sb.append(read);
-            try
-            {
-                read =br.readLine();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-
-        }
-        System.out.println(sb.toString());
-*/
-
-        Gdx.input.setCatchBackKey(true);
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(new GestureDetector(this));
-        multiplexer.addProcessor(this);
-        Gdx.input.setInputProcessor(multiplexer);
-        gsm = new GameStateManager();
-        quitFont=new BitmapFont();
-        quitFont.setScale(Gdx.graphics.getWidth()/300f,Gdx.graphics.getHeight()/300f);
-        quitFont.setColor(Color.WHITE);
-        texture=new Texture("blackSquare.png");
-        screenMask=new Sprite(texture);
-        screenMask.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        screenMask.setPosition(0f,0f);
-        screenMask.setAlpha(.8f);
-        batch=new SpriteBatch();
-       // Gdx.input.setInputProcessor(this);
-        //Gdx.input.setInputProcessor(new GestureDetector(this));
-        //setScreen(new Play());
     }
 
-    @Override
-    public void render ()
-    {
-        if(quit)
-        {
+    public static TextBox getTextBox() {
+        return textBox;
+    }
 
-
-            Gdx.app.exit();
-        }
-        else
-        {
-            Gdx.gl.glClearColor(1, 1, 1, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
-            if(!backKey)
-            {
-                gsm.update();
-            }
-            gsm.draw();
-            if(backKey)
-            {
-
-                batch.begin();
-                screenMask.draw(batch);
-                quitFont.draw(batch, "Do you want to Quit?", 4*Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
-                quitFont.draw(batch, "Yes, I hate fun", 1*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
-                quitFont.draw(batch, "Not just yet!", 8*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
-                batch.end();
-            }
-        }
-
+    public static void setTextBox(String string) {
+        textBox.setText(string);
     }
 
     @Override
@@ -152,6 +211,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             return true;
         }
+        if(textBox.isActive()) {
+            return true;
+        }
+
         return gsm.returnCurrentState().touchDown(screenX, screenY, pointer, button);
     }
 
@@ -164,6 +227,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(backKey)
         {
+            return true;
+        }
+        if(textBox.isActive()) {
             return true;
         }
         return gsm.returnCurrentState().touchDragged(screenX, screenY, pointer);
@@ -215,7 +281,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     @Override
     public boolean keyUp(int keycode) {
-        if(keycode == Input.Keys.BACK)
+        if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
         {
             if(backKey==true&&backDown)
             {
@@ -233,7 +299,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean keyDown(int keycode)
     {
 
-        if(keycode == Input.Keys.BACK)
+        if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
         {
             if(backKey==true)
             {
@@ -260,6 +326,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             return true;
         }
+        if(textBox.isActive()) {
+            return true;
+        }
         return gsm.returnCurrentState().touchDown(x,y, pointer,button);
     }
 
@@ -281,6 +350,15 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                     backDown=false;
 
 
+                }
+            }
+            return true;
+        }
+        if(textBox.isActive()) {
+            y = Gdx.graphics.getHeight() - y;
+            if(x < textBox.getX() + textBox.getTextBoxWidth() && x > textBox.getX()) {
+                if(y > textBox.getY() && y < textBox.getY() + textBox.getTextBoxHeight()) {
+                    textBox.turnPage();
                 }
             }
             return true;
@@ -325,8 +403,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public boolean panStop(float x, float y, int pointer, int button)
     {
-
-
         return gsm.returnCurrentState().panStop(x,y,pointer,button);
     }
 
