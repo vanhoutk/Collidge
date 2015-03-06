@@ -89,9 +89,7 @@ public class Inventory
             }
         }
 
-        String[] Desc = description.toArray(new String[description.size()]);
-        System.out.println("I'm working");
-        return Desc;
+        return description.toArray(new String[description.size()]);
     }
 
     String[] getEquipmentList()
