@@ -50,6 +50,7 @@ public class Fight extends GameState
     Combo combo;
     private BitmapFont battleFont;
     private TargetPicker targetPicker;
+    private Sprite background;
 
 
     Timer.Task damager=new Timer.Task()
@@ -137,6 +138,7 @@ public class Fight extends GameState
        // testAnim=new Animation("walkingRight.png",10);
         combo=new Combo();
 
+
         expEarned=0;
 
         //gets the number and type of enemies to fight
@@ -171,6 +173,10 @@ public class Fight extends GameState
 
         texture = new Texture("portrait.png");
         portrait = new Sprite(texture);
+        texture =new Texture ("background.png");
+        background=new Sprite(texture);
+        background.setPosition(0,0);
+        background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         portrait.setPosition(screenWidth / 30 - 3*(screenWidth / 50), 25 * screenHeight / 30);
         portrait.setSize(37*screenWidth/80, 4*screenHeight / 20);
@@ -241,6 +247,7 @@ public class Fight extends GameState
 
         batch.begin();
 
+        background.draw(batch);
         //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
         healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 107 * screenHeight / 120);
         healthBackground.draw(batch);
@@ -249,12 +256,15 @@ public class Fight extends GameState
         batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
 
         EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f));      //Code Allowing for generation of Energy Icons
-        for (int i = 0; i < playr.getCurrentEnergy(); i++) {
-            if (i < 13) {
+        for (int i = 0; i < playr.getCurrentEnergy(); i++)
+        {
+            if (i < 13)
+            {
                 EnergyIcon.setPosition((4f * screenWidth / 75 + i * screenHeight / 20f), 50 * screenHeight / 60);
                 EnergyIcon.draw(batch);
             }
-            else {
+            else
+            {
                 EnergyIcon.setPosition((4f * screenWidth / 75f + (i-13)* screenHeight / 20f), 185 * screenHeight / 240);
                 EnergyIcon.draw(batch);
             }
@@ -287,6 +297,7 @@ public class Fight extends GameState
                 {
                     target=0;
                 }
+
                 batch.draw(enemies[i].animation.getFrame(),((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)((((enemyCount)-(i+1))/(double)(enemyCount))*(screenHeight/2)),enemies[i].width,enemies[i].height);
                 /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
                 sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);

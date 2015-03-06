@@ -232,8 +232,8 @@ public class Combo
         }
         tapsLeft--;
 
-        targetX=(int)(rand.nextDouble()*Gdx.graphics.getWidth());
-        targetY=(int)(rand.nextDouble()*Gdx.graphics.getHeight());
+        targetX=(int)(((rand.nextDouble()%.8)+.1)*Gdx.graphics.getWidth());
+        targetY=(int)(((rand.nextDouble()%.8)+.1)*Gdx.graphics.getHeight());
 
         if(tapsLeft==0)
         {

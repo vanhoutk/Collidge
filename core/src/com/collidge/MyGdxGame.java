@@ -31,6 +31,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     private Sprite screenMask;
     private Texture texture;
     private SpriteBatch batch;
+    BitmapFont font;
 
     private static TextBox textBox;
 
@@ -38,6 +39,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public void create ()
     {
 
+        font=new BitmapFont();
+        font.setScale(Gdx.graphics.getWidth()/400,Gdx.graphics.getHeight()/400);
 
         //FIlE INPUT
         int i=0;
@@ -142,6 +145,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public void render ()
     {
+
         if(quit)
         {
             save();
@@ -160,15 +164,22 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             }
             gsm.draw();
             textBox.draw();
+            batch.begin();
+            font.draw(batch,"FPS: "+Gdx.graphics.getFramesPerSecond()+"",0,font.getLineHeight());
+
             if(backKey)
             {
 
-                batch.begin();
+
                 screenMask.draw(batch);
                 quitFont.draw(batch, "Do you want to Quit?", 4*Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
                 quitFont.draw(batch, "Yes, I hate fun", 1*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
                 quitFont.draw(batch, "Not just yet!", 8*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
 
+                batch.end();
+            }
+            else
+            {
                 batch.end();
             }
         }

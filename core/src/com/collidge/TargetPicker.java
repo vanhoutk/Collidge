@@ -1,5 +1,8 @@
 package com.collidge;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 /**
  * Created by Daniel on 06/02/2015.
  */
@@ -9,12 +12,16 @@ public class TargetPicker
     private int currentTarget;
     private int selectedTarget;
     public boolean targetSelected;
+    Texture texture;
+    Sprite sprite;
 
 
 
     TargetPicker(Enemy[] enemies)
     {
 
+        texture=new Texture("arrow_up_blue.png");
+        sprite=new Sprite(texture);
        reset(enemies);
     }
 
