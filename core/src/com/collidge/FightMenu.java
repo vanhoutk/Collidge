@@ -417,11 +417,11 @@ public class FightMenu
 
     //pan (swipe) is for displaying tooltip - swipe right to show tooltip and swipe left to go back to action selection
     public boolean pan(float x, float y, float deltaX, float deltaY){
-        System.out.println("deltaX=" + deltaX + " deltaY=" + deltaY);
+       // System.out.println("deltaX=" + deltaX + " deltaY=" + deltaY);
         if ((deltaX > 20 || deltaX < -20) && (deltaY < 20 || deltaY > -20)) {   //ignore vertical swipes or very short swipes
             dx = deltaX;
             dy = deltaY;
-            System.out.println("dx=" + dx + " dy=" + dy);
+         //   System.out.println("dx=" + dx + " dy=" + dy);
             return true;
         }
         return false;
