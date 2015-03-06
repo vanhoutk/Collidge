@@ -2,7 +2,6 @@ package com.collidge;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -16,8 +15,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -57,7 +54,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             {
                 try
                 {
-                    if (temp == -4)
+                    if (temp == -4)//checks if equal to a comma
                     {
                         temp = in.read() - 48;
                     }
@@ -128,7 +125,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         /**
          * Kris - commented out two of the lines which caused the app to crash on mobile.
          */
-        FileHandle handle = Gdx.files.local("data/RandomText1.txt");
+        if(Gdx.files.local("data/RandomText1.txt").exists())
+        {
+            FileHandle handle = Gdx.files.local("data/RandomText1.txt");
+        }
+        else
+        {
+            System.out.println("XXXXXXXXXXXXXXXXXXXX");
+        }
         //String text = handle.readString();
         textBox = new TextBox();
         //textBox.setText(text);
@@ -146,7 +150,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         }
         else
         {
-            Gdx.gl.glClearColor(0, 0, 0, 0);
+            Gdx.gl.glClearColor(1, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 

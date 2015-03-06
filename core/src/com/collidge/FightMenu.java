@@ -260,8 +260,7 @@ public class FightMenu
                 }
         }
 
-        String[] demo = player.getItemDesc();
-        System.out.println("I'm not completely shit");
+
         //set up items
         for(int z=1;z<=player.getItemList().length;z++)
         {
