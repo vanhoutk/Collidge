@@ -171,10 +171,10 @@ public class Inventory
          */
         CombatItem Coffee, EnergyDrink, Noodles, Sandwich;
 
-        Coffee = new CombatItem("Energy", "Energy Item. Restores 10 energy. Mmm that's good coffee!", 0, 10, 10, "Coffee_cupSmall.png", "Restores 10 En");
-        EnergyDrink = new CombatItem("Energy", "Energy Item. Restores 10 energy. Buzzing!", 0, 10, 10, "energy60.png", "Restores 10 En");
-        Noodles = new CombatItem("Health", "Health Item. Restores 10 HP. Instant Goodness", 10, 0, 10, "Noodles.png", "Restores 10 Health");
-        Sandwich = new CombatItem("Health", "Health Item. Restores 10 HP. Needs more mayo!", 10, 0, 10, "sandwichIcon.png", "Restores 10 Health");
+        Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 10, "Coffee_cupSmall.png");
+        EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 10, "energy60.png");
+        Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 10, "Noodles.png");
+        Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 10, "sandwichIcon.png");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);

@@ -26,15 +26,24 @@ public class CombatItem extends Item
     private int itemQuantity;
     private String battleText;
 
-    CombatItem(String type, String text, int health, int energy, int quantity, String image, String battletext)
+    CombatItem(String type, String text, int health, int energy, int quantity, String image)
     {
         itemType = type;
-        itemText = text;
         healthRestore = health;
         energyRestore = energy;
+        //Combat tooltip creation
+        if (energyRestore!=0 && healthRestore!=0) {
+            battleText = "Restores " + healthRestore + "Hp & " + energyRestore + "En";
+        }
+        else if (healthRestore!=0){
+            battleText = "Restores " + healthRestore + "Hp";
+        }
+        else if (energyRestore!=0){
+            battleText = "Restores " + energyRestore + "En";
+        }
+        itemText = text + " " + battleText;   //creates inventory description by combining a descriptive message with the restore info from battleText
         itemQuantity = quantity;
         itemImage = image;
-        battleText = battletext;
     }
 
     int getHealthRestore()
