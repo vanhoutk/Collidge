@@ -27,7 +27,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 {
     GameStateManager gsm;
 
-
     private boolean backKey=false;
     private boolean backDown=false;
     private boolean quit=false;
@@ -36,7 +35,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     private Texture texture;
     private SpriteBatch batch;
 
-
+    private static TextBox textBox;
 
     @Override
     public void create ()
@@ -58,18 +57,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             {
                 try
                 {
-
-
                     if (temp == -4)
                     {
                         temp = in.read() - 48;
-
-
                     }
 
                     while (temp != -4)
                     {
-
                         if (values[i] > 0)
                         {
                             values[i] *= 10;
@@ -86,9 +80,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                                 values[i]=0;
                                 i++;
                             }
-
                             i=500;
-
                         }
                     }
 
@@ -115,9 +107,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         }
         //FILE INPUT END
 
-
-
-
         Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GestureDetector(this));
@@ -135,9 +124,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         screenMask.setPosition(0f,0f);
         screenMask.setAlpha(.8f);
         batch=new SpriteBatch();
-       // Gdx.input.setInputProcessor(this);
-        //Gdx.input.setInputProcessor(new GestureDetector(this));
-        //setScreen(new Play());
+
+        textBox = new TextBox();
+        textBox.setText("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
     }
 
     @Override
@@ -145,9 +134,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     {
         if(quit)
         {
-
             save();
-
 
             Gdx.app.exit();
         }
@@ -162,6 +149,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 gsm.update();
             }
             gsm.draw();
+            textBox.draw();
             if(backKey)
             {
 
@@ -170,6 +158,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 quitFont.draw(batch, "Do you want to Quit?", 4*Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
                 quitFont.draw(batch, "Yes, I hate fun", 1*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
                 quitFont.draw(batch, "Not just yet!", 8*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
+
                 batch.end();
             }
         }
@@ -205,12 +194,25 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             }
         }
     }
+
+    public static TextBox getTextBox() {
+        return textBox;
+    }
+
+    public static void setTextBox(String string) {
+        textBox.setText(string);
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(backKey)
         {
             return true;
         }
+        if(textBox.isActive()) {
+            return true;
+        }
+
         return gsm.returnCurrentState().touchDown(screenX, screenY, pointer, button);
     }
 
@@ -223,6 +225,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(backKey)
         {
+            return true;
+        }
+        if(textBox.isActive()) {
             return true;
         }
         return gsm.returnCurrentState().touchDragged(screenX, screenY, pointer);
@@ -319,6 +324,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             return true;
         }
+        if(textBox.isActive()) {
+            return true;
+        }
         return gsm.returnCurrentState().touchDown(x,y, pointer,button);
     }
 
@@ -340,6 +348,15 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                     backDown=false;
 
 
+                }
+            }
+            return true;
+        }
+        if(textBox.isActive()) {
+            y = Gdx.graphics.getHeight() - y;
+            if(x < textBox.getX() + textBox.getTextBoxWidth() && x > textBox.getX()) {
+                if(y > textBox.getY() && y < textBox.getY() + textBox.getTextBoxHeight()) {
+                    textBox.turnPage();
                 }
             }
             return true;
@@ -384,8 +401,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public boolean panStop(float x, float y, int pointer, int button)
     {
-
-
         return gsm.returnCurrentState().panStop(x,y,pointer,button);
     }
 

@@ -241,7 +241,6 @@ public class Fight extends GameState
 
         batch.begin();
 
-
         //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
         healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 107 * screenHeight / 120);
         healthBackground.draw(batch);

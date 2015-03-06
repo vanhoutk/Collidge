@@ -82,8 +82,6 @@ public class Play extends GameState {
     @Override
     public void draw()
     {
-
-
         float cameraX=player.getX() + player.getWidth() / 2;
         float cameraY=player.getY() + player.getHeight() / 2;
         if((cameraX+camera.viewportWidth/2)>(player.getCollisionLayer().getTileWidth()*player.getCollisionLayer().getWidth()))
