@@ -437,23 +437,30 @@ public class Fight extends GameState
     }
 
     @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY)
-    {
-        if(combo.comboing)
-        {
-            combo.pan(x,y,deltaX,deltaY);
+    public boolean pan(float x, float y, float deltaX, float deltaY) {
+        if (waitingForTouch == true) {
+            if (fMenu.actionSelected == false) {
+                fMenu.pan(x, y, deltaX, deltaY);
+            }
+        }
+
+        else if (combo.comboing) {
+            combo.pan(x, y, deltaX, deltaY);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean panStop(float x, float y, int pointer, int button)
-    {
-        if(combo.comboing)
-        {
-            combo.panStop(x,y,pointer,button);
-            return true;
+    public boolean panStop(float x, float y, int pointer, int button) {
+
+        if (waitingForTouch == true) {
+            if (fMenu.actionSelected == false) {
+                fMenu.panStop(x, y);   //when you swipe, display the tooltip
+            } else if (combo.comboing) {
+                combo.panStop(x, y, pointer, button);
+                return true;
+            }
         }
         return false;
     }
@@ -482,7 +489,7 @@ public class Fight extends GameState
             if(!fMenu.actionSelected)
             {
                 //tap the menu to select an action
-                fMenu.touchDown(x, y);
+                fMenu.tap(x, y);
                 if(fMenu.actionSelected)
                 {
                     ActionId=fMenu.getActionId();

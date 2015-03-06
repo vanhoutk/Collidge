@@ -115,7 +115,12 @@ public class Player
     private int[] attackMultipliers={1,2,5,7,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
-    private String[] attackDesc = {"Lightly Tap em - 1 En", "Push em over - 5 En" , "Call their Mother - 15" , "Shove your Spirit down their Throat - 15 En", "Smash their Head in with a rock - ??En"};
+    //private String[] attackDesc = {"1 Dmg, 0 En", "2 Dmg, 5 En" , "5 Dmg, 15 En" , "7 Dmg, 75 En", "10 Dmg, 200 En"};       //attack tooltips for FightMenu
+    private String[] attackDesc = {attackMultipliers[0] + "Dmg, " + attackEnergyCosts[0] + "En",    //attack tooltips for FightMenu
+            attackMultipliers[1] + "Dmg, " + attackEnergyCosts[1] + "En",
+            attackMultipliers[2] + "Dmg, " + attackEnergyCosts[2] + "En",
+            attackMultipliers[3] + "Dmg, " + attackEnergyCosts[3] + "En",
+            attackMultipliers[4] + "Dmg, " + attackEnergyCosts[4] + "En"};
 
     Player()
     {
