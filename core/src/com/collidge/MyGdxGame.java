@@ -125,10 +125,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         screenMask.setAlpha(.8f);
         batch=new SpriteBatch();
 
+        /**
+         * Kris - commented out two of the lines which caused the app to crash on mobile.
+         */
         FileHandle handle = Gdx.files.local("data/RandomText1.txt");
-        String text = handle.readString();
+        //String text = handle.readString();
         textBox = new TextBox();
-        textBox.setText(text);
+        //textBox.setText(text);
+        textBox.setText("Text string");
     }
 
     @Override
