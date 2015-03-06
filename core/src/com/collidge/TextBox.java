@@ -85,7 +85,7 @@ public class TextBox extends BitmapFont {
         fullText = string;
         currentPage = 0;
         pages.clear();
-        final int pageLetterCount = 80;
+        final int pageLetterCount = 400;
 
         int noOfPages = fullText.length() / pageLetterCount;
         boolean remainderPage = false;

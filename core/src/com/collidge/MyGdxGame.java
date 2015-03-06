@@ -125,8 +125,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         screenMask.setAlpha(.8f);
         batch=new SpriteBatch();
 
+        FileHandle handle = Gdx.files.local("data/RandomText1.txt");
+        String text = handle.readString();
         textBox = new TextBox();
-        textBox.setText("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789");
+        textBox.setText(text);
     }
 
     @Override
