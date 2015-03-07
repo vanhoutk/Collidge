@@ -51,6 +51,7 @@ public class Fight extends GameState
     private BitmapFont battleFont;
     private TargetPicker targetPicker;
     private Sprite background;
+    private Sprite targetArrow,targetReticule,backArrow;
 
 
     Timer.Task damager=new Timer.Task()
@@ -187,9 +188,23 @@ public class Fight extends GameState
 
         texture = new Texture("panelInset_beige.png");
 
+
         menuContainer = new Sprite(texture);
         texture=new Texture("walking_right_animation.png");
         TextureRegion[][] region = TextureRegion.split(texture,32,32);
+        texture=new Texture("arrow_up_blue.png");
+        targetArrow=new Sprite(texture);
+        targetArrow.setSize(screenWidth/12f,screenWidth/12f);
+        targetArrow.setOriginCenter();
+        texture=new Texture("targetReticule.png");
+        targetReticule=new Sprite(texture);
+        targetReticule.setSize(targetArrow.getWidth(),targetArrow.getHeight());
+        targetReticule.setOriginCenter();
+        texture= new Texture("backArrow.png");
+        backArrow=new Sprite(texture);
+        backArrow.setSize(targetReticule.getWidth(), targetReticule.getHeight());
+        backArrow.setOriginCenter();
+
 
 
 
@@ -279,7 +294,8 @@ public class Fight extends GameState
         battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,7*screenWidth/60,112*screenHeight/120);
 
 
-        battleFont.setScale(screenWidth / (13 * 40f), screenHeight / (13 * 40f));
+
+        battleFont.setScale(screenWidth/400);
 
         // Enemy drawing loop
         for(int i=0;i<enemies.length;i++)
@@ -298,7 +314,7 @@ public class Fight extends GameState
                     target=0;
                 }
 
-                batch.draw(enemies[i].animation.getFrame(),((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)((((enemyCount)-(i+1))/(double)(enemyCount))*(screenHeight/2)),enemies[i].width,enemies[i].height);
+                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
                 /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
                 sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
                 sprite_enemy[i].draw(batch);*/
@@ -310,14 +326,14 @@ public class Fight extends GameState
                     selector.setSize(enemies[i].width,enemies[i].height);
                     selector.draw(batch);
                     //TODO fix health bar so that it fills top of enemy side
-                    healthBackground.setPosition((1f * screenWidth /2f), screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
-                    healthBackground.setSize(2*screenWidth/15f, battleFont.getLineHeight());
+                    healthBackground.setPosition((3f * screenWidth /5f), screenHeight - (battleFont.getLineHeight()*3));
+                    healthBackground.setSize(2*screenWidth/6f, battleFont.getLineHeight());
                     healthBackground.draw(batch);
-                    healthBar.setPosition((1f * screenWidth /2f),screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
-                    healthBar.setSize(enemies[i].getHealth()*((2*screenWidth/15f)/enemies[i].getMaxHealth()),battleFont.getLineHeight());
+                    healthBar.setPosition(healthBackground.getX(),healthBackground.getY());
+                    healthBar.setSize(healthBackground.getWidth()*(enemies[i].getHealth()/enemies[i].getHealth()),healthBackground.getHeight());
                     healthBar.draw(batch);
-                    battleFont.draw(batch,enemies[i].getName(),(1f * screenWidth /2f),screenHeight-battleFont.getLineHeight() - (battleFont.getLineHeight()*(i)));
-                    battleFont.draw(batch, enemies[i].getHealth() + "", (1f * screenWidth /2f), (screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (i))));
+                    battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
+                    battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
 
                 }
                 else
@@ -325,8 +341,7 @@ public class Fight extends GameState
                     enemies[i].animation.pause();
                 }
             }
-            else
-                battleFont.draw(batch,"Defeated",(int)(3.0*screenWidth/5),screenHeight-(battleFont.getLineHeight()*(i)));
+
             /*if (i+1 >= enemies.length)
                 break;
             if(!enemies[i+1].getDead())
@@ -346,17 +361,20 @@ public class Fight extends GameState
                 battleFont.draw(batch,"Defeated",(4f*screenWidth/5f),screenHeight-(battleFont.getLineHeight()*(i)));*/
         }
 
-        /*//moving the target selector icon from enemy to enemy, if you are in the targeting phase of the fight (after an offensive action is selected)
         if(targeting)
         {
-            selector.setSize((screenWidth/5f), battleFont.getLineHeight()*2);
-            if (targetPicker.getCurrentTarget()%2 ==0)      //Determines what column the Enemy's data should be in
-                selector.setPosition(1f/2f*screenWidth,screenHeight-2*battleFont.getLineHeight() - (battleFont.getLineHeight()*((targetPicker.getCurrentTarget()+1))));
-            else
-                selector.setPosition(1f/5f*screenWidth+1f/2f*screenWidth,screenHeight-2*battleFont.getLineHeight() - (battleFont.getLineHeight()*((targetPicker.getCurrentTarget()))));
 
-            selector.draw(batch);
-        }*/
+            targetArrow.setRotation(90);
+            targetArrow.setPosition(screenWidth / 10, screenHeight / 2);
+            targetArrow.draw(batch);
+            targetReticule.setPosition(targetArrow.getX() + targetArrow.getWidth(), targetArrow.getY());
+            targetReticule.draw(batch);
+            targetArrow.setRotation(-90);
+            targetArrow.setPosition(targetReticule.getX() + targetReticule.getWidth(), targetReticule.getY());
+            targetArrow.draw(batch);
+            backArrow.setPosition(targetReticule.getX(), targetReticule.getY() - backArrow.getHeight());
+            backArrow.draw(batch);
+        }
         //TODO replace Placeholder
         //if no action has been selected in the fight menu, draws the fight menu
         if(!fMenu.actionSelected)
@@ -437,14 +455,15 @@ public class Fight extends GameState
     }
 
     @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
-        if (waitingForTouch == true) {
-            if (fMenu.actionSelected == false) {
-                fMenu.pan(x, y, deltaX, deltaY);
-            }
+    public boolean pan(float x, float y, float deltaX, float deltaY)
+    {
+        if (waitingForTouch == true&&fMenu.actionSelected == false)
+        {
+            fMenu.pan(x, y, deltaX, deltaY);
         }
 
-        else if (combo.comboing) {
+        else if (combo.comboing)
+        {
             combo.pan(x, y, deltaX, deltaY);
             return true;
         }
@@ -498,31 +517,40 @@ public class Fight extends GameState
                 }
             }
 
-            //targeting an enemy after selecting an action- tap left or right of screen to move target picker icon, tap middle to select target
+            //targeting an enemy after selecting an action
             else if(targeting)
             {
 
-                if(x<screenWidth/3)
+                if(y<targetReticule.getY()&&y>targetReticule.getY()-targetReticule.getHeight())
                 {
-                    targetPicker.Left();
+                    if (x < targetReticule.getX() && x > targetReticule.getX() - targetReticule.getWidth())
+                    {
+                        targetPicker.Left();
 
+                    } else if (x > targetReticule.getX() + targetReticule.getWidth() && x < targetReticule.getX() + (targetReticule.getWidth() * 2))
+                    {
+                        targetPicker.Right();
+
+                    } else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth())
+                    {
+                        targetPicker.Select();
+
+                    }
+
+                    if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
+                    {
+                        targeting = false;
+                        playerTurnPart2();
+                        return true;
+                    }
                 }
-                else if(x>2*(screenWidth/3))
-                {
-                    targetPicker.Right();
-
-                }
-                else
-                {
-                    targetPicker.Select();
-
-                }
-
-                if(targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
+                else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth()&&y>targetReticule.getY()&&y<targetReticule.getY()+targetReticule.getHeight())
                 {
                     targeting=false;
-                    playerTurnPart2();
+                    waitingForTouch=true;
+                    fMenu.actionSelected=false;
                 }
+
             }
 
             else if(combo.comboing)     //if in combo phase, accept combo input
@@ -551,6 +579,7 @@ public class Fight extends GameState
                 return;
 
             }
+
         }
 
         if(ActionType==3)       //use an item

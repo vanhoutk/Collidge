@@ -297,16 +297,17 @@ public class Combo
 
     private void evaluateSwipe()
     {
+
         double angle=Math.toDegrees(Math.atan2(dx,dy));
-        System.out.print("Skill: "+skill+">");
-        if(angle-swipeAngle>10)
+
+        if(angle-swipeAngle>20)
         {
 
         }
         else
         {
             angle=Math.abs(angle-swipeAngle);
-            skill +=Math.abs(( 1 - (angle / 10))/numSwipes);
+            skill +=( 1 - (angle / 20))/(double)numSwipes;
         }
         System.out.println(skill);
     }

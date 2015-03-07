@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -128,14 +127,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         /**
          * Kris - commented out two of the lines which caused the app to crash on mobile.
          */
-        if(Gdx.files.local("data/RandomText1.txt").exists())
-        {
-            FileHandle handle = Gdx.files.local("data/RandomText1.txt");
-        }
-        else
-        {
-            System.out.println("XXXXXXXXXXXXXXXXXXXX");
-        }
+
         //String text = handle.readString();
         textBox = new TextBox();
         //textBox.setText(text);
