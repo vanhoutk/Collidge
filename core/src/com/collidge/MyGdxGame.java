@@ -131,24 +131,21 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         //String text = handle.readString();
         textBox = new TextBox();
         //textBox.setText(text);
-        textBox.setText("Text string");
+        textBox.setText("This example is here to demonstrate the turning of a page.  blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla");
     }
 
     @Override
     public void render ()
     {
-
         if(quit)
         {
             save();
-
             Gdx.app.exit();
         }
         else
         {
             Gdx.gl.glClearColor(1, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
             if(!backKey)
             {
@@ -175,7 +172,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 batch.end();
             }
         }
-
     }
 
     public void save()
@@ -271,13 +267,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
        // super.resume();
     }
 
-    //-----------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------
+
     //USELESS INPUT FOR KEYBOARD AND MOUSE THAT HAS TO BE IMPLEMENTED BUT WE OBVIOUSLY WONT USE
-    //-----------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------
+
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         // TODO Auto-generated method stub
@@ -369,7 +361,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             y = Gdx.graphics.getHeight() - y;
             if(x < textBox.getX() + textBox.getTextBoxWidth() && x > textBox.getX()) {
                 if(y > textBox.getY() && y < textBox.getY() + textBox.getTextBoxHeight()) {
-                    textBox.turnPage();
+                    if(!textBox.pageDone()) textBox.finishPage();
+                    else textBox.turnPage();
                 }
             }
             return true;
@@ -386,28 +379,29 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             return true;
         }
+        if(textBox.isActive()) return true;
         return gsm.returnCurrentState().longPress(x,y);
     }
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button)
     {
-
         if(backKey)
         {
             return true;
         }
+        if(textBox.isActive()) return true;
         return gsm.returnCurrentState().fling(velocityX,velocityY,button);
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY)
     {
-
         if(backKey)
         {
             return true;
         }
+        if(textBox.isActive()) return true;
         return gsm.returnCurrentState().pan(x,y,deltaX,deltaY);
     }
 
@@ -424,6 +418,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             return true;
         }
+        if(textBox.isActive()) return true;
         return gsm.returnCurrentState().zoom(initialDistance,distance);
     }
 
@@ -434,6 +429,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             return true;
         }
+        if(textBox.isActive()) return true;
         return gsm.returnCurrentState().pinch(initialPointer1,initialPointer2,pointer1,pointer2);
     }
 }

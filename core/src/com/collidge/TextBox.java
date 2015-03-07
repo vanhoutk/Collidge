@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.RegionInfluencer;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * Created by Ben on 06/03/2015.
  * Class for any message to be displayed on the textbox
  */
-public class TextBox extends BitmapFont {
+public class TextBox {
     //libGDX data
     private BitmapFont textBoxFont;
     private Sprite textBoxSprite;
@@ -23,30 +24,36 @@ public class TextBox extends BitmapFont {
     private float x, y;
     private float textBoxWidth;
     private float textBoxHeight;
+    private float xPadding;
+    private float yPadding;
     private boolean active = true;
 
     //text data
     private String fullText;
-    private ArrayList<String> pages;
+    private ArrayList<AnimatedText> pages;
     private int currentPage = 0;
     private static final int noOfLines = 5;
 
     public TextBox() {
-        pages = new ArrayList<String>();
+        pages = new ArrayList<AnimatedText>();
 
         x = (1/5.0f) * Gdx.graphics.getWidth();
         y = 0.0f;
+        xPadding = Gdx.graphics.getWidth() / 25.0f;
+        yPadding = Gdx.graphics.getHeight() / 20.0f;
         textBoxWidth = Gdx.graphics.getWidth() * (5 / 8.0f);
         textBoxHeight = Gdx.graphics.getHeight() * (3 / 8.0f);
         textBoxFont = new BitmapFont();
         textBoxFont.setColor(Color.WHITE);
-        //textBoxFont.scale(1.0f);
+        textBoxFont.setScale(Gdx.graphics.getWidth() / 400f, Gdx.graphics.getHeight() / 400f);
         arrowDownTexture = new Texture("arrowBeige_down.png");
-        Texture exitTexture = new Texture("Actions-arrow-right-icon.png");
+        Texture exitTexture = new Texture("arrowBeige_down.png");
         backButtonSprite = new Sprite(exitTexture);
-        backButtonSprite.setScale(0.6f);
-        backButtonSprite.setPosition(x + textBoxWidth - (4 * Gdx.graphics.getWidth() / 25.0f), y + (Gdx.graphics.getHeight() / 140));
-        Texture textBoxTexture = new Texture("panel_beige.png");;
+        backButtonSprite.setScale(1.5f);
+        backButtonSprite.setPosition(x + textBoxWidth - (2 * xPadding), y + yPadding);
+        backButtonSprite.rotate90(false);
+        backButtonSprite.setColor(Color.GREEN);
+        Texture textBoxTexture = new Texture("panel_beige.png");
         textBoxSprite = new Sprite(textBoxTexture);
         textBoxSprite.setSize(textBoxWidth, textBoxHeight);
         textBoxSprite.setPosition(x,y);
@@ -59,9 +66,7 @@ public class TextBox extends BitmapFont {
         if (active) {
             batch.begin();
             textBoxSprite.draw(batch);
-            float xPadding = Gdx.graphics.getWidth() / 25.0f;
-            float yPadding = Gdx.graphics.getHeight() / 20.0f;
-            textBoxFont.drawWrapped(batch, pages.get(currentPage), textBoxSprite.getX() + xPadding, textBoxSprite.getY() + textBoxSprite.getHeight() - yPadding, textBoxWidth - xPadding * 1.8f);
+            textBoxFont.drawWrapped(batch, pages.get(currentPage).returnString() , textBoxSprite.getX() + xPadding, textBoxSprite.getY() + textBoxSprite.getHeight() - yPadding, textBoxWidth - xPadding * 1.8f);
             if(currentPage < pages.size() - 1) batch.draw(arrowDownTexture,textBoxSprite.getX() + textBoxWidth - 2 * xPadding , textBoxSprite.getY() + yPadding);
             else if(currentPage == pages.size() - 1) backButtonSprite.draw(batch);
             batch.end();
@@ -69,8 +74,15 @@ public class TextBox extends BitmapFont {
     }
 
     public void turnPage() {
-        if(currentPage < pages.size() - 1) currentPage++;
+        if(currentPage < pages.size() - 1) {
+            currentPage++;
+            pages.get(currentPage).start();
+        }
         else active = false;
+    }
+
+    public void finishPage() {
+        pages.get(currentPage).finishAnimation();
     }
 
     /*
@@ -85,7 +97,7 @@ public class TextBox extends BitmapFont {
         fullText = string;
         currentPage = 0;
         pages.clear();
-        final int pageLetterCount = 400;
+        final int pageLetterCount = 200;
 
         int noOfPages = fullText.length() / pageLetterCount;
         boolean remainderPage = false;
@@ -109,7 +121,11 @@ public class TextBox extends BitmapFont {
                 }
             }
             currentLetter += pageLetterCount;
-            pages.add(pageToAdd);
+            BitmapFont.TextBounds bounds = textBoxFont.getWrappedBounds(pageToAdd, textBoxWidth - xPadding * 1.8f);
+            int noOfLinesInt = (int)((float)Math.round((bounds.height / textBoxFont.getLineHeight() * 100000) / 100000));
+            /*if (bounds.height > noOfLines * textBoxFont.getLineHeight()) pages.get(page) = pages.get(page) + noOfLinesInt;*/
+            pageToAdd += " " + noOfLinesInt;
+            pages.add(new AnimatedText(pageToAdd, 0));
         }
     }
 
@@ -135,5 +151,9 @@ public class TextBox extends BitmapFont {
 
     public float getTextBoxHeight() {
         return textBoxHeight;
+    }
+
+    public boolean pageDone() {
+        return pages.get(currentPage).pageDone();
     }
 }
