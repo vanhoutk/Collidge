@@ -330,7 +330,7 @@ public class Fight extends GameState
                     healthBackground.setSize(2*screenWidth/6f, battleFont.getLineHeight());
                     healthBackground.draw(batch);
                     healthBar.setPosition(healthBackground.getX(),healthBackground.getY());
-                    healthBar.setSize(healthBackground.getWidth()*(enemies[i].getHealth()/enemies[i].getHealth()),healthBackground.getHeight());
+                    healthBar.setSize((int)(healthBackground.getWidth()*((double)enemies[i].getHealth()/enemies[i].getMaxHealth())),healthBackground.getHeight());
                     healthBar.draw(batch);
                     battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());

@@ -74,22 +74,29 @@ public class LevelUpSplash extends GameState
         switch(selected)
         {
             case 0:
-                infoText="Health: More Hp for a healthier you   \n+5 Hp";
+                infoText="Health: More Hp for a healthier you   \n+"
+                        +player.getHealthPointsMult()+"Hp. Current Value: "+(int)(player.getHealthPointsMult()*(1+player.getLevel()+player.getHealthPoints()));
                 break;
             case 1:
-                infoText="Defence: Take less damage from attacks, insults still sting though\n+0.5 Def";
+                infoText="Defence: Take less damage from attacks, insults still sting though\n+"
+                        +player.getDefencePointsMult()+"Def. Current Value: "+(int)(player.getDefencePointsMult()*(1+player.getLevel()+player.getDefencePoints()));
                 break;
             case 2:
-                infoText="Attack: Kick more ass, take more names, chew less gum\n+1 Atk";
+                infoText="Attack: Kick more ass, take more names, chew less gum\n+"
+                        +player.getAttackPointsMult()+"Atk. Current Value: "+(int)(player.getAttackPointsMult()*(1+player.getLevel()+player.getAttackPoints()));
                 break;
             case 3:
-                infoText="Energy: WOW, that's the biggest energy bar I've ever seen!\n+5 En";
+                infoText="Energy: WOW, that's the biggest energy bar I've ever seen!\n+"
+                        +player.getEnergyPointsMult()+"En. Current Value: "+(int)(player.getEnergyPointsMult()*(1+player.getLevel()+player.getEnergyPoints()));
                 break;
             case 4:
-                infoText="Intelligence: You're a smart guy, you know this stat helps you regenerate energy\n+1 Int";
+                infoText="Intelligence: You're a smart guy, you know this stat helps you regenerate energy\n+"
+                        +player.getIntelligencePointsMult()+"Int. Current Value: "+(int)(player.getIntelligencePointsMult()*(1+player.getLevel()+player.getIntelligencePoints()));
                 break;
             default:
-                infoText="Pick a stat to increase! (On top of standard level up values of\n+5Hp +1Atk +5En +.3Int)";
+                infoText="Pick a stat to increase! \n(On top of standard level up values of\n"+player.getHealthPointsMult()+"Hp, "+
+                        player.getDefencePointsMult()+"Def, "+player.getAttackPointsMult()+"Atk, "+player.getEnergyPointsMult()+"En, "
+                + player.getIntelligencePointsMult()+"Int)";
                 break;
         }
 

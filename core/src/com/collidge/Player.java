@@ -18,7 +18,54 @@ public class Player
     public Inventory items;
 
 
+
     private int levelUpCounter=0;
+
+
+    private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
+    private double attackPointsMult=.8,
+            defencePointsMult=.3,
+            intelligencePointsMult=.5,
+            healthPointsMult=3.5,
+            energyPointsMult=3.5;
+
+
+    private int baseAttackPoints=3,
+            baseDefencePoints=0,
+            baseIntelligencePoints=1,
+            baseHealthPoints=20,
+            baseEnergyPoints=5;
+
+    //Kris Added- Variables for equipped Weapon and equipped Armour
+
+    String equippedWeapon;
+    String equippedArmour;
+
+    public double getAttackPointsMult()
+    {
+        return attackPointsMult;
+    }
+
+    public double getDefencePointsMult()
+    {
+        return defencePointsMult;
+    }
+
+    public double getIntelligencePointsMult()
+    {
+        return intelligencePointsMult;
+    }
+
+    public double getHealthPointsMult()
+    {
+        return healthPointsMult;
+    }
+
+    public double getEnergyPointsMult()
+    {
+        return energyPointsMult;
+    }
+
 
     public int getAttackPoints()
     {
@@ -44,15 +91,6 @@ public class Player
     {
         return energyPoints;
     }
-
-    private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
-
-    /**
-     * Kris Added
-     * - Variables for equipped Weapon and equipped Armour
-     */
-    String equippedWeapon;
-    String equippedArmour;
 
     public int getCurrentHealth()
     {
@@ -285,14 +323,14 @@ public class Player
         armour=equippedArmour;
         unequipItem(equippedWeapon);
         unequipItem(equippedArmour);
-        attack=3+((level/2)+attackPoints);
+        attack=baseAttackPoints+(int)((level+attackPoints)*attackPointsMult);
 
-        defence=defencePoints/2+1;
-        health=20+((level+healthPoints)*5);
+        defence=baseDefencePoints+(int)((defencePoints+level)*defencePointsMult);
+        health=baseHealthPoints+(int)((level+healthPoints)*healthPointsMult);
 
-        intelligence=(level/3)+intelligencePoints+1;
+        intelligence=baseIntelligencePoints+(int)((level+intelligencePoints)*intelligencePointsMult);
 
-        energy=(level+energyPoints)*5;
+        energy=baseEnergyPoints+(int)((level+energyPoints)*energyPointsMult);
         //TODO figure out a good curve for xp to follow
         expTarget=((int)Math.pow(level,1.5))+5;
         //expTarget=1;
