@@ -278,7 +278,8 @@ public class Play extends GameState {
             }
             if(x > menuButtonSprite.getX())
             {
-                gsm.changeState(1);
+                gsm.openMenu(userCharacter);
+                //gsm.changeState(1);
             }
             else
             {

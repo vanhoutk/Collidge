@@ -33,10 +33,8 @@ public class GameStateManager
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
         GameState state1 = new Play(this);
-        GameState gameMenu = new GameMenu(this);
        // GameState state2 = new TestState2(this);
         gameStates.add(state1);
-        gameStates.add(gameMenu);
 
         //currentState = MENUSTATE;
 
@@ -54,10 +52,8 @@ public class GameStateManager
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
         GameState state1 = new Play(this);
-        GameState gameMenu = new GameMenu(this);
         // GameState state2 = new TestState2(this);
         gameStates.add(state1);
-        gameStates.add(gameMenu);
 
         //currentState = MENUSTATE;
 
@@ -129,6 +125,23 @@ public class GameStateManager
 
 
     }
+
+    public void openMenu(Player player)
+    {
+        gameStates.add(new GameMenu(this, player));
+        changeState(gameStates.size()-1);
+    }
+
+    public void closeMenu()
+    {
+        changeState(0);
+        gameStates.get(gameStates.size()-1).dispose();
+        gameStates.remove(gameStates.size()-1);
+    }
+
+
+
+
     public void levelUpState(Player player)
     {
         gameStates.get(gameStates.size()-1).dispose();

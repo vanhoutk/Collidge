@@ -1,11 +1,13 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 /**
  * Created by simon on 11/02/15.
@@ -13,21 +15,40 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GameMenu extends GameState
 {
-    //constructor
-    GameMenu(GameStateManager gsm)
-    {
-        super(gsm);
 
-    }
-
+    Player player;
     boolean statsPressed=false, settingsPressed=false, savePressed=false;
     int volumeLevel=0, musicLevel=0;
     SpriteBatch batch;
     Texture texture, background;
     Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4; //declaring sprites
+    BitmapFont Font;
+
+
+    //constructor
+    GameMenu(GameStateManager gsm, Player plr)
+    {
+        super(gsm);
+        player = plr;
+
+        /*
+        playerInfoText = new String[5];
+        playerInfoText[0] = player.getCurrentHealth() + "/" + player.getHealth();
+        playerInfoText[1] = player.getCurrentEnergy() + "/" + player.getEnergy();
+        playerInfoText[2] = String.valueOf(player.getAttack());
+        playerInfoText[3] = String.valueOf(player.getDefence());
+        playerInfoText[4] = String.valueOf(player.getIntelligence());
+        playerInfoText[2] = String.valueOf(player.getAttack());
+        playerInfoText[3] = String.valueOf(player.getDefence());
+        playerInfoText[4] = String.valueOf(player.getIntelligence());
+        */
+    }
 
     public void initialize()
     {
+
+        Font = new BitmapFont();
+
         //importing images
         batch = new SpriteBatch();
 
@@ -104,7 +125,6 @@ public class GameMenu extends GameState
         //DRAWING SPRITES
         batch.begin();
 
-
         //setting background
         batch.draw(background,0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -120,12 +140,38 @@ public class GameMenu extends GameState
 
         if(statsPressed)
         {
-            batch.draw(stats, Gdx.graphics.getWidth()/2 - stats.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+            //batch.draw(stats, Gdx.graphics.getWidth()/2 - stats.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+
+            Font.setColor(Color.GREEN);
+            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.draw(batch, "Health: " + player.getHealth(), screenWidth/3, screenHeight*6/10);
+
+            Font.setColor(Color.YELLOW);
+            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.draw(batch, "Energy: " + player.getEnergy(), screenWidth/3, screenHeight*5/10);
+
+            Font.setColor(Color.RED);
+            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.draw(batch, "Attack: " + String.valueOf(player.getAttack()), screenWidth/3, screenHeight*4/10);
+
+            Font.setColor(Color.BLUE);
+            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.draw(batch, "Defence: " + String.valueOf(player.getDefence()), screenWidth/3, screenHeight*3/10);
+
+            Font.setColor(Color.PURPLE);
+            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.draw(batch, "Intelligence: " + String.valueOf(player.getIntelligence()), screenWidth/3, screenHeight*2/10);
         }
 
         if(settingsPressed)
         {
             batch.draw(settings, Gdx.graphics.getWidth()/2 - settings.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+
+            Font.setColor(Color.WHITE);
+            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.draw(batch, "Volume:", vol0.getX() , vol0.getY() + 3*vol0.getHeight()/2);
+            Font.draw(batch, "Music:", music0.getX() , music0.getY() + 3*music0.getHeight()/2);
+
             if(volumeLevel==0)
             {
                 vol0.draw(batch);
@@ -217,7 +263,7 @@ public class GameMenu extends GameState
 
             if (x > Gdx.graphics.getWidth()*4/5 && y > Gdx.graphics.getHeight()*3/5)
             {
-                gsm.changeState(0);
+                gsm.closeMenu();
             }
 
             if (y > stats.getY() && y < stats.getY() + stats.getHeight())
