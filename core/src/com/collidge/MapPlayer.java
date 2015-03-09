@@ -228,7 +228,7 @@ public class MapPlayer extends Sprite
                 if (lastpoint >= Math.abs(tileID * tilewidth)) {
                     stopMovement();
                     stopping = false;
-                    stopped = false;//Wait until past this point
+                    //Wait until past this point
                 }
             }
             if (direction == LEFT) {
@@ -236,7 +236,7 @@ public class MapPlayer extends Sprite
                 if (lastpoint <= Math.abs(tileID * tilewidth)) {
                     stopMovement();
                     stopping = false;
-                    stopped = false;//Wait until past this point
+                    //Wait until past this point
                 }
             }
             if (direction == UP) {
@@ -244,20 +244,22 @@ public class MapPlayer extends Sprite
                 if (lastpoint >= Math.abs(tileID * tileheight)) {
                     stopMovement();
                     stopping = false;
-                    stopped = false;//Wait until past this point
+                    //Wait until past this point
                 }
             }
-            if (direction == DOWN) {
+            else {
                 lastpoint = (int) getY();
                 if (lastpoint <= Math.abs(tileID * tileheight)) {
                     stopMovement();
                     stopping = false;
-                    stopped = false;
                     //Wait until past this point
                 }
+
             }
 
         }
+        else stopped = false;
+
 
     }
 
