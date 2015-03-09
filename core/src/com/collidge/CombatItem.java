@@ -33,7 +33,7 @@ public class CombatItem extends Item
         energyRestore = energy;
         //Combat tooltip creation
         if (energyRestore!=0 && healthRestore!=0) {
-            battleText = "Restores " + healthRestore + "Hp & " + energyRestore + "En";
+            battleText = healthRestore + "Hp & " + energyRestore + "En";
         }
         else if (healthRestore!=0){
             battleText = "Restores " + healthRestore + "Hp";

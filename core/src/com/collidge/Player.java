@@ -30,7 +30,8 @@ public class Player
             energyPointsMult=3.5;
 
 
-    private int baseAttackPoints=3,
+    private int
+            baseAttackPoints=3,
             baseDefencePoints=0,
             baseIntelligencePoints=1,
             baseHealthPoints=20,

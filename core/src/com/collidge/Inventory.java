@@ -15,6 +15,7 @@ package com.collidge;
  * - TODO: Rebalance items
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -79,17 +80,19 @@ public class Inventory
 
     String[] getDesc()
     {
-        Set<String> description = new HashSet();
+        //Set<String> description = new HashSet();
+        ArrayList<String> description=new ArrayList();
+
 
         for(Map.Entry<String, CombatItem> entry: MyCombatInv.entrySet())
         {
+
             if(entry.getValue().getItemQuantity() > 0)
             {
                 description.add(entry.getValue().getBattleText());
             }
+
         }
-
-
 
 
         return description.toArray(new String[description.size()]);

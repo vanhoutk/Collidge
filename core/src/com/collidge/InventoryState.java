@@ -25,7 +25,8 @@ public class InventoryState extends GameState
     Player player;
     SpriteBatch batch;
     Texture texture;
-    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle, healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon;
+    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle;
+    Sprite healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon, itemSelectSquare;
     String[] itemInfoText, itemNameText, itemEquipText, playerInfoText;
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
@@ -47,11 +48,12 @@ public class InventoryState extends GameState
         backButton = new Sprite(new Texture("back_button.png"));
         greenCircle = new Sprite(new Texture("greenCircleBlack.png"));
         greenSquare = new Sprite(new Texture("greenSquareBlack.jpg"));
-        healthIcon=new Sprite(new Texture("techno-heart.png"));
-        defenceIcon=new Sprite(new Texture("edged-shield.png"));
-        attackIcon=new Sprite(new Texture("shard-sword.png"));
-        energyIcon=new Sprite(new Texture("battery-pack.png"));
-        intelligenceIcon=new Sprite(new Texture("brain.png"));
+        healthIcon = new Sprite(new Texture("techno-heart.png"));
+        defenceIcon = new Sprite(new Texture("edged-shield.png"));
+        attackIcon = new Sprite(new Texture("shard-sword.png"));
+        energyIcon = new Sprite(new Texture("battery-pack.png"));
+        intelligenceIcon = new Sprite(new Texture("brain.png"));
+        itemSelectSquare = new Sprite(new Texture("ItemSelectCorners.png"));
 
         batch = new SpriteBatch();
         infoFont = new BitmapFont();
@@ -183,6 +185,15 @@ public class InventoryState extends GameState
 
         batch.begin();
 
+        if(selectedItem > 0)
+        {
+            int x = (selectedItem - 1) / 2;
+            int y = (selectedItem - 1) % 2;
+            itemSelectSquare.setSize(11 * sqSide/10, 11 * sqSide/10);
+            itemSelectSquare.setPosition((spacing - sqSide/20) + x * (spacing + sqSide), screenHeight - ((((y * 100) + 105) * sqSide/100) + (y + 2) * spacing / 4));
+            itemSelectSquare.draw(batch);
+        }
+
         itemSquare.setSize(sqSide, sqSide);
         itemSquare.setPosition(spacing, screenHeight - (sqSide + spacing/2));
         itemSquare.draw(batch);
@@ -275,8 +286,6 @@ public class InventoryState extends GameState
                 }
             }
         }
-
-
 
         //textbox.setSize(screenWidth - (2 * (spacing+sqSide)), sqSide);
         textbox.setSize(screenWidth - 2 * spacing, sqSide);

@@ -210,15 +210,11 @@ public class Fight extends GameState
 
         testAnim = new com.collidge.Animation(region[0],.2f);
 
-
-
         //calls fightMenu class
         fMenu=new FightMenu(playr);
 
         waitingForTouch=true;
         battleFont = new BitmapFont();
-
-
 
         Timer.instance().start();
     }

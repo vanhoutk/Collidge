@@ -38,6 +38,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public void create ()
     {
 
+
+        Gdx.graphics.setVSync(true);
+
         font=new BitmapFont();
         font.setScale(Gdx.graphics.getWidth()/400,Gdx.graphics.getHeight()/400);
 
@@ -137,6 +140,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public void render ()
     {
+
         if(quit)
         {
             save();
