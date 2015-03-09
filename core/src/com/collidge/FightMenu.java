@@ -24,7 +24,7 @@ public class FightMenu
     private int selectedIcon;
     private int currentMenu;
     public boolean actionSelected;
-    public boolean tooltipSelected;
+    public boolean tooltipSelected=false;
     private BitmapFont battleFont;
     private Sprite menuContainer, arrow_down, arrow_up;
 
@@ -254,7 +254,7 @@ public class FightMenu
                 if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
                 {
                     menuWords[1][j]=player.getAttacksNames()[j-1]+"*";
-                    attackDesc[1][j]= "You need " + player.getAttackEnergyCosts()[j-1] + " more Energy";
+                    attackDesc[1][j]= player.getAttackEnergyCosts()[j-1]+" En";
                 }
                 else
 
@@ -272,13 +272,14 @@ public class FightMenu
             menuWords[3][z]=player.getItemList()[z-1];
         }
 
+
         for(int z=1;z<=player.getItemDesc().length;z++)
         {
             //populate with currentItem Descriptions
             attackDesc[3][z]=player.getItemDesc()[z-1];
         }
         menuWords[2][1]="Recharge";
-        attackDesc[2][1] = "Rest- Gain 1 En";
+        attackDesc[2][1] = "Rest & Gain "+player.getIntelligence()+"En";
 
         menuWords[2][2]="Flee";
         attackDesc[2][2] = "End fight";
@@ -309,17 +310,23 @@ public class FightMenu
         menuContainer.draw(batch);
 
         //drawing above icon
-        if (getAboveIcon().endsWith("*")) {
+        if (getAboveIcon().endsWith("*"))
+        {
             battleFont.setColor(Color.RED);
-        } else {
+        }
+        else
+        {
             battleFont.setColor(Color.BLACK);
         }
         battleFont.draw(batch, getAboveIcon(), screenWidth / 7, screenHeight / 2 + 2 * battleFont.getLineHeight());
 
         //drawing current icon
-        if (getCurrentIcon().endsWith("*")) {
+        if (getCurrentIcon().endsWith("*"))
+        {
             battleFont.setColor(Color.RED);
-        } else {
+        }
+        else
+        {
             battleFont.setColor(Color.BLACK);
         }
 
@@ -408,7 +415,9 @@ public class FightMenu
         }
         //x and y co-ordinates for the menu
         else if (x > menuContainer.getX() && x < menuContainer.getX() + menuContainer.getWidth()) {
-            if (y > menuContainer.getY() - menuContainer.getHeight() / 6 && y < menuContainer.getY() + menuContainer.getHeight() / 3) {
+            if (y > menuContainer.getY() - menuContainer.getHeight() / 6 && y < menuContainer.getY() + menuContainer.getHeight() / 3)
+            {
+                tooltipSelected=false;
                 Select();
             }
         }
