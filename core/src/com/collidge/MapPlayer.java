@@ -304,18 +304,21 @@ public class MapPlayer extends Sprite
     private void moveUp()
     {
         velocity.y = speed;
+        velocity.x = 0;
      //   animation.up();
     }
     private void moveDown()
     {
 
         velocity.y = -speed;
+        velocity.x = 0;
        // animation.down();
     }
     private void moveLeft()
     {
 
         velocity.x = -speed;
+        velocity.y = 0;
 
         //animation.left();
 
@@ -324,6 +327,7 @@ public class MapPlayer extends Sprite
     {
 
         velocity.x = speed;
+        velocity.y = 0;
 
         //animation.right();
     }
@@ -340,27 +344,20 @@ public class MapPlayer extends Sprite
 
     public void touchDown(int screenX, int screenY, int width, int height)
     {
-        //float xdir;
-        //float ydir;
 
-        velocity.x=500*((screenX-(width/2))/(float)width);
+        float xForCalculation = ((screenX-(width/2))/(float)width);
+        float yForCalculation = ((-(screenY-(height/2)))/(float)height);
+        getDirection(xForCalculation, yForCalculation);
 
-        velocity.y=500*((-(screenY-(height/2)))/(float)height);
-        getDirection();
-
-        return;
-
-/*        if(screenX<(width/4))
+        if(direction == LEFT)
         {
-
             moveLeft();
-
         }
-        else if(screenX>((3*width)/4))
+        else if(direction == RIGHT)
         {
             moveRight();
         }
-        else if(screenY>(height/2))
+        else if(direction == DOWN)
         {
             moveDown();
         }
@@ -369,7 +366,7 @@ public class MapPlayer extends Sprite
             moveUp();
 
         }
-        return;*/
+        return;
 
     }
 
@@ -387,46 +384,35 @@ public class MapPlayer extends Sprite
 
         //velocity.x=500*((screenX-(width/2))/(float)width);
         //velocity.y=500*((-(screenY-(height/2)))/(float)height);
-        getDirection();
+        //getDirection();
 
 
         return true;
     }
 
 
-    private void getDirection()
+    private void getDirection(float x, float y)
     {
-        if(velocity.x==0||Math.abs(velocity.y)/Math.abs(velocity.x)>1)
+        if(Math.abs(y)/Math.abs(x)>1)
         {
-            velocity.x = 0;
-            if(velocity.y>0)
+            if(y>0)
             {
                 direction=UP;
-                velocity.x = 0;
-                velocity.y = 250;
-
             }
             else
             {
                 direction=DOWN;
-                velocity.x = 0;
-                velocity.y = -250;
             }
-            initY = getY();
         }
         else
         {
-            if(velocity.x>0)
+            if(x>0)
             {
                 direction=RIGHT;
-                velocity.x = 250;
-                velocity.y = 0;
             }
             else
             {
                 direction=LEFT;
-                velocity.x = -250;
-                velocity.y = 0;
             }
         }
     }
