@@ -26,16 +26,21 @@ public class Play extends GameState {
     private OrthographicCamera camera;
     private OrthographicCamera camera2;
     private MapPlayer player;
+    private NPC npc;
     private Texture menuButton, inventoryButton;
     private Sprite menuButtonSprite, inventoryButtonSprite;
 
     private SpriteBatch  batch;
+    float px, py;
 
 
 
-    Play(GameStateManager gsm)
+    Play(GameStateManager gsm, float x, float y)
     {
         super(gsm);
+        px = x;
+        py = y;
+
 
 
 
@@ -68,8 +73,10 @@ public class Play extends GameState {
 
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
 
+        player.setPosition(px * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - py) * player.getCollisionLayer().getTileHeight());
+        npc = new NPC(new Sprite(new Texture("rpgman_talk.png")), (TiledMapTileLayer) map.getLayers().get(0));
+        npc.setPosition(8 * npc.getCollisionLayer().getTileWidth(), (npc.getCollisionLayer().getHeight() - 8) * npc.getCollisionLayer().getTileHeight());
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
         inventoryButton = new Texture("schoolbag.png");
@@ -115,6 +122,7 @@ public class Play extends GameState {
        // player.draw(renderer.getBatch());
 
         player.draw2(renderer.getBatch(), 5);
+        npc.draw(renderer.getBatch());
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
@@ -274,7 +282,7 @@ public class Play extends GameState {
         {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
             {
-                gsm.openInventory(userCharacter);
+                gsm.openInventory(userCharacter, player.getX(), player.getY());
             }
             if(x > menuButtonSprite.getX())
             {

@@ -29,16 +29,20 @@ public class InventoryState extends GameState
     String[] itemInfoText, itemNameText, itemEquipText, playerInfoText;
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
+    float px, py;
 
     private BitmapFont infoFont;
 
     float sqSide = screenWidth/7;
     float spacing = (screenWidth - 5 * sqSide)/6;
 
-    InventoryState(GameStateManager gsm, Player plr)
+    InventoryState(GameStateManager gsm, Player plr, float x, float y)
     {
         super(gsm);
         player = plr;
+        px = x;
+        py = y;
+
 
         texture = new Texture("inventory_slot_background.png");
         itemSquare = new Sprite(texture);
@@ -403,7 +407,7 @@ public class InventoryState extends GameState
         {
             if(y > (screenHeight - (sqSide + spacing/2)) && y < (screenHeight - spacing/2))
             {
-                gsm.closeInventory();
+                gsm.closeInventory(px, py);
             }
             else if(y > (spacing/2) && y < (sqSide + spacing/2) && (equipNum + itemNum) >= 1)
             {

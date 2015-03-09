@@ -10,6 +10,8 @@ import java.util.ArrayList;
  * Object containing all other states. 2 functions which will call the currentStates update and draw functions. This is for convenience and makes it easy to split the project.
  * Also through reference the gameState itself (which contains the object GameStateManager) can change the currentState to any other state at any time.
  */
+
+
 public class GameStateManager
 {
     //ArrayList (dynamic list) which holds every state
@@ -17,6 +19,8 @@ public class GameStateManager
     //There can only be one current state
     public int currentState;
     public Player user;
+    float x = 8, y = 9;
+
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -25,14 +29,13 @@ public class GameStateManager
     public static final int LEVEL1STATE = 1;
     public static final int FIGHTSTATE =2;*/
 
+
     //Constructor creates all states and adds them to the list. Sets current state and loads it.
     public GameStateManager()
     {
-
-
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
-        GameState state1 = new Play(this);
+        GameState state1 = new Play(this, x, y);
        // GameState state2 = new TestState2(this);
         gameStates.add(state1);
 
@@ -51,7 +54,7 @@ public class GameStateManager
         user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
-        GameState state1 = new Play(this);
+        GameState state1 = new Play(this, x, y);
         // GameState state2 = new TestState2(this);
         gameStates.add(state1);
 
@@ -89,14 +92,18 @@ public class GameStateManager
     }
 
     //Kris -- adding in for testing of Inventory State
-    public void openInventory(Player player)
+    public void openInventory(Player player, float px, float py)
     {
-        gameStates.add(new InventoryState(this, player));
+        x = px;
+        y = py;
+        gameStates.add(new InventoryState(this, player, x, y));
         changeState(gameStates.size()-1);
     }
 
-    public void closeInventory()
+    public void closeInventory(float px, float py)
     {
+        x = px;
+        y = py;
         changeState(0);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
