@@ -275,6 +275,7 @@ public class Play extends GameState {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
             {
                 gsm.openInventory(userCharacter);
+                //gsm.StartWinState(userCharacter,15);
             }
             if(x > menuButtonSprite.getX())
             {
