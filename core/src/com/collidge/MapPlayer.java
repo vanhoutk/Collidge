@@ -49,6 +49,21 @@ public class MapPlayer extends Sprite
     private Texture walkingDownTexture;
     private Animation walkingDownAnimation;
 
+
+    /* Declan adding for movement in tiles */
+    private float initX= 0;
+    private float initY = 0;
+    private float endX= 0;
+    private float endY = 0;
+
+    private int lastpoint;
+
+    boolean stopped = false; // called on TouchUp is true
+    boolean stopping = false;
+    //boolean inTile = false; //Ensures is in Tile when stopped
+
+    int tileID; //tile sprite ends up in
+
     public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer)
     {
 
@@ -187,6 +202,62 @@ public class MapPlayer extends Sprite
         }
 
 
+        if(stopped == true && (Math.abs(velocity.x) > 0 || Math.abs(velocity.y) > 0) && stopping == false) {
+            stopping = true;
+            if ( direction == RIGHT) {
+                tileID = (int) (getX() / tilewidth);
+                tileID = tileID + 1; //Sets tile to aim towards
+            }
+            if (direction == LEFT) {
+                tileID = (int) (getX() / tilewidth);
+                //tileID = tileID; //Sets tile to aim towards
+            }
+            if (direction == UP) {
+                tileID = (int) (getY() / tileheight);
+                tileID = tileID + 1; //Sets tile to aim towards
+            }
+            if (direction == DOWN) {
+                tileID = (int) (getY() / tileheight);
+            }
+        }
+
+        //Once stopping sequence initiated
+        if(stopping) {
+            if (direction == RIGHT) {
+                lastpoint = (int) getX();
+                if (lastpoint >= Math.abs(tileID * tilewidth)) {
+                    stopMovement();
+                    stopping = false;
+                    stopped = false;//Wait until past this point
+                }
+            }
+            if (direction == LEFT) {
+                lastpoint = (int) getX();
+                if (lastpoint <= Math.abs(tileID * tilewidth)) {
+                    stopMovement();
+                    stopping = false;
+                    stopped = false;//Wait until past this point
+                }
+            }
+            if (direction == UP) {
+                lastpoint = (int) getY();
+                if (lastpoint >= Math.abs(tileID * tileheight)) {
+                    stopMovement();
+                    stopping = false;
+                    stopped = false;//Wait until past this point
+                }
+            }
+            if (direction == DOWN) {
+                lastpoint = (int) getY();
+                if (lastpoint <= Math.abs(tileID * tileheight)) {
+                    stopMovement();
+                    stopping = false;
+                    stopped = false;
+                    //Wait until past this point
+                }
+            }
+
+        }
 
     }
 
@@ -269,7 +340,8 @@ public class MapPlayer extends Sprite
 
     public void touchDown(int screenX, int screenY, int width, int height)
     {
-
+        //float xdir;
+        //float ydir;
 
         velocity.x=500*((screenX-(width/2))/(float)width);
 
@@ -305,7 +377,7 @@ public class MapPlayer extends Sprite
     public boolean touchUp(int screenX, int screenY, int width, int height)
     {
         // TODO Auto-generated method stub
-        stopMovement();
+        stopped = true;
         return false;
     }
 
@@ -313,8 +385,8 @@ public class MapPlayer extends Sprite
     {
 
 
-        velocity.x=500*((screenX-(width/2))/(float)width);
-        velocity.y=500*((-(screenY-(height/2)))/(float)height);
+        //velocity.x=500*((screenX-(width/2))/(float)width);
+        //velocity.y=500*((-(screenY-(height/2)))/(float)height);
         getDirection();
 
 
@@ -326,25 +398,35 @@ public class MapPlayer extends Sprite
     {
         if(velocity.x==0||Math.abs(velocity.y)/Math.abs(velocity.x)>1)
         {
+            velocity.x = 0;
             if(velocity.y>0)
             {
                 direction=UP;
-                velocity.x=250/Gdx.graphics.getHeight();
+                velocity.x = 0;
+                velocity.y = 250;
+
             }
             else
             {
                 direction=DOWN;
+                velocity.x = 0;
+                velocity.y = -250;
             }
+            initY = getY();
         }
         else
         {
             if(velocity.x>0)
             {
                 direction=RIGHT;
+                velocity.x = 250;
+                velocity.y = 0;
             }
             else
             {
                 direction=LEFT;
+                velocity.x = -250;
+                velocity.y = 0;
             }
         }
     }
