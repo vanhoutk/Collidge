@@ -72,7 +72,7 @@ public class Fight extends GameState
                 {
 
                     expEarned=0;
-                    endFight();
+                    DeathState();
 
 
 
@@ -632,17 +632,20 @@ public class Fight extends GameState
 
         playr.changeEnergy(playr.getIntelligence());
 
-        if(enemiesLeft>0&&playr.getCurrentHealth()>=0)
+        if(enemiesLeft>0&&playr.getCurrentHealth()>0)
         {
             monsterCode=-1;
             enemyTurn(playr, enemies,0);
         }
-        else
+        else if (playr.getCurrentHealth()<=0)
         {
 
-            endFight();
+            DeathState();
 
         }
+        else
+            endFight();
+
         fMenu.refreshMenus(playr);
     }
 
@@ -750,41 +753,6 @@ public class Fight extends GameState
 
     }
 
-    /*  Removed because all it does is cause an error
-        Also might be a better fit in the enemy class itself
-    private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
-    {
-        for (int i = 0; i< enemies.length; i++) {
-            if (enemies[i].getName().equals("Fresher"))
-            {
-                texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
-                sprite_enemy[i] = new Sprite(texture);
-            }
-            else if (enemies[i].getName().equals("Frat boy"))
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-
-            else if (enemies[i].getName().equals("Debater"))
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-
-            else if (enemies[i].getName().equals("Lecturer"))
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-            else
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-
-        }
-    }*/
 
     private void endFight()
     {
@@ -792,6 +760,9 @@ public class Fight extends GameState
         combo.delete();
         Timer.instance().clear();
         Timer.instance().stop();
+        batch.dispose();
+        texture.dispose();
+        battleFont.dispose();
         playr.addExperience(expEarned);
         if(playr.getLevelUpCounter()<=0)
         {
@@ -803,9 +774,16 @@ public class Fight extends GameState
         }
     }
 
-    private void closeFight()       //this function is called to check when the fight is over, and then display a splash screen
+    private void DeathState()       //this function is called to check when the fight is over, and then display a splash screen
     {
-
+        damage[0]=0;
+        combo.delete();
+        batch.dispose();
+        texture.dispose();
+        battleFont.dispose();
+        Timer.instance().clear();
+        Timer.instance().stop();
+        gsm.StartDeathState(playr);
     }
 }
 

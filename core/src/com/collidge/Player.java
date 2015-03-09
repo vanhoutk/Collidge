@@ -16,7 +16,7 @@ public class Player
     private int intelligence;
     private int experience;
     public Inventory items;
-
+    public String player_name;
 
 
     private int levelUpCounter=0;
@@ -166,7 +166,7 @@ public class Player
         items.loadInventory();
 
         level=1;
-
+        player_name = "Mr Man";
 
 
 
@@ -187,7 +187,7 @@ public class Player
     {
         items = new Inventory();
         items.loadInventory();
-
+        player_name = "Mr Man";
         level=Level;
 
         attackPoints=ATK;

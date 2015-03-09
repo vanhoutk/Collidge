@@ -117,7 +117,6 @@ public class GameStateManager
 
     public void endFight()
     {
-
         //TODO add previous state class stuff
         changeState(0);
         gameStates.get(gameStates.size()-1).dispose();
@@ -139,9 +138,6 @@ public class GameStateManager
         gameStates.remove(gameStates.size()-1);
     }
 
-
-
-
     public void levelUpState(Player player)
     {
         gameStates.get(gameStates.size()-1).dispose();
@@ -149,6 +145,22 @@ public class GameStateManager
         gameStates.add(new LevelUpSplash(this,player));
         changeState(gameStates.size()-1);
     }
+
+    public void StartDeathState(Player player)
+    {
+        gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
+        gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
+        gameStates.add(new DeathState(this,player));    //Makes a new Death State
+        changeState(gameStates.size()-1);               //Moves to the new state
+    }
+
+    public void EndDeathstate(Player player)            //Made new function which will eventually be able to move to either the menu or the map
+    {
+        changeState(0);                                 //Return to the Map State
+        gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
+        gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
+    }
+
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.
     public void update()
     {

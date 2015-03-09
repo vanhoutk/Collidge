@@ -2,6 +2,7 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Random;
@@ -111,5 +112,37 @@ public class Enemy
         }
     }
 
+    private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
+    {
+        for (int i = 0; i< enemies.length; i++) {
+            if (enemies[i].getName().equals("Fresher"))
+            {
+                texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
+                sprite_enemy[i] = new Sprite(texture);
+            }
+            else if (enemies[i].getName().equals("Frat boy"))
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
+            }
 
+            else if (enemies[i].getName().equals("Debater"))
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
+            }
+
+            else if (enemies[i].getName().equals("Lecturer"))
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
+            }
+            else
+            {
+                texture = new Texture("badlogic.jpg");
+                sprite_enemy[i] = new Sprite(texture);
+            }
+
+        }
+    }
 }
