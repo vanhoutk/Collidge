@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Created by simon on 11/02/15.
@@ -17,11 +18,11 @@ public class GameMenu extends GameState
 {
 
     Player player;
-    boolean statsPressed=false, settingsPressed=false, savePressed=false;
-    int volumeLevel=0, musicLevel=0;
+    boolean statsPressed=false, settingsPressed=false, savePressed=false, loadingStats=true;
+    int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0;
     SpriteBatch batch;
     Texture texture, background;
-    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4; //declaring sprites
+    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthbar, energybar, attackbar, defbar, intbar; //declaring sprites
     BitmapFont Font;
 
 
@@ -30,18 +31,6 @@ public class GameMenu extends GameState
     {
         super(gsm);
         player = plr;
-
-        /*
-        playerInfoText = new String[5];
-        playerInfoText[0] = player.getCurrentHealth() + "/" + player.getHealth();
-        playerInfoText[1] = player.getCurrentEnergy() + "/" + player.getEnergy();
-        playerInfoText[2] = String.valueOf(player.getAttack());
-        playerInfoText[3] = String.valueOf(player.getDefence());
-        playerInfoText[4] = String.valueOf(player.getIntelligence());
-        playerInfoText[2] = String.valueOf(player.getAttack());
-        playerInfoText[3] = String.valueOf(player.getDefence());
-        playerInfoText[4] = String.valueOf(player.getIntelligence());
-        */
     }
 
     public void initialize()
@@ -54,42 +43,46 @@ public class GameMenu extends GameState
 
         texture = new Texture("settings.png");
         settings = new Sprite(texture);
-
         texture = new Texture("stats.png");
         stats = new Sprite(texture);
-
         texture = new Texture("save.png");
         save = new Sprite(texture);
 
         texture = new Texture("volume0.png");
         vol0 = new Sprite(texture);
-
         texture = new Texture("volume1.png");
         vol1 = new Sprite(texture);
-
         texture = new Texture("volume2.png");
         vol2 = new Sprite(texture);
-
         texture = new Texture("volume3.png");
         vol3 = new Sprite(texture);
-
         texture = new Texture("volume4.png");
         vol4 = new Sprite(texture);
 
         texture = new Texture("volume0.png");
         music0 = new Sprite(texture);
-
         texture = new Texture("volume1.png");
         music1 = new Sprite(texture);
-
         texture = new Texture("volume2.png");
         music2 = new Sprite(texture);
-
         texture = new Texture("volume3.png");
         music3 = new Sprite(texture);
-
         texture = new Texture("volume4.png");
         music4 = new Sprite(texture);
+
+
+        texture = new Texture("statbar.png");
+        healthbar = new Sprite(texture);
+        texture = new Texture("statbar.png");
+        energybar = new Sprite(texture);
+        texture = new Texture("statbar.png");
+        attackbar = new Sprite(texture);
+        texture = new Texture("statbar.png");
+        defbar = new Sprite(texture);
+        texture = new Texture("statbar.png");
+        intbar = new Sprite(texture);
+
+
 
         background = new Texture("phonebackground.png");
         backgroundsprite = new Sprite(background);
@@ -140,27 +133,156 @@ public class GameMenu extends GameState
 
         if(statsPressed)
         {
-            //batch.draw(stats, Gdx.graphics.getWidth()/2 - stats.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+            //DRAW HEALTH BAR
+            if(healthcounter < player.getHealth())
+            {
+                healthbar.setColor(Color.GREEN);
+                healthbar.setPosition(screenWidth / 5, screenHeight *5/6);
+                healthbar.setSize(screenWidth *healthcounter/50, screenHeight/15);
+                healthbar.draw(batch);
 
-            Font.setColor(Color.GREEN);
-            Font.setScale(screenWidth / 400f, screenHeight / 400f);
-            Font.draw(batch, "Health: " + player.getHealth(), screenWidth/3, screenHeight*6/10);
+                Font.setColor(Color.GREEN);
+                Font.setScale(screenWidth / 400f, screenHeight / 400f);
+                Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY());
 
-            Font.setColor(Color.YELLOW);
-            Font.setScale(screenWidth / 400f, screenHeight / 400f);
-            Font.draw(batch, "Energy: " + player.getEnergy(), screenWidth/3, screenHeight*5/10);
+                try
+                {
+                    Thread.sleep(10);                 //1000 milliseconds is one second.
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
 
-            Font.setColor(Color.RED);
-            Font.setScale(screenWidth / 400f, screenHeight / 400f);
-            Font.draw(batch, "Attack: " + String.valueOf(player.getAttack()), screenWidth/3, screenHeight*4/10);
+                healthcounter++;
+            }
+            else if(healthcounter >= player.getHealth())
+            {
+                healthbar.draw(batch);
+                Font.setColor(Color.GREEN);
+                Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY());
+            }
 
-            Font.setColor(Color.BLUE);
-            Font.setScale(screenWidth / 400f, screenHeight / 400f);
-            Font.draw(batch, "Defence: " + String.valueOf(player.getDefence()), screenWidth/3, screenHeight*3/10);
+            //DRAW ENERGY BAR
+            if(energycounter < player.getEnergy())
+            {
+                energybar.setColor(Color.YELLOW);
+                energybar.setPosition(screenWidth / 5, screenHeight *4/6);
+                energybar.setSize(screenWidth *energycounter/50, screenHeight/15);
+                energybar.draw(batch);
 
-            Font.setColor(Color.PURPLE);
-            Font.setScale(screenWidth / 400f, screenHeight / 400f);
-            Font.draw(batch, "Intelligence: " + String.valueOf(player.getIntelligence()), screenWidth/3, screenHeight*2/10);
+                Font.setColor(Color.YELLOW);
+                Font.setScale(screenWidth / 400f, screenHeight / 400f);
+                Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY());
+
+                try
+                {
+                    Thread.sleep(10);                 //1000 milliseconds is one second.
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+
+                energycounter++;
+            }
+            else if(energycounter >= player.getEnergy())
+            {
+                energybar.draw(batch);
+                Font.setColor(Color.YELLOW);
+                Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY());
+            }
+
+            // DRAW ATTACK BAR
+            if(attackcounter < player.getAttack())
+            {
+                attackbar.setColor(Color.RED);
+                attackbar.setPosition(screenWidth / 5, screenHeight *3/6);
+                attackbar.setSize(screenWidth *attackcounter/50, screenHeight/15);
+                attackbar.draw(batch);
+
+                Font.setColor(Color.RED);
+                Font.setScale(screenWidth / 400f, screenHeight / 400f);
+                Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY());
+
+                try
+                {
+                    Thread.sleep(10);                 //1000 milliseconds is one second.
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+
+                attackcounter++;
+            }
+            else if(attackcounter >= player.getAttack())
+            {
+                attackbar.draw(batch);
+                Font.setColor(Color.RED);
+                Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY());
+            }
+
+            // DRAW DEF BAR
+            if(defcounter < player.getAttack())
+            {
+                defbar.setColor(Color.BLUE);
+                defbar.setPosition(screenWidth / 5, screenHeight *2/6);
+                defbar.setSize(screenWidth *defcounter/50, screenHeight/15);
+                defbar.draw(batch);
+
+                Font.setColor(Color.BLUE);
+                Font.setScale(screenWidth / 400f, screenHeight / 400f);
+                Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY());
+
+                try
+                {
+                    Thread.sleep(10);                 //1000 milliseconds is one second.
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+
+                defcounter++;
+            }
+            else if(defcounter >= player.getDefence())
+            {
+                defbar.draw(batch);
+                Font.setColor(Color.BLUE);
+                Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY());
+            }
+
+            // DRAW INT BAR
+            if(intcounter < player.getIntelligence())
+            {
+                intbar.setColor(Color.PURPLE);
+                intbar.setPosition(screenWidth / 5, screenHeight /6);
+                intbar.setSize(screenWidth *intcounter/50, screenHeight/15);
+                intbar.draw(batch);
+
+                Font.setColor(Color.PURPLE);
+                Font.setScale(screenWidth / 400f, screenHeight / 400f);
+                Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY());
+
+                try
+                {
+                    Thread.sleep(10);                 //1000 milliseconds is one second.
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+
+                intcounter++;
+            }
+            else if(intcounter >= player.getIntelligence())
+            {
+                intbar.draw(batch);
+                Font.setColor(Color.PURPLE);
+                Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY());
+            }
+
         }
 
         if(settingsPressed)
