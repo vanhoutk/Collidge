@@ -152,7 +152,7 @@ public class Fight extends GameState
 
         //enemies=new Enemy[enemyCount];
         //allows the player to select a particular enemy to attack
-        targetPicker=new TargetPicker(enemies);
+        targetPicker=new TargetPicker(enemies,0);
         //sprite_enemy = new Sprite[enemies.length];
         //addTextures(sprite_enemy, enemies);
 
@@ -304,24 +304,6 @@ public class Fight extends GameState
                 if((targeting&&targetPicker.getCurrentTarget()==i)||monsterCode==i)
                 {
                     target=Gdx.graphics.getWidth()/10;
-                }
-                else
-                {
-                    target=0;
-                }
-
-                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
-                /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
-                sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
-                sprite_enemy[i].draw(batch);*/
-
-                if(targeting&&targetPicker.getCurrentTarget()==i)
-                {
-                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
-                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
-                    selector.setSize(enemies[i].width,enemies[i].height);
-                    selector.draw(batch);
-                    //TODO fix health bar so that it fills top of enemy side
                     healthBackground.setPosition((3f * screenWidth /5f), screenHeight - (battleFont.getLineHeight()*3));
                     healthBackground.setSize(2*screenWidth/6f, battleFont.getLineHeight());
                     healthBackground.draw(batch);
@@ -330,6 +312,26 @@ public class Fight extends GameState
                     healthBar.draw(batch);
                     battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
+
+                }
+                else
+                {
+                    target=0;
+
+                }
+
+                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
+                sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
+                sprite_enemy[i].draw(batch);*/
+
+                if(targeting&&(targetPicker.getCurrentTarget()+targetPicker.getTargetingId()>=i&&targetPicker.getCurrentTarget()-targetPicker.getTargetingId()<=i))
+                {
+                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
+                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
+                    selector.setSize(enemies[i].width,enemies[i].height);
+                    selector.draw(batch);
+                    //TODO fix health bar so that it fills top of enemy side
 
                 }
                 else
@@ -587,7 +589,7 @@ public class Fight extends GameState
         else if(ActionType==1)      //attack
         {
 
-            targetPicker.reset(enemies);
+            targetPicker.reset(enemies,player.attackRange(fMenu.getMoveString(ActionType,ActionId)));
             targeting=true;
             return;
         }
@@ -606,17 +608,25 @@ public class Fight extends GameState
     private void playerTurnPart3()      //After the combo, applying the multipliers
     {
         //TODO remove system outs left for debugging of combos
-        PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-        System.out.println("Dam: "+PlayerDam);
-        PlayerDam*=(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence());
-        System.out.println("Atk: "+playr.getAttack()+"   Def: "+ enemies[targetPicker.getSelectedTarget()].getDefence());
-        PlayerDam *= Math.abs(combo.skill);
-        System.out.println("After Mult of "+combo.skill+": "+PlayerDam);
-        if(PlayerDam<1)
+        for(int i=-targetPicker.getTargetingId();i<=targetPicker.getTargetingId();i++)
         {
-            PlayerDam=1;
+            System.out.println("Attacking: "+i);
+            if(targetPicker.getSelectedTarget()+i>=0&&targetPicker.getSelectedTarget()+i<enemies.length)
+            {
+
+                PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+                System.out.println("Dam to "+i+": " + PlayerDam);
+                PlayerDam *= (playr.getAttack() - enemies[targetPicker.getSelectedTarget() + i].getDefence());
+                System.out.println("Atk: " + playr.getAttack() + "   Def: " + enemies[targetPicker.getSelectedTarget() + i].getDefence());
+                PlayerDam *= Math.abs(combo.skill);
+                System.out.println("After Mult of " + combo.skill + ": " + PlayerDam);
+                if (PlayerDam < 1)
+                {
+                    PlayerDam = 1;
+                }
+                damage[targetPicker.getSelectedTarget() + 1+i] += PlayerDam;
+            }
         }
-        damage[targetPicker.getSelectedTarget()+1]+=PlayerDam;
 
 
         playerTurnEnd();
