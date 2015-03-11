@@ -640,7 +640,9 @@ public class Fight extends GameState
 
         }
         else
+        {
             endFight();
+        }
 
         fMenu.refreshMenus(playr);
     }
