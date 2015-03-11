@@ -25,8 +25,8 @@ public class InventoryState extends GameState
     Player player;
     SpriteBatch batch;
     Texture texture;
-    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle;
-    Sprite healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon, itemSelectSquare;
+    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle, itemSelectSquare;
+    Sprite healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon, inventoryBackground;
     String[] itemInfoText, itemNameText, itemEquipText, playerInfoText;
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
@@ -54,6 +54,7 @@ public class InventoryState extends GameState
         energyIcon = new Sprite(new Texture("battery-pack.png"));
         intelligenceIcon = new Sprite(new Texture("brain.png"));
         itemSelectSquare = new Sprite(new Texture("ItemSelectCorners.png"));
+        inventoryBackground = new Sprite(new Texture("inventoryBackground.jpg"));
 
         batch = new SpriteBatch();
         infoFont = new BitmapFont();
@@ -184,6 +185,10 @@ public class InventoryState extends GameState
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+
+        inventoryBackground.setSize(screenWidth, screenHeight);
+        inventoryBackground.setPosition(0, 0);
+        inventoryBackground.draw(batch);
 
         if(selectedItem > 0)
         {
