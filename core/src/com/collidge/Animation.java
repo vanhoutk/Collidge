@@ -70,6 +70,7 @@ public class Animation {
     {
         delay=Delay;
     }
+
     public void stop()
     {
         paused=true;
