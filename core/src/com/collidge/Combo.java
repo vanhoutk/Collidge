@@ -146,7 +146,7 @@ public class Combo
         switch(moveId)
         {
             case 0:
-                defaultAttack(10,5000);
+                defaultAttack(3,3000);
                 break;
             case 1:
 
@@ -154,6 +154,14 @@ public class Combo
                 break;
             case 2:
                 attack2(2,3000);
+                break;
+            case 3:
+                comboId=2;
+                attack2(4,3000);
+                break;
+            case 4:
+                comboId=0;
+                defaultAttack(5,2000);
                 break;
             default:
                 System.out.println("D "+defending);
