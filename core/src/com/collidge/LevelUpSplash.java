@@ -94,9 +94,7 @@ public class LevelUpSplash extends GameState
                         +player.getIntelligencePointsMult()+"Int. Current Value: "+(int)(player.getIntelligencePointsMult()*(1+player.getLevel()+player.getIntelligencePoints()));
                 break;
             default:
-                infoText="Pick a stat to increase! \n(On top of standard level up values of\n"+player.getHealthPointsMult()+"Hp, "+
-                        player.getDefencePointsMult()+"Def, "+player.getAttackPointsMult()+"Atk, "+player.getEnergyPointsMult()+"En, "
-                + player.getIntelligencePointsMult()+"Int)";
+                infoText="Pick a stat to increase! \n(On top of standard level up values)";
                 break;
         }
 
