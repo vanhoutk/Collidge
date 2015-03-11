@@ -78,7 +78,7 @@ public class MapPlayer extends Sprite
 
     }
 
-    public void draw2(Batch spritebatch) {
+    public void draw(Batch spritebatch) {
         update(Gdx.graphics.getDeltaTime());
 
         if(velocity.x==0&&velocity.y==0)
