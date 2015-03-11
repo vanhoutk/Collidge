@@ -5,8 +5,6 @@ package com.collidge;
  */
 public class Attack
 {
-
-
     public int moveExecute(int moveId)
     {
         if(moveId==0)
@@ -16,23 +14,20 @@ public class Attack
 
         return 1;
     }
+
     private int basicAttack()
     {
         System.out.println("Damage was done");
         return 1;
-
     }
-    public int getTarget(int moveId,Enemy[] enemies)
-    {
+
+    public int getTarget(int moveId,Enemy[] enemies) {
         int target;
-        target=0;
-        while(enemies[target].getDead())
-        {
+        target = 0;
+        while (enemies[target].getDead()) {
             target++;
         }
         return target;
-
     }
-
 }
 

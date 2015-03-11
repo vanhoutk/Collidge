@@ -78,25 +78,8 @@ public class MapPlayer extends Sprite
 
     }
 
-    @Override
-    public void draw(Batch spritebatch)
-    {
+    public void draw2(Batch spritebatch) {
         update(Gdx.graphics.getDeltaTime());
-        walkingLeftAnimation.update(Gdx.graphics.getDeltaTime());
-        super.draw(spritebatch);
-    }
-
-    public void draw2(Batch spritebatch, int blaa) {
-        update(Gdx.graphics.getDeltaTime());
-       /* currentTime = System.currentTimeMillis() - startTime;
-        if (currentTime > 3000)
-        {
-            currentTime = 0;
-            direction++;
-            if (direction >= 4) direction = 0;
-        }*/
-
-     //   super.draw(spritebatch);
 
         if(velocity.x==0&&velocity.y==0)
         {

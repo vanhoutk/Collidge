@@ -114,7 +114,7 @@ public class Play extends GameState {
 
        // player.draw(renderer.getBatch());
 
-        player.draw2(renderer.getBatch(), 5);
+        player.draw(renderer.getBatch());
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
