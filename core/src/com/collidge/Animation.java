@@ -99,6 +99,10 @@ public class Animation {
         return frames[currentFrame];
     }
 
+    public int getNumberFrames()
+    {
+        return frames.length;
+    }
     public int getTimesPlayed()
     {
         return timesPlayed;
