@@ -336,9 +336,16 @@ public class Fight extends GameState
                 {
                     target=0;
 
+
                 }
 
                 batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                if(!targeting)
+                {
+                    battleFont.setColor(Color.RED);
+                    battleFont.draw(batch, enemies[i].getHealth() + "", ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount)))))+screenWidth/10, battleFont.getLineHeight());
+                    battleFont.setColor(Color.BLACK);
+                }
                 /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
                 sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
                 sprite_enemy[i].draw(batch);*/
@@ -356,6 +363,7 @@ public class Fight extends GameState
                 else
                 {
                     enemies[i].animation.pause();
+
                 }
             }
 
@@ -721,9 +729,12 @@ public class Fight extends GameState
 
     private void enemyTurnPart2()
     {
-        System.out.println("X");
-        combo.initiateCombo(-1, this);
-        defend=true;
+        if(!enemies[monsterCode].getDead())
+        {
+            System.out.println("X");
+            combo.initiateCombo(-1, this);
+            defend = true;
+        }
     }
 
     private void defendTurn(Player player,Enemy[] monsters,int monsterId)

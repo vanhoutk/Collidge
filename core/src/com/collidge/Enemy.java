@@ -55,10 +55,10 @@ public class Enemy
         width=template.width;
         height=template.height;
 
-        maxHealth+=(int)(maxHealth*(rand.nextDouble()-.5));
-        attack+=(int)(attack*(rand.nextDouble()-.5));
-        defence+=(int)(defence*(rand.nextDouble()-.5));
-        expValue+=(int)(expValue*(rand.nextDouble()-.5));
+        maxHealth=(int)(maxHealth*((rand.nextDouble()%.5)+.75));
+        attack=(int)(attack*((rand.nextDouble()%.5)+.75));
+        defence=(int)(defence*((rand.nextDouble()%.5)+.75));
+        expValue=(int)(expValue*((rand.nextDouble()%.5)+.75));
         currentHealth=maxHealth;
 
        // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
