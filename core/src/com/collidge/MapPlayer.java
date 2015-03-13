@@ -16,11 +16,9 @@ import com.badlogic.gdx.math.Vector2;
 
 public class MapPlayer extends Sprite
 {
-
     private Vector2 velocity = new Vector2(); //movement velocity
-    private float speed = 60*2, gravity = 60*1.8f;
+    private float speed = 60*2;
     private TiledMapTileLayer collisionlayer;
-    private static int xleft, xright, ydown, yup;
 
     long startTime;
     long currentTime;
@@ -31,43 +29,34 @@ public class MapPlayer extends Sprite
     private static final int LEFT = 2;
     private static final int RIGHT = 3;
 
-    private Texture walkingTextures[];
-   /* private TextureRegion walkingLeftRegions[];
-    private TextureRegion walkingRightRegions[];
-    private TextureRegion walkingUpRegions[];
-    private TextureRegion walkingDownRegions[];*/
-    private TextureRegion walkingRegions[][];
+    //Java holds objects in memory as long as there is a reference to it. Therefore you can make local textureregions, textures and pass them to the animation object.
     private Animation walkingAnimation[];
-
-    private Texture walkingLeftTexture;
-    private TextureRegion[] walkingLeftFrames;
-    private Animation walkingLeftAnimation;
-    private Texture walkingRightTexture;
-    private Animation walkingRightAnimation;
-    private Texture walkingUpTexture;
-    private Animation walkingUpAnimation;
-    private Texture walkingDownTexture;
-    private Animation walkingDownAnimation;
 
     public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer)
     {
-
         super(sprite);
-        walkingTextures = new Texture[4];
-        walkingTextures[UP] = new Texture("walking_back_animation.png");
-        walkingTextures[DOWN] = new Texture("walking_forward_animation.png");
-        walkingTextures[RIGHT] = new Texture("walking_right_animation.png");
-        walkingTextures[LEFT] = new Texture("walking_left_animation.png");
 
+        //create 4 textures to fit into an array of 4
+        Texture walkingTextures[] = new Texture[4];
+        walkingTextures[UP] = new Texture("back_player.png");
+        walkingTextures[DOWN] = new Texture("front_player.png");
+        walkingTextures[RIGHT] = new Texture("right_player.png");
+        walkingTextures[LEFT] = new Texture("left_player.png");
+
+        //create 4 animations to hold 4 textureRegions each
         walkingAnimation = new Animation[4];
-        walkingRegions = new TextureRegion[4][4];
+        //Create 16 TextureRegions because split returns a multidimensional array. But only use [0][i] part of dimensional array
+        TextureRegion walkingRegions[][] = new TextureRegion[4][4];
         for(int j = 0; j < 4; j++) {
+            //split textures into texture regions
             TextureRegion[][] region = TextureRegion.split(walkingTextures[j], 32, 32);
             for (int i = 0; i < 4; i++) {
+                //put split regions into actual walking regions
                 walkingRegions[j][i] = region[0][i];
             }
         }
 
+        //Finally pass the texture regions to the 4 animation objects
         for (int i = 0; i < 4; i++) {
             walkingAnimation[i] = new Animation(walkingRegions[i],.2f);
         }
@@ -75,36 +64,14 @@ public class MapPlayer extends Sprite
         startTime = System.currentTimeMillis();
         currentTime = startTime;
         this.collisionlayer = collisionlayer;
-
     }
 
-    @Override
-    public void draw(Batch spritebatch)
-    {
+    public void draw(Batch spritebatch) {
         update(Gdx.graphics.getDeltaTime());
-        walkingLeftAnimation.update(Gdx.graphics.getDeltaTime());
-        super.draw(spritebatch);
-    }
-
-    public void draw2(Batch spritebatch, int blaa) {
-        update(Gdx.graphics.getDeltaTime());
-       /* currentTime = System.currentTimeMillis() - startTime;
-        if (currentTime > 3000)
-        {
-            currentTime = 0;
-            direction++;
-            if (direction >= 4) direction = 0;
-        }*/
-
-     //   super.draw(spritebatch);
 
         if(velocity.x==0&&velocity.y==0)
         {
             walkingAnimation[direction].stop();
-            if(direction!=RIGHT)
-            {
-                walkingAnimation[direction].setCurrentFrame(1);
-            }
         }
         else
         {
@@ -185,122 +152,28 @@ public class MapPlayer extends Sprite
             setY(oldY);
             velocity.y = 0;
         }
-
-
-
     }
-
-    public Vector2 getVelocity()
-    {
-        return velocity;
-    }
-
-    public void setVelocity(Vector2 velocity)
-    {
-        this.velocity = velocity;
-    }
-
-    public float getSpeed()
-    {
-        return speed;
-    }
-
-    public void setSpeed(float speed)
-    {
-        this.speed = speed;
-    }
-
-	/*public float getGravity()
-	{
-		return gravity;
-	}*/
-
-	/*public void setGravity(float gravity)
-	{
-		this.gravity = gravity;
-	}*/
 
     public TiledMapTileLayer getCollisionLayer()
     {
         return collisionlayer;
     }
 
-    public void setCollisionLayer(TiledMapTileLayer collisionlayer)
-    {
-        this.collisionlayer = collisionlayer;
-    }
-
-    private void moveUp()
-    {
-        velocity.y = speed;
-     //   animation.up();
-    }
-    private void moveDown()
-    {
-
-        velocity.y = -speed;
-       // animation.down();
-    }
-    private void moveLeft()
-    {
-
-        velocity.x = -speed;
-
-        //animation.left();
-
-    }
-    private void moveRight()
-    {
-
-        velocity.x = speed;
-
-        //animation.right();
-    }
     private void stopMovement()
     {
         velocity.y = 0;
         velocity.x = 0;
-    //    animation.stopped();
     }
-
-
-
-
 
     public void touchDown(int screenX, int screenY, int width, int height)
     {
-
-
         velocity.x=500*((screenX-(width/2))/(float)width);
 
         velocity.y=500*((-(screenY-(height/2)))/(float)height);
         getDirection();
 
         return;
-
-/*        if(screenX<(width/4))
-        {
-
-            moveLeft();
-
-        }
-        else if(screenX>((3*width)/4))
-        {
-            moveRight();
-        }
-        else if(screenY>(height/2))
-        {
-            moveDown();
-        }
-        else
-        {
-            moveUp();
-
-        }
-        return;*/
-
     }
-
 
     public boolean touchUp(int screenX, int screenY, int width, int height)
     {
@@ -311,16 +184,12 @@ public class MapPlayer extends Sprite
 
     public boolean touchDragged(int screenX, int screenY, int width, int height)
     {
-
-
         velocity.x=500*((screenX-(width/2))/(float)width);
         velocity.y=500*((-(screenY-(height/2)))/(float)height);
         getDirection();
 
-
         return true;
     }
-
 
     private void getDirection()
     {

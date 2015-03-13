@@ -17,12 +17,17 @@ public class TargetPicker
 
 
 
-    TargetPicker(Enemy[] enemies)
+    private int targetingId;
+
+
+
+    TargetPicker(Enemy[] enemies,int targetArea)
     {
+
 
         texture=new Texture("arrow_up_blue.png");
         sprite=new Sprite(texture);
-       reset(enemies);
+        reset(enemies,targetArea);
     }
 
     public void Left()
@@ -64,8 +69,9 @@ public class TargetPicker
         return currentTarget;
     }
 
-    public void reset(Enemy[] enemies)
+    public void reset(Enemy[] enemies,int targetingArea)
     {
+        targetingId=targetingArea;
         int enemyCount=0;
         for(int i=0;i<enemies.length;i++)
         {
@@ -89,5 +95,9 @@ public class TargetPicker
     public int getSelectedTarget()
     {
         return selectedTarget;
+    }
+    public int getTargetingId()
+    {
+        return targetingId;
     }
 }

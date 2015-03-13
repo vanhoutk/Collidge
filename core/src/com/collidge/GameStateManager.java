@@ -161,6 +161,14 @@ public class GameStateManager
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
     }
 
+    public void StartWinState(Player player, int Exp)
+    {
+        gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
+        gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
+        gameStates.add(new WinState(this,player, Exp));    //Makes a new Death State
+        changeState(gameStates.size()-1);               //Moves to the new state
+    }
+
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.
     public void update()
     {

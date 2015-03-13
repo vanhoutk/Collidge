@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Created by Sive on 10-Feb-15.
  */
 public class Animation {
-
     private TextureRegion[] frames; //take in a array of textures and gives back the right texture region
     private Texture texture;
     private float time; //current time
@@ -16,11 +15,6 @@ public class Animation {
     private int currentFrame;
     private int timesPlayed;
     public boolean paused;
-
-    public Animation()
-    {
-        frames = new TextureRegion[3];
-    }
 
     public Animation(TextureRegion[] Frames)
     {
@@ -31,7 +25,6 @@ public class Animation {
     public Animation(TextureRegion[] Frames, float Delay)
     {
         setFrames(Frames, Delay);
-
     }
 
     public void setFrames(TextureRegion[] Frames, float Delay)
@@ -42,14 +35,11 @@ public class Animation {
         time = 0;
         currentFrame = 0;
         timesPlayed =  0;
-
     }
 
     public void pause()
     {
-
         paused=false;
-
     }
 
     public void update(float dt)
@@ -80,6 +70,7 @@ public class Animation {
     {
         delay=Delay;
     }
+
     public void stop()
     {
         paused=true;
@@ -108,13 +99,12 @@ public class Animation {
         return frames[currentFrame];
     }
 
+    public int getNumberFrames()
+    {
+        return frames.length;
+    }
     public int getTimesPlayed()
     {
         return timesPlayed;
-    }
-
-    public void stopped()
-    {
-        texture = new Texture("player.png");
     }
 }

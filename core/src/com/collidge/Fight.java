@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 
 
@@ -34,6 +35,7 @@ public class Fight extends GameState
     private int expEarned;
     private int monsterCode=-1;
     private com.collidge.Animation testAnim;
+    private boolean defend;
 
     private FightMenu fMenu;
     private int enemyCount,enemiesLeft;
@@ -52,6 +54,7 @@ public class Fight extends GameState
     private TargetPicker targetPicker;
     private Sprite background;
     private Sprite targetArrow,targetReticule,backArrow;
+    private int animCount;
 
 
     Timer.Task damager=new Timer.Task()
@@ -152,7 +155,7 @@ public class Fight extends GameState
 
         //enemies=new Enemy[enemyCount];
         //allows the player to select a particular enemy to attack
-        targetPicker=new TargetPicker(enemies);
+        targetPicker=new TargetPicker(enemies,0);
         //sprite_enemy = new Sprite[enemies.length];
         //addTextures(sprite_enemy, enemies);
 
@@ -243,7 +246,19 @@ public class Fight extends GameState
             }
             else if(monsterCode<enemies.length)
             {
-                defendTurn(playr,enemies,monsterCode);
+                if(defend)
+                {
+                    defend=false;
+                    defendTurn(playr, enemies, monsterCode);
+                }
+                else if(enemies[monsterCode].animation.getTimesPlayed()>animCount+1)
+                {
+                    enemyTurnPart2();
+                }
+                else
+                {
+                    enemies[monsterCode].animation.update(Gdx.graphics.getDeltaTime());
+                }
             }
         }
         Timer.instance().clear();
@@ -265,6 +280,7 @@ public class Fight extends GameState
         healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), 107 * screenHeight / 120);
         healthBar.draw(batch);
         batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
+
 
         EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f));      //Code Allowing for generation of Energy Icons
         for (int i = 0; i < playr.getCurrentEnergy(); i++)
@@ -304,24 +320,6 @@ public class Fight extends GameState
                 if((targeting&&targetPicker.getCurrentTarget()==i)||monsterCode==i)
                 {
                     target=Gdx.graphics.getWidth()/10;
-                }
-                else
-                {
-                    target=0;
-                }
-
-                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
-                /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
-                sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
-                sprite_enemy[i].draw(batch);*/
-
-                if(targeting&&targetPicker.getCurrentTarget()==i)
-                {
-                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
-                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
-                    selector.setSize(enemies[i].width,enemies[i].height);
-                    selector.draw(batch);
-                    //TODO fix health bar so that it fills top of enemy side
                     healthBackground.setPosition((3f * screenWidth /5f), screenHeight - (battleFont.getLineHeight()*3));
                     healthBackground.setSize(2*screenWidth/6f, battleFont.getLineHeight());
                     healthBackground.draw(batch);
@@ -331,6 +329,29 @@ public class Fight extends GameState
                     battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
 
+
+
+                }
+                else
+                {
+                    target=0;
+
+                }
+
+                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
+                sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
+                sprite_enemy[i].draw(batch);*/
+
+                if(targeting&&(targetPicker.getCurrentTarget()+targetPicker.getTargetingId()>=i&&targetPicker.getCurrentTarget()-targetPicker.getTargetingId()<=i))
+                {
+
+                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
+                    selector.setSize(enemies[i].width,enemies[i].height);
+                    selector.draw(batch);
+                    //TODO fix health bar so that it fills top of enemy side
+
+                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
                 }
                 else
                 {
@@ -587,7 +608,7 @@ public class Fight extends GameState
         else if(ActionType==1)      //attack
         {
 
-            targetPicker.reset(enemies);
+            targetPicker.reset(enemies,player.attackRange(fMenu.getMoveString(ActionType,ActionId)));
             targeting=true;
             return;
         }
@@ -606,17 +627,25 @@ public class Fight extends GameState
     private void playerTurnPart3()      //After the combo, applying the multipliers
     {
         //TODO remove system outs left for debugging of combos
-        PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
-        System.out.println("Dam: "+PlayerDam);
-        PlayerDam*=(playr.getAttack()-enemies[targetPicker.getSelectedTarget()].getDefence());
-        System.out.println("Atk: "+playr.getAttack()+"   Def: "+ enemies[targetPicker.getSelectedTarget()].getDefence());
-        PlayerDam *= Math.abs(combo.skill);
-        System.out.println("After Mult of "+combo.skill+": "+PlayerDam);
-        if(PlayerDam<1)
+        for(int i=-targetPicker.getTargetingId();i<=targetPicker.getTargetingId();i++)
         {
-            PlayerDam=1;
+            System.out.println("Attacking: "+i);
+            if(targetPicker.getSelectedTarget()+i>=0&&targetPicker.getSelectedTarget()+i<enemies.length)
+            {
+
+                PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+                System.out.println("Dam to "+i+": " + PlayerDam);
+                PlayerDam *= (playr.getAttack() - enemies[targetPicker.getSelectedTarget() + i].getDefence());
+                System.out.println("Atk: " + playr.getAttack() + "   Def: " + enemies[targetPicker.getSelectedTarget() + i].getDefence());
+                PlayerDam *= Math.abs(combo.skill);
+                System.out.println("After Mult of " + combo.skill + ": " + PlayerDam);
+                if (PlayerDam < 1)
+                {
+                    PlayerDam = 1;
+                }
+                damage[targetPicker.getSelectedTarget() + 1+i] += PlayerDam;
+            }
         }
-        damage[targetPicker.getSelectedTarget()+1]+=PlayerDam;
 
 
         playerTurnEnd();
@@ -640,7 +669,9 @@ public class Fight extends GameState
 
         }
         else
+        {
             endFight();
+        }
 
         fMenu.refreshMenus(playr);
     }
@@ -649,12 +680,16 @@ public class Fight extends GameState
     {
 
 
+
         monsterCode=monsterId;
         System.out.println("Monster:"+monsterId);
+        monsters[monsterId].animation.setCurrentFrame(0);
+        animCount=monsters[monsterId].animation.getTimesPlayed();
+        defend=false;
         if(monsterId<=monsters.length-1&&!monsters[monsterId].getDead())
         {
-            System.out.println("X");
-            combo.initiateCombo(-1, this);
+
+
             comboing = true;
         }
         else
@@ -682,6 +717,13 @@ public class Fight extends GameState
             }
         }
 
+    }
+
+    private void enemyTurnPart2()
+    {
+        System.out.println("X");
+        combo.initiateCombo(-1, this);
+        defend=true;
     }
 
     private void defendTurn(Player player,Enemy[] monsters,int monsterId)
@@ -745,6 +787,7 @@ public class Fight extends GameState
             System.out.println(monsterCode+":X");
             enemyTurn(player,monsters,monsterCode);
         }
+        defend=false;
 
 
     }

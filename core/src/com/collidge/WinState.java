@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 
 /**
  * Created by stroughm on 09/03/15.
@@ -17,9 +18,29 @@ public class WinState extends GameState {
     Player player;
     SpriteBatch batch;
     String Wintext[];
-    Sprite textbox;
-    int ExpEarned;
+    Sprite textbox, ExpBorder, ExpBar, buttons;
+    double ExpEarned, buffer;
     private BitmapFont winfont;
+    float spacing = (screenWidth - 5 * screenWidth/7)/6;
+
+
+    Timer.Task Exp=new Timer.Task()
+    {
+        @Override
+        public void run()
+        {
+            if (ExpEarned > 0)
+            {
+                ExpEarned-=0.1;
+                buffer+=0.1;
+                if(buffer>=1)
+                {
+                    buffer--;
+                    player.addExperience(1);
+                }
+            }
+        }
+    };
     WinState(GameStateManager gsm, Player plr, int newExp)
     {
         super(gsm);
@@ -29,9 +50,11 @@ public class WinState extends GameState {
 
 
         winfont = new BitmapFont();
-
+        buttons = new Sprite(new Texture("inventory_slot_background.png"));
+        buttons.setSize(screenWidth/7f, screenWidth/7f);
         textbox = new Sprite(new Texture("textbox_background_2.png"));
-
+        ExpBorder = new Sprite (new Texture("Transparant_Button.png"));
+        ExpBar = new Sprite (new Texture("barHorizontal_red_mid.png"));
     }
 
     @Override
@@ -41,7 +64,11 @@ public class WinState extends GameState {
     @Override
     public  void update()
     {
-
+        Timer.instance().clear();
+        Timer.instance().start();
+        Timer.instance().postTask(Exp);
+        ExpBar.setSize(((float)player.getExperience()*screenWidth)/((float)player.getExpTarget()*2f), 1f/8f*screenHeight);
+        ExpBorder.setSize(screenWidth/2f, 1f/8f*screenHeight);
     }
 
 
@@ -49,9 +76,30 @@ public class WinState extends GameState {
     @Override
     public  void draw()
     {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
+        batch.begin();
+        Gdx.gl.glClearColor(150/255f, 106/255f, 73/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        textbox.setSize(5f*screenWidth/7f, 4f*screenHeight/8f);
 
+        winfont.setColor(Color.GREEN);
+        winfont.setScale(1f/400f*screenWidth, 1f/400f*screenHeight);
+        winfont.draw(batch, "You Win!", 1f/2f * screenWidth, 1f/2f * screenHeight);
+
+        textbox.setPosition(screenWidth/7f, 2f*screenHeight/8f);
+        textbox.draw(batch);
+        textbox.setSize(5f*screenWidth/7f, 2f*screenHeight/8f);
+        textbox.setPosition(screenWidth/7f, 0);
+        textbox.draw(batch);
+
+        ExpBar.setPosition(1f/4f*screenWidth, 1f/16f * screenHeight);
+        ExpBar.draw(batch);
+        ExpBorder.setPosition(1f/4f*screenWidth, 1f/16f * screenHeight);
+        ExpBorder.draw(batch);
+        buttons.setPosition(0f,0f);
+        buttons.draw(batch);
+        buttons.setPosition(6f/7f*screenWidth, 0f);
+        buttons.draw(batch);
+        batch.end();
     }
 
     @Override
@@ -62,7 +110,16 @@ public class WinState extends GameState {
 
     public void endWinState()
     {
-
+        batch.dispose();
+        winfont.dispose();
+        if(player.getLevelUpCounter()<=0)
+        {
+            gsm.endFight();
+        }
+        else
+        {
+            gsm.levelUpState(player);
+        }
     }
 
 

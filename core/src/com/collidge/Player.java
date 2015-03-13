@@ -151,8 +151,9 @@ public class Player
 
 
     private int movesKnown=5;
-    private int[] attackMultipliers={1,2,5,7,10};
+    private int[] attackMultipliers={1,2,2,2,10};
     private int[] attackEnergyCosts={0,5,15,75,200};
+    private int[] attackAOE={0,0,1,10,0};
     private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
     //private String[] attackDesc = {"1 Dmg, 0 En", "2 Dmg, 5 En" , "5 Dmg, 15 En" , "7 Dmg, 75 En", "10 Dmg, 200 En"};       //attack tooltips for FightMenu
     private String[] attackDesc = {attackMultipliers[0] + "Dmg, " + attackEnergyCosts[0] + "En",    //attack tooltips for FightMenu
@@ -248,6 +249,18 @@ public class Player
             {
                 this.changeEnergy(-(this.attackEnergyCosts[i]));
                 return attackMultipliers[i];
+            }
+        }
+        return 0;
+    }
+
+    public int attackRange(String moveName)
+    {
+        for(int i=0;i<attacksNames.length;i++)
+        {
+            if(moveName.equals(attacksNames[i]))
+            {
+                return attackAOE[i];
             }
         }
         return 0;

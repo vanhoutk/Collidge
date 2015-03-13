@@ -31,13 +31,9 @@ public class Play extends GameState {
 
     private SpriteBatch  batch;
 
-
-
     Play(GameStateManager gsm)
     {
         super(gsm);
-
-
 
         userCharacter=gsm.user;
     }
@@ -48,24 +44,16 @@ public class Play extends GameState {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false,480,480*(h/w));
         camera.update();
 
-
-
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
 
-
-
         map = loader.load("TrinityMap1.tmx");
 
-
-
         renderer = new OrthogonalTiledMapRenderer(map);
-
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
@@ -75,8 +63,6 @@ public class Play extends GameState {
         inventoryButton = new Texture("schoolbag.png");
         menuButtonSprite = new Sprite(menuButton);
         inventoryButtonSprite = new Sprite(inventoryButton);
-
-
     }
 
     @Override
@@ -105,7 +91,6 @@ public class Play extends GameState {
 
         camera.update();
 
-
         renderer.setView(camera);
 
         renderer.render();
@@ -114,7 +99,7 @@ public class Play extends GameState {
 
        // player.draw(renderer.getBatch());
 
-        player.draw2(renderer.getBatch(), 5);
+        player.draw(renderer.getBatch());
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
@@ -137,7 +122,6 @@ public class Play extends GameState {
 
         menuButtonSprite.draw(batch);
         inventoryButtonSprite.draw(batch);
-
 
         batch.end();
     }
@@ -163,9 +147,6 @@ public class Play extends GameState {
 
     }
 
-
-
-
     @Override
     public void dispose()
     {
@@ -173,10 +154,6 @@ public class Play extends GameState {
         batch.dispose();
         renderer.dispose();
         player.getTexture().dispose();
-
-
-
-
     }
 
    /* @Override
@@ -184,20 +161,13 @@ public class Play extends GameState {
     {
     }*/
 
-
     @Override
     public void update()
     {
-
-
-
-
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510)
         {
             //Kris -- just put in to test InventoryState
             //gsm.openInventory(userCharacter);
-
-
 
             if(userCharacter.getCurrentHealth()<=0)
             {
@@ -220,19 +190,12 @@ public class Play extends GameState {
                 gsm.startFight(userCharacter, "Full Set");
             }
             player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
-
-
         }
         //else if(player.getY()>player.getCollisionLayer().getTileHeight()*(player.getCollisionLayer().getHeight()-2))
         //{
         //    gsm.openInventory(userCharacter);
         //    player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
         //}
-
-
-
-
-
     }
 
     //@Override
@@ -241,7 +204,6 @@ public class Play extends GameState {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-
         if(screenX<Gdx.graphics.getWidth()*8/10 && screenY<inventoryButtonSprite.getHeight())
         {
             player.touchDown(screenX,screenY,screenWidth,screenHeight);
@@ -275,6 +237,7 @@ public class Play extends GameState {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
             {
                 gsm.openInventory(userCharacter);
+                //gsm.StartWinState(userCharacter,15);
             }
             if(x > menuButtonSprite.getX())
             {
