@@ -251,7 +251,7 @@ public class Fight extends GameState
                     defend=false;
                     defendTurn(playr, enemies, monsterCode);
                 }
-                else if(enemies[monsterCode].animation.getTimesPlayed()>animCount+1)
+                else if(enemies[monsterCode].animation.getTimesPlayed()>animCount+1||enemies[monsterCode].getDead())
                 {
                     enemyTurnPart2();
                 }
@@ -259,6 +259,7 @@ public class Fight extends GameState
                 {
                     enemies[monsterCode].animation.update(Gdx.graphics.getDeltaTime());
                 }
+
             }
         }
         Timer.instance().clear();
@@ -360,11 +361,11 @@ public class Fight extends GameState
 
                     enemies[i].animation.update(Gdx.graphics.getDeltaTime());
                 }
-                else
+                /*else
                 {
                     enemies[i].animation.pause();
 
-                }
+                }*/
             }
 
             /*if (i+1 >= enemies.length)
@@ -698,10 +699,12 @@ public class Fight extends GameState
         {
 
 
+
             comboing = true;
         }
         else
         {
+
             boolean fight=false;
             while(monsterId<monsters.length)
             {
@@ -734,6 +737,10 @@ public class Fight extends GameState
             System.out.println("X");
             combo.initiateCombo(-1, this);
             defend = true;
+        }
+        else
+        {
+            defend=true;
         }
     }
 
