@@ -204,10 +204,19 @@ public class Play extends GameState {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+<<<<<<< HEAD
         if(screenX<Gdx.graphics.getWidth()*8/10 && screenY<inventoryButtonSprite.getHeight())
         {
             player.touchDown(screenX,screenY,screenWidth,screenHeight);
+=======
+
+        if(screenX>Gdx.graphics.getWidth()*8/10  && screenY>inventoryButtonSprite.getHeight()){
+            player.touchDown(100,100,100,100);
+>>>>>>> DecMovement
         }
+        else player.touchDown(screenX, screenY, screenWidth, screenHeight);
+
+
         return false;
     }
 

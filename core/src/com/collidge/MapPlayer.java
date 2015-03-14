@@ -32,6 +32,34 @@ public class MapPlayer extends Sprite
     //Java holds objects in memory as long as there is a reference to it. Therefore you can make local textureregions, textures and pass them to the animation object.
     private Animation walkingAnimation[];
 
+<<<<<<< HEAD
+=======
+    private Texture walkingLeftTexture;
+    private TextureRegion[] walkingLeftFrames;
+    private Animation walkingLeftAnimation;
+    private Texture walkingRightTexture;
+    private Animation walkingRightAnimation;
+    private Texture walkingUpTexture;
+    private Animation walkingUpAnimation;
+    private Texture walkingDownTexture;
+    private Animation walkingDownAnimation;
+
+
+    /* Declan adding for movement in tiles */
+    private float initX= 0;
+    private float initY = 0;
+    private float endX= 0;
+    private float endY = 0;
+
+    private int lastpoint;
+
+    boolean stopped = false; // called on TouchUp is true
+    boolean stopping = false;
+    //boolean inTile = false; //Ensures is in Tile when stopped
+
+    int tileID; //tile sprite ends up in
+
+>>>>>>> DecMovement
     public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer)
     {
         super(sprite);
@@ -152,6 +180,75 @@ public class MapPlayer extends Sprite
             setY(oldY);
             velocity.y = 0;
         }
+<<<<<<< HEAD
+=======
+
+
+        if(stopped == true && (Math.abs(velocity.x) > 0 || Math.abs(velocity.y) > 0) && stopping == false) {
+            stopping = true;
+            if ( direction == RIGHT) {
+                tileID = (int) (getX() / tilewidth);
+                tileID = tileID + 1; //Sets tile to aim towards
+            }
+            if (direction == LEFT) {
+                tileID = (int) (getX() / tilewidth);
+                //tileID = tileID; //Sets tile to aim towards
+            }
+            if (direction == UP) {
+                tileID = (int) (getY() / tileheight);
+                tileID = tileID + 1; //Sets tile to aim towards
+            }
+            if (direction == DOWN) {
+                tileID = (int) (getY() / tileheight);
+            }
+        }
+
+        //Once stopping sequence initiated
+        if(stopping) {
+            if (direction == RIGHT) {
+                lastpoint = (int) getX();
+                if (lastpoint >= Math.abs(tileID * tilewidth)) {
+                    stopMovement();
+                    stopping = false;
+                    //Wait until past this point
+                }
+            }
+            if (direction == LEFT) {
+                lastpoint = (int) getX();
+                if (lastpoint <= Math.abs(tileID * tilewidth)) {
+                    stopMovement();
+                    stopping = false;
+                    //Wait until past this point
+                }
+            }
+            if (direction == UP) {
+                lastpoint = (int) getY();
+                if (lastpoint >= Math.abs(tileID * tileheight)) {
+                    stopMovement();
+                    stopping = false;
+                    //Wait until past this point
+                }
+            }
+            else {
+                lastpoint = (int) getY();
+                if (lastpoint <= Math.abs(tileID * tileheight)) {
+                    stopMovement();
+                    stopping = false;
+                    //Wait until past this point
+                }
+
+            }
+
+        }
+        else stopped = false;
+
+
+    }
+
+    public Vector2 getVelocity()
+    {
+        return velocity;
+>>>>>>> DecMovement
     }
 
     public TiledMapTileLayer getCollisionLayer()
@@ -159,6 +256,44 @@ public class MapPlayer extends Sprite
         return collisionlayer;
     }
 
+<<<<<<< HEAD
+=======
+    public void setCollisionLayer(TiledMapTileLayer collisionlayer)
+    {
+        this.collisionlayer = collisionlayer;
+    }
+
+    private void moveUp()
+    {
+        velocity.y = speed;
+        velocity.x = 0;
+     //   animation.up();
+    }
+    private void moveDown()
+    {
+
+        velocity.y = -speed;
+        velocity.x = 0;
+       // animation.down();
+    }
+    private void moveLeft()
+    {
+
+        velocity.x = -speed;
+        velocity.y = 0;
+
+        //animation.left();
+
+    }
+    private void moveRight()
+    {
+
+        velocity.x = speed;
+        velocity.y = 0;
+
+        //animation.right();
+    }
+>>>>>>> DecMovement
     private void stopMovement()
     {
         velocity.y = 0;
@@ -167,38 +302,77 @@ public class MapPlayer extends Sprite
 
     public void touchDown(int screenX, int screenY, int width, int height)
     {
+<<<<<<< HEAD
         velocity.x=500*((screenX-(width/2))/(float)width);
 
         velocity.y=500*((-(screenY-(height/2)))/(float)height);
         getDirection();
 
         return;
+=======
+
+        float xForCalculation = ((screenX-(width/2))/(float)width);
+        float yForCalculation = ((-(screenY-(height/2)))/(float)height);
+        getDirection(xForCalculation, yForCalculation);
+
+        if(direction == LEFT)
+        {
+            moveLeft();
+        }
+        else if(direction == RIGHT)
+        {
+            moveRight();
+        }
+        else if(direction == DOWN)
+        {
+            moveDown();
+        }
+        else
+        {
+            moveUp();
+
+        }
+        return;
+
+>>>>>>> DecMovement
     }
 
     public boolean touchUp(int screenX, int screenY, int width, int height)
     {
         // TODO Auto-generated method stub
-        stopMovement();
+        stopped = true;
         return false;
     }
 
     public boolean touchDragged(int screenX, int screenY, int width, int height)
     {
+<<<<<<< HEAD
         velocity.x=500*((screenX-(width/2))/(float)width);
         velocity.y=500*((-(screenY-(height/2)))/(float)height);
         getDirection();
+=======
+
+
+        //velocity.x=500*((screenX-(width/2))/(float)width);
+        //velocity.y=500*((-(screenY-(height/2)))/(float)height);
+        //getDirection();
+>>>>>>> DecMovement
 
         return true;
     }
 
+<<<<<<< HEAD
     private void getDirection()
+=======
+
+    private void getDirection(float x, float y)
+>>>>>>> DecMovement
     {
-        if(velocity.x==0||Math.abs(velocity.y)/Math.abs(velocity.x)>1)
+        if(Math.abs(y)/Math.abs(x)>1)
         {
-            if(velocity.y>0)
+            if(y>0)
             {
                 direction=UP;
-                velocity.x=250/Gdx.graphics.getHeight();
             }
             else
             {
@@ -207,7 +381,7 @@ public class MapPlayer extends Sprite
         }
         else
         {
-            if(velocity.x>0)
+            if(x>0)
             {
                 direction=RIGHT;
             }
