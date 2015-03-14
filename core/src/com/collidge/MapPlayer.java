@@ -32,8 +32,7 @@ public class MapPlayer extends Sprite
     //Java holds objects in memory as long as there is a reference to it. Therefore you can make local textureregions, textures and pass them to the animation object.
     private Animation walkingAnimation[];
 
-<<<<<<< HEAD
-=======
+
     private Texture walkingLeftTexture;
     private TextureRegion[] walkingLeftFrames;
     private Animation walkingLeftAnimation;
@@ -59,7 +58,6 @@ public class MapPlayer extends Sprite
 
     int tileID; //tile sprite ends up in
 
->>>>>>> DecMovement
     public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer)
     {
         super(sprite);
@@ -180,8 +178,7 @@ public class MapPlayer extends Sprite
             setY(oldY);
             velocity.y = 0;
         }
-<<<<<<< HEAD
-=======
+
 
 
         if(stopped == true && (Math.abs(velocity.x) > 0 || Math.abs(velocity.y) > 0) && stopping == false) {
@@ -248,7 +245,6 @@ public class MapPlayer extends Sprite
     public Vector2 getVelocity()
     {
         return velocity;
->>>>>>> DecMovement
     }
 
     public TiledMapTileLayer getCollisionLayer()
@@ -256,8 +252,7 @@ public class MapPlayer extends Sprite
         return collisionlayer;
     }
 
-<<<<<<< HEAD
-=======
+
     public void setCollisionLayer(TiledMapTileLayer collisionlayer)
     {
         this.collisionlayer = collisionlayer;
@@ -293,7 +288,6 @@ public class MapPlayer extends Sprite
 
         //animation.right();
     }
->>>>>>> DecMovement
     private void stopMovement()
     {
         velocity.y = 0;
@@ -302,14 +296,7 @@ public class MapPlayer extends Sprite
 
     public void touchDown(int screenX, int screenY, int width, int height)
     {
-<<<<<<< HEAD
-        velocity.x=500*((screenX-(width/2))/(float)width);
 
-        velocity.y=500*((-(screenY-(height/2)))/(float)height);
-        getDirection();
-
-        return;
-=======
 
         float xForCalculation = ((screenX-(width/2))/(float)width);
         float yForCalculation = ((-(screenY-(height/2)))/(float)height);
@@ -334,7 +321,6 @@ public class MapPlayer extends Sprite
         }
         return;
 
->>>>>>> DecMovement
     }
 
     public boolean touchUp(int screenX, int screenY, int width, int height)
@@ -346,27 +332,17 @@ public class MapPlayer extends Sprite
 
     public boolean touchDragged(int screenX, int screenY, int width, int height)
     {
-<<<<<<< HEAD
-        velocity.x=500*((screenX-(width/2))/(float)width);
-        velocity.y=500*((-(screenY-(height/2)))/(float)height);
-        getDirection();
-=======
 
 
-        //velocity.x=500*((screenX-(width/2))/(float)width);
-        //velocity.y=500*((-(screenY-(height/2)))/(float)height);
-        //getDirection();
->>>>>>> DecMovement
+
+
 
         return true;
     }
 
-<<<<<<< HEAD
-    private void getDirection()
-=======
+
 
     private void getDirection(float x, float y)
->>>>>>> DecMovement
     {
         if(Math.abs(y)/Math.abs(x)>1)
         {
