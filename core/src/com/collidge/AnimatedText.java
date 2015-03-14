@@ -39,7 +39,7 @@ public class AnimatedText {
 
         if (TimeUtils.timeSinceMillis(startTime) > letterDelay) {
             startTime = TimeUtils.millis();
-            if(currentLetter < length - 1) {
+            if(currentLetter < length) {
                 currentText += fullText.charAt(currentLetter++);
             }
             else animationDone = true;

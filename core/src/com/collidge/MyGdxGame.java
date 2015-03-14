@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,10 +15,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor, ApplicationListener,GestureDetector.GestureListener
 {
@@ -127,14 +132,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         screenMask.setAlpha(.8f);
         batch=new SpriteBatch();
 
-        /**
-         * Kris - commented out two of the lines which caused the app to crash on mobile.
-         */
-
-        //String text = handle.readString();
         textBox = new TextBox();
-        //textBox.setText(text);
-        textBox.setText("This example is here to demonstrate the turning of a page.  blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla");
+        textBox.setText(getNpcString("npc1", "two"));
     }
 
     @Override
@@ -214,6 +213,21 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     public static void setTextBox(String string) {
         textBox.setText(string);
+    }
+
+    public static String getNpcString(String npc, String convo) {
+        try {
+            XmlReader reader = new XmlReader();
+            FileHandle handle1 = Gdx.files.internal("Strings.xml");
+            XmlReader.Element root = reader.parse(handle1.readString());
+            XmlReader.Element child = root.getChildByName(npc);
+            String s = child.getChildByName(convo).getText();
+
+            return s;
+        }
+        catch (Exception e) {
+            return "";
+        }
     }
 
     @Override
