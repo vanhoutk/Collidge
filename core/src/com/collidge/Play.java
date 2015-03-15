@@ -178,6 +178,7 @@ public class Play extends GameState {
             //Kris -- just put in to test InventoryState
             //gsm.openInventory(userCharacter);
 
+
             if(userCharacter.getCurrentHealth()<=0)
             {
                 userCharacter.healAll();

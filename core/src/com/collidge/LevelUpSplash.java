@@ -90,7 +90,7 @@ public class LevelUpSplash extends GameState
                         +player.getEnergyPointsMult()+"En. Current Value: "+(int)(player.getEnergyPointsMult()*(1+player.getLevel()+player.getEnergyPoints()));
                 break;
             case 4:
-                infoText="Intelligence: You're a smart guy, you know this stat helps you regenerate energy\n+"
+                infoText="Intelligence: Get more smarter at Energy Regeneration\n+"
                         +player.getIntelligencePointsMult()+"Int. Current Value: "+(int)(player.getIntelligencePointsMult()*(1+player.getLevel()+player.getIntelligencePoints()));
                 break;
             default:
