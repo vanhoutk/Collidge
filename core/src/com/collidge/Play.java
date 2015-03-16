@@ -28,6 +28,7 @@ public class Play extends GameState {
     private MapPlayer player;
     private Texture menuButton, inventoryButton;
     private Sprite menuButtonSprite, inventoryButtonSprite;
+    private float ppx, ppy, px, py;
 
     private SpriteBatch  batch;
 
@@ -185,21 +186,29 @@ public class Play extends GameState {
             }
             if(player.direction==0)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Loner");
+                player.setPosition(getx(),gety()-10);
             }
             else if(player.direction==1)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Preppy");
+                player.setPosition(getx(),gety()+100);
             }
             else if(player.direction==2)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Pledge");
+                player.setPosition(getx()+100,gety());
             }
             else if(player.direction==3)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Full Set");
+                player.setPosition(getx()-100,gety());
             }
-            player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+
         }
         //else if(player.getY()>player.getCollisionLayer().getTileHeight()*(player.getCollisionLayer().getHeight()-2))
         //{
@@ -242,6 +251,39 @@ public class Play extends GameState {
         return false;
     }
 
+    public void saveplay()
+    {
+       setx(player.getX());
+       sety(player.getY());
+    }
+
+    public void setx(float x)
+    {
+      px = x;
+    }
+    public void sety(float y)
+    {
+     py = y;
+    }
+
+    public float getx()
+    {
+        return px;
+    }
+
+    public float gety()
+    {
+        return py;
+    }
+
+   /* public void loadplay()
+    {
+        float x = getx();
+        float y = gety();
+        Play play = new Play(gsm, x , y);
+    }*/
+
+
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
@@ -249,12 +291,16 @@ public class Play extends GameState {
         {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
             {
+                saveplay();
                 gsm.openInventory(userCharacter);
+                player.setPosition(getx(), gety());
                 //gsm.StartWinState(userCharacter,15);
             }
             if(x > menuButtonSprite.getX())
             {
+                saveplay();
                 gsm.openMenu(userCharacter);
+                player.setPosition(getx(), gety());
                 //gsm.changeState(1);
             }
             else
