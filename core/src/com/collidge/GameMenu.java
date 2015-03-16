@@ -19,10 +19,10 @@ public class GameMenu extends GameState
 
     Player player;
     boolean statsPressed=false, settingsPressed=false, savePressed=false, loadingStats=true;
-    int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0;
+    int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0;
     SpriteBatch batch;
     Texture texture, background;
-    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthbar, energybar, attackbar, defbar, intbar; //declaring sprites
+    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthbar, energybar, attackbar, defbar, intbar, statsymbol, healthIcon, energyIcon, attackIcon, defenceIcon, intelligenceIcon, XPbar, XPframe;
     BitmapFont Font;
 
 
@@ -81,7 +81,30 @@ public class GameMenu extends GameState
         defbar = new Sprite(texture);
         texture = new Texture("statbar.png");
         intbar = new Sprite(texture);
+        texture = new Texture("statbar.png");
+        XPbar = new Sprite(texture);
 
+
+        texture = new Texture("statsymbol.png");
+        statsymbol = new Sprite(texture);
+        statsymbol.setSize(screenWidth /8, screenHeight/10);
+
+        texture = new Texture("XPframe.png");
+        XPframe = new Sprite(texture);
+        XPframe.setSize(screenWidth *7/10, screenHeight/10);
+        XPframe.setPosition(screenWidth / 7, screenHeight /15);
+
+
+        healthIcon = new Sprite(new Texture("techno-heart.png"));
+        defenceIcon = new Sprite(new Texture("edged-shield.png"));
+        attackIcon = new Sprite(new Texture("shard-sword.png"));
+        energyIcon = new Sprite(new Texture("battery-pack.png"));
+        intelligenceIcon = new Sprite(new Texture("brain.png"));
+        healthIcon.setSize(screenWidth /40, screenWidth /40);
+        energyIcon.setSize(screenWidth /40, screenWidth /40);
+        attackIcon.setSize(screenWidth /40, screenWidth /40);
+        defenceIcon.setSize(screenWidth /40, screenWidth /40);
+        intelligenceIcon.setSize(screenWidth /40, screenWidth /40);
 
 
         background = new Texture("phonebackground.png");
@@ -96,11 +119,11 @@ public class GameMenu extends GameState
         stats.setPosition(screenWidth *5/21 - stats.getWidth()/2,screenHeight/2 - stats.getHeight()/2);
         settings.setPosition(screenWidth *10/21 - save.getWidth()/2,screenHeight/2 - save.getHeight()/2);
         save.setPosition(screenWidth *15/21 - settings.getWidth()/2,screenHeight/2 - settings.getHeight()/2);
-        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2,screenHeight/2 - vol0.getHeight()/2);
-        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2,screenHeight/2 - vol1.getHeight()/2);
-        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2,screenHeight/2 - vol2.getHeight()/2);
-        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2,screenHeight/2 - vol3.getHeight()/2);
-        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2,screenHeight/2 - vol4.getHeight()/2);
+        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2,screenHeight*3/5 - vol0.getHeight()/2);
+        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2,screenHeight*3/5- vol1.getHeight()/2);
+        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2,screenHeight*3/5 - vol2.getHeight()/2);
+        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2,screenHeight*3/5 - vol3.getHeight()/2);
+        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2,screenHeight*3/5 - vol4.getHeight()/2);
         music0.setPosition(screenWidth /2 - vol0.getWidth()/2,screenHeight/4 - vol0.getHeight()/2);
         music1.setPosition(screenWidth /2 - vol1.getWidth()/2,screenHeight/4 - vol1.getHeight()/2);
         music2.setPosition(screenWidth /2 - vol2.getWidth()/2,screenHeight/4 - vol2.getHeight()/2);
@@ -133,26 +156,18 @@ public class GameMenu extends GameState
 
         if(statsPressed)
         {
+
             //DRAW HEALTH BAR
             if(healthcounter < player.getHealth())
             {
                 healthbar.setColor(Color.GREEN);
-                healthbar.setPosition(screenWidth / 5, screenHeight *5/6);
-                healthbar.setSize(screenWidth *healthcounter/50, screenHeight/15);
+                healthbar.setPosition(screenWidth / 5, screenHeight *6/8);
+                healthbar.setSize(screenWidth *(healthcounter%25)/50, screenHeight/20);
                 healthbar.draw(batch);
 
                 Font.setColor(Color.GREEN);
-                Font.setScale(screenWidth / 400f, screenHeight / 400f);
-                Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY());
-
-                try
-                {
-                    Thread.sleep(10);                 //1000 milliseconds is one second.
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
+                Font.setScale(screenWidth / 500f, screenHeight / 500f);
+                Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY()+healthbar.getHeight()/2);
 
                 healthcounter++;
             }
@@ -160,29 +175,21 @@ public class GameMenu extends GameState
             {
                 healthbar.draw(batch);
                 Font.setColor(Color.GREEN);
-                Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY());
+                Font.setScale(screenWidth / 500f, screenHeight / 500f);
+                Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY()+healthbar.getHeight()/2);
             }
 
             //DRAW ENERGY BAR
             if(energycounter < player.getEnergy())
             {
                 energybar.setColor(Color.YELLOW);
-                energybar.setPosition(screenWidth / 5, screenHeight *4/6);
-                energybar.setSize(screenWidth *energycounter/50, screenHeight/15);
+                energybar.setPosition(screenWidth / 5, screenHeight *5/8);
+                energybar.setSize(screenWidth *(energycounter%25)/50, screenHeight/20);
                 energybar.draw(batch);
 
                 Font.setColor(Color.YELLOW);
-                Font.setScale(screenWidth / 400f, screenHeight / 400f);
-                Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY());
-
-                try
-                {
-                    Thread.sleep(10);                 //1000 milliseconds is one second.
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
+                Font.setScale(screenWidth / 500f, screenHeight / 500f);
+                Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY()+healthbar.getHeight()/2);
 
                 energycounter++;
             }
@@ -190,29 +197,20 @@ public class GameMenu extends GameState
             {
                 energybar.draw(batch);
                 Font.setColor(Color.YELLOW);
-                Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY());
+                Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY()+healthbar.getHeight()/2);
             }
 
             // DRAW ATTACK BAR
             if(attackcounter < player.getAttack())
             {
                 attackbar.setColor(Color.RED);
-                attackbar.setPosition(screenWidth / 5, screenHeight *3/6);
-                attackbar.setSize(screenWidth *attackcounter/50, screenHeight/15);
+                attackbar.setPosition(screenWidth / 5, screenHeight *4/8);
+                attackbar.setSize(screenWidth *(attackcounter%25)/50, screenHeight/20);
                 attackbar.draw(batch);
 
                 Font.setColor(Color.RED);
-                Font.setScale(screenWidth / 400f, screenHeight / 400f);
-                Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY());
-
-                try
-                {
-                    Thread.sleep(10);                 //1000 milliseconds is one second.
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
+                Font.setScale(screenWidth / 500f, screenHeight / 500f);
+                Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY()+healthbar.getHeight()/2);
 
                 attackcounter++;
             }
@@ -220,29 +218,20 @@ public class GameMenu extends GameState
             {
                 attackbar.draw(batch);
                 Font.setColor(Color.RED);
-                Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY());
+                Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY()+healthbar.getHeight()/2);
             }
 
             // DRAW DEF BAR
             if(defcounter < player.getAttack())
             {
                 defbar.setColor(Color.BLUE);
-                defbar.setPosition(screenWidth / 5, screenHeight *2/6);
-                defbar.setSize(screenWidth *defcounter/50, screenHeight/15);
+                defbar.setPosition(screenWidth / 5, screenHeight *3/8);
+                defbar.setSize(screenWidth *(defcounter%25)/50, screenHeight/20);
                 defbar.draw(batch);
 
                 Font.setColor(Color.BLUE);
-                Font.setScale(screenWidth / 400f, screenHeight / 400f);
-                Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY());
-
-                try
-                {
-                    Thread.sleep(10);                 //1000 milliseconds is one second.
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
+                Font.setScale(screenWidth / 500f, screenHeight / 500f);
+                Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY()+healthbar.getHeight()/2);
 
                 defcounter++;
             }
@@ -250,29 +239,20 @@ public class GameMenu extends GameState
             {
                 defbar.draw(batch);
                 Font.setColor(Color.BLUE);
-                Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY());
+                Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY()+healthbar.getHeight()/2);
             }
 
             // DRAW INT BAR
             if(intcounter < player.getIntelligence())
             {
                 intbar.setColor(Color.PURPLE);
-                intbar.setPosition(screenWidth / 5, screenHeight /6);
-                intbar.setSize(screenWidth *intcounter/50, screenHeight/15);
+                intbar.setPosition(screenWidth / 5, screenHeight *2/8);
+                intbar.setSize(screenWidth *(intcounter%25)/50, screenHeight/20);
                 intbar.draw(batch);
 
                 Font.setColor(Color.PURPLE);
-                Font.setScale(screenWidth / 400f, screenHeight / 400f);
-                Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY());
-
-                try
-                {
-                    Thread.sleep(10);                 //1000 milliseconds is one second.
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
+                Font.setScale(screenWidth / 500f, screenHeight / 500f);
+                Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY()+healthbar.getHeight()/2);
 
                 intcounter++;
             }
@@ -280,14 +260,81 @@ public class GameMenu extends GameState
             {
                 intbar.draw(batch);
                 Font.setColor(Color.PURPLE);
-                Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY());
+                Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY()+healthbar.getHeight()/2);
+            }
+
+            // DRAW XP BAR
+            if(XPcounter < player.getExperience())
+            {
+                XPbar.setColor(Color.WHITE);
+                XPbar.setPosition(XPframe.getX()+XPframe.getWidth()/14,XPframe.getY());
+                XPbar.setSize((XPframe.getWidth() * 8/10) * (XPcounter / player.getExpTarget()), XPframe.getHeight() );
+
+                XPbar.draw(batch);
+
+                Font.setColor(Color.WHITE);
+                Font.setScale(screenWidth / 400f, screenHeight / 400f);
+                Font.draw(batch, XPcounter + " / " + player.getExpTarget(), XPframe.getX(), XPframe.getY() + XPframe.getHeight()*13/10);
+
+                XPcounter++;
+            }
+
+            else if(XPcounter >= player.getExperience())
+            {
+                XPbar.setColor(Color.WHITE);
+                XPbar.setPosition(XPframe.getX()+XPframe.getWidth()/14,XPframe.getY());
+                XPbar.setSize((XPframe.getWidth() * 8/10) * (XPcounter / player.getExpTarget()), XPframe.getHeight() );
+                XPbar.draw(batch);
+                Font.setColor(Color.WHITE);
+                Font.draw(batch, XPcounter + " / " + player.getExpTarget(), XPframe.getX() + XPframe.getWidth()*3/7, XPframe.getY() + XPframe.getHeight()*13/10);
+            }
+
+            XPframe.draw(batch);
+
+            statsymbol.setPosition(screenWidth / 7, healthbar.getY() - healthbar.getHeight()/2);
+            statsymbol.setColor(Color.GREEN);
+            statsymbol.draw(batch);
+            healthIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*3/5);
+            healthIcon.draw(batch);
+
+            statsymbol.setPosition(screenWidth / 7, energybar.getY() - energybar.getHeight()/2);
+            statsymbol.setColor(Color.YELLOW);
+            statsymbol.draw(batch);
+            energyIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            energyIcon.draw(batch);
+
+            statsymbol.setPosition(screenWidth / 7, attackbar.getY() - attackbar.getHeight()/2);
+            statsymbol.setColor(Color.RED);
+            statsymbol.draw(batch);
+            attackIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            attackIcon.draw(batch);
+
+            statsymbol.setPosition(screenWidth / 7, defbar.getY() - defbar.getHeight()/2);
+            statsymbol.setColor(Color.BLUE);
+            statsymbol.draw(batch);
+            defenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            defenceIcon.draw(batch);
+
+            statsymbol.setPosition(screenWidth / 7, intbar.getY() - intbar.getHeight()/2);
+            statsymbol.setColor(Color.PURPLE);
+            statsymbol.draw(batch);
+            intelligenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            intelligenceIcon.draw(batch);
+
+            try
+            {
+                Thread.sleep(50);
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
             }
 
         }
 
         if(settingsPressed)
         {
-            batch.draw(settings, Gdx.graphics.getWidth()/2 - settings.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+            //batch.draw(settings, Gdx.graphics.getWidth()/2 - settings.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
 
             Font.setColor(Color.WHITE);
             Font.setScale(screenWidth / 400f, screenHeight / 400f);
@@ -338,7 +385,9 @@ public class GameMenu extends GameState
 
         if(savePressed)
         {
-            batch.draw(save, Gdx.graphics.getWidth()/2 - save.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+            //batch.draw(save, Gdx.graphics.getWidth()/2 - save.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+            Font.setColor(Color.WHITE);
+            Font.draw(batch, "GAME SAVED", screenWidth*2/5 , screenHeight/2);
         }
 
         batch.end();
@@ -378,6 +427,12 @@ public class GameMenu extends GameState
                 statsPressed = false;
                 settingsPressed = false;
                 savePressed = false;
+
+                healthcounter = 0;
+                energycounter = 0;
+                attackcounter = 0;
+                defcounter = 0;
+                intcounter = 0;
             }
         }
 

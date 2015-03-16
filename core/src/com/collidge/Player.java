@@ -317,6 +317,7 @@ public class Player
 
     }
 
+
     private void levelUp()
     {
         level++;
