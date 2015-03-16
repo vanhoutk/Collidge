@@ -119,11 +119,11 @@ public class GameMenu extends GameState
         stats.setPosition(screenWidth *5/21 - stats.getWidth()/2,screenHeight/2 - stats.getHeight()/2);
         settings.setPosition(screenWidth *10/21 - save.getWidth()/2,screenHeight/2 - save.getHeight()/2);
         save.setPosition(screenWidth *15/21 - settings.getWidth()/2,screenHeight/2 - settings.getHeight()/2);
-        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2,screenHeight*3/5 - vol0.getHeight()/2);
-        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2,screenHeight*3/5- vol1.getHeight()/2);
-        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2,screenHeight*3/5 - vol2.getHeight()/2);
-        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2,screenHeight*3/5 - vol3.getHeight()/2);
-        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2,screenHeight*3/5 - vol4.getHeight()/2);
+        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2,screenHeight/2 - vol0.getHeight()/2);
+        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2,screenHeight/2- vol1.getHeight()/2);
+        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2,screenHeight/2 - vol2.getHeight()/2);
+        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2,screenHeight/2 - vol3.getHeight()/2);
+        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2,screenHeight/2 - vol4.getHeight()/2);
         music0.setPosition(screenWidth /2 - vol0.getWidth()/2,screenHeight/4 - vol0.getHeight()/2);
         music1.setPosition(screenWidth /2 - vol1.getWidth()/2,screenHeight/4 - vol1.getHeight()/2);
         music2.setPosition(screenWidth /2 - vol2.getWidth()/2,screenHeight/4 - vol2.getHeight()/2);
@@ -268,7 +268,7 @@ public class GameMenu extends GameState
             {
                 XPbar.setColor(Color.WHITE);
                 XPbar.setPosition(XPframe.getX()+XPframe.getWidth()/14,XPframe.getY());
-                XPbar.setSize((XPframe.getWidth() * 8/10) * (XPcounter / player.getExpTarget()), XPframe.getHeight() );
+                XPbar.setSize(XPframe.getWidth() * XPcounter/player.getExpTarget(), XPframe.getHeight() );
 
                 XPbar.draw(batch);
 
@@ -283,7 +283,7 @@ public class GameMenu extends GameState
             {
                 XPbar.setColor(Color.WHITE);
                 XPbar.setPosition(XPframe.getX()+XPframe.getWidth()/14,XPframe.getY());
-                XPbar.setSize((XPframe.getWidth() * 8/10) * (XPcounter / player.getExpTarget()), XPframe.getHeight() );
+                XPbar.setSize(XPframe.getWidth() * XPcounter/player.getExpTarget(), XPframe.getHeight() );
                 XPbar.draw(batch);
                 Font.setColor(Color.WHITE);
                 Font.draw(batch, XPcounter + " / " + player.getExpTarget(), XPframe.getX() + XPframe.getWidth()*3/7, XPframe.getY() + XPframe.getHeight()*13/10);
