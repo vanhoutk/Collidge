@@ -97,38 +97,46 @@ public class TextBox {
         fullText = string;
         currentPage = 0;
         pages.clear();
-        final int pageLetterCount = 200;
+        int pageLetterCount = 200;
+        int amountOfLetters = fullText.length();
 
-        int noOfPages = fullText.length() / pageLetterCount;
+        int noOfPages = amountOfLetters / pageLetterCount;
         boolean remainderPage = false;
-        int remainder = fullText.length() - (noOfPages * pageLetterCount);
-        if (remainder > 0) {
+        if (amountOfLetters % pageLetterCount > 0) {
             noOfPages++;
             remainderPage = true;
         }
 
         int currentLetter = 0;
         for (int page = 0; page < noOfPages; page++) {
+            pageLetterCount = 200;
             String pageToAdd = new String();
             if(page == noOfPages - 1 && remainderPage) {
-                for (int i = currentLetter; i < currentLetter + remainder; i++) {
+                for (int i = currentLetter; i < currentLetter + (amountOfLetters - currentLetter); i++) {
                     pageToAdd += fullText.charAt(i);
                 }
             }
             else {
                 for (int i = currentLetter; i < currentLetter + pageLetterCount; i++) {
                     pageToAdd += fullText.charAt(i);
+                    int charactersLeft = pageLetterCount - i;
+
+                    if (charactersLeft < 15 && fullText.charAt(i) == ' ') {
+                        pageLetterCount -= charactersLeft;
+                        break;
+                    }
                 }
             }
             currentLetter += pageLetterCount;
             BitmapFont.TextBounds bounds = textBoxFont.getWrappedBounds(pageToAdd, textBoxWidth - xPadding * 1.8f);
             int noOfLinesInt = (int)((float)Math.round((bounds.height / textBoxFont.getLineHeight() * 100000) / 100000));
             /*if (bounds.height > noOfLines * textBoxFont.getLineHeight()) pages.get(page) = pages.get(page) + noOfLinesInt;*/
-            pageToAdd += " " + noOfLinesInt;
+            //pageToAdd += " " + noOfLinesInt;
             pages.add(new AnimatedText(pageToAdd, 0));
         }
     }
 
+    //MAIN FUNCTION TO SET IT ON. ONCE PAGES ARE READ IT IS SET OFF AUTOMATICALLY.
     public void setOnOrOff(boolean trueOrFalse) {
         active = trueOrFalse;
     }

@@ -36,11 +36,7 @@ public class Play extends GameState {
         super(gsm);
 
         userCharacter=gsm.user;
-    }
 
-    @Override
-    public void initialize()
-    {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -65,6 +61,20 @@ public class Play extends GameState {
         inventoryButtonSprite = new Sprite(inventoryButton);
     }
 
+    @Override
+    public void initialize()
+    {
+
+    }
+
+    public void setMap(String mapFile,int positionX, int positionY)
+    {
+        TmxMapLoader loader = new TmxMapLoader();
+
+        map = loader.load(mapFile);
+
+        player.setPosition(positionX,positionY);
+    }
     @Override
     public void draw()
     {
@@ -126,7 +136,6 @@ public class Play extends GameState {
         batch.end();
     }
 
-
     @Override
     public void resize(int width, int height)
     {
@@ -169,6 +178,7 @@ public class Play extends GameState {
             //Kris -- just put in to test InventoryState
             //gsm.openInventory(userCharacter);
 
+
             if(userCharacter.getCurrentHealth()<=0)
             {
                 userCharacter.healAll();
@@ -204,10 +214,13 @@ public class Play extends GameState {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        if(screenX<Gdx.graphics.getWidth()*8/10 && screenY<inventoryButtonSprite.getHeight())
-        {
-            player.touchDown(screenX,screenY,screenWidth,screenHeight);
+        if(screenX>Gdx.graphics.getWidth()*8/10  && screenY>inventoryButtonSprite.getHeight()){
+            player.touchDown(100,100,100,100);
+
         }
+        else player.touchDown(screenX, screenY, screenWidth, screenHeight);
+
+
         return false;
     }
 

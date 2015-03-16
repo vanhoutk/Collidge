@@ -76,7 +76,7 @@ public class GameStateManager
         {
             state = 0;
         }
-        gameStates.get(currentState).dispose();
+        //gameStates.get(currentState).dispose();
         currentState = state;
         gameStates.get(currentState).initialize();
 //        if(state == MENUSTATE)
