@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class GameMenu extends GameState
 {
 
+    long timer=TimeUtils.millis();
     Player player;
     boolean statsPressed=false, settingsPressed=false, savePressed=false, loadingStats=true;
     int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0;
@@ -169,7 +170,7 @@ public class GameMenu extends GameState
                 Font.setScale(screenWidth / 500f, screenHeight / 500f);
                 Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY()+healthbar.getHeight()/2);
 
-                healthcounter++;
+
             }
             else if(healthcounter >= player.getHealth())
             {
@@ -191,7 +192,7 @@ public class GameMenu extends GameState
                 Font.setScale(screenWidth / 500f, screenHeight / 500f);
                 Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY()+healthbar.getHeight()/2);
 
-                energycounter++;
+
             }
             else if(energycounter >= player.getEnergy())
             {
@@ -212,7 +213,7 @@ public class GameMenu extends GameState
                 Font.setScale(screenWidth / 500f, screenHeight / 500f);
                 Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY()+healthbar.getHeight()/2);
 
-                attackcounter++;
+
             }
             else if(attackcounter >= player.getAttack())
             {
@@ -233,7 +234,7 @@ public class GameMenu extends GameState
                 Font.setScale(screenWidth / 500f, screenHeight / 500f);
                 Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY()+healthbar.getHeight()/2);
 
-                defcounter++;
+
             }
             else if(defcounter >= player.getDefence())
             {
@@ -254,7 +255,7 @@ public class GameMenu extends GameState
                 Font.setScale(screenWidth / 500f, screenHeight / 500f);
                 Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY()+healthbar.getHeight()/2);
 
-                intcounter++;
+
             }
             else if(intcounter >= player.getIntelligence())
             {
@@ -274,9 +275,16 @@ public class GameMenu extends GameState
 
                 Font.setColor(Color.WHITE);
                 Font.setScale(screenWidth / 400f, screenHeight / 400f);
-                Font.draw(batch, XPcounter + " / " + player.getExpTarget(), XPframe.getX(), XPframe.getY() + XPframe.getHeight()*13/10);
+                Font.draw(batch, XPcounter + " / " + player.getExpTarget(), XPframe.getX() + XPframe.getWidth()*3/7, XPframe.getY() + XPframe.getHeight()*13/10);
 
-                XPcounter++;
+                if(XPcounter>=player.getExpTarget())
+                {
+                    player.addExperience(-XPcounter);
+                    player.addExperience(XPcounter);
+                    XPcounter=0;
+                    gsm.levelUpState(player);
+                }
+
             }
 
             else if(XPcounter >= player.getExperience())
@@ -321,14 +329,36 @@ public class GameMenu extends GameState
             intelligenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
             intelligenceIcon.draw(batch);
 
-            try
+            if(TimeUtils.timeSinceMillis(timer)>40)
             {
-                Thread.sleep(50);
+
+                if(healthcounter<player.getHealth())
+                {
+                    healthcounter++;
+                }
+                if(energycounter<player.getEnergy())
+                {
+                    energycounter++;
+                }
+                if(attackcounter<player.getAttack())
+                {
+                    attackcounter++;
+                }
+                if(defcounter<player.getDefence())
+                {
+                    defcounter++;
+                }
+                if(intcounter<player.getIntelligence())
+                {
+                    intcounter++;
+                }
+                if(XPcounter<player.getExperience())
+                {
+                    XPcounter++;
+                }
+                timer=TimeUtils.millis();
             }
-            catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
+
 
         }
 
@@ -433,6 +463,7 @@ public class GameMenu extends GameState
                 attackcounter = 0;
                 defcounter = 0;
                 intcounter = 0;
+                XPcounter=0;
             }
         }
 

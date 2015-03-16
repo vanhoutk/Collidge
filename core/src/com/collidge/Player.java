@@ -313,6 +313,8 @@ public class Player
         {
             experience-=expTarget;
             levelUpCounter++;
+            expTarget=((int)Math.pow((level+levelUpCounter),1.5))+5;
+
         }
 
     }
@@ -347,7 +349,7 @@ public class Player
 
         energy=baseEnergyPoints+(int)((level+energyPoints)*energyPointsMult);
         //TODO figure out a good curve for xp to follow
-        expTarget=((int)Math.pow(level,1.5))+5;
+        expTarget=((int)Math.pow((level),1.5))+5;
         //expTarget=1;
 
         equipItem(weapon);
