@@ -206,6 +206,27 @@ public class Player
         healAll();
     }
 
+    Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
+    {
+        items = new Inventory();
+        items.loadInventory();
+        player_name = name;
+        level=Level;
+
+        attackPoints=ATK;
+        defencePoints=DEF;
+        intelligencePoints=INT;
+        healthPoints=HP;
+        energyPoints=EN;
+        experience=EXP;
+
+        //Kris -- Start off with no armour/weapons equipped
+        equippedWeapon = "None";
+        equippedArmour = "None";
+        updateStats();
+        healAll();
+    }
+
 
     public int[] getAttackEnergyCosts()
     {

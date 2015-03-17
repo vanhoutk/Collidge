@@ -127,8 +127,6 @@ public class Combo
         }
         else if(comboId==2)
         {
-
-
             swipe.setPosition(Gdx.graphics.getWidth()/2-Gdx.graphics.getWidth()/20,0);
             swipe.setRotation((float)swipeAngle);
             swipe.draw(batch);
@@ -143,17 +141,22 @@ public class Combo
         comboId=moveId;
         defending=false;
         skill=0.0001;
-        switch(moveId)
+        if(moveId>100)
+        {
+            defending=true;
+            comboId=moveId%100;
+        }
+        switch(comboId)
         {
             case 0:
-                defaultAttack(3,3000);
+                defaultAttack(3,3000);//default(x,y) tap x dots in y seconds(total)
                 break;
             case 1:
 
-                attack1();
+                attack1();//tap when the circles overlap
                 break;
             case 2:
-                attack2(2,3000);
+                attack2(2,3000);//attack2(x,y) swipe along x arrows in y seconds
                 break;
             case 3:
                 comboId=2;
@@ -164,7 +167,6 @@ public class Combo
                 defaultAttack(5,2000);
                 break;
             default:
-                System.out.println("D "+defending);
                 defending=true;
                 attack2(1,1000);
                 comboId=2;

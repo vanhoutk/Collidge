@@ -265,8 +265,6 @@ public class Fight extends GameState
         Timer.instance().clear();
         Timer.instance().start();
         Timer.instance().postTask(damager);
-        healthBackground.setSize((int) ((playr.getHealth() * (4 * (screenWidth / 10))) / ((double) playr.getHealth())), (int) (screenHeight / 16.0));
-        healthBar.setSize((int)((playr.getCurrentHealth()*(4*(screenWidth/10)))/((double)playr.getHealth())),(int)(screenHeight/16.0));
     }
 
     @Override
@@ -275,29 +273,30 @@ public class Fight extends GameState
         batch.begin();
 
         background.draw(batch);
+
+        portrait.setPosition(0,screenHeight-(portrait.getHeight()));
         //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
-        healthBackground.setPosition(screenWidth / 30 + (screenWidth / 50), 107 * screenHeight / 120);
+        healthBackground.setPosition(healthBar.getX(), healthBar.getY());
+        healthBackground.setSize((int)( 35*portrait.getWidth()/40.0),healthBar.getHeight());
         healthBackground.draw(batch);
-        healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), 107 * screenHeight / 120);
+        healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), portrait.getY()+(int)(5*portrait.getHeight()/20.0));
+        healthBar.setSize((int)((playr.getCurrentHealth()*((int)( 35*portrait.getWidth()/40.0)))/((double)playr.getHealth())),(int)(18*portrait.getHeight()/50.0));
         healthBar.draw(batch);
         batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
 
 
         EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f));      //Code Allowing for generation of Energy Icons
-        for (int i = 0; i < playr.getCurrentEnergy(); i++)
-        {
-            if (i < 13)
-            {
-                EnergyIcon.setPosition((4f * screenWidth / 75 + i * screenHeight / 20f), 50 * screenHeight / 60);
-                EnergyIcon.draw(batch);
-            }
-            else
-            {
-                EnergyIcon.setPosition((4f * screenWidth / 75f + (i-13)* screenHeight / 20f), 185 * screenHeight / 240);
-                EnergyIcon.draw(batch);
-            }
-        }
-        portrait.setPosition(screenWidth / 30 - 2*(screenWidth / 50), 24 * screenHeight / 30);
+
+        healthBackground.setColor(Color.BLUE);
+        healthBackground.setPosition(portrait.getX()+(portrait.getWidth()/10), (107 * screenHeight / 120)-healthBar.getHeight());
+        healthBackground.setSize((int)(((71*portrait.getWidth()/80.0))*(playr.getCurrentEnergy()/(double)playr.getEnergy())),healthBackground.getHeight());
+        healthBackground.draw(batch);
+        healthBackground.setColor(Color.WHITE);
+        battleFont.setColor(Color.WHITE);
+        battleFont.draw(batch, playr.getCurrentEnergy() + "/"+playr.getEnergy() ,7*screenWidth/60,112*screenHeight/120-battleFont.getLineHeight());
+
+
+
         portrait.draw(batch);
 
         //Sets colour and size of battle font, draws "HP" for player health
@@ -401,8 +400,7 @@ public class Fight extends GameState
             backArrow.setPosition(targetReticule.getX(), targetReticule.getY() - backArrow.getHeight());
             backArrow.draw(batch);
         }
-        //TODO replace Placeholder
-        //if no action has been selected in the fight menu, draws the fight menu
+
         if(!fMenu.actionSelected)
         {
             fMenu.draw(batch,screenWidth,screenHeight);
