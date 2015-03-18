@@ -274,40 +274,40 @@ public class Fight extends GameState
 
         background.draw(batch);
 
-        portrait.setPosition(0,screenHeight-(portrait.getHeight()));
+        portrait.setPosition(0,screenHeight-((int)(portrait.getHeight()*.9)+battleFont.getLineHeight()));
         //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
+
+        healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), portrait.getY()+(int)(9*portrait.getHeight()/20.0));
         healthBackground.setPosition(healthBar.getX(), healthBar.getY());
         healthBackground.setSize((int)( 35*portrait.getWidth()/40.0),healthBar.getHeight());
         healthBackground.draw(batch);
-        healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), portrait.getY()+(int)(5*portrait.getHeight()/20.0));
+        healthBackground.setOriginCenter();
         healthBar.setSize((int)((playr.getCurrentHealth()*((int)( 35*portrait.getWidth()/40.0)))/((double)playr.getHealth())),(int)(18*portrait.getHeight()/50.0));
         healthBar.draw(batch);
+        battleFont.draw(batch,"MR MAN",healthBackground.getOriginX(),healthBackground.getY()+(healthBackground.getHeight()+battleFont.getLineHeight()));
+        battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,healthBackground.getOriginX(),(healthBackground.getY()+battleFont.getLineHeight()));
+
         batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
 
 
         EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f));      //Code Allowing for generation of Energy Icons
 
         healthBackground.setColor(Color.BLUE);
-        healthBackground.setPosition(portrait.getX()+(portrait.getWidth()/10), (107 * screenHeight / 120)-healthBar.getHeight());
-        healthBackground.setSize((int)(((71*portrait.getWidth()/80.0))*(playr.getCurrentEnergy()/(double)playr.getEnergy())),healthBackground.getHeight());
+        healthBackground.setPosition(portrait.getX()+(portrait.getWidth()/10), (int)((healthBar.getY())-(healthBar.getHeight()*.9)));
+        healthBackground.setSize((int)(((71*portrait.getWidth()/80.0))*(playr.getCurrentEnergy()/(double)playr.getEnergy())),(int)(healthBackground.getHeight()*.9));
         healthBackground.draw(batch);
         healthBackground.setColor(Color.WHITE);
         battleFont.setColor(Color.WHITE);
-        battleFont.draw(batch, playr.getCurrentEnergy() + "/"+playr.getEnergy() ,7*screenWidth/60,112*screenHeight/120-battleFont.getLineHeight());
-
-
+        battleFont.draw(batch, playr.getCurrentEnergy()+"" ,healthBackground.getX()+(healthBackground.getWidth()/2),healthBackground.getY()+healthBackground.getHeight());
 
         portrait.draw(batch);
 
         //Sets colour and size of battle font, draws "HP" for player health
         battleFont.setColor(Color.BLACK);
 
-        battleFont.draw(batch,"MR MAN",3*screenWidth/30,119*screenHeight/120);
-        battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,7*screenWidth/60,112*screenHeight/120);
-
-
 
         battleFont.setScale(screenWidth/400);
+
 
         // Enemy drawing loop
         for(int i=0;i<enemies.length;i++)
@@ -322,9 +322,13 @@ public class Fight extends GameState
                     target=Gdx.graphics.getWidth()/10;
                     healthBackground.setPosition((3f * screenWidth /5f), screenHeight - (battleFont.getLineHeight()*3));
                     healthBackground.setSize(2*screenWidth/6f, battleFont.getLineHeight());
-                    healthBackground.draw(batch);
+
                     healthBar.setPosition(healthBackground.getX(),healthBackground.getY());
-                    healthBar.setSize((int)(healthBackground.getWidth()*((double)enemies[i].getHealth()/enemies[i].getMaxHealth())),healthBackground.getHeight());
+                    healthBar.setSize((int)(healthBackground.getWidth()*((double)enemies[i].getHealth()/(double)enemies[i].getMaxHealth())),healthBackground.getHeight());
+
+                    healthBackground.setSize(healthBackground.getWidth()-(int)(healthBackground.getWidth()*.05),healthBar.getHeight());
+
+                    healthBackground.draw(batch);
                     healthBar.draw(batch);
                     battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
