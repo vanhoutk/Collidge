@@ -17,9 +17,9 @@ public class WinState extends GameState {
 
     Player player;
     SpriteBatch batch;
-    String Wintext[];
     Sprite textbox, ExpBorder, ExpBar, buttons;
     double ExpEarned, buffer;
+    int enemies;
     private BitmapFont winfont;
     float spacing = (screenWidth - 5 * screenWidth/7)/6;
 
@@ -32,22 +32,24 @@ public class WinState extends GameState {
             if (ExpEarned > 0)
             {
                 ExpEarned-=0.1;
-                buffer+=0.1;
+                player.addExperience(0.1);
+                /*buffer+=0.1;
                 if(buffer>=1)
                 {
                     buffer--;
                     player.addExperience(1);
-                }
+
+                }*/
             }
         }
     };
-    WinState(GameStateManager gsm, Player plr, int newExp)
+    WinState(GameStateManager gsm, Player plr, int newExp, int enemyCount)
     {
         super(gsm);
         player = plr;
         batch = new SpriteBatch();
         ExpEarned = newExp;
-
+        enemies = enemyCount;
 
         winfont = new BitmapFont();
         buttons = new Sprite(new Texture("inventory_slot_background.png"));
@@ -105,6 +107,10 @@ public class WinState extends GameState {
     @Override
     public  boolean tap(float x, float y, int count, int button)
     {
+        if (x < buttons.getWidth())
+            if (y > screenHeight - buttons.getHeight()) {
+                endWinState();
+            }
         return false;
     }
 

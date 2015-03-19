@@ -485,7 +485,7 @@ public class Fight extends GameState
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY)
     {
-        if (waitingForTouch == true&&fMenu.actionSelected == false)
+        if (waitingForTouch&&!fMenu.actionSelected)
         {
             fMenu.pan(x, y, deltaX, deltaY);
         }
@@ -501,8 +501,8 @@ public class Fight extends GameState
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
 
-        if (waitingForTouch == true) {
-            if (fMenu.actionSelected == false) {
+        if (waitingForTouch) {
+            if (!fMenu.actionSelected) {
                 fMenu.panStop(x, y);   //when you swipe, display the tooltip
             } else if (combo.comboing) {
                 combo.panStop(x, y, pointer, button);
@@ -822,7 +822,11 @@ public class Fight extends GameState
         batch.dispose();
         texture.dispose();
         battleFont.dispose();
-        playr.addExperience(expEarned);
+        if (expEarned == 0)
+            gsm.endFight();
+        else
+            gsm.StartWinState(playr,expEarned, enemyCount);
+        /**playr.addExperience(expEarned);
         if(playr.getLevelUpCounter()<=0)
         {
             gsm.endFight();
@@ -830,7 +834,7 @@ public class Fight extends GameState
         else
         {
             gsm.levelUpState(playr);
-        }
+        }*/
     }
 
     private void DeathState()       //this function is called to check when the fight is over, and then display a splash screen

@@ -154,18 +154,18 @@ public class GameStateManager
         changeState(gameStates.size()-1);               //Moves to the new state
     }
 
-    public void EndDeathstate(Player player)            //Made new function which will eventually be able to move to either the menu or the map
+    public void EndDeathstate(Player player)
     {
         changeState(0);                                 //Return to the Map State
         gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
     }
 
-    public void StartWinState(Player player, int Exp)
+    public void StartWinState(Player player, int Exp, int enemies)
     {
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
-        gameStates.add(new WinState(this,player, Exp));    //Makes a new Death State
+        gameStates.add(new WinState(this,player, Exp, enemies));    //Makes a new Win State
         changeState(gameStates.size()-1);               //Moves to the new state
     }
 

@@ -14,7 +14,7 @@ public class Player
     private int defence;
     private int energy;
     private int intelligence;
-    private int experience;
+    private double experience;
     public Inventory items;
     public String player_name;
 
@@ -319,7 +319,7 @@ public class Player
 
     public int getExperience()
     {
-        return experience;
+        return (int) experience;
     }
 
     public int getLevel()
@@ -338,6 +338,17 @@ public class Player
 
         }
 
+    }
+    public void addExperience(double newExp)
+    {
+        experience+=newExp;
+        while(experience>=expTarget)
+        {
+            experience-=expTarget;
+            levelUpCounter++;
+            expTarget=((int)Math.pow((level+levelUpCounter),1.5))+5;
+
+        }
     }
 
 

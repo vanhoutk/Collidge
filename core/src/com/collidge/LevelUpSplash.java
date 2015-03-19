@@ -207,7 +207,6 @@ public class LevelUpSplash extends GameState
                 }
                 else
                 {
-
                     gsm.endFight();
                 }
             }

@@ -294,7 +294,6 @@ public class Play extends GameState {
                 saveplay();
                 gsm.openInventory(userCharacter);
                 player.setPosition(getx(), gety());
-                //gsm.StartWinState(userCharacter,15);
             }
             if(x > menuButtonSprite.getX())
             {
