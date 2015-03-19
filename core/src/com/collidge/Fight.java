@@ -638,6 +638,7 @@ public class Fight extends GameState
     private void playerTurnPart3()      //After the combo, applying the multipliers
     {
         //TODO remove system outs left for debugging of combos
+        playr.changeEnergy(-(playr.getAttackEnergyCosts(fMenu.getMoveString(ActionType, ActionId))));
         for(int i=-targetPicker.getTargetingId();i<=targetPicker.getTargetingId();i++)
         {
             System.out.println("Attacking: "+i);
@@ -793,9 +794,7 @@ public class Fight extends GameState
         {
             monsterCode=-1;
         }
-        // System.out.println("Player- Lvl: \t"+player.getLevel()+" \tExp:\t"+player.getExperience());
-        //System.out.print("Hp: \t"+player.getCurrentHealth()+"/"+player.getHealth());
-        //System.out.println("\tEn:\t "+player.getCurrentEnergy()+"/"+player.getEnergy());
+
         if(enemiesLeft>0&&monsterCode==-1)
         {
 
