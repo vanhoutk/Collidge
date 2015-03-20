@@ -94,7 +94,7 @@ public class InventoryState extends GameState
         itemNames = new String[10];
         itemImages = new Sprite[10];
         equipNum = player.getEquipList().length;
-        itemNum = player.getItemList().length;
+        //itemNum = player.getItemList().length;
 
         for(int i = 0; i < equipNum; i++)
         {
@@ -138,6 +138,7 @@ public class InventoryState extends GameState
     @Override
     public void initialize()
     {
+        itemNum = player.getItemList().length;
         for(int i = 0; i < itemNum; i++)
         {
             itemNames[equipNum + i] = player.getItemList()[i];
