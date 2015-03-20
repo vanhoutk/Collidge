@@ -223,6 +223,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             XmlReader.Element child = root.getChildByName(npc);
             String s = child.getChildByName(convo).getText();
 
+            System.out.println(s);
             return s;
         }
         catch (Exception e) {

@@ -163,7 +163,7 @@ public class GameMenu extends GameState
             {
                 healthbar.setColor(Color.GREEN);
                 healthbar.setPosition(screenWidth / 5, screenHeight *6/8);
-                healthbar.setSize(screenWidth *(healthcounter%25)/50, screenHeight/20);
+                healthbar.setSize(screenWidth *((healthcounter%25)+1)/50, screenHeight/20);
                 healthbar.draw(batch);
 
                 Font.setColor(Color.GREEN);
@@ -185,7 +185,7 @@ public class GameMenu extends GameState
             {
                 energybar.setColor(Color.YELLOW);
                 energybar.setPosition(screenWidth / 5, screenHeight *5/8);
-                energybar.setSize(screenWidth *(energycounter%25)/50, screenHeight/20);
+                energybar.setSize(screenWidth *((energycounter%25)+1)/50, screenHeight/20);
                 energybar.draw(batch);
 
                 Font.setColor(Color.YELLOW);
@@ -206,7 +206,7 @@ public class GameMenu extends GameState
             {
                 attackbar.setColor(Color.RED);
                 attackbar.setPosition(screenWidth / 5, screenHeight *4/8);
-                attackbar.setSize(screenWidth *(attackcounter%25)/50, screenHeight/20);
+                attackbar.setSize(screenWidth *((attackcounter%25)+1)/50, screenHeight/20);
                 attackbar.draw(batch);
 
                 Font.setColor(Color.RED);
@@ -223,11 +223,11 @@ public class GameMenu extends GameState
             }
 
             // DRAW DEF BAR
-            if(defcounter < player.getAttack())
+            if(defcounter < player.getDefence())
             {
                 defbar.setColor(Color.BLUE);
                 defbar.setPosition(screenWidth / 5, screenHeight *3/8);
-                defbar.setSize(screenWidth *(defcounter%25)/50, screenHeight/20);
+                defbar.setSize(screenWidth *((defcounter%25)+1)/50, screenHeight/20);
                 defbar.draw(batch);
 
                 Font.setColor(Color.BLUE);
@@ -248,7 +248,7 @@ public class GameMenu extends GameState
             {
                 intbar.setColor(Color.PURPLE);
                 intbar.setPosition(screenWidth / 5, screenHeight *2/8);
-                intbar.setSize(screenWidth *(intcounter%25)/50, screenHeight/20);
+                intbar.setSize(screenWidth *((intcounter%25)+1)/50, screenHeight/20);
                 intbar.draw(batch);
 
                 Font.setColor(Color.PURPLE);

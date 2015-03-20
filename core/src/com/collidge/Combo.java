@@ -24,7 +24,7 @@ public class Combo
     Random rand=new Random();
     double startX,startY;
     double targetX, targetY;
-    boolean comboing;
+    boolean comboing,comboEnded=false;
     int tapTotal;
     boolean defending=false;
     int tapsLeft;
@@ -102,36 +102,85 @@ public class Combo
     {
         screenMask.draw(batch);
 
-        if(comboId==-1)
+        if(!comboEnded)
         {
-            font.draw(batch,"Tap to defend! "+(int)(skill*tapTotal)+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
-            dot.draw(batch);
+            if (comboId == -1)
+            {
+                font.draw(batch, "Tap to defend! " + (int) (skill * tapTotal) + "/" + tapTotal, Gdx.graphics.getWidth() / 3, font.getLineHeight());
+                dot.draw(batch);
+            }
+            if (comboId == 0)
+            {
+                font.draw(batch, "Tap to power up your attack! " + (int) (skill * tapTotal) + "/" + tapTotal, Gdx.graphics.getWidth() / 3, font.getLineHeight());
+
+                dot.draw(batch);
+            } else if (comboId == 4)
+            {
+                font.draw(batch, "Tap to power up your attack! " + (int) (skill * tapTotal) + "/" + tapTotal, Gdx.graphics.getWidth() / 3, font.getLineHeight());
+
+                dot.draw(batch);
+            } else if (comboId == 1)
+            {
+
+                font.draw(batch, "Tap when they overlap", Gdx.graphics.getWidth() / 3, font.getLineHeight());
+
+                dot.draw(batch);
+                dot.setColor(Color.GRAY);
+                dot.setPosition((float) startX - Gdx.graphics.getWidth() * .05f, (float) targetY - Gdx.graphics.getWidth() * .05f);
+                dot.draw(batch);
+                dot.setColor(Color.WHITE);
+
+            } else if (comboId == 2)
+            {
+                swipe.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 20, 0);
+                swipe.setRotation((float) swipeAngle);
+                swipe.draw(batch);
+            }
+
         }
-        if(comboId==0)
+        else
         {
-            font.draw(batch,"Tap to power up your attack! "+(int)(skill*tapTotal)+"/"+tapTotal,Gdx.graphics.getWidth()/3,font.getLineHeight());
+            font.setScale(10);
+            if(skill<0)
+            {
+                skill=0;
+            }
 
-            dot.draw(batch);
+            if(skill<.2)
+            {
+                font.setColor(Color.RED);
+                font.draw(batch,"BAD",6*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+            }
+            else if(skill<.4)
+            {
+                font.setColor(Color.PINK);
+                font.draw(batch,"OKAY",5*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+            }
+            else if(skill<.6)
+            {
+                font.setColor(Color.PURPLE);
+                font.draw(batch,"GOOD",5*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+            }
+            else if(skill<.8)
+            {
+                font.setColor(Color.BLUE);
+                font.draw(batch,"GREAT",4*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+            }
+            else if(skill<.9)
+            {
+                font.setColor(Color.CYAN);
+                font.draw(batch,"Amazing",2*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+
+            }
+            else
+            {
+                font.setColor(Color.WHITE);
+                font.draw(batch,"PERFECT",Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+            }
+
+            font.setColor(Color.WHITE);
+            font.setScale(1f);
         }
-        else if(comboId==1)
-        {
-
-            font.draw(batch,"Tap when they overlap",Gdx.graphics.getWidth()/3,font.getLineHeight());
-
-            dot.draw(batch);
-            dot.setColor(Color.GRAY);
-            dot.setPosition((float)startX-Gdx.graphics.getWidth()*.05f,(float)targetY-Gdx.graphics.getWidth()*.05f);
-            dot.draw(batch);
-            dot.setColor(Color.WHITE);
-
-        }
-        else if(comboId==2)
-        {
-            swipe.setPosition(Gdx.graphics.getWidth()/2-Gdx.graphics.getWidth()/20,0);
-            swipe.setRotation((float)swipeAngle);
-            swipe.draw(batch);
-        }
-
 
     }
     void initiateCombo(int moveId,Fight fight)
@@ -141,6 +190,7 @@ public class Combo
         comboId=moveId;
         defending=false;
         skill=0.0001;
+        comboEnded=false;
         if(moveId>100)
         {
             defending=true;
@@ -149,7 +199,7 @@ public class Combo
         switch(comboId)
         {
             case 0:
-                defaultAttack(3,3000);//default(x,y) tap x dots in y seconds(total)
+                defaultAttack(3,1000);//default(x,y) tap x dots in y seconds(total)
                 break;
             case 1:
 
@@ -159,8 +209,8 @@ public class Combo
                 attack2(2,3000);//attack2(x,y) swipe along x arrows in y seconds
                 break;
             case 3:
-                comboId=2;
-                attack2(4,3000);
+                comboId=4;
+                defaultAttack(10,1000);
                 break;
             case 4:
                 comboId=0;
@@ -249,7 +299,10 @@ public class Combo
         {
 
             tapTotal=0;
-            comboing=false;
+            comboEnded=true;
+            timer=0;
+            allowedTime=250;
+
         }
 
 
@@ -267,27 +320,30 @@ public class Combo
 
     void tap(int x, int y)
     {
-        if(tapsLeft>0&&comboId==-1)
+        if(!comboEnded)
         {
-            skill+=1.0/tapTotal;
-            tapsLeft--;
-        }
-        else if(tapTotal>0&&comboId==0)
-        {
-            tapCombo(x,y,targetX,-targetY+Gdx.graphics.getHeight());
-        }
-        else if(comboId==1)
-        {
-            skill=Math.abs((startX/Gdx.graphics.getWidth())-(targetX/Gdx.graphics.getWidth()));
-            skill*=2;
-            skill=1-skill;
-            skill=skill*skill*skill*skill;
-            if(skill>.8)
+            if (tapsLeft > 0 && comboId == 4)
             {
+                skill += 1.0 / tapTotal;
+                tapsLeft--;
+            } else if (tapTotal > 0 && comboId == 0)
+            {
+                tapCombo(x, y, targetX, -targetY + Gdx.graphics.getHeight());
+            } else if (comboId == 1)
+            {
+                skill = Math.abs((startX / Gdx.graphics.getWidth()) - (targetX / Gdx.graphics.getWidth()));
+                skill *= 2;
+                skill = 1 - skill;
+                skill = skill * skill * skill * skill;
+                if (skill > .8)
+                {
 
-                pop1.play();
+                    pop1.play();
+                }
+                comboEnded = true;
+                timer=0;
+                allowedTime=250;
             }
-            comboing=false;
         }
 
 
@@ -300,8 +356,18 @@ public class Combo
         }
         else if(timer>allowedTime)
         {
-            comboing=false;
-            timer=0;
+
+            if(comboEnded==false)
+            {
+                comboEnded=true;
+                timer = 0;
+                allowedTime=250;
+            }
+            else
+            {
+                comboEnded=false;
+                comboing=false;
+            }
         }
     }
 
@@ -341,7 +407,9 @@ public class Combo
             evaluateSwipe();
             if(numSwipesLeft==1)
             {
-                comboing=false;
+                comboEnded=true;
+                timer=0;
+                allowedTime=250;
             }
             else
             {

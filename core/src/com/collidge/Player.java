@@ -232,6 +232,17 @@ public class Player
     {
         return attackEnergyCosts;
     }
+    public int getAttackEnergyCosts(String atkName)
+    {
+        for(int i=0;i<attacksNames.length;i++)
+        {
+            if(atkName.equals(attacksNames[i]))
+            {
+                return attackEnergyCosts[i];
+            }
+        }
+        return 0;
+    }
 
     public String[] getAttacksNames()
     {
@@ -268,7 +279,7 @@ public class Player
         {
             if(moveName.equals(attacksNames[i]))
             {
-                this.changeEnergy(-(this.attackEnergyCosts[i]));
+
                 return attackMultipliers[i];
             }
         }
