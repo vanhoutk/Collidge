@@ -24,10 +24,10 @@ public class Fight extends GameState
 
 
 
-    private int PlayerDam;
+    private double PlayerDam;
     Player playr;
     boolean waitingForTouch=false;
-    private int[] damage;
+    private double[] damage;
     private int ActionType;
     private int ActionId;
     private boolean comboing;
@@ -86,7 +86,7 @@ public class Fight extends GameState
             for(int i=1;i<damage.length;i++)
             {
 
-                if ((!enemies[i-1].getDead())&&damage[i] > 0)
+                if ((!enemies[i-1].getDead())&&damage[i] >=1)
                 {
 
                     damage[i]--;
@@ -149,7 +149,7 @@ public class Fight extends GameState
 
         enemyCount=enemies.length;
         enemiesLeft=enemyCount;
-        damage=new int[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
+        damage=new double[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
 
         move=new Attack();        //calls the attack class
 
@@ -647,7 +647,14 @@ public class Fight extends GameState
 
                 PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
                 System.out.println("Dam to "+i+": " + PlayerDam);
-                PlayerDam *= (playr.getAttack() - enemies[targetPicker.getSelectedTarget() + i].getDefence());
+                if(enemies[targetPicker.getSelectedTarget()+i].getDefence()>0)
+                {
+                    PlayerDam *= (playr.getAttack() / enemies[targetPicker.getSelectedTarget() + i].getDefence());
+                }
+                else
+                {
+                    PlayerDam*=playr.getAttack();
+                }
                 System.out.println("Atk: " + playr.getAttack() + "   Def: " + enemies[targetPicker.getSelectedTarget() + i].getDefence());
                 PlayerDam *= Math.abs(combo.skill);
                 System.out.println("After Mult of " + combo.skill + ": " + PlayerDam);
@@ -757,7 +764,14 @@ public class Fight extends GameState
         }
         else if(!monsters[monsterId].getDead()&&player.getCurrentHealth()>0)
         {
-            dam=(monsters[monsterId].getAttack() - player.getDefence());
+            if(player.getDefence()>0)
+            {
+                dam=(monsters[monsterId].getAttack() / player.getDefence());
+            }
+            else
+            {
+                dam+=monsters[monsterId].getAttack();
+            }
             System.out.println("Damage from "+monsters[monsterId].getName()+": "+dam);
             dam*=(1-(combo.skill/2));
 
