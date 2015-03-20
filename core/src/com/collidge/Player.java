@@ -333,6 +333,11 @@ public class Player
         return (int) experience;
     }
 
+    public double getTrueExperience()
+    {
+        return experience;
+    }
+
     public int getLevel()
     {
         return level;

@@ -41,7 +41,7 @@ public class Fight extends GameState
     private int enemyCount,enemiesLeft;
     private Enemy[] enemies;
     Attack move;
-
+    private int damage_taken;
 
     SpriteBatch batch;
     Texture texture ;
@@ -70,6 +70,7 @@ public class Fight extends GameState
 
                 damage[0]--;
                 playr.changeHealth(-1);
+                damage_taken++;
                 //check if the player died, if he did, end the fight
                 if (playr.getCurrentHealth() <= 0)
                 {
@@ -829,6 +830,7 @@ public class Fight extends GameState
     private void endFight()
     {
         damage[0]=0;
+        int[]ratings = combo.num_ratings;
         combo.delete();
         Timer.instance().clear();
         Timer.instance().stop();
@@ -838,7 +840,7 @@ public class Fight extends GameState
         if (expEarned == 0)
             gsm.endFight();
         else
-            gsm.StartWinState(playr,expEarned, enemyCount);
+            gsm.StartWinState(playr,expEarned, enemyCount, damage_taken, ratings);
         /**playr.addExperience(expEarned);
         if(playr.getLevelUpCounter()<=0)
         {

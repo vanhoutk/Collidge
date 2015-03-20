@@ -39,6 +39,7 @@ public class Combo
     double swipeAngle=-45;
     float targetDx,targetDy;
     int numSwipes,numSwipesLeft;
+    int num_ratings[];
 
     Combo()
     {
@@ -55,8 +56,9 @@ public class Combo
         swipe=new Sprite(texture);
         swipe.setSize(Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight());
         swipe.setOriginCenter();
-
-
+        num_ratings = new int[6];
+        for (int i = 0; i< 5; i++)
+            num_ratings[i] = 0;
     }
 
     void update()
@@ -150,32 +152,41 @@ public class Combo
             {
                 font.setColor(Color.RED);
                 font.draw(batch,"BAD",6*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+                num_ratings[0]++;
             }
             else if(skill<.4)
             {
                 font.setColor(Color.PINK);
                 font.draw(batch,"OKAY",5*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+                num_ratings[1]++;
+
             }
             else if(skill<.6)
             {
                 font.setColor(Color.PURPLE);
                 font.draw(batch,"GOOD",5*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+                num_ratings[2]++;
+
             }
             else if(skill<.8)
             {
                 font.setColor(Color.BLUE);
                 font.draw(batch,"GREAT",4*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+                num_ratings[3]++;
+
             }
             else if(skill<.9)
             {
                 font.setColor(Color.CYAN);
                 font.draw(batch,"Amazing",2*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+                num_ratings[4]++;
 
             }
             else
             {
                 font.setColor(Color.WHITE);
                 font.draw(batch,"PERFECT",Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
+                num_ratings[5]++;
             }
 
             font.setColor(Color.WHITE);
