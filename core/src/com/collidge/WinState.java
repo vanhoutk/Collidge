@@ -17,12 +17,12 @@ public class WinState extends GameState {
 
     Player player;
     SpriteBatch batch;
-    Sprite textbox, ExpBorder, ExpBar, buttons;
+    Sprite textbox, ExpBorder, ExpBar, buttons, Background;
     double ExpEarned, buffer;
     int enemies;
     private BitmapFont winfont;
     float spacing = (screenWidth - 5 * screenWidth/7)/6;
-
+    float sqSide = screenWidth/7;
 
     Timer.Task Exp=new Timer.Task()
     {
@@ -53,10 +53,12 @@ public class WinState extends GameState {
 
         winfont = new BitmapFont();
         buttons = new Sprite(new Texture("inventory_slot_background.png"));
-        buttons.setSize(screenWidth/7f, screenWidth/7f);
+        buttons.setSize(sqSide, sqSide);
         textbox = new Sprite(new Texture("textbox_background_2.png"));
         ExpBorder = new Sprite (new Texture("Transparant_Button.png"));
-        ExpBar = new Sprite (new Texture("barHorizontal_red_mid.png"));
+        ExpBar = new Sprite (new Texture("statbar.png"));
+        Background = new Sprite(new Texture("inventoryBackground.jpg"));
+
     }
 
     @Override
@@ -69,8 +71,8 @@ public class WinState extends GameState {
         Timer.instance().clear();
         Timer.instance().start();
         Timer.instance().postTask(Exp);
-        ExpBar.setSize(((float)player.getExperience()*screenWidth)/((float)player.getExpTarget()*2f), 1f/8f*screenHeight);
-        ExpBorder.setSize(screenWidth/2f, 1f/8f*screenHeight);
+        ExpBar.setSize(((float)player.getExperience()*screenWidth)/((float)player.getExpTarget()*2f), sqSide/2f);
+        ExpBorder.setSize(screenWidth/2f, sqSide/2f);
     }
 
 
@@ -81,25 +83,28 @@ public class WinState extends GameState {
         batch.begin();
         Gdx.gl.glClearColor(150/255f, 106/255f, 73/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        textbox.setSize(5f*screenWidth/7f, 4f*screenHeight/8f);
+        Background.setSize(screenWidth, screenHeight);
+        Background.setPosition(0, 0);
+        Background.draw(batch);
+        textbox.setSize(screenWidth-spacing*2f, 4f*screenHeight/8f);
 
         winfont.setColor(Color.GREEN);
         winfont.setScale(1f/400f*screenWidth, 1f/400f*screenHeight);
         winfont.draw(batch, "You Win!", 1f/2f * screenWidth, 1f/2f * screenHeight);
 
-        textbox.setPosition(screenWidth/7f, 2f*screenHeight/8f);
+        textbox.setPosition(spacing, sqSide+spacing);
         textbox.draw(batch);
-        textbox.setSize(5f*screenWidth/7f, 2f*screenHeight/8f);
-        textbox.setPosition(screenWidth/7f, 0);
+        textbox.setSize(screenWidth-(sqSide+spacing)*2f, sqSide);
+        textbox.setPosition(sqSide+spacing, spacing/2f);
         textbox.draw(batch);
 
-        ExpBar.setPosition(1f/4f*screenWidth, 1f/16f * screenHeight);
+        ExpBar.setPosition(1f/4f*screenWidth, spacing+(sqSide/4f));
         ExpBar.draw(batch);
-        ExpBorder.setPosition(1f/4f*screenWidth, 1f/16f * screenHeight);
+        ExpBorder.setPosition(1f/4f*screenWidth, spacing+(sqSide/4f));
         ExpBorder.draw(batch);
-        buttons.setPosition(0f,0f);
+        buttons.setPosition(spacing,spacing/2f);
         buttons.draw(batch);
-        buttons.setPosition(6f/7f*screenWidth, 0f);
+        buttons.setPosition(screenWidth-spacing-sqSide, spacing/2f);
         buttons.draw(batch);
         batch.end();
     }
