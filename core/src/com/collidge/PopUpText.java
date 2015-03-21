@@ -207,7 +207,7 @@ public class PopUpText
         for(int i=popUps.size()-1;i>=0;i--)
         {
             font.setColor(popUps.get(i).textColour);
-            font.setScale(Gdx.graphics.getDensity()*(float)popUps.get(i).fontSize);
+            font.setScale((Gdx.graphics.getWidth()*(float)popUps.get(i).fontSize)/1200);
             font.draw(batch, popUps.get(i).word, Gdx.graphics.getWidth()*popUps.get(i).xVal, Gdx.graphics.getHeight()*popUps.get(i).yVal);
         }
     }
