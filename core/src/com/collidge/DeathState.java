@@ -18,8 +18,10 @@ public class DeathState extends GameState
     Player player;
     SpriteBatch batch;
     String Deathtext[];
-    Sprite Skull, textbox;
+    Sprite Skull, textbox, lbutton, rbutton;
     private BitmapFont deathfont;
+    float spacing = (screenWidth - 5 * screenWidth/7)/6;
+    float sqSide = screenWidth/7;
 
     DeathState(GameStateManager gsm, Player plr)
     {
@@ -27,12 +29,15 @@ public class DeathState extends GameState
         player = plr;
         batch = new SpriteBatch();
 
-        Skull = new Sprite (new Texture ("skull.png"));
-        Skull.setSize(screenWidth/2f, screenHeight/2f);
-        Skull.setPosition(screenWidth/4f,screenHeight/3f );
+        Skull = new Sprite (new Texture ("skull.jpg"));
+        Skull.setSize(screenWidth, screenHeight);
+        Skull.setPosition(0,0);
 
-        textbox = new Sprite(new Texture ("textbox_background_2.png"));
-        textbox.setSize(screenWidth/3f, screenHeight/3f);
+        lbutton = new Sprite(new Texture("textbox_background_2.png"));
+        lbutton.setSize(sqSide*2f+spacing, sqSide);
+        rbutton = new Sprite(new Texture("textbox_background_2.png"));
+        rbutton.setSize(sqSide*2f+spacing*0.5f, sqSide);
+        textbox = new Sprite(new Texture("textbox_background_2.png"));
 
         Deathtext = new String[4];
         Deathtext[0] = "You lost. Go get a Burrito and try again later";
@@ -67,14 +72,17 @@ public class DeathState extends GameState
 
         Skull.draw(batch);
 
-        textbox.setPosition(0, 0);
-        textbox.draw(batch);
+        textbox.setSize(screenWidth-spacing*2f, sqSide);
+        textbox.setPosition(spacing, spacing/2f);
+        //textbox.draw(batch);
 
-        textbox.setPosition(screenWidth-textbox.getWidth(), 0);
-        textbox.draw(batch);
+        lbutton.setPosition(spacing/2f,spacing/2f);
+        lbutton.draw(batch);
+        rbutton.setPosition(screenWidth-spacing-sqSide*2f, spacing/2f);
+        rbutton.draw(batch);
 
         deathfont.draw(batch, Deathtext[0], Deathtext[0].length()*1.1f*(screenWidth/400f), (7f*screenHeight/8f));
-        deathfont.draw(batch, Deathtext[2], Deathtext[2].length()*0.5f*(screenWidth/400f), (3f*screenHeight/16f));
+        deathfont.draw(batch, Deathtext[2], spacing, (3f*screenHeight/16f));
         deathfont.draw(batch, Deathtext[3], 2f*screenWidth/3f + Deathtext[3].length()*1.3f*(screenWidth/400f), (3f*screenHeight/16f));
 
         batch.end();
@@ -83,13 +91,13 @@ public class DeathState extends GameState
     @Override
     public  boolean tap(float x, float y, int count, int button)
     {
-        if (x <= textbox.getWidth() && y >textbox.getY())
+        if (x <= lbutton.getWidth()+spacing && y <lbutton.getY()+spacing/2f)
         {
             endDeathState();
             return true;
         }
 
-        if (x >=screenWidth-textbox.getWidth() && y > textbox.getY())
+        if (x >=screenWidth-textbox.getWidth()-spacing && y < textbox.getY()+spacing/2f)
         {
             Gdx.app.exit();
             return true;

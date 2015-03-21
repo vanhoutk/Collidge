@@ -37,9 +37,7 @@ public class Enemy
         expValue=exp;
         currentHealth=maxHealth;
         dead=false;
-        texture=new Texture("walking_left_animation.png");
-        TextureRegion[][] region = TextureRegion.split(texture,32,32);
-        animation=new Animation(region[0],.2f);
+        addTextures();
         width= (int)(Gdx.graphics.getWidth()/sizeX);
         height=(int)(Gdx.graphics.getHeight()/sizeY);
     }
@@ -63,9 +61,7 @@ public class Enemy
 
        // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;
-        texture=new Texture("walking_left_animation.png");
-        TextureRegion[][] region = TextureRegion.split(texture,32,32);
-        animation=new Animation(region[0],.2f);
+        addTextures();
 
 
 
@@ -112,37 +108,39 @@ public class Enemy
         }
     }
 
-    private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
+    private void addTextures()
     {
-        for (int i = 0; i< enemies.length; i++) {
-            if (enemies[i].getName().equals("Fresher"))
+            if (this.getName().equals("Fresher"))
             {
-                texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
-                sprite_enemy[i] = new Sprite(texture);
+                texture=new Texture("walking_left_animation.png");
+                TextureRegion[][] region = TextureRegion.split(texture,32,32);
+                animation=new Animation(region[0],.2f);
             }
-            else if (enemies[i].getName().equals("Frat boy"))
+            else if (this.getName().equals("Frat boy"))
             {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-
-            else if (enemies[i].getName().equals("Debater"))
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
+                texture=new Texture("walking_left_animation.png");
+                TextureRegion[][] region = TextureRegion.split(texture,32,32);
+                animation=new Animation(region[0],.2f);
             }
 
-            else if (enemies[i].getName().equals("Lecturer"))
+            else if (this.getName().equals("Debater"))
             {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
+                texture=new Texture("walking_left_animation.png");
+                TextureRegion[][] region = TextureRegion.split(texture,32,32);
+                animation=new Animation(region[0],.2f);
+            }
+
+            else if (this.getName().equals("Lecturer"))
+            {
+                texture=new Texture("walking_left_animation.png");
+                TextureRegion[][] region = TextureRegion.split(texture,32,32);
+                animation=new Animation(region[0],.2f);
             }
             else
             {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
+                texture=new Texture("walking_left_animation.png");
+                TextureRegion[][] region = TextureRegion.split(texture,32,32);
+                animation=new Animation(region[0],.2f);
             }
-
-        }
     }
 }

@@ -312,7 +312,7 @@ public class Play extends GameState {
             {
                 saveplay();
                 gsm.openInventory(userCharacter);
-                //gsm.StartWinState(userCharacter, 15, 15);
+               // gsm.StartDeathState(userCharacter);
                 player.setPosition(getx(), gety());
             }
             if(x > menuButtonSprite.getX())
