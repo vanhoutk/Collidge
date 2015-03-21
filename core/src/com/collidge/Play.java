@@ -2,6 +2,7 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -31,12 +32,15 @@ public class Play extends GameState {
     private Texture menuButton, inventoryButton;
     private Sprite menuButtonSprite, inventoryButtonSprite;
     private float ppx, ppy, px, py;
+    private PopUpText popUps;
 
     private SpriteBatch  batch;
 
     Play(GameStateManager gsm)
     {
         super(gsm);
+        popUps=new PopUpText();
+
 
         userCharacter=gsm.user;
 
@@ -140,6 +144,8 @@ public class Play extends GameState {
 
         menuButtonSprite.draw(batch);
         inventoryButtonSprite.draw(batch);
+        popUps.update();
+        popUps.draw(batch);
 
         batch.end();
     }
@@ -294,6 +300,12 @@ public class Play extends GameState {
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
+        if(x>Gdx.graphics.getWidth()*.45&&x<Gdx.graphics.getWidth()*.55&
+                y>Gdx.graphics.getHeight()*.45&&y<Gdx.graphics.getHeight()*.55)
+        {
+            System.out.println("Stop");
+            popUps.Add("Stop poking me!",.45f,.55f,0f,.2f, Color.WHITE,50);
+        }
         if(y < screenHeight/5)
         {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())

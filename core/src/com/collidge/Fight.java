@@ -42,6 +42,7 @@ public class Fight extends GameState
     private Enemy[] enemies;
     Attack move;
     private int damage_taken;
+    PopUpText damageNums=new PopUpText();
 
     SpriteBatch batch;
     Texture texture ;
@@ -227,6 +228,7 @@ public class Fight extends GameState
     public void update()
     {
 //(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
+        damageNums.update();
         testAnim.update(Gdx.graphics.getDeltaTime());
 
         if(combo.comboing)
@@ -269,9 +271,11 @@ public class Fight extends GameState
     }
 
     @Override
-    public void draw() {
+    public void draw()
+    {
 
         batch.begin();
+
 
         background.draw(batch);
 
@@ -317,10 +321,10 @@ public class Fight extends GameState
             {
 
 
-                int target;
+                int target=0;
                 if((targeting&&targetPicker.getCurrentTarget()==i)||monsterCode==i)
                 {
-                    target=Gdx.graphics.getWidth()/10;
+                    //target=Gdx.graphics.getWidth()/10;
                     healthBackground.setPosition((3f * screenWidth /5f), screenHeight - (battleFont.getLineHeight()*3));
                     healthBackground.setSize(2*screenWidth/6f, battleFont.getLineHeight());
 
@@ -371,24 +375,6 @@ public class Fight extends GameState
 
                 }*/
             }
-
-            /*if (i+1 >= enemies.length)
-                break;
-            if(!enemies[i+1].getDead())
-            {
-
-                healthBackground.setPosition((1f * screenWidth /2f)+(screenWidth / 5), screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
-                healthBackground.setSize(2*screenWidth/15f, battleFont.getLineHeight());
-                healthBackground.draw(batch);
-                healthBar.setPosition((1f * screenWidth /2f)+(screenWidth / 5),screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (( i + 1 ))));
-                healthBar.setSize(enemies[i+1].getHealth()*((2*screenWidth/15f)/enemies[i+1].getMaxHealth()),battleFont.getLineHeight());
-                healthBar.draw(batch);
-                battleFont.draw(batch,enemies[i+1].getName(),(1f * screenWidth /2f)+(screenWidth / 5),screenHeight-battleFont.getLineHeight() - (battleFont.getLineHeight()*(i)));
-                battleFont.draw(batch, enemies[i+1].getHealth() + "", (1f * screenWidth /2f)+(screenWidth / 5), (screenHeight - 2*battleFont.getLineHeight() - (battleFont.getLineHeight() * (i))));
-
-            }
-            else
-                battleFont.draw(batch,"Defeated",(4f*screenWidth/5f),screenHeight-(battleFont.getLineHeight()*(i)));*/
         }
 
         if(targeting)
@@ -405,6 +391,10 @@ public class Fight extends GameState
             backArrow.setPosition(targetReticule.getX(), targetReticule.getY() - backArrow.getHeight());
             backArrow.draw(batch);
         }
+        if(damageNums.popUps.size()>0)
+        {
+            damageNums.draw(batch);
+        }
 
         if(!fMenu.actionSelected)
         {
@@ -414,32 +404,9 @@ public class Fight extends GameState
         {
 
             combo.draw(batch);
-            /*
-            battleFont.setColor(Color.WHITE);
-            if(combo.skill/combo.tapTotal<.2)
-            {
-                battleFont.draw(batch,"Bad",(int)(2*screenWidth/5),battleFont.getLineHeight());
-            }
-            else if(combo.skill/combo.tapTotal<.4)
-            {
-                battleFont.draw(batch,"OK",(int)(2*screenWidth/5),battleFont.getLineHeight());
-            }
-            else if(combo.skill/combo.tapTotal<.6)
-            {
-                battleFont.draw(batch,"Good",(int)(2*screenWidth/5),battleFont.getLineHeight());
-            }
-            else if(combo.skill/combo.tapTotal<.8)
-            {
-                battleFont.draw(batch,"Great",(int)(2*screenWidth/5),battleFont.getLineHeight());
-            }
-            else
-            {
-                battleFont.draw(batch,"Perfect",(int)(2*screenWidth/5),battleFont.getLineHeight());
-            }*/
-           // battleFont.draw(batch,((combo.skill/combo.tapTotal))+"",(int)(2*screenWidth/5),battleFont.getLineHeight());
-
 
         }
+
         batch.end();
     }
 
@@ -664,6 +631,8 @@ public class Fight extends GameState
                     PlayerDam = 1;
                 }
                 damage[targetPicker.getSelectedTarget() + 1+i] += PlayerDam;
+                damageNums.Add(String.valueOf(-(int)PlayerDam),.6f+.3f*((targetPicker.getSelectedTarget()+i)/(float)enemyCount),.6f-(.4f*((targetPicker.getSelectedTarget()+i)/(float)enemyCount)));
+
             }
         }
 
@@ -784,12 +753,13 @@ public class Fight extends GameState
                 {
                     damage[0]++;
                 }
+                damageNums.Add(String.valueOf(1),.15f,.3f);
 
             }
             else
             {
                 damage[0]+=dam;
-
+                damageNums.Add(String.valueOf((int)dam),.15f,.3f);
                 //player.changeHealth(-(damage));
                 //      System.out.println("Enemy " + i + " deals " + (dam) + " damage");
                 if (player.getCurrentHealth() <= 0)
