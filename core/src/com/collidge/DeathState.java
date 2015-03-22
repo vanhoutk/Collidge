@@ -91,13 +91,13 @@ public class DeathState extends GameState
     @Override
     public  boolean tap(float x, float y, int count, int button)
     {
-        if (x <= lbutton.getWidth()+spacing && y <lbutton.getY()+spacing/2f)
+        if (x <= lbutton.getWidth()+spacing && y >Gdx.graphics.getHeight()-(lbutton.getHeight()+spacing/2f))
         {
             endDeathState();
             return true;
         }
 
-        if (x >=screenWidth-textbox.getWidth()-spacing && y < textbox.getY()+spacing/2f)
+        if (x >=screenWidth-textbox.getWidth()-spacing && y >Gdx.graphics.getHeight()-(lbutton.getHeight()+spacing/2f))
         {
             Gdx.app.exit();
             return true;
