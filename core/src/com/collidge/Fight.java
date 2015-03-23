@@ -367,8 +367,9 @@ public class Fight extends GameState
                     selector.draw(batch);
                     //TODO fix health bar so that it fills top of enemy side
 
-                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
+
                 }
+                enemies[i].animation.update(Gdx.graphics.getDeltaTime());
                 /*else
                 {
                     enemies[i].animation.pause();

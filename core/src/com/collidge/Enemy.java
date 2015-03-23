@@ -61,7 +61,10 @@ public class Enemy
 
        // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;
-        addTextures();
+        texture=new Texture(name+".png");
+        TextureRegion[][] region = TextureRegion.split(texture,32,32);
+        animation=new Animation(region[0],.2f);
+
 
 
 
