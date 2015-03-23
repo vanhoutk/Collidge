@@ -54,7 +54,7 @@ public class InventoryState extends GameState
         energyIcon = new Sprite(new Texture("battery-pack.png"));
         intelligenceIcon = new Sprite(new Texture("brain.png"));
         itemSelectSquare = new Sprite(new Texture("ItemSelectCorners.png"));
-        inventoryBackground = new Sprite(new Texture("inventoryBackground.jpg"));
+        inventoryBackground = new Sprite(new Texture("inventoryBackground3.jpg"));
 
         batch = new SpriteBatch();
         infoFont = new BitmapFont();
