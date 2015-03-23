@@ -152,41 +152,31 @@ public class Combo
             {
                 font.setColor(Color.RED);
                 font.draw(batch,"BAD",6*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
-                num_ratings[0]++;
             }
             else if(skill<.4)
             {
                 font.setColor(Color.PINK);
                 font.draw(batch,"OKAY",5*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
-                num_ratings[1]++;
-
             }
             else if(skill<.6)
             {
                 font.setColor(Color.PURPLE);
                 font.draw(batch,"GOOD",5*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
-                num_ratings[2]++;
-
             }
             else if(skill<.8)
             {
                 font.setColor(Color.BLUE);
                 font.draw(batch,"GREAT",4*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
-                num_ratings[3]++;
-
             }
             else if(skill<.9)
             {
                 font.setColor(Color.CYAN);
-                font.draw(batch,"Amazing",2*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
-                num_ratings[4]++;
-
+                font.draw(batch,"AMAZING",2*Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
             }
             else
             {
                 font.setColor(Color.WHITE);
                 font.draw(batch,"PERFECT",Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()-font.getLineHeight());
-                num_ratings[5]++;
             }
 
             font.setColor(Color.WHITE);
@@ -311,6 +301,7 @@ public class Combo
 
             tapTotal=0;
             comboEnded=true;
+            updateRating();
             timer=0;
             allowedTime=250;
 
@@ -352,6 +343,7 @@ public class Combo
                     pop1.play();
                 }
                 comboEnded = true;
+                updateRating();
                 timer=0;
                 allowedTime=250;
             }
@@ -371,6 +363,7 @@ public class Combo
             if(comboEnded==false)
             {
                 comboEnded=true;
+                updateRating();
                 timer = 0;
                 allowedTime=250;
             }
@@ -419,6 +412,7 @@ public class Combo
             if(numSwipesLeft==1)
             {
                 comboEnded=true;
+                updateRating();
                 timer=0;
                 allowedTime=250;
             }
@@ -434,6 +428,28 @@ public class Combo
     void delete()
     {
         pop1.dispose();
+    }
+
+    void updateRating()
+    {
+        if(skill<.2)
+            num_ratings[0]++;           //BAD
+
+        else if(skill<.4)
+            num_ratings[1]++;           //OKAY
+
+        else if(skill<.6)
+            num_ratings[2]++;           //GOOD
+
+        else if(skill<.8)
+            num_ratings[3]++;           //GREAT
+
+        else if(skill<.9)
+            num_ratings[4]++;           //AMAZING
+
+        else
+            num_ratings[5]++;           //PERFECT
+
     }
 }
 

@@ -810,16 +810,7 @@ public class Fight extends GameState
         if (expEarned == 0)
             gsm.endFight();
         else
-            gsm.StartWinState(playr,expEarned, enemyCount, damage_taken, ratings);
-        /**playr.addExperience(expEarned);
-        if(playr.getLevelUpCounter()<=0)
-        {
-            gsm.endFight();
-        }
-        else
-        {
-            gsm.levelUpState(playr);
-        }*/
+            gsm.StartWinState(playr,expEarned, enemies, damage_taken, ratings);
     }
 
     private void DeathState()       //this function is called to check when the fight is over, and then display a splash screen
