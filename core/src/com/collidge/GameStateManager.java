@@ -161,7 +161,7 @@ public class GameStateManager
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
     }
 
-    public void StartWinState(Player player, int Exp, int enemies, int damage_taken, int[]ratings)
+    public void StartWinState(Player player, int Exp, Enemy[] enemies, int damage_taken, int[]ratings)
     {
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
