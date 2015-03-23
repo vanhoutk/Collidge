@@ -17,6 +17,7 @@ public class GameStateManager
     //There can only be one current state
     public int currentState;
     public Player user;
+    public int volumeLevel, musicLevel;
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -121,8 +122,6 @@ public class GameStateManager
         changeState(0);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
-
-
     }
 
     public void openMenu(Player player)
@@ -136,6 +135,22 @@ public class GameStateManager
         changeState(0);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
+    }
+    public int getVolume()
+    {
+        return volumeLevel;
+    }
+    public int getMusic()
+    {
+        return musicLevel;
+    }
+    public void setVolume(int volume)
+    {
+        volumeLevel = volume;
+    }
+    public void setMusic(int music)
+    {
+        musicLevel = music;
     }
 
     public void levelUpState(Player player)

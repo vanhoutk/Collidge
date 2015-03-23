@@ -407,26 +407,46 @@ public class Player
 
     public int getHealth()
     {
+        if (health > 500)
+        {
+            health = 500;
+        }
         return health;
     }
 
     public int getAttack()
     {
+        if (attack > 100)
+        {
+            attack = 100;
+        }
         return attack;
     }
 
     public int getDefence()
     {
+        if (defence > 100)
+        {
+            defence = 100;
+        }
         return defence;
     }
 
     public int getEnergy()
     {
+        if (energy > 500)
+        {
+            energy = 500;
+        }
         return energy;
     }
 
     public int getIntelligence()
     {
+        if (intelligence > 100)
+        {
+            intelligence = 100;
+        }
         return intelligence;
     }
 
