@@ -576,80 +576,72 @@ public class Fight extends GameState
     public boolean tap(float x, float y, int count, int button)
     {
         //if selecting an action from the fight menu. Actions have an ID and a type.
-        if(waitingForTouch)
-        {
-            if(!fMenu.actionSelected)
-            {
+        if(waitingForTouch) {
+            if (!fMenu.actionSelected) {
                 //tap the menu to select an action
                 fMenu.tap(x, y);
-                if(fMenu.actionSelected)
-                {
-                    ActionId=fMenu.getActionId();
-                    ActionType=fMenu.getActionType();
-                    playerTurn(playr,enemies);
+                if (fMenu.actionSelected) {
+                    ActionId = fMenu.getActionId();
+                    ActionType = fMenu.getActionType();
+                    playerTurn(playr, enemies);
                 }
             }
 
             //targeting an enemy after selecting an action
-            else if(targeting){
+            else if (targeting) {
                 for (int i = 0; i < enemies.length; i++) {
-                   // if (x> screenWidth/2) {   //arbitrary x values at the moment, vaguely at the right side of the screen
+                    // if (x> screenWidth/2) {   //arbitrary x values at the moment, vaguely at the right side of the screen
 
-                       // if (y < 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2))
-                       //         && y > 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)) - enemies[0].height) {
+                    // if (y < 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2))
+                    //         && y > 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)) - enemies[0].height) {
 
-                        int enemyCountTemp;
-                        int iTemp;
+                    int enemyCountTemp;
+                    int iTemp;
 
-                        if (i < 5) {
-                            if (enemyCount > 5){
-                                enemyCountTemp = 5;
-                            }
-                            else {
-                                enemyCountTemp = enemyCount;
-                            }
-
-                            if (y< (17*screenHeight / 18 - (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8)))
-                             && y> (17*screenHeight / 18 - (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8))) - enemies[i].height
-                             && x> ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp)))))
-                             && x< ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp)))) + enemies[i].width)){
-
-                                targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
-                                targetPicker.targetHighlighted = true;
-                            }
+                    if (i < 5) {
+                        if (enemyCount > 5) {
+                            enemyCountTemp = 5;
+                        } else {
+                            enemyCountTemp = enemyCount;
                         }
 
-                        else if (i < 9 && i >= 5) {
-                            enemyCountTemp = enemyCount - 5;
-                            iTemp = i-5;
-                        if (y < 27*screenHeight / 28 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2))
-                                && y > 27*screenHeight / 28 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)) - enemies[i].height
-                                && x> ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp)))))
-                                && x< ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) + enemies[i].width){
+                        if (y < (17 * screenHeight / 18 - (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8)))
+                                && y > (17 * screenHeight / 18 - (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8))) - enemies[i].height
+                                && x > ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp)))))
+                                && x < ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp)))) + enemies[i].width)) {
 
                             targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
                             targetPicker.targetHighlighted = true;
                         }
+                    } else if (i < 9 && i >= 5) {
+                        enemyCountTemp = enemyCount - 5;
+                        iTemp = i - 5;
+                        if (y < 27 * screenHeight / 28 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2))
+                                && y > 27 * screenHeight / 28 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)) - enemies[i].height
+                                && x > ((int) (screenWidth / 2 + 1.5 * enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp)))))
+                                && x < ((int) (screenWidth / 2 + 1.5 * enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) + enemies[i].width) {
+
+                            targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
+                            targetPicker.targetHighlighted = true;
                         }
+                    } else {
+                        enemyCountTemp = enemyCount - 9;
+                        iTemp = i - 9;
 
-                        else {
-                            enemyCountTemp = enemyCount - 9;
-                            iTemp = i-9;
-
-                            if (y< 3*screenHeight / 5 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2))
-                                && y> 3*screenHeight / 5 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)) - enemies[i].height
-                                && x>((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp)))))
-                                &&x<((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) + enemies[i].width){
-                                targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
-                                targetPicker.targetHighlighted = true;
-                            }
+                        if (y < 3 * screenHeight / 5 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2))
+                                && y > 3 * screenHeight / 5 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)) - enemies[i].height
+                                && x > ((int) (screenWidth / 2 + 2.5 * enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp)))))
+                                && x < ((int) (screenWidth / 2 + 2.5 * enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) + enemies[i].width) {
+                            targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
+                            targetPicker.targetHighlighted = true;
                         }
-                  //  }
+                    }
+                    //  }
 
-                    if (x< screenWidth/2) {  //tap left half of screen to go back for now
-                        targeting=false;
-                        waitingForTouch=true;
-                        fMenu.actionSelected=false;
+                    if (x < screenWidth / 2) {  //tap left half of screen to go back for now
+                        targeting = false;
+                        waitingForTouch = true;
+                        fMenu.actionSelected = false;
                     }
                 }
 
@@ -671,14 +663,13 @@ public class Fight extends GameState
                     }*/
 
 
-
-                    if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
-                    {
-                        targeting = false;
-                        playerTurnPart2();
-                        return true;
-                    }
+                if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
+                {
+                    targeting = false;
+                    playerTurnPart2();
+                    return true;
                 }
+            }
                /* else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth()&&y>targetReticule.getY()&&y<targetReticule.getY()+targetReticule.getHeight())
                 {
                     targeting=false;
@@ -686,14 +677,13 @@ public class Fight extends GameState
                     fMenu.actionSelected=false;
                 }*/
 
-            }
 
-            else if(combo.comboing)     //if in combo phase, accept combo input
+            else if (combo.comboing)     //if in combo phase, accept combo input
             {
-                combo.tap((int)x,(int)y);
+                combo.tap((int) x, (int) y);
             }
 
-
+        }
         return false;
     }
 
