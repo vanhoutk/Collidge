@@ -16,7 +16,7 @@ public class Enemy
     private boolean dead;
     String name;
     private Texture texture;
-    Animation animation;
+    Animation animation,attackAnimation;
     int width;
     int height;
 
@@ -37,9 +37,6 @@ public class Enemy
         expValue=exp;
         currentHealth=maxHealth;
         dead=false;
-        texture=new Texture("walking_left_animation.png");
-        TextureRegion[][] region = TextureRegion.split(texture,32,32);
-        animation=new Animation(region[0],.2f);
         width= (int)(Gdx.graphics.getWidth()/sizeX);
         height=(int)(Gdx.graphics.getHeight()/sizeY);
     }
@@ -63,9 +60,16 @@ public class Enemy
 
        // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;
-        texture=new Texture("walking_left_animation.png");
+        texture=new Texture(name+".png");
         TextureRegion[][] region = TextureRegion.split(texture,32,32);
         animation=new Animation(region[0],.2f);
+        texture=new Texture(name+"Attack.png");
+        TextureRegion[][] regionA = TextureRegion.split(texture,32,32);
+        attackAnimation=new Animation(regionA[0],1.5f/regionA[0].length);
+
+
+
+
 
 
 
@@ -109,40 +113,6 @@ public class Enemy
         else if(currentHealth<=0)
         {
             dead=true;
-        }
-    }
-
-    private void addTextures(Sprite[] sprite_enemy,Enemy[] enemies)
-    {
-        for (int i = 0; i< enemies.length; i++) {
-            if (enemies[i].getName().equals("Fresher"))
-            {
-                texture = new Texture("badlogic.jpg");  //Placeholder stuff until I have sprites for enemies
-                sprite_enemy[i] = new Sprite(texture);
-            }
-            else if (enemies[i].getName().equals("Frat boy"))
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-
-            else if (enemies[i].getName().equals("Debater"))
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-
-            else if (enemies[i].getName().equals("Lecturer"))
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-            else
-            {
-                texture = new Texture("badlogic.jpg");
-                sprite_enemy[i] = new Sprite(texture);
-            }
-
         }
     }
 }

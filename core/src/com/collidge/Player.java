@@ -14,7 +14,7 @@ public class Player
     private int defence;
     private int energy;
     private int intelligence;
-    private int experience;
+    private double experience;
     public Inventory items;
     public String player_name;
 
@@ -23,11 +23,11 @@ public class Player
 
 
     private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
-    private double attackPointsMult=.8,
-            defencePointsMult=.3,
-            intelligencePointsMult=.5,
-            healthPointsMult=3.5,
-            energyPointsMult=3.5;
+    private double attackPointsMult=.5,
+            defencePointsMult=.5,
+            intelligencePointsMult=.2,
+            healthPointsMult=2,
+            energyPointsMult=2;
 
 
     private int
@@ -206,10 +206,42 @@ public class Player
         healAll();
     }
 
+    Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
+    {
+        items = new Inventory();
+        items.loadInventory();
+        player_name = name;
+        level=Level;
+
+        attackPoints=ATK;
+        defencePoints=DEF;
+        intelligencePoints=INT;
+        healthPoints=HP;
+        energyPoints=EN;
+        experience=EXP;
+
+        //Kris -- Start off with no armour/weapons equipped
+        equippedWeapon = "None";
+        equippedArmour = "None";
+        updateStats();
+        healAll();
+    }
+
 
     public int[] getAttackEnergyCosts()
     {
         return attackEnergyCosts;
+    }
+    public int getAttackEnergyCosts(String atkName)
+    {
+        for(int i=0;i<attacksNames.length;i++)
+        {
+            if(atkName.equals(attacksNames[i]))
+            {
+                return attackEnergyCosts[i];
+            }
+        }
+        return 0;
     }
 
     public String[] getAttacksNames()
@@ -247,7 +279,7 @@ public class Player
         {
             if(moveName.equals(attacksNames[i]))
             {
-                this.changeEnergy(-(this.attackEnergyCosts[i]));
+
                 return attackMultipliers[i];
             }
         }
@@ -298,6 +330,11 @@ public class Player
 
     public int getExperience()
     {
+        return (int) experience;
+    }
+
+    public double getTrueExperience()
+    {
         return experience;
     }
 
@@ -313,9 +350,23 @@ public class Player
         {
             experience-=expTarget;
             levelUpCounter++;
+            expTarget=((int)Math.pow((level+levelUpCounter),1.5))+5;
+
         }
 
     }
+    public void addExperience(double newExp)
+    {
+        experience+=newExp;
+        while(experience>=expTarget)
+        {
+            experience-=expTarget;
+            levelUpCounter++;
+            expTarget=((int)Math.pow((level+levelUpCounter),1.5))+5;
+
+        }
+    }
+
 
     private void levelUp()
     {
@@ -346,7 +397,7 @@ public class Player
 
         energy=baseEnergyPoints+(int)((level+energyPoints)*energyPointsMult);
         //TODO figure out a good curve for xp to follow
-        expTarget=((int)Math.pow(level,1.5))+5;
+        expTarget=((int)Math.pow((level),1.5))+5;
         //expTarget=1;
 
         equipItem(weapon);
@@ -356,26 +407,46 @@ public class Player
 
     public int getHealth()
     {
+        if (health > 500)
+        {
+            health = 500;
+        }
         return health;
     }
 
     public int getAttack()
     {
+        if (attack > 100)
+        {
+            attack = 100;
+        }
         return attack;
     }
 
     public int getDefence()
     {
+        if (defence > 100)
+        {
+            defence = 100;
+        }
         return defence;
     }
 
     public int getEnergy()
     {
+        if (energy > 500)
+        {
+            energy = 500;
+        }
         return energy;
     }
 
     public int getIntelligence()
     {
+        if (intelligence > 100)
+        {
+            intelligence = 100;
+        }
         return intelligence;
     }
 

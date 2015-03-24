@@ -2,6 +2,7 @@ package com.collidge;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -26,14 +27,20 @@ public class Play extends GameState {
     private OrthographicCamera camera;
     private OrthographicCamera camera2;
     private MapPlayer player;
+    private NPC npc1;
+    private NPC npc2;
     private Texture menuButton, inventoryButton;
     private Sprite menuButtonSprite, inventoryButtonSprite;
+    private float ppx, ppy, px, py;
+    private PopUpText popUps;
 
     private SpriteBatch  batch;
 
     Play(GameStateManager gsm)
     {
         super(gsm);
+        popUps=new PopUpText();
+
 
         userCharacter=gsm.user;
 
@@ -53,7 +60,10 @@ public class Play extends GameState {
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
-
+        npc1 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false);
+        npc1.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 14) * npc1.getCollisionLayer().getTileHeight());
+        npc2 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true);
+        npc2.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
         inventoryButton = new Texture("schoolbag.png");
@@ -110,6 +120,8 @@ public class Play extends GameState {
        // player.draw(renderer.getBatch());
 
         player.draw(renderer.getBatch());
+        npc1.draw((renderer.getBatch()));
+        npc2.draw((renderer.getBatch()));
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
@@ -132,6 +144,8 @@ public class Play extends GameState {
 
         menuButtonSprite.draw(batch);
         inventoryButtonSprite.draw(batch);
+        popUps.update();
+        popUps.draw(batch);
 
         batch.end();
     }
@@ -185,21 +199,29 @@ public class Play extends GameState {
             }
             if(player.direction==0)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Loner");
+                player.setPosition(getx(),gety()-10);
             }
             else if(player.direction==1)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Preppy");
+                player.setPosition(getx(),gety()+100);
             }
             else if(player.direction==2)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Pledge");
+                player.setPosition(getx()+100,gety());
             }
             else if(player.direction==3)
             {
+                saveplay();
                 gsm.startFight(userCharacter, "Full Set");
+                player.setPosition(getx()-100,gety());
             }
-            player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+
         }
         //else if(player.getY()>player.getCollisionLayer().getTileHeight()*(player.getCollisionLayer().getHeight()-2))
         //{
@@ -242,19 +264,62 @@ public class Play extends GameState {
         return false;
     }
 
+    public void saveplay()
+    {
+       setx(player.getX());
+       sety(player.getY());
+    }
+
+    public void setx(float x)
+    {
+      px = x;
+    }
+    public void sety(float y)
+    {
+     py = y;
+    }
+
+    public float getx()
+    {
+        return px;
+    }
+
+    public float gety()
+    {
+        return py;
+    }
+
+   /* public void loadplay()
+    {
+        float x = getx();
+        float y = gety();
+        Play play = new Play(gsm, x , y);
+    }*/
+
+
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
+        if(x>Gdx.graphics.getWidth()*.45&&x<Gdx.graphics.getWidth()*.55&
+                y>Gdx.graphics.getHeight()*.45&&y<Gdx.graphics.getHeight()*.55)
+        {
+            System.out.println("Stop");
+            popUps.Add("Stop poking me!",.45f,.55f,0f,.2f, Color.WHITE,50);
+        }
         if(y < screenHeight/5)
         {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
             {
+                saveplay();
                 gsm.openInventory(userCharacter);
-                //gsm.StartWinState(userCharacter,15);
+               // gsm.StartDeathState(userCharacter);
+                player.setPosition(getx(), gety());
             }
             if(x > menuButtonSprite.getX())
             {
+                saveplay();
                 gsm.openMenu(userCharacter);
+                player.setPosition(getx(), gety());
                 //gsm.changeState(1);
             }
             else

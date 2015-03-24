@@ -13,10 +13,6 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Kris on 24-Jan-15. Last modified 25-Feb-15.
  *
  * Will contain all of the drawing and display involved with the InventoryState
- *
- * TODO: Comment code
- * TODO: Clean up code
- * TODO: Stop items being used when you have full health / energy
  */
 public class InventoryState extends GameState
 {
@@ -54,7 +50,7 @@ public class InventoryState extends GameState
         energyIcon = new Sprite(new Texture("battery-pack.png"));
         intelligenceIcon = new Sprite(new Texture("brain.png"));
         itemSelectSquare = new Sprite(new Texture("ItemSelectCorners.png"));
-        inventoryBackground = new Sprite(new Texture("inventoryBackground.jpg"));
+        inventoryBackground = new Sprite(new Texture("inventoryBackground3.jpg"));
 
         batch = new SpriteBatch();
         infoFont = new BitmapFont();
@@ -94,7 +90,7 @@ public class InventoryState extends GameState
         itemNames = new String[10];
         itemImages = new Sprite[10];
         equipNum = player.getEquipList().length;
-        itemNum = player.getItemList().length;
+        //itemNum = player.getItemList().length;
 
         for(int i = 0; i < equipNum; i++)
         {
@@ -138,6 +134,7 @@ public class InventoryState extends GameState
     @Override
     public void initialize()
     {
+        itemNum = player.getItemList().length;
         for(int i = 0; i < itemNum; i++)
         {
             itemNames[equipNum + i] = player.getItemList()[i];

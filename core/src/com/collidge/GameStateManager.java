@@ -17,6 +17,7 @@ public class GameStateManager
     //There can only be one current state
     public int currentState;
     public Player user;
+    public int volumeLevel, musicLevel;
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -121,8 +122,6 @@ public class GameStateManager
         changeState(0);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
-
-
     }
 
     public void openMenu(Player player)
@@ -136,6 +135,22 @@ public class GameStateManager
         changeState(0);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
+    }
+    public int getVolume()
+    {
+        return volumeLevel;
+    }
+    public int getMusic()
+    {
+        return musicLevel;
+    }
+    public void setVolume(int volume)
+    {
+        volumeLevel = volume;
+    }
+    public void setMusic(int music)
+    {
+        musicLevel = music;
     }
 
     public void levelUpState(Player player)
@@ -154,18 +169,18 @@ public class GameStateManager
         changeState(gameStates.size()-1);               //Moves to the new state
     }
 
-    public void EndDeathstate(Player player)            //Made new function which will eventually be able to move to either the menu or the map
+    public void EndDeathstate(Player player)
     {
         changeState(0);                                 //Return to the Map State
         gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
     }
 
-    public void StartWinState(Player player, int Exp)
+    public void StartWinState(Player player, int Exp, Enemy[] enemies, int damage_taken, int[]ratings)
     {
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
-        gameStates.add(new WinState(this,player, Exp));    //Makes a new Death State
+        gameStates.add(new WinState(this,player, Exp, enemies, damage_taken, ratings));    //Makes a new Win State
         changeState(gameStates.size()-1);               //Moves to the new state
     }
 
