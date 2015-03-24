@@ -612,6 +612,7 @@ public class Fight extends GameState
     public boolean tap(float x, float y, int count, int button)
     {
         //if selecting an action from the fight menu. Actions have an ID and a type.
+
         if(waitingForTouch)
         {
             if (!fMenu.actionSelected)
@@ -620,6 +621,7 @@ public class Fight extends GameState
                 fMenu.tap(x, y);
                 if (fMenu.actionSelected)
                 {
+
                     ActionId = fMenu.getActionId();
                     ActionType = fMenu.getActionType();
                     playerTurn(playr, enemies);
@@ -627,6 +629,7 @@ public class Fight extends GameState
             }
 
             //targeting an enemy after selecting an action
+
             else if (targeting)
             {
                 /*for (int i = 0; i < enemies.length; i++)
@@ -652,6 +655,7 @@ public class Fight extends GameState
                             targetPicker.Select();
 
                         }
+
 
 
                         if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
