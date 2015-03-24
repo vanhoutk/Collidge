@@ -786,7 +786,12 @@ public class Fight extends GameState
                 damage[targetPicker.getSelectedTarget() + 1+i] += PlayerDam;
                 if(!enemies[targetPicker.getSelectedTarget() + i].getDead())
                 {
-                    damageNums.Add(String.valueOf(-(int) PlayerDam), .6f + .3f * ((targetPicker.getSelectedTarget() + i) / (float) enemyCount), .6f - (.4f * ((targetPicker.getSelectedTarget() + i) / (float) enemyCount)));
+                    damageNums.Add
+                    (
+                            String.valueOf(-(int) PlayerDam),
+                            (float)(enemyX[targetPicker.getSelectedTarget()+i]+(enemies[targetPicker.getSelectedTarget()+i].width/2))/screenWidth,
+                            ((float)(enemyY[targetPicker.getSelectedTarget()+i]+enemies[targetPicker.getSelectedTarget()+i].height)/screenHeight)
+                    );
                 }
             }
         }

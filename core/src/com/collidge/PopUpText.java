@@ -193,6 +193,7 @@ public class PopUpText
         {
             popUps.get(i).update(Gdx.graphics.getDeltaTime());
 
+
             if(popUps.get(i).lifetime<=0)
             {
                 popUps.remove(i);
