@@ -337,19 +337,58 @@ public class Fight extends GameState
                     healthBar.draw(batch);
                     battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
-
-
-
                 }
-                else
-                {
+                else{
                     target=0;
+                }
 
+                int enemyCountTemp;
+                int iTemp;
+
+                if (i < 5) {    //2 rows of enemies, 5 in each
+                    //batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                    if (enemyCount > 5){
+                        enemyCountTemp = 5;
+                    }
+                    else {
+                        enemyCountTemp = enemyCount;
+                    }
+
+                    batch.draw(enemies[i].animation.getFrame(),
+                            ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                            screenHeight / 18 + (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8)),
+                            enemies[i].width,
+                            enemies[i].height);
 
                 }
 
-                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
-                if(!targeting)
+                else if (i < 9 && i >= 5) {
+                    //batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + enemies[i].width + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1 - 5)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+
+                    enemyCountTemp = enemyCount - 5;
+                    iTemp = i-5;
+
+                    batch.draw(enemies[i].animation.getFrame(),
+                            ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                            screenHeight / 28 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)),
+                            enemies[i].width,
+                            enemies[i].height);
+                }
+
+                else {
+                    enemyCountTemp = enemyCount - 9;
+                    iTemp = i-9;
+
+                    batch.draw(enemies[i].animation.getFrame(),
+                            ((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                            2*screenHeight / 5 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)),
+                            enemies[i].width,
+                            enemies[i].height);
+                }
+
+
+
+                    if(!targeting)
                 {
                     battleFont.setColor(Color.RED);
                     battleFont.draw(batch, enemies[i].getHealth() + "", ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount)))))+screenWidth/10, battleFont.getLineHeight());
@@ -361,10 +400,47 @@ public class Fight extends GameState
 
                 if(targeting&&(targetPicker.getCurrentTarget()+targetPicker.getTargetingId()>=i&&targetPicker.getCurrentTarget()-targetPicker.getTargetingId()<=i))
                 {
+                    battleFont.setColor(Color.RED);
+                    battleFont.draw(batch, "Tap to choose a target!", screenWidth/20, screenHeight/2);
+                    battleFont.setColor(Color.BLACK);
 
-                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
+                    //selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
+
+                    if (i < 5) {
+                        if (enemyCount > 5){
+                            enemyCountTemp = 5;
+                        }
+                        else {
+                            enemyCountTemp = enemyCount;
+                        }
+                        selector.setPosition(((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                                screenHeight / 18 + (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8)));
+                    }
+
+                    else if (i < 9 && i >= 5) {
+                        enemyCountTemp = enemyCount - 5;
+                        iTemp = i-5;
+
+                        selector.setPosition(
+                                ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                                screenHeight / 28 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)));
+                    }
+
+                    else {
+                        enemyCountTemp = enemyCount - 9;
+                        iTemp = i-9;
+
+                        selector.setPosition(((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                                2*screenHeight / 5 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)));
+                    }
+
                     selector.setSize(enemies[i].width,enemies[i].height);
-                    selector.draw(batch);
+                    if (targetPicker.targetHighlighted == true) {   //don't draw the selector box unless a target has been tapped
+                        battleFont.setColor(Color.RED);
+                        battleFont.draw(batch, "Tap again to confirm!", screenWidth/20, screenHeight/2 - battleFont.getLineHeight());
+                        battleFont.setColor(Color.BLACK);
+                        selector.draw(batch);
+                    }
                     //TODO fix health bar so that it fills top of enemy side
 
 
@@ -378,7 +454,7 @@ public class Fight extends GameState
             }
         }
 
-        if(targeting)
+        /*if(targeting) //draws old targeting interface
         {
 
             targetArrow.setRotation(90);
@@ -391,7 +467,7 @@ public class Fight extends GameState
             targetArrow.draw(batch);
             backArrow.setPosition(targetReticule.getX(), targetReticule.getY() - backArrow.getHeight());
             backArrow.draw(batch);
-        }
+        }*/
         if(damageNums.popUps.size()>0)
         {
             damageNums.draw(batch);
@@ -515,10 +591,70 @@ public class Fight extends GameState
             }
 
             //targeting an enemy after selecting an action
-            else if(targeting)
-            {
+            else if(targeting){
+                for (int i = 0; i < enemies.length; i++) {
+                   // if (x> screenWidth/2) {   //arbitrary x values at the moment, vaguely at the right side of the screen
 
-                if(y<targetReticule.getY()&&y>targetReticule.getY()-targetReticule.getHeight())
+                       // if (y < 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2))
+                       //         && y > 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)) - enemies[0].height) {
+
+                        int enemyCountTemp;
+                        int iTemp;
+
+                        if (i < 5) {
+                            if (enemyCount > 5){
+                                enemyCountTemp = 5;
+                            }
+                            else {
+                                enemyCountTemp = enemyCount;
+                            }
+
+                            if (y< (17*screenHeight / 18 - (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8)))
+                             && y> (17*screenHeight / 18 - (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8))) - enemies[i].height
+                             && x> ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp)))))
+                             && x< ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp)))) + enemies[i].width)){
+
+                                targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
+                                targetPicker.targetHighlighted = true;
+                            }
+                        }
+
+                        else if (i < 9 && i >= 5) {
+                            enemyCountTemp = enemyCount - 5;
+                            iTemp = i-5;
+                        if (y < 27*screenHeight / 28 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2))
+                                && y > 27*screenHeight / 28 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)) - enemies[i].height
+                                && x> ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp)))))
+                                && x< ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) + enemies[i].width){
+
+                            targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
+                            targetPicker.targetHighlighted = true;
+                        }
+                        }
+
+                        else {
+                            enemyCountTemp = enemyCount - 9;
+                            iTemp = i-9;
+
+                            if (y< 3*screenHeight / 5 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2))
+                                && y> 3*screenHeight / 5 - (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)) - enemies[i].height
+                                && x>((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp)))))
+                                &&x<((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) + enemies[i].width){
+                                targetPicker.Target(i); //Target function calls the Select function if targetHighlighted is true and the id getting passed is the same as the previous id that was passed
+                                targetPicker.targetHighlighted = true;
+                            }
+                        }
+                  //  }
+
+                    if (x< screenWidth/2) {  //tap left half of screen to go back for now
+                        targeting=false;
+                        waitingForTouch=true;
+                        fMenu.actionSelected=false;
+                    }
+                }
+
+
+                /*if(y<targetReticule.getY()&&y>targetReticule.getY()-targetReticule.getHeight())
                 {
                     if (x < targetReticule.getX() && x > targetReticule.getX() - targetReticule.getWidth())
                     {
@@ -532,7 +668,9 @@ public class Fight extends GameState
                     {
                         targetPicker.Select();
 
-                    }
+                    }*/
+
+
 
                     if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
                     {
@@ -541,12 +679,12 @@ public class Fight extends GameState
                         return true;
                     }
                 }
-                else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth()&&y>targetReticule.getY()&&y<targetReticule.getY()+targetReticule.getHeight())
+               /* else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth()&&y>targetReticule.getY()&&y<targetReticule.getY()+targetReticule.getHeight())
                 {
                     targeting=false;
                     waitingForTouch=true;
                     fMenu.actionSelected=false;
-                }
+                }*/
 
             }
 
@@ -555,7 +693,6 @@ public class Fight extends GameState
                 combo.tap((int)x,(int)y);
             }
 
-        }
 
         return false;
     }
