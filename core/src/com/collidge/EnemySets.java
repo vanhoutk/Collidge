@@ -32,7 +32,9 @@ public class EnemySets
         EnemyCollections.put("Pledge",fillArrays("Fresher","Frat boy","",""));
         EnemyPopulation.put("Pledge",fillArrays(5,1,0,0));
         EnemyCollections.put("Full Set",fillArrays("Fresher","Master Debater","Lecturer","Frat boy"));
-        EnemyPopulation.put("Full Set",fillArrays(5,5,1,5));
+        EnemyPopulation.put("Full Set",fillArrays(3,3,2,2));
+
+        //NB MAX OF 10 ENEMIES PLEASE
 
 
 
@@ -74,8 +76,9 @@ public class EnemySets
         {
             if(!Enemyset[i].equals(""))
             {
-                temp=(rand.nextInt(pop[i]));
-                temp++;     //temp will be a random number in the range from 1 to pop[i] - where pop[i] is the number of the specific type of enemy passed in
+               // temp=(rand.nextInt(pop[i])) + 1;   //temp will be a random number in the range from 1 to pop[i] - where pop[i] is the number of the specific type of enemy passed in
+                temp = pop[i];  //no randomness, for testing
+
                 for(int j=0;j<temp;j++)
                 {
                     Enemies.add(new Enemy(Types.getEnemy(Enemyset[i])));        //adds "temp" number of enemies (so a random no. less than the max) of the type specified in Enemyset[i]

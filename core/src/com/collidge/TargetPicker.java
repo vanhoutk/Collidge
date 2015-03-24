@@ -11,26 +11,21 @@ public class TargetPicker
     Enemy[] monsters;
     private int currentTarget;
     private int selectedTarget;
-    public boolean targetSelected;
+    public boolean targetHighlighted;   //true when the target has been tapped and square box is displayed around them
+    public boolean targetSelected;      //true when target is selected, go to next state (e.g. combo)
     Texture texture;
     Sprite sprite;
 
-
-
     private int targetingId;
-
-
 
     TargetPicker(Enemy[] enemies,int targetArea)
     {
-
-
-        texture=new Texture("arrow_up_blue.png");
-        sprite=new Sprite(texture);
+        //texture=new Texture("arrow_up_blue.png");
+        //sprite=new Sprite(texture);
         reset(enemies,targetArea);
     }
 
-    public void Left()
+    /*public void Left()
     {
 
         currentTarget--;
@@ -56,7 +51,23 @@ public class TargetPicker
             }
             Right();
         }
+    }*/
+
+
+    public void Target(int id)
+    {
+        if (currentTarget==id && targetHighlighted){
+            Select();
+        }
+        else {
+            currentTarget = id;
+            System.out.println("enemy id " + id);
+            targetHighlighted = true;
+            targetSelected = false;
+        }
     }
+
+
     public void Select()
     {
         selectedTarget=currentTarget;
@@ -84,6 +95,7 @@ public class TargetPicker
         if(enemyCount>=1)
         {
             monsters=enemies;
+            targetHighlighted=false;
             targetSelected=false;
         }
         else
