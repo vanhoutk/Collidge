@@ -13,8 +13,7 @@ public class TargetPicker
     private int selectedTarget;
     public boolean targetHighlighted;   //true when the target has been tapped and square box is displayed around them
     public boolean targetSelected;      //true when target is selected, go to next state (e.g. combo)
-    Texture texture;
-    Sprite sprite;
+
 
     private int targetingId;
 
@@ -25,9 +24,10 @@ public class TargetPicker
         reset(enemies,targetArea);
     }
 
-    /*public void Left()
+    public void Left()
     {
 
+        System.out.println("L");
         currentTarget--;
         if(currentTarget<0||monsters[currentTarget].getDead())
         {
@@ -35,8 +35,10 @@ public class TargetPicker
             {
                 currentTarget=monsters.length;
             }
+
             Left();
         }
+        System.out.println(currentTarget);
     }
     public void Right()
     {
@@ -48,11 +50,29 @@ public class TargetPicker
             {
                 currentTarget%=monsters.length;
                 currentTarget--;
+                System.out.println("X");
             }
-            Right();
-        }
-    }*/
+            System.out.println("O");
 
+            Right();
+
+        }
+        System.out.println("R");
+        System.out.println(currentTarget);
+    }
+
+    public void goTo(int i)
+    {
+        if(currentTarget==i)
+        {
+            selectedTarget=i;
+            targetSelected=true;
+        }
+        else
+        {
+            currentTarget=i;
+        }
+    }
 
     public void Target(int id)
     {
@@ -82,6 +102,7 @@ public class TargetPicker
 
     public void reset(Enemy[] enemies,int targetingArea)
     {
+
         targetingId=targetingArea;
         int enemyCount=0;
         for(int i=0;i<enemies.length;i++)
@@ -92,7 +113,7 @@ public class TargetPicker
                 enemyCount++;
             }
         }
-        if(enemyCount>=1)
+        if(enemyCount>1)
         {
             monsters=enemies;
             targetHighlighted=false;
@@ -103,6 +124,7 @@ public class TargetPicker
             selectedTarget=currentTarget;
 
         }
+
     }
     public int getSelectedTarget()
     {
