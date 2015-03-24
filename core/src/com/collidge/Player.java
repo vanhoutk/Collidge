@@ -23,11 +23,11 @@ public class Player
 
 
     private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
-    private double attackPointsMult=.8,
-            defencePointsMult=.3,
-            intelligencePointsMult=.5,
-            healthPointsMult=3.5,
-            energyPointsMult=3.5;
+    private double attackPointsMult=.5,
+            defencePointsMult=.5,
+            intelligencePointsMult=.2,
+            healthPointsMult=2,
+            energyPointsMult=2;
 
 
     private int

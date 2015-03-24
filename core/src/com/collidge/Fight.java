@@ -66,7 +66,7 @@ public class Fight extends GameState
 
 
             //if damage was dealt to the player, subtract health
-            if (damage[0] > 0)
+            if (damage[0] > 1)
             {
 
                 damage[0]--;
@@ -254,13 +254,15 @@ public class Fight extends GameState
                     defend=false;
                     defendTurn(playr, enemies, monsterCode);
                 }
-                else if(enemies[monsterCode].animation.getTimesPlayed()>animCount+1||enemies[monsterCode].getDead())
+                else if(enemies[monsterCode].attackAnimation.getTimesPlayed()>animCount||enemies[monsterCode].getDead())
                 {
                     enemyTurnPart2();
+                    enemies[monsterCode].attackAnimation.stop();
+
                 }
                 else
                 {
-                    enemies[monsterCode].animation.update(Gdx.graphics.getDeltaTime());
+                    enemies[monsterCode].attackAnimation.update(Gdx.graphics.getDeltaTime());
                 }
 
             }
@@ -340,15 +342,16 @@ public class Fight extends GameState
 
 
 
+
                 }
                 else
                 {
                     target=0;
 
 
+
                 }
 
-                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
                 if(!targeting)
                 {
                     battleFont.setColor(Color.RED);
@@ -369,7 +372,19 @@ public class Fight extends GameState
 
 
                 }
-                enemies[i].animation.update(Gdx.graphics.getDeltaTime());
+
+                if(monsterCode==i)
+                {
+                    batch.draw(enemies[i].attackAnimation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+
+                }
+                else
+                {
+                    batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
+
+                }
+
                 /*else
                 {
                     enemies[i].animation.pause();
@@ -631,13 +646,17 @@ public class Fight extends GameState
                 {
                     PlayerDam = 1;
                 }
+                if(combo.skill>.9)
+                {
+                    PlayerDam++;
+                }
                 damage[targetPicker.getSelectedTarget() + 1+i] += PlayerDam;
-                damageNums.Add(String.valueOf(-(int)PlayerDam),.6f+.3f*((targetPicker.getSelectedTarget()+i)/(float)enemyCount),.6f-(.4f*((targetPicker.getSelectedTarget()+i)/(float)enemyCount)));
-
+                if(!enemies[targetPicker.getSelectedTarget() + i].getDead())
+                {
+                    damageNums.Add(String.valueOf(-(int) PlayerDam), .6f + .3f * ((targetPicker.getSelectedTarget() + i) / (float) enemyCount), .6f - (.4f * ((targetPicker.getSelectedTarget() + i) / (float) enemyCount)));
+                }
             }
         }
-
-
         playerTurnEnd();
     }
     //at the end of the player's turn, if there are enemies left, start the enemy's turn, otherwise if all are dead end the fight
@@ -673,8 +692,9 @@ public class Fight extends GameState
 
         monsterCode=monsterId;
         System.out.println("Monster:"+monsterId);
-        monsters[monsterId].animation.setCurrentFrame(0);
-        animCount=monsters[monsterId].animation.getTimesPlayed();
+        monsters[monsterId].attackAnimation.setCurrentFrame(0);
+        animCount=monsters[monsterId].attackAnimation.getTimesPlayed();
+        monsters[monsterId].attackAnimation.play();
         defend=false;
         if(monsterId<=monsters.length-1&&!monsters[monsterId].getDead())
         {
@@ -744,7 +764,7 @@ public class Fight extends GameState
                 dam+=monsters[monsterId].getAttack();
             }
             System.out.println("Damage from "+monsters[monsterId].getName()+": "+dam);
-            dam*=(1-(combo.skill/2));
+            dam*=(1-(combo.skill*combo.skill));
 
             //      System.out.println("Monster " + i + " attacks");
             if (dam <= 1)
@@ -753,11 +773,16 @@ public class Fight extends GameState
                 if(combo.skill<.9)
                 {
                     damage[0]++;
+                    damageNums.Add(String.valueOf(1), .15f, .3f);
+
                 }
-                damageNums.Add(String.valueOf(1),.15f,.3f);
+                else
+                {
+                    damageNums.Add("Blocked!",.15f,.3f,Color.WHITE,150,4.0);
+                }
 
             }
-            else
+            else if(combo.skill<.95)
             {
                 damage[0]+=dam;
                 damageNums.Add(String.valueOf((int)dam),.15f,.3f);
@@ -769,6 +794,11 @@ public class Fight extends GameState
                     //        System.out.println("you lose");
                     monsterCode=-1;
                 }
+
+            }
+            else
+            {
+                damageNums.Add("Blocked!",.15f,.3f,Color.WHITE,150,4.0);
 
             }
 
