@@ -113,6 +113,8 @@ public class Player
         return items.getList();
     }
 
+    public String getItemImage(String item) {return items.getItemImage(item);}
+
     public String[] getItemDesc() { return items.getDesc();}
 
     public int getLevelUpCounter()

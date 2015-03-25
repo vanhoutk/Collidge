@@ -191,7 +191,7 @@ public class Fight extends GameState
 
         texture = new Texture("portrait.png");
         portrait = new Sprite(texture);
-        texture =new Texture ("background.png");
+        texture =new Texture ("background2.png");
         background=new Sprite(texture);
         background.setPosition(0,0);
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
