@@ -15,7 +15,7 @@ public class GameStateManager
     //ArrayList (dynamic list) which holds every state
     private ArrayList<GameState> gameStates;
     //There can only be one current state
-    public int currentState;
+    public int currentState, previousState;
     public Player user;
     public int volumeLevel, musicLevel;
 
@@ -77,6 +77,7 @@ public class GameStateManager
     //change state to any other state. Alternatively we could make a new object each time instead of keeping them in memory.
     public void changeState(int state)
     {
+        previousState = currentState;
         if (state >= gameStates.size())
         {
             state = 1;
@@ -136,10 +137,13 @@ public class GameStateManager
 
     public void closeMenu()
     {
-        changeState(1);
+        System.out.println("Previous state was: " + previousState);
+        changeState(previousState);
+        //changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
+    
     public int getVolume()
     {
         return volumeLevel;

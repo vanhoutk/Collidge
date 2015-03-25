@@ -189,6 +189,7 @@ public class Inventory
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)
          */
         Equipment Tsquare, Scarf, Macshield, Bookshield;
+
         Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, 1, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, 1, "Scarf.png");
         Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, 1, "macShieldIcon.png");
