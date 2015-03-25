@@ -33,8 +33,10 @@ public class GameStateManager
 
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
+        GameState state0 = new OpenScreen(this);
         GameState state1 = new Play(this);
-       // GameState state2 = new TestState2(this);
+        // GameState state2 = new TestState2(this);
+        gameStates.add(state0);
         gameStates.add(state1);
 
         //currentState = MENUSTATE;
@@ -52,8 +54,10 @@ public class GameStateManager
         user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
+        GameState state0 = new OpenScreen(this);
         GameState state1 = new Play(this);
         // GameState state2 = new TestState2(this);
+        gameStates.add(state0);
         gameStates.add(state1);
 
         //currentState = MENUSTATE;
@@ -75,7 +79,7 @@ public class GameStateManager
     {
         if (state >= gameStates.size())
         {
-            state = 0;
+            state = 1;
         }
         //gameStates.get(currentState).dispose();
         currentState = state;
@@ -98,7 +102,7 @@ public class GameStateManager
 
     public void closeInventory()
     {
-        changeState(0);
+        changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
@@ -119,7 +123,7 @@ public class GameStateManager
     public void endFight()
     {
         //TODO add previous state class stuff
-        changeState(0);
+        changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
@@ -132,7 +136,7 @@ public class GameStateManager
 
     public void closeMenu()
     {
-        changeState(0);
+        changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
@@ -182,6 +186,16 @@ public class GameStateManager
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
         gameStates.add(new WinState(this,player, Exp, enemies, damage_taken, ratings));    //Makes a new Win State
         changeState(gameStates.size()-1);               //Moves to the new state
+    }
+
+    public void startOpenScreen()
+    {
+        changeState(0);
+    }
+
+    public void endOpenScreen()
+    {
+        changeState(1);
     }
 
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.

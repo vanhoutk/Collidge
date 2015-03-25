@@ -63,6 +63,7 @@ public class TextBox {
     }
 
     public void draw() {
+        active = false;
         if (active) {
             batch.begin();
             textBoxSprite.draw(batch);
