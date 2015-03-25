@@ -114,8 +114,8 @@ public class Play extends GameState {
 
         if(TimeUtils.timeSinceMillis(enteringFight)<1000)
         {
-            camera.rotate(600*Gdx.graphics.getDeltaTime());
-
+            camera.rotate(710*Gdx.graphics.getDeltaTime());
+            //camera.rotate(500*Gdx.graphics.getDeltaTime());
         }
         else if(TimeUtils.timeSinceMillis(enteringFight)>1000&&TimeUtils.timeSinceMillis(enteringFight)<3000)
         {
