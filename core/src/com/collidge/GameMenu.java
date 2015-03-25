@@ -19,11 +19,11 @@ public class GameMenu extends GameState
 
     long timer=TimeUtils.millis();
     Player player;
-    boolean statsPressed=false, settingsPressed=false, savePressed=false, loadingStats=true;
-    int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0;
+    boolean statsPressed=false, settingsPressed=false, savePressed=false, muted;
+    int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0, musicPre, volPre;
     SpriteBatch batch;
     Texture texture, background;
-    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthbar, energybar, attackbar, defbar, intbar, statsymbol, healthIcon, energyIcon, attackIcon, defenceIcon, intelligenceIcon, XPbar, XPframe;
+    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthbar, energybar, attackbar, defbar, intbar, statsymbol, healthIcon, energyIcon, attackIcon, defenceIcon, intelligenceIcon, XPbar, XPframe, mute, unmute;
     BitmapFont Font;
 
 
@@ -81,16 +81,26 @@ public class GameMenu extends GameState
         music4 = new Sprite(texture);
         music4.setSize(screenWidth *2/5, screenWidth /20);
 
-        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2, screenHeight/2 - vol0.getHeight()/2);
-        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2, screenHeight/2 - vol1.getHeight()/2);
-        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2, screenHeight/2 - vol2.getHeight()/2);
-        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2, screenHeight/2 - vol3.getHeight()/2);
-        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2, screenHeight/2 - vol4.getHeight()/2);
-        music0.setPosition(screenWidth /2 - music0.getWidth()/2,screenHeight/4 - music0.getHeight()/2);
-        music1.setPosition(screenWidth /2 - music1.getWidth()/2,screenHeight/4 - music1.getHeight()/2);
-        music2.setPosition(screenWidth /2 - music2.getWidth()/2,screenHeight/4 - music2.getHeight()/2);
-        music3.setPosition(screenWidth /2 - music3.getWidth()/2,screenHeight/4 - music3.getHeight()/2);
-        music4.setPosition(screenWidth /2 - music4.getWidth()/2,screenHeight/4 - music4.getHeight()/2);
+        texture = new Texture("mute.png");
+        mute = new Sprite(texture);
+        texture = new Texture("unmute.png");
+        unmute = new Sprite(texture);
+        mute.setSize(screenWidth /15, screenWidth /15);
+        unmute.setSize(screenWidth /15, screenWidth /15);
+
+        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2, screenHeight*7/10 - vol0.getHeight()/2);
+        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2, screenHeight*7/10 - vol1.getHeight()/2);
+        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2, screenHeight*7/10 - vol2.getHeight()/2);
+        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2, screenHeight*7/10 - vol3.getHeight()/2);
+        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2, screenHeight*7/10 - vol4.getHeight()/2);
+        music0.setPosition(screenWidth /2 - music0.getWidth()/2,screenHeight*4/10 - music0.getHeight()/2);
+        music1.setPosition(screenWidth /2 - music1.getWidth()/2,screenHeight*4/10 - music1.getHeight()/2);
+        music2.setPosition(screenWidth /2 - music2.getWidth()/2,screenHeight*4/10 - music2.getHeight()/2);
+        music3.setPosition(screenWidth /2 - music3.getWidth()/2,screenHeight*4/10 - music3.getHeight()/2);
+        music4.setPosition(screenWidth /2 - music4.getWidth()/2,screenHeight*4/10 - music4.getHeight()/2);
+
+        mute.setPosition(screenWidth/2 - mute.getWidth()/2 , screenHeight/5 - mute.getHeight()/2);
+        unmute.setPosition(screenWidth/2 - unmute.getWidth()/2 , screenHeight/5 - unmute.getHeight()/2);
 
 
         texture = new Texture("statbar.png");
@@ -244,6 +254,11 @@ public class GameMenu extends GameState
 
             XPframe.draw(batch);
             Font.setColor(Color.BLACK);
+
+            Font.setScale(screenWidth / 600f, screenHeight / 600f);
+            Font.draw(batch, " Lv. ", XPframe.getX() + XPframe.getHeight()/7, XPframe.getY() + XPframe.getHeight()*4/5);
+            Font.draw(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*13/14 , XPframe.getY() + XPframe.getHeight()*4/5);
+
             Font.setScale(screenWidth / 500f, screenHeight / 500f);
             Font.draw(batch, "" + player.getLevel(), XPframe.getX() + XPframe.getHeight()/8, XPframe.getY() + XPframe.getHeight()*3/5);
             Font.draw(batch, "" + (player.getLevel()+1), XPframe.getX() + XPframe.getWidth()*12/13 , XPframe.getY() + XPframe.getHeight()*3/5);
@@ -284,12 +299,15 @@ public class GameMenu extends GameState
 
                 if(healthcounter<player.getHealth())
                 {
-                    healthcounter = healthcounter + (player.getHealth()/50);
-                    if (healthcounter > player.getHealth()){healthcounter=player.getHealth();}
+                    healthcounter = healthcounter + 1 + (player.getHealth()/50);
+                    if (healthcounter > player.getHealth())
+                    {
+                        healthcounter=player.getHealth();
+                    }
                 }
                 if(energycounter<player.getEnergy())
                 {
-                    energycounter = energycounter + (player.getEnergy()/50);
+                    energycounter = energycounter + 1 + (player.getEnergy()/50);
                     if (energycounter > player.getEnergy())
                     {
                         energycounter=player.getEnergy();
@@ -297,7 +315,7 @@ public class GameMenu extends GameState
                 }
                 if(attackcounter<player.getAttack())
                 {
-                    attackcounter = attackcounter + (player.getAttack()/50);
+                    attackcounter = attackcounter + 1 + (player.getAttack()/50);
                     if (attackcounter > player.getAttack())
                     {
                         attackcounter=player.getAttack();
@@ -305,7 +323,7 @@ public class GameMenu extends GameState
                 }
                 if(defcounter<player.getDefence())
                 {
-                    defcounter = defcounter + (player.getDefence()/50);
+                    defcounter = defcounter + 1 + (player.getDefence()/50);
                     if (defcounter > player.getDefence())
                     {
                         defcounter=player.getDefence();
@@ -313,7 +331,7 @@ public class GameMenu extends GameState
                 }
                 if(intcounter<player.getIntelligence())
                 {
-                    intcounter = intcounter + (player.getIntelligence()/50);
+                    intcounter = intcounter + 1 + (player.getIntelligence()/50);
                     if (intcounter > player.getIntelligence())
                     {
                         intcounter=player.getIntelligence();
@@ -321,7 +339,11 @@ public class GameMenu extends GameState
                 }
                 if(XPcounter<player.getExperience())
                 {
-                    XPcounter = XPcounter + player.getExperience()/50;
+                    XPcounter = XPcounter + 1 + player.getExperience()/50;
+                    if (XPcounter > player.getExperience())
+                    {
+                        XPcounter=player.getExperience();
+                    }
                 }
 
                 timer=TimeUtils.millis();
@@ -332,10 +354,21 @@ public class GameMenu extends GameState
 
         if(settingsPressed)
         {
-            //batch.draw(settings, Gdx.graphics.getWidth()/2 - settings.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
-
             volumeLevel = gsm.getVolume();
             musicLevel = gsm.getMusic();
+
+
+            if (volumeLevel == 0 && musicLevel == 0)
+            {
+                muted = true;
+            }
+            else {muted=false;}
+
+            if (muted == true)
+            {
+                mute.draw(batch);
+            }
+            else {unmute.draw(batch);}
 
             Font.setColor(Color.WHITE);
             Font.setScale(screenWidth / 400f, screenHeight / 400f);
@@ -461,7 +494,7 @@ public class GameMenu extends GameState
         }
         if (settingsPressed)
         {
-            if (y > vol0.getY() && y < vol0.getY() + vol0.getHeight())
+            if (y < music0.getY() && y > music0.getY() - vol0.getHeight())
             {
                 if(x > vol0.getX() && x < vol0.getX() + vol0.getWidth()/5)
                 {
@@ -490,7 +523,7 @@ public class GameMenu extends GameState
                 }
             }
 
-            if (y > vol0.getY() + screenHeight/4 && y < vol0.getY() + vol0.getHeight() + screenHeight/4)
+            if (y < vol0.getY() && y > vol0.getY() - vol0.getHeight())
             {
                 if(x > music0.getX() && x < music0.getX() + music0.getWidth()/5)
                 {
@@ -516,6 +549,25 @@ public class GameMenu extends GameState
                 {
                     musicLevel=4;
                     gsm.setMusic(musicLevel);
+                }
+            }
+
+            //mute
+            if (y < screenHeight - mute.getY() && y > screenHeight - mute.getY() - mute.getHeight())
+            {
+                if (muted == true)
+                {
+                    muted=false;
+                    gsm.setMusic(musicPre);
+                    gsm.setVolume(volPre);
+                }
+                else
+                {
+                    musicPre = gsm.getMusic();
+                    volPre = gsm.getVolume();
+                    muted = true;
+                    gsm.setVolume(0);
+                    gsm.setMusic(0);
                 }
             }
         }
