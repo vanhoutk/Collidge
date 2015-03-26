@@ -26,7 +26,7 @@ public class TextBox {
     private float textBoxHeight;
     private float xPadding;
     private float yPadding;
-    private boolean active = true;
+    private boolean active = false;
 
     //text data
     private String fullText;

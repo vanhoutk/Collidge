@@ -179,11 +179,17 @@ public class GameStateManager
 
     public void EndDeathstate(Player player)
     {
-        changeState(0);                                 //Return to the Map State
         gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
+        changeState(1);                                 //Return to the Main Menu State
     }
 
+    public void Continue(Player player)
+    {
+        gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
+        gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
+        changeState(0);                                 //Return to the Map State
+    }
     public void StartWinState(Player player, int Exp, Enemy[] enemies, int damage_taken, int[]ratings)
     {
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State

@@ -274,7 +274,8 @@ public class FightMenu
             menuSprites[i][0]=backIcon;
         }
         //Set up attacks
-        for(int j=1;j<=player.getAttacksNames().length && j<=player.getMovesKnown();j++){
+        for(int j=1;j<=player.getAttacksNames().length && j<=player.getMovesKnown();j++)
+        {
             menuSprites[1][j]=fightIcon;
 
                 if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())

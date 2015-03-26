@@ -76,8 +76,8 @@ public class EnemySets
         {
             if(!Enemyset[i].equals(""))
             {
-               // temp=(rand.nextInt(pop[i])) + 1;   //temp will be a random number in the range from 1 to pop[i] - where pop[i] is the number of the specific type of enemy passed in
-                temp = pop[i];  //no randomness, for testing
+                temp=(rand.nextInt(pop[i])) + 1;   //temp will be a random number in the range from 1 to pop[i] - where pop[i] is the number of the specific type of enemy passed in
+                //temp = pop[i];  //no randomness, for testing
 
                 for(int j=0;j<temp;j++)
                 {

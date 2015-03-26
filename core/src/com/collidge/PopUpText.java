@@ -212,4 +212,9 @@ public class PopUpText
             font.draw(batch, popUps.get(i).word, Gdx.graphics.getWidth()*popUps.get(i).xVal, Gdx.graphics.getHeight()*popUps.get(i).yVal);
         }
     }
+
+    public void clear()
+    {
+        popUps.clear();
+    }
 }

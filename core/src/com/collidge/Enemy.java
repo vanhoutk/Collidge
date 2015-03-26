@@ -19,6 +19,7 @@ public class Enemy
     Animation animation,attackAnimation;
     int width;
     int height;
+    int attackType;
 
     private Random rand=new Random();
     public int getExpValue()
@@ -28,7 +29,7 @@ public class Enemy
 
     private int expValue;
 
-    Enemy(String nm, int h, int a, int d,int exp,float sizeX, float sizeY)
+    Enemy(String nm, int h, int a, int d,int exp,float sizeX, float sizeY,int attackCombo)
     {
         name=nm;
         maxHealth=h;
@@ -39,6 +40,7 @@ public class Enemy
         dead=false;
         width= (int)(Gdx.graphics.getWidth()/sizeX);
         height=(int)(Gdx.graphics.getHeight()/sizeY);
+        attackType=attackCombo;
     }
 
     Enemy(Enemy template)
@@ -57,6 +59,7 @@ public class Enemy
         defence=(int)(defence*((rand.nextDouble()%.5)+.75));
         expValue=(int)(expValue*((rand.nextDouble()%.5)+.75));
         currentHealth=maxHealth;
+        attackType=template.attackType;
 
        // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;

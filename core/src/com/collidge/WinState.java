@@ -17,7 +17,7 @@ public class WinState extends GameState {
 
     Player player;
     SpriteBatch batch;
-    Sprite textbox, ExpBorder, ExpBar, buttons, Background, continue_button;
+    Sprite textbox, ExpBorder, ExpBar, buttons, Background, continue_button, rank_button;
     double ExpEarned;
     int exp_const;
     int enemies;
@@ -64,12 +64,14 @@ public class WinState extends GameState {
         winfont = new BitmapFont();
         buttons = new Sprite(new Texture("textbox_background_2.png"));
         buttons.setSize(sqSide, sqSide);
+        rank_button = new Sprite (new Texture("textbox_background_2.png"));
         textbox = new Sprite(new Texture("textbox_background_2.png"));
-        ExpBorder = new Sprite (new Texture("Transparant_Button.png"));
+        ExpBorder = new Sprite (new Texture("XPframe.png"));
         ExpBar = new Sprite (new Texture("statbar.png"));
         Background = new Sprite(new Texture("inventoryBackground3.jpg"));
         continue_button = new Sprite(new Texture("back_button.png"));
         continue_button.flip(true,false);
+
         if      (((float)(player.getHealth())-(float)damage)/(float)(player.getHealth()) == 1)
             Rating = "S";
         else if (((float)(player.getHealth())-(float)damage)/(float)(player.getHealth()) > 0.6)
@@ -81,7 +83,7 @@ public class WinState extends GameState {
         else
             Rating = "D";
 
-
+        textbox.setSize(screenWidth-spacing*2f, screenHeight - spacing*1.5f - sqSide);
         continue_button.setSize(buttons.getWidth(), buttons.getHeight());
         continue_button.setPosition(screenWidth-(spacing+sqSide), spacing/2f);
         Background.setSize(screenWidth, screenHeight);
@@ -98,8 +100,9 @@ public class WinState extends GameState {
         Timer.instance().clear();
         Timer.instance().start();
         Timer.instance().postTask(Exp);
-        ExpBar.setSize(((float)player.getTrueExperience()*screenWidth)/((float)player.getExpTarget()*2f), sqSide/2f);
-        ExpBorder.setSize(screenWidth/2f, sqSide/2f);
+        ExpBorder.setSize(screenWidth-(spacing*3f+2f*sqSide), sqSide/2f);
+        ExpBar.setSize((((float)player.getTrueExperience()*screenWidth)/((float)player.getExpTarget()*2f))*(13f/14f), sqSide/2f-ExpBorder.getHeight()/14f);
+
     }
 
 
@@ -110,88 +113,96 @@ public class WinState extends GameState {
         batch.begin();
         Gdx.gl.glClearColor(150/255f, 106/255f, 73/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        winfont.setScale(1.5f/400f*screenWidth, 1.5f/400f*screenHeight);
-        winfont.setColor(Color.BLACK);
+
 
         Background.draw(batch);
-        textbox.setSize(screenWidth-spacing*2f, screenHeight - spacing*1.5f - sqSide);
 
-        textbox.setPosition(spacing, sqSide+spacing);
-        textbox.draw(batch);
         textbox.setSize(screenWidth-spacing*2f, sqSide);
         textbox.setPosition(spacing, spacing/2f);
         textbox.draw(batch);
 
-        ExpBar.setPosition(1f/4f*screenWidth, spacing/2f+(sqSide/4f));
-        ExpBar.draw(batch);
-        ExpBorder.setPosition(1f/4f*screenWidth, spacing/2f+(sqSide/4f));
-        ExpBorder.draw(batch);
+        textbox.setSize(screenWidth/3f, sqSide/2f);
+        textbox.setPosition(spacing, screenHeight - (sqSide+spacing)/2f);
+        textbox.draw(batch);
 
-        buttons.setPosition(spacing,spacing/2f);
-        buttons.draw(batch);
+        ExpBar.setPosition(spacing*2f+sqSide+ExpBorder.getWidth()*(1f/14f), spacing/2f+(sqSide/4f));
+        ExpBar.draw(batch);
+        ExpBorder.setPosition(spacing*2f+sqSide, spacing/2f+(sqSide/4f));
+        ExpBorder.draw(batch);
+        winfont.setScale(screenWidth / 500f, screenHeight / 500f);
+        winfont.setColor(Color.BLACK);
+        winfont.draw(batch, "" + (player.getLevel()+player.getLevelUpCounter()), ExpBorder.getX() + ExpBorder.getHeight()/8, ExpBorder.getY() + ExpBorder.getHeight()*3/5);
+        winfont.draw(batch, "" + (player.getLevel()+player.getLevelUpCounter()+1), ExpBorder.getX() + ExpBorder.getWidth()*12/13 , ExpBorder.getY() + ExpBorder.getHeight()*3/5);
+
+
+        buttons.setSize(continue_button.getWidth(), continue_button.getHeight());
+        rank_button.setSize(continue_button.getWidth(), continue_button.getHeight());
+        rank_button.setPosition(spacing,spacing/2f);
+        rank_button.draw(batch);
         buttons.setPosition(screenWidth-spacing-sqSide, spacing/2f);
         buttons.draw(batch);
         continue_button.draw(batch);
 
-        winfont.draw(batch, "RESULTS:", spacing + sqSide, screenHeight - (sqSide / 2f));
+        winfont.setScale(1.5f/400f*screenWidth, 1.5f/400f*screenHeight);
+        winfont.setColor(Color.BLACK);
+        winfont.draw(batch, "RESULTS", 1.5f*spacing, screenHeight - spacing/2f - 2f*(textbox.getHeight() - winfont.getLineHeight())/3f);
         winfont.setScale(1f / 400f * screenWidth, 1f / 400f * screenHeight);
 
         if (page_number == 0) {
 
-            winfont.setColor(Color.GREEN);
-            winfont.draw(batch, "Number of Enemies", spacing + sqSide, screenHeight - (sqSide / 2f) - 3 * winfont.getXHeight());                            //Number of Enemies Result
+            winfont.setColor(Color.WHITE);
+            winfont.draw(batch, "Number of Enemies", spacing + sqSide, screenHeight - (sqSide / 2f) - 4f * winfont.getXHeight());                            //Number of Enemies Result
             winfont.setColor(Color.RED);
-            winfont.draw(batch, enemies + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 3 * winfont.getXHeight());
+            winfont.draw(batch, enemies + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 4f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
-            winfont.draw(batch, "Damage Taken", spacing + sqSide, screenHeight - (sqSide / 2f) - 5f * winfont.getXHeight());                                 //Health Remainder
+            winfont.setColor(Color.WHITE);
+            winfont.draw(batch, "Damage Taken", spacing + sqSide, screenHeight - (sqSide / 2f) - 6f * winfont.getXHeight());                                 //Health Remainder
             winfont.setColor(Color.RED);
-            winfont.draw(batch, damage + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 5f * winfont.getXHeight());
+            winfont.draw(batch, damage + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 6f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
-            winfont.draw(batch, "Experience Gained", spacing + sqSide, screenHeight - (sqSide / 2f) - 7f * winfont.getXHeight());                                 //Health Remainder
+            winfont.setColor(Color.WHITE);
+            winfont.draw(batch, "Experience Gained", spacing + sqSide, screenHeight - (sqSide / 2f) - 8f * winfont.getXHeight());                                 //Health Remainder
             winfont.setColor(Color.RED);
-            winfont.draw(batch, exp_const + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 7f * winfont.getXHeight());
+            winfont.draw(batch, exp_const + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 8f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
-            winfont.draw(batch, "Experience to Next Level", spacing + sqSide, screenHeight - (sqSide / 2f) - 9f * winfont.getXHeight());                                 //Health Remainder
+            winfont.setColor(Color.WHITE);
+            winfont.draw(batch, "Experience to Next Level", spacing + sqSide, screenHeight - (sqSide / 2f) - 10f * winfont.getXHeight());                                 //Health Remainder
             winfont.setColor(Color.RED);
-            winfont.draw(batch, player.getExpTarget()-player.getExperience() + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 9f * winfont.getXHeight());
+            winfont.draw(batch, player.getExpTarget()-player.getExperience() + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 10f * winfont.getXHeight());
         }
 
         if (page_number == 1)
         {
-            winfont.setColor(Color.GREEN);
+            winfont.setColor(Color.WHITE);
             winfont.draw(batch, "Number of Bads:", spacing + sqSide, screenHeight - (sqSide / 2f) - 7f * winfont.getXHeight());
             winfont.setColor(Color.RED);
             winfont.draw(batch, ratings[0] + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 7f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
+            winfont.setColor(Color.WHITE);
             winfont.draw(batch, "Number of Okays:", spacing + sqSide, screenHeight - (sqSide / 2f) - 9f * winfont.getXHeight());
             winfont.setColor(Color.RED);
             winfont.draw(batch, ratings[1] + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 9f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
+            winfont.setColor(Color.WHITE);
             winfont.draw(batch, "Number of Goods:", spacing + sqSide, screenHeight - (sqSide / 2f) - 11f * winfont.getXHeight());
             winfont.setColor(Color.RED);
             winfont.draw(batch, ratings[2] + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 11f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
+            winfont.setColor(Color.WHITE);
             winfont.draw(batch, "Number of Greats:", spacing + sqSide, screenHeight - (sqSide / 2f) - 13f * winfont.getXHeight());
             winfont.setColor(Color.RED);
             winfont.draw(batch, ratings[3] + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 13f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
+            winfont.setColor(Color.WHITE);
             winfont.draw(batch, "Number of Amazings:", spacing + sqSide, screenHeight - (sqSide / 2f) - 15f * winfont.getXHeight());
             winfont.setColor(Color.RED);
             winfont.draw(batch, ratings[4] + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 15f * winfont.getXHeight());
 
-            winfont.setColor(Color.GREEN);
+            winfont.setColor(Color.WHITE);
             winfont.draw(batch, "Number of Perfects:", spacing + sqSide, screenHeight - (sqSide / 2f) - 17f * winfont.getXHeight());
             winfont.setColor(Color.RED);
             winfont.draw(batch, ratings[5] + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 17f * winfont.getXHeight());
         }
-
         winfont.setColor(Color.GREEN);
         winfont.draw(batch, "Rank", 1.5f*spacing, sqSide);
         winfont.setScale(2.5f/400f*screenWidth, 2.5f/400f*screenHeight);
@@ -205,7 +216,14 @@ public class WinState extends GameState {
         if (ExpEarned < 0 )         //you can only leave the winstate when you have fully leveled up
         {
             if (x > screenWidth-(buttons.getWidth()+spacing) && y > screenHeight - (buttons.getHeight()+spacing))
-                    endWinState();
+            {
+                if (page_number == 0)
+                {
+                    page_number = 1;
+                    return false;
+                }
+                endWinState();
+            }
         }
         return false;
     }
@@ -289,4 +307,5 @@ public class WinState extends GameState {
         return false;
     }
 }
+
 
