@@ -176,11 +176,11 @@ public class Inventory
     {
         int tsquareQ = 0, scarfQ = 0, macQ = 0, bookQ = 0, coffeeQ = 0, energyQ = 0, noodlesQ = 0, sandwichQ = 0;
         String equippedWeapon = "None", equippedArmour = "None";
-        if(load)
+        if(load && Gdx.files.local("items.xml").exists())
         {
             try {
                 XmlReader reader = new XmlReader();
-                FileHandle handle1 = Gdx.files.internal("items.xml");
+                FileHandle handle1 = Gdx.files.local("items.xml");
                 XmlReader.Element root = reader.parse(handle1.readString());
                 XmlReader.Element equipment = root.getChildByName("equipment");
                 XmlReader.Element combatItems = root.getChildByName("combatItem");
@@ -195,13 +195,6 @@ public class Inventory
                 sandwichQ = combatItems.getInt("Sandwich");
                 equippedWeapon = equipped.getChildByName("Weapon").getText();
                 equippedArmour = equipped.getChildByName("Armour").getText();
-
-                System.out.println("Wep = " + equippedWeapon);
-                System.out.println("Arm = " + equippedArmour);
-                //System.out.println("TQ = " + tsquareQ);
-                //System.out.println(scarfQ);
-                //System.out.println(macQ);
-                //System.out.println(bookQ);
             }
             catch (Exception e)
             {
@@ -214,10 +207,10 @@ public class Inventory
             scarfQ = 1;
             macQ = 1;
             bookQ = 1;
-            coffeeQ = 5;
-            energyQ = 5;
-            noodlesQ = 5;
-            sandwichQ = 5;
+            coffeeQ = 10;
+            energyQ = 10;
+            noodlesQ = 10;
+            sandwichQ = 10;
             equippedWeapon = "None";
             equippedArmour = "None";
         }

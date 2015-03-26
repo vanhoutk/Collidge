@@ -94,7 +94,6 @@ public class GameStateManager
         return gameStates.get(currentState);
     }
 
-    //Kris -- adding in for testing of Inventory State
     public void openInventory(Player player)
     {
         gameStates.add(new InventoryState(this, player));

@@ -11,9 +11,26 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
-import java.io.StringWriter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * Created by simon on 11/02/15.
@@ -425,24 +442,6 @@ public class GameMenu extends GameState
         if(savePressed)
         {
             //batch.draw(save, Gdx.graphics.getWidth()/2 - save.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
-            /**
-             * Kris -- just trying to save to an xml
-             */
-            XmlReader reader = new XmlReader();
-            FileHandle handle1 = Gdx.files.internal("items.xml");
-            XmlReader.Element root = reader.parse(handle1.readString());
-            //XmlReader.Element equipment = root.getChildByName("equipment");
-            //XmlReader.Element combatItems = root.getChildByName("combatItem");
-            XmlReader.Element equipped = root.getChildByName("equipped");
-            equipped.getChildByName("Weapon").setText(gsm.user.equippedWeapon);
-            equipped.getChildByName("Armour").setText(gsm.user.equippedArmour);
-
-            String equippedWeapon = equipped.getChildByName("Weapon").getText();
-            String equippedArmour = equipped.getChildByName("Armour").getText();
-
-            System.out.println("Wep = " + equippedWeapon);
-            System.out.println("Arm = " + equippedArmour);
-
             Font.setColor(Color.WHITE);
             Font.setScale(screenWidth / 400f, screenHeight / 400f);
             Font.draw(batch, "GAME SAVED", screenWidth*2/5 , screenHeight/2);
@@ -511,6 +510,7 @@ public class GameMenu extends GameState
                 }
                 if (x > save.getX() && x < save.getX() + save.getWidth()) {
                     savePressed = true;
+                    saveInventory();
                 }
             }
 
@@ -636,6 +636,52 @@ public class GameMenu extends GameState
     public void update()
     {
 
+    }
+
+    public void saveInventory()
+    {
+        /**
+         * Kris -- just trying to save to an xml
+         */
+        if(Gdx.files.isLocalStorageAvailable())
+        {
+            System.out.println("Local storage available");
+
+            System.out.println("Doesn't extist, trying to create new file");
+            OutputStream out=Gdx.files.local( "items.xml" ).write(false);
+            try
+            {
+                String saveInv;
+                saveInv = ("<inventory>\n\t<equipment>\n\t\t"
+                            + "<Tsquare>" + gsm.user.items.getItemQuantity("Tsquare") + "</Tsquare>\n\t\t"
+                            + "<Scarf>" + gsm.user.items.getItemQuantity("Scarf") + "</Scarf>\n\t\t"
+                            + "<macShield>" + gsm.user.items.getItemQuantity("Macshield") + "</macShield>\n\t\t"
+                            + "<bookShield>" + gsm.user.items.getItemQuantity("Bookshield") + "</bookShield>\n\t"
+                            + "</equipment>\n\t<combatItem>\n\t\t"
+                            + "<Coffee>" + gsm.user.items.getItemQuantity("Coffee") + "</Coffee>\n\t\t"
+                            + "<EnergyDrink>" + gsm.user.items.getItemQuantity("Energy Drink") + "</EnergyDrink>\n\t\t"
+                            + "<Noodles>" + gsm.user.items.getItemQuantity("Noodles") + "</Noodles>\n\t\t"
+                            + "<Sandwich>" + gsm.user.items.getItemQuantity("Sandwich") + "</Sandwich>\n\t"
+                            + "</combatItem>\n\t<equipped>\n\t\t"
+                            + "<Weapon>" + gsm.user.equippedWeapon + "</Weapon>\n\t\t"
+                            + "<Armour>" + gsm.user.equippedArmour + "</Armour>\n\t"
+                            + "</equipped>\n</inventory>)");
+                out.write(saveInv.getBytes());
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

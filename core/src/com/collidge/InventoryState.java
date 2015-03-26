@@ -1,6 +1,7 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.XmlReader;
 
 /**
  * Created by Kris on 24-Jan-15. Last modified 25-Feb-15.
@@ -456,6 +458,15 @@ public class InventoryState extends GameState
             else if(y > (sqSide + spacing) && y < (2 * sqSide + spacing) && (equipNum + itemNum) >= 8)
             {
                 selectedItem = 8;
+                XmlReader reader = new XmlReader();
+                FileHandle handle1 = Gdx.files.local("items.xml");
+                XmlReader.Element root = reader.parse(handle1.readString());
+                XmlReader.Element equipped = root.getChildByName("equipped");
+                String equippedWeapon = equipped.getChildByName("Weapon").getText();
+                String equippedArmour = equipped.getChildByName("Armour").getText();
+
+                System.out.println("Wep = " + equippedWeapon);
+                System.out.println("Arm = " + equippedArmour);
             }
         }
         else if(x > (5 * spacing + 4 * sqSide) && x < 5 * (spacing + sqSide))
