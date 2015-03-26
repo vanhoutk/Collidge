@@ -711,12 +711,18 @@ public class Fight extends GameState
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
+        playr.changeEnergy(playr.getIntelligence());
 
         monsterCode=-2;
         if(ActionType==2)       //flee
         {
 
-            if(fMenu.getMoveString(ActionType,ActionId).equals("Flee"))
+            if(fMenu.getMoveString(ActionType,ActionId).equals("Recharge"))
+            {
+                playr.changeEnergy((int)(playr.getIntelligence()*2));
+                playerTurnEnd();
+            }
+            else if(fMenu.getMoveString(ActionType,ActionId).equals("Flee"))
             {
 
                 expEarned=0;
@@ -802,7 +808,7 @@ public class Fight extends GameState
     {
 
 
-        playr.changeEnergy(playr.getIntelligence());
+
 
         if(enemiesLeft>0&&playr.getCurrentHealth()>0)
         {

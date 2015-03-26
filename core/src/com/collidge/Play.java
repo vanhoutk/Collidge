@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  */
 public class Play extends GameState {
 
+    private int cameraRotation=0,rotationSpeed=18;//use rotation speed to set the speed of rotation, note that it must be a factor of 360 to stop on the same spot it starts on
     Player userCharacter;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -90,7 +91,7 @@ public class Play extends GameState {
     @Override
     public void draw()
     {
-        if(TimeUtils.timeSinceMillis(enteringFight)>3000)
+        if(TimeUtils.timeSinceMillis(enteringFight)>5000)
         {
             float cameraX = player.getX() + player.getWidth() / 2;
             float cameraY = player.getY() + player.getHeight() / 2;
@@ -112,14 +113,16 @@ public class Play extends GameState {
             camera.position.set(cameraX, cameraY, 0);
         }
 
-        if(TimeUtils.timeSinceMillis(enteringFight)<1000)
+        else if(TimeUtils.timeSinceMillis(enteringFight)<2000)
         {
-            camera.rotate(716*Gdx.graphics.getDeltaTime()); //Mobile rotation speed
-            //camera.rotate(710*Gdx.graphics.getDeltaTime()); --Desktop rotation speed
-            //camera.rotate(500*Gdx.graphics.getDeltaTime());
+            camera.rotate(rotationSpeed); //Mobile rotation speed
+            cameraRotation+=rotationSpeed;
+            cameraRotation%=360;
         }
-        else if(TimeUtils.timeSinceMillis(enteringFight)>1000&&TimeUtils.timeSinceMillis(enteringFight)<3000)
+        if(TimeUtils.timeSinceMillis(enteringFight)>800&&cameraRotation==rotationSpeed)
         {
+            enteringFight=0;
+            cameraRotation=0;
             camera.setToOrtho(false,480,(480*(((float)Gdx.graphics.getHeight())/(float)Gdx.graphics.getWidth())));
             gsm.startFight(userCharacter,fighting);
         }
