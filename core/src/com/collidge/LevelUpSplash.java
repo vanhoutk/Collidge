@@ -70,34 +70,37 @@ public class LevelUpSplash extends GameState
     @Override
     public void update()
     {
-
         switch(selected)
         {
             case 0:
                 infoText="Health: More Hp for a healthier you   \n+"
-                        +player.getHealthPointsMult()+"Hp. Current Value: "+(int)(player.getHealthPointsMult()*(1+player.getLevel()+player.getHealthPoints()));
+                        +player.getHealthPointsMult()+"Hp. Current Value: "
+                        +(player.getBaseHealthPoints()+(int)(player.getHealthPointsMult()*(1+player.getLevel()+player.getHealthPoints())));
                 break;
             case 1:
                 infoText="Defence: Take less damage from attacks, insults still sting though\n+"
-                        +player.getDefencePointsMult()+"Def. Current Value: "+(int)(player.getDefencePointsMult()*(1+player.getLevel()+player.getDefencePoints()));
+                        +player.getDefencePointsMult()+"Def. Current Value: "
+                        +(player.getBaseDefencePoints()+(int)(player.getDefencePointsMult()*(1+player.getLevel()+player.getDefencePoints())));
                 break;
             case 2:
                 infoText="Attack: Kick more ass, take more names, chew less gum\n+"
-                        +player.getAttackPointsMult()+"Atk. Current Value: "+(int)(player.getAttackPointsMult()*(1+player.getLevel()+player.getAttackPoints()));
+                        +player.getAttackPointsMult()+"Atk. Current Value: "
+                        +(player.getBaseAttackPoints()+(int)(player.getAttackPointsMult()*(1+player.getLevel()+player.getAttackPoints())));
                 break;
             case 3:
                 infoText="Energy: WOW, that's the biggest energy bar I've ever seen!\n+"
-                        +player.getEnergyPointsMult()+"En. Current Value: "+(int)(player.getEnergyPointsMult()*(1+player.getLevel()+player.getEnergyPoints()));
+                        +player.getEnergyPointsMult()+"En. Current Value: "
+                        +(player.getBaseEnergyPoints()+(int)(player.getEnergyPointsMult()*(1+player.getLevel()+player.getEnergyPoints())));
                 break;
             case 4:
                 infoText="Intelligence: Get more smarter at Energy Regeneration\n+"
-                        +player.getIntelligencePointsMult()+"Int. Current Value: "+(int)(player.getIntelligencePointsMult()*(1+player.getLevel()+player.getIntelligencePoints()));
+                        +player.getIntelligencePointsMult()+"Int. Current Value: "
+                        +(player.getBaseIntelligencePoints()+(int)(player.getIntelligencePointsMult()*(1+player.getLevel()+player.getIntelligencePoints())));
                 break;
             default:
                 infoText="Pick a stat to increase! \n(On top of standard level up values)";
                 break;
         }
-
     }
 
     @Override

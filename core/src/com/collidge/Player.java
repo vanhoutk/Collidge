@@ -31,16 +31,49 @@ public class Player
 
 
     private int
-            baseAttackPoints=3,
-            baseDefencePoints=0,
-            baseIntelligencePoints=1,
-            baseHealthPoints=20,
-            baseEnergyPoints=5;
+            baseAttackPoints=3;
+    private int baseDefencePoints=0;
+    private int baseIntelligencePoints=1;
+
+
+    private int baseHealthPoints=20;
+    private int baseEnergyPoints=5;
 
     //Kris Added- Variables for equipped Weapon and equipped Armour
 
     String equippedWeapon;
     String equippedArmour;
+
+
+    public String getPlayer_name()
+    {
+        return player_name;
+    }
+
+    public int getBaseAttackPoints()
+    {
+        return baseAttackPoints;
+    }
+
+    public int getBaseDefencePoints()
+    {
+        return baseDefencePoints;
+    }
+
+    public int getBaseIntelligencePoints()
+    {
+        return baseIntelligencePoints;
+    }
+
+    public int getBaseHealthPoints()
+    {
+        return baseHealthPoints;
+    }
+
+    public int getBaseEnergyPoints()
+    {
+        return baseEnergyPoints;
+    }
 
     public double getAttackPointsMult()
     {

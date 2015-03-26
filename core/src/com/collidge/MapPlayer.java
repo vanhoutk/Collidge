@@ -150,16 +150,14 @@ public class MapPlayer extends Sprite
     public void drawoutline(Batch spritebatch) {
 
 
-        if(velocity.x==0&&velocity.y==0)
+        if(walkingAnimation[direction].paused)
         {
-            outlineAnimation[direction].stop();
+            outlineAnimation[direction].pause();
         }
-        else
-        {
-            outlineAnimation[direction].play();
-            outlineAnimation[direction].setDelay((collisionlayer.getTileWidth()/velocity.len())/2);
-            outlineAnimation[direction].update(Gdx.graphics.getDeltaTime());
-        }
+
+
+        outlineAnimation[direction].setCurrentFrame(walkingAnimation[direction].getCurrentFrameNum());
+
 
         spritebatch.draw(outlineAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
 
