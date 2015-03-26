@@ -31,9 +31,15 @@ public class MapPlayer extends Sprite
     private static final int DOWN = 1;
     private static final int LEFT = 2;
     private static final int RIGHT = 3;
+    private static final int uUP = 0;
+    private static final int uDOWN = 1;
+    private static final int uLEFT = 2;
+    private static final int uRIGHT = 3;
+
 
     //Java holds objects in memory as long as there is a reference to it. Therefore you can make local textureregions, textures and pass them to the animation object.
     private Animation walkingAnimation[];
+    private Animation outlineAnimation[];
 
 
     private Texture walkingLeftTexture;
@@ -64,7 +70,7 @@ public class MapPlayer extends Sprite
     public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer)
     {
         super(sprite);
-
+ // Normal Character
         //create 4 textures to fit into an array of 4
         Texture walkingTextures[] = new Texture[4];
         walkingTextures[UP] = new Texture("back_player.png");
@@ -90,6 +96,32 @@ public class MapPlayer extends Sprite
             walkingAnimation[i] = new Animation(walkingRegions[i],.2f);
         }
 
+        //Outline
+
+        //create 4 textures to fit into an array of 4
+        Texture OutlineTextures[] = new Texture[4];
+        OutlineTextures[uUP] = new Texture("outline_back.png");
+        OutlineTextures[uDOWN] = new Texture("outline_front.png");
+        OutlineTextures[uRIGHT] = new Texture("outline_right.png");
+        OutlineTextures[uLEFT] = new Texture("outline_left.png");
+
+        //create 4 animations to hold 4 textureRegions each
+        outlineAnimation = new Animation[4];
+        //Create 16 TextureRegions because split returns a multidimensional array. But only use [0][i] part of dimensional array
+        TextureRegion outlineRegions[][] = new TextureRegion[4][4];
+        for(int j = 0; j < 4; j++) {
+            //split textures into texture regions
+            TextureRegion[][] region1 = TextureRegion.split(OutlineTextures[j], 32, 32);
+            for (int i = 0; i < 4; i++) {
+                //put split regions into actual walking regions
+                outlineRegions[j][i] = region1[0][i];
+            }
+        }
+
+        //Finally pass the texture regions to the 4 animation objects
+        for (int i = 0; i < 4; i++) {
+            outlineAnimation[i] = new Animation(outlineRegions[i],.2f);
+        }
         startTime = System.currentTimeMillis();
         currentTime = startTime;
         this.collisionlayer = collisionlayer;
@@ -113,6 +145,23 @@ public class MapPlayer extends Sprite
 
         spritebatch.draw(walkingAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
 
+
+    }
+    public void drawoutline(Batch spritebatch) {
+
+
+        if(velocity.x==0&&velocity.y==0)
+        {
+            outlineAnimation[direction].stop();
+        }
+        else
+        {
+            outlineAnimation[direction].play();
+            outlineAnimation[direction].setDelay((collisionlayer.getTileWidth()/velocity.len())/2);
+            outlineAnimation[direction].update(Gdx.graphics.getDeltaTime());
+        }
+
+        spritebatch.draw(outlineAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
 
     }
 
