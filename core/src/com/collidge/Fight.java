@@ -711,8 +711,6 @@ public class Fight extends GameState
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
-        playr.changeEnergy(playr.getIntelligence());
-
         monsterCode=-2;
         if(ActionType==2)       //flee
         {
@@ -826,7 +824,7 @@ public class Fight extends GameState
             endFight();
         }
 
-        fMenu.refreshMenus(playr);
+
     }
 
     private void enemyTurn(Player player,Enemy[] monsters,int monsterId)
@@ -960,6 +958,9 @@ public class Fight extends GameState
 
             waitingForTouch=true;
             fMenu.actionSelected=false;
+            playr.changeEnergy(playr.getIntelligence());
+            fMenu.refreshMenus(playr);
+
         }
         else
         {
