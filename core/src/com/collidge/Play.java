@@ -159,6 +159,7 @@ public class Play extends GameState {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("tower1"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("tower2"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("tower3"));
+        player.drawoutline(renderer.getBatch());
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
