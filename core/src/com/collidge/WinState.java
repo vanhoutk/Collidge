@@ -139,7 +139,7 @@ public class WinState extends GameState {
         if (page_number == 0) {
 
             winfont.setColor(Color.GREEN);
-            winfont.draw(batch, "Number of Enemies:", spacing + sqSide, screenHeight - (sqSide / 2f) - 3 * winfont.getXHeight());                            //Number of Enemies Result
+            winfont.draw(batch, "Number of Enemies", spacing + sqSide, screenHeight - (sqSide / 2f) - 3 * winfont.getXHeight());                            //Number of Enemies Result
             winfont.setColor(Color.RED);
             winfont.draw(batch, enemies + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 3 * winfont.getXHeight());
 

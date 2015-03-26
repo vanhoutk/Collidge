@@ -11,28 +11,23 @@ public class TargetPicker
     Enemy[] monsters;
     private int currentTarget;
     private int selectedTarget;
-    public boolean targetSelected;
-    Texture texture;
-    Sprite sprite;
-
+    public boolean targetHighlighted;   //true when the target has been tapped and square box is displayed around them
+    public boolean targetSelected;      //true when target is selected, go to next state (e.g. combo)
 
 
     private int targetingId;
 
-
-
     TargetPicker(Enemy[] enemies,int targetArea)
     {
-
-
-        texture=new Texture("arrow_up_blue.png");
-        sprite=new Sprite(texture);
+        //texture=new Texture("arrow_up_blue.png");
+        //sprite=new Sprite(texture);
         reset(enemies,targetArea);
     }
 
     public void Left()
     {
 
+        System.out.println("L");
         currentTarget--;
         if(currentTarget<0||monsters[currentTarget].getDead())
         {
@@ -40,8 +35,10 @@ public class TargetPicker
             {
                 currentTarget=monsters.length;
             }
+
             Left();
         }
+        System.out.println(currentTarget);
     }
     public void Right()
     {
@@ -53,10 +50,44 @@ public class TargetPicker
             {
                 currentTarget%=monsters.length;
                 currentTarget--;
+                System.out.println("X");
             }
+            System.out.println("O");
+
             Right();
+
+        }
+        System.out.println("R");
+        System.out.println(currentTarget);
+    }
+
+    public void goTo(int i)
+    {
+        if(currentTarget==i)
+        {
+            selectedTarget=i;
+            targetSelected=true;
+        }
+        else
+        {
+            currentTarget=i;
         }
     }
+
+    public void Target(int id)
+    {
+        if (currentTarget==id && targetHighlighted){
+            Select();
+        }
+        else {
+            currentTarget = id;
+            System.out.println("enemy id " + id);
+            targetHighlighted = true;
+            targetSelected = false;
+        }
+    }
+
+
     public void Select()
     {
         selectedTarget=currentTarget;
@@ -71,6 +102,7 @@ public class TargetPicker
 
     public void reset(Enemy[] enemies,int targetingArea)
     {
+
         targetingId=targetingArea;
         int enemyCount=0;
         for(int i=0;i<enemies.length;i++)
@@ -81,9 +113,10 @@ public class TargetPicker
                 enemyCount++;
             }
         }
-        if(enemyCount>=1)
+        if(enemyCount>1)
         {
             monsters=enemies;
+            targetHighlighted=false;
             targetSelected=false;
         }
         else
@@ -91,6 +124,7 @@ public class TargetPicker
             selectedTarget=currentTarget;
 
         }
+
     }
     public int getSelectedTarget()
     {

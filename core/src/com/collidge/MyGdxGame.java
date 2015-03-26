@@ -147,7 +147,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         }
         else
         {
-            Gdx.gl.glClearColor(1, 0, 0, 1);
+            Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             if(!backKey)
@@ -164,7 +164,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
 
                 screenMask.draw(batch);
-                quitFont.draw(batch, "Do you want to Quit?", 4*Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
+                quitFont.draw(batch, "Do you want to Exit to the main menu?", Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
                 quitFont.draw(batch, "Yes, I hate fun", 1*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
                 quitFont.draw(batch, "Not just yet!", 8*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
 
@@ -264,26 +264,26 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public void pause()
     {
-       // super.pause();
+        // super.pause();
     }
 
     @Override
     public void dispose()
     {
-      //  super.dispose();
+        //  super.dispose();
 
     }
 
     @Override
     public void resize(int width, int height)
     {
-       // super.resize(width, height);
+        // super.resize(width, height);
     }
 
     @Override
     public void resume()
     {
-       // super.resume();
+        // super.resume();
     }
 
 
@@ -307,8 +307,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             if(backKey==true&&backDown)
             {
-                quit=true;
-                return true;
+                if(gsm.currentState != 0) {
+                    quit = true;
+                    return true;
+                }
+                else {
+                    gsm.startOpenScreen();
+                    return true;
+                }
             }
             backDown=true;
 
@@ -363,9 +369,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             {
                 if (x > Gdx.graphics.getWidth() / 10 && x < Gdx.graphics.getWidth()*.375)
                 {
-                    quit = true;
-                    backKey=false;
-
+                    if(gsm.currentState != 0) {
+                        quit = true;
+                        return true;
+                    }
+                    else {
+                        gsm.startOpenScreen();
+                        return true;
+                    }
                 } else if (x > 2*Gdx.graphics.getWidth()/3 && x < .9*Gdx.graphics.getWidth())
                 {
                     backKey = false;

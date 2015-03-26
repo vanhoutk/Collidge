@@ -15,8 +15,9 @@ public class GameStateManager
     //ArrayList (dynamic list) which holds every state
     private ArrayList<GameState> gameStates;
     //There can only be one current state
-    public int currentState;
+    public int currentState, previousState;
     public Player user;
+    public int volumeLevel, musicLevel;
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -32,8 +33,10 @@ public class GameStateManager
 
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
+        GameState state0 = new OpenScreen(this);
         GameState state1 = new Play(this);
-       // GameState state2 = new TestState2(this);
+        // GameState state2 = new TestState2(this);
+        gameStates.add(state0);
         gameStates.add(state1);
 
         //currentState = MENUSTATE;
@@ -51,8 +54,10 @@ public class GameStateManager
         user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
+        GameState state0 = new OpenScreen(this);
         GameState state1 = new Play(this);
         // GameState state2 = new TestState2(this);
+        gameStates.add(state0);
         gameStates.add(state1);
 
         //currentState = MENUSTATE;
@@ -72,9 +77,10 @@ public class GameStateManager
     //change state to any other state. Alternatively we could make a new object each time instead of keeping them in memory.
     public void changeState(int state)
     {
+        previousState = currentState;
         if (state >= gameStates.size())
         {
-            state = 0;
+            state = 1;
         }
         //gameStates.get(currentState).dispose();
         currentState = state;
@@ -97,7 +103,7 @@ public class GameStateManager
 
     public void closeInventory()
     {
-        changeState(0);
+        changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
@@ -118,11 +124,9 @@ public class GameStateManager
     public void endFight()
     {
         //TODO add previous state class stuff
-        changeState(0);
+        changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
-
-
     }
 
     public void openMenu(Player player)
@@ -133,9 +137,28 @@ public class GameStateManager
 
     public void closeMenu()
     {
-        changeState(0);
+        System.out.println("Previous state was: " + previousState);
+        changeState(previousState);
+        //changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
+    }
+    
+    public int getVolume()
+    {
+        return volumeLevel;
+    }
+    public int getMusic()
+    {
+        return musicLevel;
+    }
+    public void setVolume(int volume)
+    {
+        volumeLevel = volume;
+    }
+    public void setMusic(int music)
+    {
+        musicLevel = music;
     }
 
     public void levelUpState(Player player)
@@ -167,6 +190,16 @@ public class GameStateManager
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
         gameStates.add(new WinState(this,player, Exp, enemies, damage_taken, ratings));    //Makes a new Win State
         changeState(gameStates.size()-1);               //Moves to the new state
+    }
+
+    public void startOpenScreen()
+    {
+        changeState(0);
+    }
+
+    public void endOpenScreen()
+    {
+        changeState(1);
     }
 
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.

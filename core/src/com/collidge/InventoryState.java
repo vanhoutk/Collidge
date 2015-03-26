@@ -13,10 +13,6 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Kris on 24-Jan-15. Last modified 25-Feb-15.
  *
  * Will contain all of the drawing and display involved with the InventoryState
- *
- * TODO: Comment code
- * TODO: Clean up code
- * TODO: Stop items being used when you have full health / energy
  */
 public class InventoryState extends GameState
 {

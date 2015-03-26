@@ -16,7 +16,7 @@ public class Enemy
     private boolean dead;
     String name;
     private Texture texture;
-    Animation animation;
+    Animation animation,attackAnimation;
     int width;
     int height;
 
@@ -37,7 +37,6 @@ public class Enemy
         expValue=exp;
         currentHealth=maxHealth;
         dead=false;
-        addTextures();
         width= (int)(Gdx.graphics.getWidth()/sizeX);
         height=(int)(Gdx.graphics.getHeight()/sizeY);
     }
@@ -61,7 +60,16 @@ public class Enemy
 
        // System.out.println(this.getName()+": "+this.maxHealth+"hp -ATK:"+this.attack+"  DEF:"+this.defence+"  EXP:"+this.expValue);
         dead=false;
-        addTextures();
+        texture=new Texture(name+".png");
+        TextureRegion[][] region = TextureRegion.split(texture,32,32);
+        animation=new Animation(region[0],.2f);
+        texture=new Texture(name+"Attack.png");
+        TextureRegion[][] regionA = TextureRegion.split(texture,32,32);
+        attackAnimation=new Animation(regionA[0],1.5f/regionA[0].length);
+
+
+
+
 
 
 
@@ -106,41 +114,5 @@ public class Enemy
         {
             dead=true;
         }
-    }
-
-    private void addTextures()
-    {
-            if (this.getName().equals("Fresher"))
-            {
-                texture=new Texture("walking_left_animation.png");
-                TextureRegion[][] region = TextureRegion.split(texture,32,32);
-                animation=new Animation(region[0],.2f);
-            }
-            else if (this.getName().equals("Frat boy"))
-            {
-                texture=new Texture("walking_left_animation.png");
-                TextureRegion[][] region = TextureRegion.split(texture,32,32);
-                animation=new Animation(region[0],.2f);
-            }
-
-            else if (this.getName().equals("Debater"))
-            {
-                texture=new Texture("walking_left_animation.png");
-                TextureRegion[][] region = TextureRegion.split(texture,32,32);
-                animation=new Animation(region[0],.2f);
-            }
-
-            else if (this.getName().equals("Lecturer"))
-            {
-                texture=new Texture("walking_left_animation.png");
-                TextureRegion[][] region = TextureRegion.split(texture,32,32);
-                animation=new Animation(region[0],.2f);
-            }
-            else
-            {
-                texture=new Texture("walking_left_animation.png");
-                TextureRegion[][] region = TextureRegion.split(texture,32,32);
-                animation=new Animation(region[0],.2f);
-            }
     }
 }

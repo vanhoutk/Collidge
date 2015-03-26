@@ -14,14 +14,14 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
-
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Created by Gary on 26/01/2015.
  */
 public class Play extends GameState {
 
+    private int cameraRotation=0,rotationSpeed=18;//use rotation speed to set the speed of rotation, note that it must be a factor of 360 to stop on the same spot it starts on
     Player userCharacter;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -34,6 +34,8 @@ public class Play extends GameState {
     private Sprite menuButtonSprite, inventoryButtonSprite;
     private float ppx, ppy, px, py;
     private PopUpText popUps;
+    private long enteringFight=0;
+    private String fighting;
 
     private SpriteBatch  batch;
 
@@ -64,13 +66,10 @@ public class Play extends GameState {
 
         NPC npc1;
         NPC npc2;
-        npcList = new ArrayList<NPC>();
         npc1 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false);
         npc1.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
         npc2 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true);
         npc2.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
-        npcList.add(npc1);
-        npcList.add(npc2);
 
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
@@ -96,27 +95,41 @@ public class Play extends GameState {
     @Override
     public void draw()
     {
-        float cameraX=player.getX() + player.getWidth() / 2;
-        float cameraY=player.getY() + player.getHeight() / 2;
-        if((cameraX+camera.viewportWidth/2)>(player.getCollisionLayer().getTileWidth()*player.getCollisionLayer().getWidth()))
+        if(TimeUtils.timeSinceMillis(enteringFight)>5000)
         {
-            cameraX=(player.getCollisionLayer().getTileWidth()*player.getCollisionLayer().getWidth())-(camera.viewportWidth/2);
-        }
-        else if((cameraX-camera.viewportWidth/2)<0)
-        {
-            cameraX=camera.viewportWidth/2;
-        }
-        if((cameraY+camera.viewportHeight/2)>(player.getCollisionLayer().getTileHeight()*player.getCollisionLayer().getHeight()))
-        {
-            cameraY=(player.getCollisionLayer().getTileHeight()*player.getCollisionLayer().getHeight())-(camera.viewportHeight/2);
-        }
-        else if((cameraY-camera.viewportHeight/2)<0)
-        {
-            cameraY=camera.viewportHeight/2;
+            float cameraX = player.getX() + player.getWidth() / 2;
+            float cameraY = player.getY() + player.getHeight() / 2;
+            if ((cameraX + camera.viewportWidth / 2) > (player.getCollisionLayer().getTileWidth() * player.getCollisionLayer().getWidth()))
+            {
+                cameraX = (player.getCollisionLayer().getTileWidth() * player.getCollisionLayer().getWidth()) - (camera.viewportWidth / 2);
+            } else if ((cameraX - camera.viewportWidth / 2) < 0)
+            {
+                cameraX = camera.viewportWidth / 2;
+            }
+            if ((cameraY + camera.viewportHeight / 2) > (player.getCollisionLayer().getTileHeight() * player.getCollisionLayer().getHeight()))
+            {
+                cameraY = (player.getCollisionLayer().getTileHeight() * player.getCollisionLayer().getHeight()) - (camera.viewportHeight / 2);
+            } else if ((cameraY - camera.viewportHeight / 2) < 0)
+            {
+                cameraY = camera.viewportHeight / 2;
+            }
+
+            camera.position.set(cameraX, cameraY, 0);
         }
 
-        camera.position.set(cameraX,cameraY, 0);
-
+        else if(TimeUtils.timeSinceMillis(enteringFight)<2000)
+        {
+            camera.rotate(rotationSpeed); //Mobile rotation speed
+            cameraRotation+=rotationSpeed;
+            cameraRotation%=360;
+        }
+        if(TimeUtils.timeSinceMillis(enteringFight)>800&&cameraRotation==rotationSpeed)
+        {
+            enteringFight=0;
+            cameraRotation=0;
+            camera.setToOrtho(false,480,(480*(((float)Gdx.graphics.getHeight())/(float)Gdx.graphics.getWidth())));
+            gsm.startFight(userCharacter,fighting);
+        }
         camera.update();
 
         renderer.setView(camera);
@@ -127,10 +140,12 @@ public class Play extends GameState {
 
        // player.draw(renderer.getBatch());
 
-        player.draw(renderer.getBatch());
-        for (int i = 0; i < npcList.size(); i++) {
-            npcList.get(i).draw((renderer.getBatch()));
+        if(TimeUtils.timeSinceMillis(enteringFight)>3000)
+        {
+            player.draw(renderer.getBatch());
         }
+        npc1.draw((renderer.getBatch()));
+        npc2.draw((renderer.getBatch()));
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
@@ -196,7 +211,7 @@ public class Play extends GameState {
     @Override
     public void update()
     {
-        if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510)
+        if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510&&TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
             //Kris -- just put in to test InventoryState
             //gsm.openInventory(userCharacter);
@@ -208,26 +223,30 @@ public class Play extends GameState {
             }
             if(player.direction==0)
             {
+                enteringFight=TimeUtils.millis();
                 saveplay();
-                gsm.startFight(userCharacter, "Loner");
+                fighting= "Loner";
                 player.setPosition(getx(),gety()-10);
             }
             else if(player.direction==1)
             {
+                enteringFight=TimeUtils.millis();
                 saveplay();
-                gsm.startFight(userCharacter, "Preppy");
+                fighting="Preppy";
                 player.setPosition(getx(),gety()+100);
             }
             else if(player.direction==2)
             {
+                enteringFight=TimeUtils.millis();
                 saveplay();
-                gsm.startFight(userCharacter, "Pledge");
+                fighting="Pledge";
                 player.setPosition(getx()+100,gety());
             }
             else if(player.direction==3)
             {
+                enteringFight=TimeUtils.millis();
                 saveplay();
-                gsm.startFight(userCharacter, "Full Set");
+                fighting= "Full Set";
                 player.setPosition(getx()-100,gety());
             }
 
@@ -245,7 +264,8 @@ public class Play extends GameState {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        if(screenX>Gdx.graphics.getWidth()*8/10  && screenY>inventoryButtonSprite.getHeight()){
+        if(screenX>Gdx.graphics.getWidth()*8/10  && screenY>inventoryButtonSprite.getHeight())
+        {
             player.touchDown(100,100,100,100);
 
         }

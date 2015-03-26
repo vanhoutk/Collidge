@@ -56,6 +56,7 @@ public class Fight extends GameState
     private Sprite background;
     private Sprite targetArrow,targetReticule,backArrow;
     private int animCount;
+    private int[] enemyX,enemyY;
 
 
     Timer.Task damager=new Timer.Task()
@@ -66,7 +67,7 @@ public class Fight extends GameState
 
 
             //if damage was dealt to the player, subtract health
-            if (damage[0] > 0)
+            if (damage[0] > 1)
             {
 
                 damage[0]--;
@@ -153,6 +154,17 @@ public class Fight extends GameState
         enemiesLeft=enemyCount;
         damage=new double[enemies.length+1];         // damage[0] is player damage taken, damage[1] is for the first enemy, etc.
 
+        enemyX=new int[enemiesLeft];
+        enemyY=new int[enemiesLeft];
+
+        for(int i=0;i<enemyX.length;i++)
+        {
+            enemyX[i]=((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount)))));
+        }
+        for(int i=0;i<enemyY.length;i++)
+        {
+            enemyY[i]=screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2));
+        }
         move=new Attack();        //calls the attack class
 
         //enemies=new Enemy[enemyCount];
@@ -179,7 +191,7 @@ public class Fight extends GameState
 
         texture = new Texture("portrait.png");
         portrait = new Sprite(texture);
-        texture =new Texture ("background.png");
+        texture =new Texture ("background2.png");
         background=new Sprite(texture);
         background.setPosition(0,0);
         background.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -254,13 +266,15 @@ public class Fight extends GameState
                     defend=false;
                     defendTurn(playr, enemies, monsterCode);
                 }
-                else if(enemies[monsterCode].animation.getTimesPlayed()>animCount+1||enemies[monsterCode].getDead())
+                else if(enemies[monsterCode].attackAnimation.getTimesPlayed()>animCount||enemies[monsterCode].getDead())
                 {
                     enemyTurnPart2();
+                    enemies[monsterCode].attackAnimation.stop();
+
                 }
                 else
                 {
-                    enemies[monsterCode].animation.update(Gdx.graphics.getDeltaTime());
+                    enemies[monsterCode].attackAnimation.update(Gdx.graphics.getDeltaTime());
                 }
 
             }
@@ -319,8 +333,6 @@ public class Fight extends GameState
         {
             if(!enemies[i].getDead())
             {
-
-
                 int target=0;
                 if((targeting&&targetPicker.getCurrentTarget()==i)||monsterCode==i)
                 {
@@ -339,17 +351,70 @@ public class Fight extends GameState
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
 
 
+                    selector.setPosition(enemyX[i],enemyY[i]);
+                    selector.setSize(enemies[i].width,enemies[i].height);
+                    selector.draw(batch);
 
                 }
                 else
                 {
                     target=0;
+                }
+
+                /*int enemyCountTemp;
+                int iTemp;
+
+                if (i < 5) {    //2 rows of enemies, 5 in each
+                    //batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                    if (enemyCount > 5){
+                        enemyCountTemp = 5;
+                    }
+                    else {
+                        enemyCountTemp = enemyCount;
+                    }
+
+                    batch.draw(enemies[i].animation.getFrame(),
+                            ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                            screenHeight / 18 + (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8)),
+                            enemies[i].width,
+                            enemies[i].height);
 
 
                 }
 
-                batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                else if (i < 9 && i >= 5) {
+                    //batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + enemies[i].width + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1 - 5)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+
+                    enemyCountTemp = enemyCount - 5;
+                    iTemp = i-5;
+
+                    batch.draw(enemies[i].animation.getFrame(),
+                            ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                            screenHeight / 28 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)),
+                            enemies[i].width,
+                            enemies[i].height);
+                }
+
+                else {
+                    enemyCountTemp = enemyCount - 9;
+                    iTemp = i-9;
+
+
+                }*/
+
                 if(!targeting)
+/*
+                    batch.draw(enemies[i].animation.getFrame(),
+                            ((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                            2*screenHeight / 5 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)),
+                            enemies[i].width,
+                            enemies[i].height);
+                }
+
+
+
+                    if(!targeting)
+*/
                 {
                     battleFont.setColor(Color.RED);
                     battleFont.draw(batch, enemies[i].getHealth() + "", ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount)))))+screenWidth/10, battleFont.getLineHeight());
@@ -361,14 +426,62 @@ public class Fight extends GameState
 
                 if(targeting&&(targetPicker.getCurrentTarget()+targetPicker.getTargetingId()>=i&&targetPicker.getCurrentTarget()-targetPicker.getTargetingId()<=i))
                 {
+                    /*battleFont.setColor(Color.RED);
+                    battleFont.draw(batch, "Tap to choose a target!", screenWidth/20, screenHeight/2);
+                    battleFont.setColor(Color.BLACK);
 
-                    selector.setPosition(((int)(screenWidth/2+(i*(screenWidth/(double)(3*enemyCount)))))-target,screenHeight/10+(int)(((enemyCount-(i+1))/(double)(enemyCount))*(screenHeight/2)));
+
+                    /*if (i < 5) {
+                        if (enemyCount > 5){
+                            enemyCountTemp = 5;
+                        }
+                        else {
+                            enemyCountTemp = enemyCount;
+                        }
+                        selector.setPosition(((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                                screenHeight / 18 + (int) ((((enemyCountTemp) - (i + 1)) / (double) (enemyCountTemp)) * (screenHeight / 1.8)));
+                    }
+
+                    else if (i < 9 && i >= 5) {
+                        enemyCountTemp = enemyCount - 5;
+                        iTemp = i-5;
+
+                        selector.setPosition(
+                                ((int) (screenWidth / 2 + 1.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                                screenHeight / 28 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)));
+                    }
+
+                    else {
+                        enemyCountTemp = enemyCount - 9;
+                        iTemp = i-9;
+
+                        selector.setPosition(((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
+                                2*screenHeight / 5 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)));
+                    }
+
                     selector.setSize(enemies[i].width,enemies[i].height);
-                    selector.draw(batch);
-                    //TODO fix health bar so that it fills top of enemy side
+                    if (targetPicker.targetHighlighted == true) {   //don't draw the selector box unless a target has been tapped
+                        battleFont.setColor(Color.RED);
+                        battleFont.draw(batch, "Tap again to confirm!", screenWidth/20, screenHeight/2 - battleFont.getLineHeight());
+                        battleFont.setColor(Color.BLACK);
+                        selector.draw(batch);
+                    }*/
 
-                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
+
                 }
+
+                if(monsterCode==i)
+                {
+                    batch.draw(enemies[i].attackAnimation.getFrame(), enemyX[i], enemyY[i], enemies[i].width, enemies[i].height);
+
+                }
+                else
+                {
+                    batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
+                    enemies[i].animation.update(Gdx.graphics.getDeltaTime());
+
+                }
+
                 /*else
                 {
                     enemies[i].animation.pause();
@@ -377,7 +490,7 @@ public class Fight extends GameState
             }
         }
 
-        if(targeting)
+        if(targeting) //draws old targeting interface
         {
 
             targetArrow.setRotation(90);
@@ -499,75 +612,117 @@ public class Fight extends GameState
     public boolean tap(float x, float y, int count, int button)
     {
         //if selecting an action from the fight menu. Actions have an ID and a type.
+
         if(waitingForTouch)
         {
-            if(!fMenu.actionSelected)
+            if (!fMenu.actionSelected)
             {
                 //tap the menu to select an action
                 fMenu.tap(x, y);
-                if(fMenu.actionSelected)
+                if (fMenu.actionSelected)
                 {
-                    ActionId=fMenu.getActionId();
-                    ActionType=fMenu.getActionType();
-                    playerTurn(playr,enemies);
+
+                    ActionId = fMenu.getActionId();
+                    ActionType = fMenu.getActionType();
+                    playerTurn(playr, enemies);
                 }
             }
 
             //targeting an enemy after selecting an action
-            else if(targeting)
+
+            else if (targeting)
             {
-
-                if(y<targetReticule.getY()&&y>targetReticule.getY()-targetReticule.getHeight())
+                /*for (int i = 0; i < enemies.length; i++)
                 {
-                    if (x < targetReticule.getX() && x > targetReticule.getX() - targetReticule.getWidth())
-                    {
-                        targetPicker.Left();
+                    // if (x> screenWidth/2) {   //arbitrary x values at the moment, vaguely at the right side of the screen
 
-                    } else if (x > targetReticule.getX() + targetReticule.getWidth() && x < targetReticule.getX() + (targetReticule.getWidth() * 2))
-                    {
-                        targetPicker.Right();
+                    // if (y < 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2))
+                    //         && y > 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)) - enemies[0].height) {
+*/
 
-                    } else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth())
+                    if (y < targetReticule.getY() && y > targetReticule.getY() - targetReticule.getHeight())
                     {
-                        targetPicker.Select();
+                        if (x < targetReticule.getX() && x > targetReticule.getX() - targetReticule.getWidth())
+                        {
+                            targetPicker.Left();
 
+                        } else if (x > targetReticule.getX() + targetReticule.getWidth() && x < targetReticule.getX() + (targetReticule.getWidth() * 2))
+                        {
+                            targetPicker.Right();
+
+                        } else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth())
+                        {
+                            targetPicker.Select();
+
+                        }
+
+
+
+                        if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
+                        {
+                            targeting = false;
+                            playerTurnPart2();
+                            return true;
+                        }
                     }
-
-                    if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
+                    else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth() && y > targetReticule.getY() && y < targetReticule.getY() + targetReticule.getHeight())
                     {
                         targeting = false;
-                        playerTurnPart2();
-                        return true;
+                        waitingForTouch = true;
+                        fMenu.actionSelected = false;
                     }
-                }
-                else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth()&&y>targetReticule.getY()&&y<targetReticule.getY()+targetReticule.getHeight())
-                {
-                    targeting=false;
-                    waitingForTouch=true;
-                    fMenu.actionSelected=false;
-                }
+                    if(x>enemyX[0]&&x<enemyX[enemyX.length-1]+enemies[enemyX.length-1].width)
+                    {
 
-            }
+                       for(int i=0;i<enemyX.length;i++)
+                       {
+                           if(x>enemyX[i]&&x<enemyX[i]+enemies[i].width)
+                           {
+                               if(!enemies[i].getDead())
+                               {
+                                   if(screenHeight-y>enemyY[i]&&screenHeight-y<enemyY[i]+enemies[i].height)
+                                   {
+                                       targetPicker.goTo(i);
+                                   }
+                               }
+                           }
+                       }
+                       if (targetPicker.targetSelected)     //move on to the next part of combat after a target is selected
+                       {
+                            targeting = false;
+                            playerTurnPart2();
+                            return true;
+                       }
 
-            else if(combo.comboing)     //if in combo phase, accept combo input
+                    }
+
+                //}
+            } else if (combo.comboing)     //if in combo phase, accept combo input
             {
-                combo.tap((int)x,(int)y);
+                combo.tap((int) x, (int) y);
             }
 
         }
 
         return false;
+
     }
 
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
+        playr.changeEnergy(playr.getIntelligence());
 
         monsterCode=-2;
         if(ActionType==2)       //flee
         {
 
-            if(fMenu.getMoveString(ActionType,ActionId).equals("Flee"))
+            if(fMenu.getMoveString(ActionType,ActionId).equals("Recharge"))
+            {
+                playr.changeEnergy((int)(playr.getIntelligence()*2));
+                playerTurnEnd();
+            }
+            else if(fMenu.getMoveString(ActionType,ActionId).equals("Flee"))
             {
 
                 expEarned=0;
@@ -630,13 +785,22 @@ public class Fight extends GameState
                 {
                     PlayerDam = 1;
                 }
+                if(combo.skill>.9)
+                {
+                    PlayerDam++;
+                }
                 damage[targetPicker.getSelectedTarget() + 1+i] += PlayerDam;
-                damageNums.Add(String.valueOf(-(int)PlayerDam),.6f+.3f*((targetPicker.getSelectedTarget()+i)/(float)enemyCount),.6f-(.4f*((targetPicker.getSelectedTarget()+i)/(float)enemyCount)));
-
+                if(!enemies[targetPicker.getSelectedTarget() + i].getDead())
+                {
+                    damageNums.Add
+                    (
+                            String.valueOf(-(int) PlayerDam),
+                            (float)(enemyX[targetPicker.getSelectedTarget()+i]+(enemies[targetPicker.getSelectedTarget()+i].width/2))/screenWidth,
+                            ((float)(enemyY[targetPicker.getSelectedTarget()+i]+enemies[targetPicker.getSelectedTarget()+i].height)/screenHeight)
+                    );
+                }
             }
         }
-
-
         playerTurnEnd();
     }
     //at the end of the player's turn, if there are enemies left, start the enemy's turn, otherwise if all are dead end the fight
@@ -644,7 +808,7 @@ public class Fight extends GameState
     {
 
 
-        playr.changeEnergy(playr.getIntelligence());
+
 
         if(enemiesLeft>0&&playr.getCurrentHealth()>0)
         {
@@ -672,8 +836,9 @@ public class Fight extends GameState
 
         monsterCode=monsterId;
         System.out.println("Monster:"+monsterId);
-        monsters[monsterId].animation.setCurrentFrame(0);
-        animCount=monsters[monsterId].animation.getTimesPlayed();
+        monsters[monsterId].attackAnimation.setCurrentFrame(0);
+        animCount=monsters[monsterId].attackAnimation.getTimesPlayed();
+        monsters[monsterId].attackAnimation.play();
         defend=false;
         if(monsterId<=monsters.length-1&&!monsters[monsterId].getDead())
         {
@@ -743,7 +908,7 @@ public class Fight extends GameState
                 dam+=monsters[monsterId].getAttack();
             }
             System.out.println("Damage from "+monsters[monsterId].getName()+": "+dam);
-            dam*=(1-(combo.skill/2));
+            dam*=(1-(combo.skill*combo.skill));
 
             //      System.out.println("Monster " + i + " attacks");
             if (dam <= 1)
@@ -752,11 +917,16 @@ public class Fight extends GameState
                 if(combo.skill<.9)
                 {
                     damage[0]++;
+                    damageNums.Add(String.valueOf(1), .15f, .3f);
+
                 }
-                damageNums.Add(String.valueOf(1),.15f,.3f);
+                else
+                {
+                    damageNums.Add("Blocked!",.15f,.3f,Color.WHITE,150,4.0);
+                }
 
             }
-            else
+            else if(combo.skill<.95)
             {
                 damage[0]+=dam;
                 damageNums.Add(String.valueOf((int)dam),.15f,.3f);
@@ -768,6 +938,11 @@ public class Fight extends GameState
                     //        System.out.println("you lose");
                     monsterCode=-1;
                 }
+
+            }
+            else
+            {
+                damageNums.Add("Blocked!",.15f,.3f,Color.WHITE,150,4.0);
 
             }
 

@@ -23,11 +23,11 @@ public class Player
 
 
     private int attackPoints,defencePoints,intelligencePoints,healthPoints,energyPoints;
-    private double attackPointsMult=.8,
-            defencePointsMult=.3,
-            intelligencePointsMult=.5,
-            healthPointsMult=3.5,
-            energyPointsMult=3.5;
+    private double attackPointsMult=.5,
+            defencePointsMult=.5,
+            intelligencePointsMult=.2,
+            healthPointsMult=2,
+            energyPointsMult=2;
 
 
     private int
@@ -112,6 +112,8 @@ public class Player
     {
         return items.getList();
     }
+
+    public String getItemImage(String item) {return items.getItemImage(item);}
 
     public String[] getItemDesc() { return items.getDesc();}
 
@@ -407,26 +409,46 @@ public class Player
 
     public int getHealth()
     {
+        if (health > 500)
+        {
+            health = 500;
+        }
         return health;
     }
 
     public int getAttack()
     {
+        if (attack > 100)
+        {
+            attack = 100;
+        }
         return attack;
     }
 
     public int getDefence()
     {
+        if (defence > 100)
+        {
+            defence = 100;
+        }
         return defence;
     }
 
     public int getEnergy()
     {
+        if (energy > 500)
+        {
+            energy = 500;
+        }
         return energy;
     }
 
     public int getIntelligence()
     {
+        if (intelligence > 100)
+        {
+            intelligence = 100;
+        }
         return intelligence;
     }
 
