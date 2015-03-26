@@ -14,6 +14,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class MapPlayer extends Sprite
 {
     private Vector2 velocity = new Vector2(); //movement velocity
@@ -239,8 +242,8 @@ public class MapPlayer extends Sprite
         }
         else stopped = false;
 
-
     }
+
 
     public Vector2 getVelocity()
     {

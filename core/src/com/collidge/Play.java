@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
 
 
 /**
@@ -60,10 +61,17 @@ public class Play extends GameState {
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+
+        NPC npc1;
+        NPC npc2;
+        npcList = new ArrayList<NPC>();
         npc1 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false);
-        npc1.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 14) * npc1.getCollisionLayer().getTileHeight());
+        npc1.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
         npc2 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true);
         npc2.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
+        npcList.add(npc1);
+        npcList.add(npc2);
+
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
         inventoryButton = new Texture("schoolbag.png");
@@ -120,8 +128,9 @@ public class Play extends GameState {
        // player.draw(renderer.getBatch());
 
         player.draw(renderer.getBatch());
-        npc1.draw((renderer.getBatch()));
-        npc2.draw((renderer.getBatch()));
+        for (int i = 0; i < npcList.size(); i++) {
+            npcList.get(i).draw((renderer.getBatch()));
+        }
         renderer.getBatch().end();
 
         // batch.setProjectionMatrix(camera.combined);
