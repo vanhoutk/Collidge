@@ -686,7 +686,7 @@ enemies[i].animation.pause();
         if(!enemies[monsterCode].getDead())
         {
             System.out.println("X");
-            combo.initiateCombo(-1, this);
+            combo.initiateCombo(enemies[monsterCode].attackType, this);
             defend = true;
         }
         else
