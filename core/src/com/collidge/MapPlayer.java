@@ -95,6 +95,7 @@ public class MapPlayer extends Sprite
         this.collisionlayer = collisionlayer;
     }
 
+
     public void draw(Batch spritebatch) {
         update(Gdx.graphics.getDeltaTime());
 
@@ -109,7 +110,10 @@ public class MapPlayer extends Sprite
             walkingAnimation[direction].update(Gdx.graphics.getDeltaTime());
         }
 
+
         spritebatch.draw(walkingAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
+
+
     }
 
     public void update(float delta)
