@@ -138,8 +138,9 @@ public class Play extends GameState {
 
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("collision"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("ground"));
-        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("front_fence"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("walls"));
+        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("front_fence"));
+        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("randoms_layer"));
        // player.draw(renderer.getBatch());
 
         if(TimeUtils.timeSinceMillis(enteringFight)>3000)
@@ -155,7 +156,6 @@ public class Play extends GameState {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("tree2_and_windows"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("roof"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("roof2"));
-        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("randoms_layer"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("tower1"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("tower2"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("tower3"));
