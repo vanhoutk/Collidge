@@ -15,6 +15,10 @@ package com.collidge;
  * - TODO: Rebalance items
  */
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.XmlReader;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -168,17 +172,64 @@ public class Inventory
         }
     }
 
-    void loadInventory()
+    void loadInventory(Player player, boolean load)
     {
+        int tsquareQ = 0, scarfQ = 0, macQ = 0, bookQ = 0, coffeeQ = 0, energyQ = 0, noodlesQ = 0, sandwichQ = 0;
+        String equippedWeapon = "None", equippedArmour = "None";
+        if(load)
+        {
+            try {
+                XmlReader reader = new XmlReader();
+                FileHandle handle1 = Gdx.files.internal("items.xml");
+                XmlReader.Element root = reader.parse(handle1.readString());
+                XmlReader.Element equipment = root.getChildByName("equipment");
+                XmlReader.Element combatItems = root.getChildByName("combatItem");
+                XmlReader.Element equipped = root.getChildByName("equipped");
+                tsquareQ = equipment.getInt("Tsquare");
+                scarfQ = equipment.getInt("Scarf");
+                macQ = equipment.getInt("macShield");
+                bookQ = equipment.getInt("bookShield");
+                coffeeQ = combatItems.getInt("Coffee");
+                energyQ = combatItems.getInt("EnergyDrink");
+                noodlesQ = combatItems.getInt("Noodles");
+                sandwichQ = combatItems.getInt("Sandwich");
+                equippedWeapon = equipped.getChildByName("Weapon").getText();
+                equippedArmour = equipped.getChildByName("Armour").getText();
+
+                System.out.println("Wep = " + equippedWeapon);
+                System.out.println("Arm = " + equippedArmour);
+                //System.out.println("TQ = " + tsquareQ);
+                //System.out.println(scarfQ);
+                //System.out.println(macQ);
+                //System.out.println(bookQ);
+            }
+            catch (Exception e)
+            {
+                System.out.println(e);
+            }
+        }
+        else
+        {
+            tsquareQ = 1;
+            scarfQ = 1;
+            macQ = 1;
+            bookQ = 1;
+            coffeeQ = 5;
+            energyQ = 5;
+            noodlesQ = 5;
+            sandwichQ = 5;
+            equippedWeapon = "None";
+            equippedArmour = "None";
+        }
         /**
          * Constructor for combat items is (Type, Text, Health, Energy, Quantity, Image)
          */
         CombatItem Coffee, EnergyDrink, Noodles, Sandwich;
 
-        Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 10, "Coffee_cupSmall.png");
-        EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 10, "energy60.png");
-        Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 10, "Noodles.png");
-        Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 10, "sandwichIcon.png");
+        Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, coffeeQ, "Coffee_cupSmall.png");
+        EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, energyQ, "energy60.png");
+        Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, noodlesQ, "Noodles.png");
+        Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, sandwichQ, "sandwichIcon.png");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);
@@ -190,14 +241,23 @@ public class Inventory
          */
         Equipment Tsquare, Scarf, Macshield, Bookshield;
 
-        Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, 1, "tsquareSmall.png");
-        Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, 1, "Scarf.png");
-        Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, 1, "macShieldIcon.png");
-        Bookshield = new Equipment("Armour", "Armour. +5 Defence. Is there a fine if it's damaged on return?", 0, 0, 5, 0, 1, "bookShieldIcon.png");
+        Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, tsquareQ, "tsquareSmall.png");
+        Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, scarfQ, "Scarf.png");
+        Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, macQ, "macShieldIcon.png");
+        Bookshield = new Equipment("Armour", "Armour. +5 Defence. Is there a fine if it's damaged on return?", 0, 0, 5, 0, bookQ, "bookShieldIcon.png");
 
         MyEquipment.put("Tsquare", Tsquare);
         MyEquipment.put("Scarf", Scarf);
         MyEquipment.put("Macshield", Macshield);
         MyEquipment.put("Bookshield", Bookshield);
+
+        if(!equippedWeapon.equals("None"))
+        {
+            player.equipItem(equippedWeapon);
+        }
+        if(!equippedArmour.equals("None"))
+        {
+            player.equipItem(equippedArmour);
+        }
     }
 }

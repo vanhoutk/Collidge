@@ -17,12 +17,15 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlWriter;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringWriter;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor, ApplicationListener,GestureDetector.GestureListener
 {
@@ -204,6 +207,18 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                     e.printStackTrace();
                 }
             }
+
+            /**
+             * Kris -- just trying to save to an xml
+             */
+            //XmlReader reader = new XmlReader();
+            //FileHandle handle1 = Gdx.files.local("items.xml");
+            //XmlReader.Element root = reader.parse(handle1.readString());
+            //XmlReader.Element equipment = root.getChildByName("equipment");
+            //XmlReader.Element combatItems = root.getChildByName("combatItem");
+            //XmlReader.Element equipped = root.getChildByName("equipped");
+            //equipped.getChildByName("Weapon").setText(gsm.user.equippedWeapon);
+            //equipped.getChildByName("Armour").setText(gsm.user.equippedArmour);
         }
     }
 

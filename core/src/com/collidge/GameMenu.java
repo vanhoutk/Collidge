@@ -1,6 +1,7 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.XmlReader;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+
+import java.io.StringWriter;
 
 /**
  * Created by simon on 11/02/15.
@@ -420,6 +425,24 @@ public class GameMenu extends GameState
         if(savePressed)
         {
             //batch.draw(save, Gdx.graphics.getWidth()/2 - save.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
+            /**
+             * Kris -- just trying to save to an xml
+             */
+            XmlReader reader = new XmlReader();
+            FileHandle handle1 = Gdx.files.internal("items.xml");
+            XmlReader.Element root = reader.parse(handle1.readString());
+            //XmlReader.Element equipment = root.getChildByName("equipment");
+            //XmlReader.Element combatItems = root.getChildByName("combatItem");
+            XmlReader.Element equipped = root.getChildByName("equipped");
+            equipped.getChildByName("Weapon").setText(gsm.user.equippedWeapon);
+            equipped.getChildByName("Armour").setText(gsm.user.equippedArmour);
+
+            String equippedWeapon = equipped.getChildByName("Weapon").getText();
+            String equippedArmour = equipped.getChildByName("Armour").getText();
+
+            System.out.println("Wep = " + equippedWeapon);
+            System.out.println("Arm = " + equippedArmour);
+
             Font.setColor(Color.WHITE);
             Font.setScale(screenWidth / 400f, screenHeight / 400f);
             Font.draw(batch, "GAME SAVED", screenWidth*2/5 , screenHeight/2);

@@ -106,6 +106,7 @@ public class OpenScreen extends GameState{
     public boolean tap(float x, float y, int count, int button){
         if(x > horSize && x < 2*horSize && y > screenHeight/2){
             //new game pressed
+            //TODO: (From Kris - "You should implement something here, even if it's just the changeState below")
             Gdx.app.exit();
         }
         else if(x > 3*horSize && x < 4*horSize && y > screenHeight/2){

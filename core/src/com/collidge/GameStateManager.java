@@ -143,7 +143,7 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
-    
+
     public int getVolume()
     {
         return volumeLevel;

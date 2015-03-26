@@ -1,0 +1,18 @@
+<inventory>
+	<equipment>
+		<Tsquare> 1 </Tsquare>
+		<Scarf> 1 </Scarf>
+		<macShield> 1 </macShield>
+		<bookShield> 1 </bookShield>
+	</equipment>
+	<combatItem>
+		<Coffee> 10 </Coffee>
+		<EnergyDrink> 10 </EnergyDrink>
+		<Noodles> 10 </Noodles>
+		<Sandwich> 10 </Sandwich>
+	</combatItem>
+	<equipped>
+		<Weapon> Tsquare </Weapon>
+		<Armour> Macshield </Armour>
+	</equipped>
+</inventory>
