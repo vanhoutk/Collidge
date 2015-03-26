@@ -29,9 +29,9 @@ public class DeathState extends GameState
         player = plr;
         batch = new SpriteBatch();
 
-        Skull = new Sprite (new Texture ("skull.jpg"));
-        Skull.setSize(screenWidth, screenHeight);
-        Skull.setPosition(0,0);
+        Skull = new Sprite (new Texture ("skull.png"));
+        Skull.setSize(screenWidth/2f, screenHeight/2f);
+        Skull.setPosition(screenWidth/4f,screenHeight/4f);
 
         lbutton = new Sprite(new Texture("textbox_background_2.png"));
         lbutton.setSize(sqSide*2f+spacing, sqSide);
@@ -101,7 +101,8 @@ public class DeathState extends GameState
 
         if (x >=screenWidth-textbox.getWidth()-spacing && y >Gdx.graphics.getHeight()-(lbutton.getHeight()+spacing/2f))
         {
-            Gdx.app.exit();
+
+            endDeathStateandContinue();
             return true;
         }
         return false;
@@ -114,7 +115,12 @@ public class DeathState extends GameState
         gsm.EndDeathstate(player);
     }
 
-
+    public void endDeathStateandContinue()
+    {
+        deathfont.dispose();
+        batch.dispose();
+        gsm.Continue(player);
+    }
     //3 touch events that you can handle inside your own class
     //first touchDown(int,int,pointer,button) is from the input handler, the second uses floats and is in the gesture listener(possibly more accurate than ints)
     //Use whichever you want, but only use one, and return false on the other
