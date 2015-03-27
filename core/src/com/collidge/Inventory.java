@@ -182,7 +182,7 @@ public class Inventory
         EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 0, 10, "energy60.png");
         Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 0, 10, "Noodles.png");
         Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 0, 10, "sandwichIcon.png");
-        IED = new CombatItem("AOE Damage", "Deals damage to all enemies.", 0, 0, 10, 10, "ied.png");
+        IED = new CombatItem("Damage", "Deals damage to all enemies.", 0, 0, 10, 10, "ied.png");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);

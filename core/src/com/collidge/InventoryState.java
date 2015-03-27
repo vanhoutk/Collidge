@@ -248,7 +248,7 @@ public class InventoryState extends GameState
             itemImages[i].setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 100) + 90) * sqSide/100) + (y + 2) * spacing / 4));
             itemImages[i].draw(batch);
 
-            if(player.items.getItemType(itemNames[i]).equals("Energy") || player.items.getItemType(itemNames[i]).equals("Health"))
+            if(player.items.getItemType(itemNames[i]).equals("Energy") || player.items.getItemType(itemNames[i]).equals("Health") || player.items.getItemType(itemNames[i]).equals("Damage"))
             {
                 int quantity = player.items.getItemQuantity(itemNames[i]);
                 bitNumbers[quantity/10].setSize(10 * sqSide/75, 10 * sqSide/75);
