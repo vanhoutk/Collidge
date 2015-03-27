@@ -148,7 +148,7 @@ public class Play extends GameState {
             player.draw(renderer.getBatch());
         }
         npc1.draw((renderer.getBatch()));
-        //npc2.draw((renderer.getBatch()));
+        npc2.draw((renderer.getBatch()));
 
         //Loads the rest of the map on top of the NPC and Player models
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("back_fence"));
