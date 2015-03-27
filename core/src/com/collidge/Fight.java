@@ -563,6 +563,10 @@ enemies[i].animation.pause();
             if (player.itemDamage != 0){
                 PlayerDam = player.itemDamage;
                 damagingItemUsed = true;
+                targetPicker.reset(enemies, 100);
+
+                targeting = true;
+                return;
             }
         }
         if(ActionType==1) //attack
@@ -575,10 +579,15 @@ enemies[i].animation.pause();
     }
     private void playerTurnPart2() //Initiating combo
     {
-            combo.initiateCombo(ActionId-1,this);
-            comboing=true;
+        if (!damagingItemUsed) {
+            combo.initiateCombo(ActionId - 1, this);
+            comboing = true;
+        }
+        else{
+            playerTurnPart3();
+        }
     }
-    private void playerTurnPart3() //After the combo, applying the multipliers
+    private void playerTurnPart3() //After the combo, applying the multipliers, dealing damage
     {
 //TODO remove system outs left for debugging of combos
 
@@ -589,16 +598,17 @@ enemies[i].animation.pause();
                 System.out.println("Attacking: " + i);
                 if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length) {
                     System.out.println("Dam to " + i + ": " + PlayerDam);
-                }
 
-                damage[targetPicker.getSelectedTarget() + 1 + i] += PlayerDam;
-                if (!enemies[targetPicker.getSelectedTarget() + i].getDead()) {
-                    damageNums.Add
-                            (
-                                    String.valueOf(-(int) PlayerDam),
-                                    (float) (enemyX[targetPicker.getSelectedTarget() + i] + (enemies[targetPicker.getSelectedTarget() + i].width / 2)) / screenWidth,
-                                    ((float) (enemyY[targetPicker.getSelectedTarget() + i] + enemies[targetPicker.getSelectedTarget() + i].height) / screenHeight)
-                            );
+
+                    damage[targetPicker.getSelectedTarget() + 1 + i] += PlayerDam;
+                    if (!enemies[targetPicker.getSelectedTarget() + i].getDead()) {
+                        damageNums.Add
+                                (
+                                        String.valueOf(-(int) PlayerDam),
+                                        (float) (enemyX[targetPicker.getSelectedTarget() + i] + (enemies[targetPicker.getSelectedTarget() + i].width / 2)) / screenWidth,
+                                        ((float) (enemyY[targetPicker.getSelectedTarget() + i] + enemies[targetPicker.getSelectedTarget() + i].height) / screenHeight)
+                                );
+                    }
                 }
             }
 
