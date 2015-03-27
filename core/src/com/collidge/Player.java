@@ -149,7 +149,7 @@ public class Player
 
     public String getItemImage(String item) {return items.getItemImage(item);}
 
-    public String[] getItemDesc() { return items.getDesc();}
+    public String[] getItemDesc() { return items.getDescription();}
 
     public int getLevelUpCounter()
     {
@@ -216,7 +216,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this, true);
+        items.loadInventory();
         updateStats();
         healAll();
     }
@@ -238,7 +238,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this, true);
+        items.loadInventory();
         updateStats();
         healAll();
     }
@@ -260,7 +260,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this, true);
+        items.loadInventory();
         updateStats();
         healAll();
     }

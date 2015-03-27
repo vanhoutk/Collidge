@@ -1,19 +1,21 @@
 package com.collidge;
 
 /**
- * Created by Kris on 25-Jan-15. Last modified 25-Feb-15.
+ * Created by Kris on 25-Jan-15. Last modified 27-Mar-15.
  *
- * All code in this class was written by Kris.
+ * Comments in the class have been added to indicate additions made by Toni & Michael
  *
  * Combat Item Class:
  * - Combat Items are those items usable in combat (i.e. health potions and energy potions)
  * - This class extends (inherits from) the Item class
  *
  * Functions in this class:
- * - CombatItem(String type, String text, int health, int energy, int quantity, String image) -> Constructor
+ * - CombatItem(String type, String text, int health, int energy, int damage, int quantity, String image) -> Constructor
  * - int getHealthRestore()             -> returns the amount of health an item restores
  * - int getEnergyRestore()             -> returns the amount of energy an item restores
+ * - int getEnemyDamage()               -> returns the amount of damage an item does
  * - int getItemQuantity()              -> returns the quantity of the item
+ * - String getBattleText()             -> returns string of restore information for use in combat
  * - void setItemQuantity(int quantity) -> sets the quantity of the item
  * - void changeItemQuantity(int dQ)    -> increases/decreases the item quantity by dQ
  *
@@ -32,22 +34,33 @@ public class CombatItem extends Item
         itemType = type;
         healthRestore = health;
         energyRestore = energy;
+        /**
+         * Toni's edit
+         * Combat tooltip creation and enemy damage parameter
+         */
         enemyDamage = damage;
-        //Combat tooltip creation
-        if (energyRestore!=0 && healthRestore!=0) {
-            battleText = healthRestore + "Hp & " + energyRestore + "En";
+        if (energyRestore != 0 && healthRestore != 0)
+        {
+            battleText = "Restores "+ healthRestore + "Hp & " + energyRestore + "En";
         }
-        else if (healthRestore!=0){
+        else if (healthRestore != 0)
+        {
             battleText = "Restores " + healthRestore + "Hp";
         }
-        else if (energyRestore!=0){
+        else if (energyRestore != 0)
+        {
             battleText = "Restores " + energyRestore + "En";
         }
-
-        if (enemyDamage!=0){
+        if (enemyDamage!=0)
+        {
             battleText = enemyDamage + "Dmg";
         }
-        itemText = text + " " + battleText;   //creates inventory description by combining a descriptive message with the restore info from battleText
+        /**
+         * Creates inventory description by combining a descriptive
+         * message with the restore info from battleText
+         */
+        itemText = text + " " + battleText;
+
         itemQuantity = quantity;
         itemImage = image;
     }
@@ -62,6 +75,10 @@ public class CombatItem extends Item
         return energyRestore;
     }
 
+    /**
+     * Toni's edit
+     * Added function for returning the amount of damage an attack item does
+     */
     int getEnemyDamage() {return enemyDamage;}
 
     int getItemQuantity() { return itemQuantity;}
@@ -71,11 +88,14 @@ public class CombatItem extends Item
         itemQuantity = quantity;
     }
 
-    String getitemText(){ return itemText;}
-
+    /**
+     * Michael's edit
+     * Added function for returning the text for battle
+     */
     String getBattleText(){ return battleText;}
 
-    void changeItemQuantity(int dQ) {
+    void changeItemQuantity(int dQ)
+    {
         itemQuantity += dQ;
         if(itemQuantity <= 0)
         {

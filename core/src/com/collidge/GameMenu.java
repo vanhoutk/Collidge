@@ -520,7 +520,6 @@ public class GameMenu extends GameState
                 }
                 if (x > save.getX() && x < save.getX() + save.getWidth()) {
                     savePressed = true;
-                    saveInventory();
                 }
             }
 
@@ -649,52 +648,5 @@ public class GameMenu extends GameState
     {
 
     }
-
-    public void saveInventory()
-    {
-        /**
-         * Kris -- just trying to save to an xml
-         */
-        if(Gdx.files.isLocalStorageAvailable())
-        {
-            System.out.println("Local storage available");
-
-            System.out.println("Doesn't extist, trying to create new file");
-            OutputStream out=Gdx.files.local( "items.xml" ).write(false);
-            try
-            {
-                String saveInv;
-                saveInv = ("<inventory>\n\t<equipment>\n\t\t"
-                            + "<Tsquare>" + gsm.user.items.getItemQuantity("Tsquare") + "</Tsquare>\n\t\t"
-                            + "<Scarf>" + gsm.user.items.getItemQuantity("Scarf") + "</Scarf>\n\t\t"
-                            + "<macShield>" + gsm.user.items.getItemQuantity("Macshield") + "</macShield>\n\t\t"
-                            + "<bookShield>" + gsm.user.items.getItemQuantity("Bookshield") + "</bookShield>\n\t"
-                            + "</equipment>\n\t<combatItem>\n\t\t"
-                            + "<Coffee>" + gsm.user.items.getItemQuantity("Coffee") + "</Coffee>\n\t\t"
-                            + "<EnergyDrink>" + gsm.user.items.getItemQuantity("Energy Drink") + "</EnergyDrink>\n\t\t"
-                            + "<Noodles>" + gsm.user.items.getItemQuantity("Noodles") + "</Noodles>\n\t\t"
-                            + "<Sandwich>" + gsm.user.items.getItemQuantity("Sandwich") + "</Sandwich>\n\t"
-                            + "</combatItem>\n\t<equipped>\n\t\t"
-                            + "<Weapon>" + gsm.user.equippedWeapon + "</Weapon>\n\t\t"
-                            + "<Armour>" + gsm.user.equippedArmour + "</Armour>\n\t"
-                            + "</equipped>\n</inventory>)");
-                out.write(saveInv.getBytes());
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    out.close();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
 }
 
