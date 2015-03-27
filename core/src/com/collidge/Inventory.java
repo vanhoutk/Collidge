@@ -41,6 +41,9 @@ public class Inventory
         MyCombatInv.get(item).changeItemQuantity(-1);
     }
 
+    //for items that damage enemies
+    int getItemDamage(String item) {return MyCombatInv.get(item).getEnemyDamage();}
+
     /**
      * This is currently implemented within player rather than in inventory
      */
@@ -171,19 +174,21 @@ public class Inventory
     void loadInventory()
     {
         /**
-         * Constructor for combat items is (Type, Text, Health, Energy, Quantity, Image)
+         * Constructor for combat items is (Type, Text, Health, Energy, Enemy Damage, Quantity, Image)
          */
-        CombatItem Coffee, EnergyDrink, Noodles, Sandwich;
+        CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
 
-        Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 10, "Coffee_cupSmall.png");
-        EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 10, "energy60.png");
-        Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 10, "Noodles.png");
-        Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 10, "sandwichIcon.png");
+        Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 0, 10, "Coffee_cupSmall.png");
+        EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 0, 10, "energy60.png");
+        Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 0, 10, "Noodles.png");
+        Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 0, 10, "sandwichIcon.png");
+        IED = new CombatItem("AOE Damage", "Deals damage to all enemies.", 0, 0, 10, 10, "ied.png");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);
         MyCombatInv.put("Noodles", Noodles);
         MyCombatInv.put("Sandwich", Sandwich);
+        MyCombatInv.put("Improvised Explosive Device", IED);
 
         /**
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)

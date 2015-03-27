@@ -16,6 +16,8 @@ public class Player
     private int intelligence;
     private double experience;
     public Inventory items;
+    public int itemDamage;
+    public String itemType;
     public String player_name;
 
 
@@ -30,8 +32,7 @@ public class Player
             energyPointsMult=2;
 
 
-    private int
-            baseAttackPoints=3;
+    private int baseAttackPoints=3;
     private int baseDefencePoints=0;
     private int baseIntelligencePoints=1;
 
@@ -306,6 +307,8 @@ public class Player
     public void useItem(String item)
     {
         items.useItem(this,item);
+        //itemDamage is needed to specify when an item does enemy damage
+        itemDamage = items.getItemDamage(item);
     }
 
     public int attackPicker(String moveName)
@@ -328,6 +331,11 @@ public class Player
             if(moveName.equals(attacksNames[i]))
             {
                 return attackAOE[i];
+            }
+            //TODO change to allow other damaging items too
+            else if (moveName.equals("IED"))
+            {
+                return 10;
             }
         }
         return 0;
