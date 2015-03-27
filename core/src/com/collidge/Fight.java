@@ -1,6 +1,7 @@
 package com.collidge;
 //import android.view.MotionEvent;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.utils.Timer;
 */
 public class Fight extends GameState
 {
+    Music fightMusic = Gdx.audio.newMusic(Gdx.files.internal("mymusic2.mp3"));
+
     private double PlayerDam;
     Player playr;
     boolean waitingForTouch=false;
@@ -104,6 +107,7 @@ public class Fight extends GameState
     @Override
     public void initialize()
     {
+        fightMusic.play();
 // testAnim=new Animation("walkingRight.png",10);
         combo=new Combo();
         expEarned=0;
@@ -300,21 +304,7 @@ else {
 enemyCountTemp = enemyCount - 9;
 iTemp = i-9;
 }*/
-                if(!targeting)
-/*
-batch.draw(enemies[i].animation.getFrame(),
-((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
-2*screenHeight / 5 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)),
-enemies[i].width,
-enemies[i].height);
-}
-if(!targeting)
-*/
-                {
-                    battleFont.setColor(Color.RED);
-                    battleFont.draw(batch, enemies[i].getHealth() + "", ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount)))))+screenWidth/10, battleFont.getLineHeight());
-                    battleFont.setColor(Color.BLACK);
-                }
+
 /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
 sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
 sprite_enemy[i].draw(batch);*/
@@ -573,6 +563,10 @@ enemies[i].animation.pause();
             if (player.itemDamage != 0){
                 PlayerDam = player.itemDamage;
                 damagingItemUsed = true;
+                targetPicker.reset(enemies, 100);
+
+                targeting = true;
+                return;
             }
         }
         if(ActionType==1) //attack
@@ -585,10 +579,15 @@ enemies[i].animation.pause();
     }
     private void playerTurnPart2() //Initiating combo
     {
-            combo.initiateCombo(ActionId-1,this);
-            comboing=true;
+        if (!damagingItemUsed) {
+            combo.initiateCombo(ActionId - 1, this);
+            comboing = true;
+        }
+        else{
+            playerTurnPart3();
+        }
     }
-    private void playerTurnPart3() //After the combo, applying the multipliers
+    private void playerTurnPart3() //After the combo, applying the multipliers, dealing damage
     {
 //TODO remove system outs left for debugging of combos
 
@@ -599,16 +598,17 @@ enemies[i].animation.pause();
                 System.out.println("Attacking: " + i);
                 if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length) {
                     System.out.println("Dam to " + i + ": " + PlayerDam);
-                }
 
-                damage[targetPicker.getSelectedTarget() + 1 + i] += PlayerDam;
-                if (!enemies[targetPicker.getSelectedTarget() + i].getDead()) {
-                    damageNums.Add
-                            (
-                                    String.valueOf(-(int) PlayerDam),
-                                    (float) (enemyX[targetPicker.getSelectedTarget() + i] + (enemies[targetPicker.getSelectedTarget() + i].width / 2)) / screenWidth,
-                                    ((float) (enemyY[targetPicker.getSelectedTarget() + i] + enemies[targetPicker.getSelectedTarget() + i].height) / screenHeight)
-                            );
+
+                    damage[targetPicker.getSelectedTarget() + 1 + i] += PlayerDam;
+                    if (!enemies[targetPicker.getSelectedTarget() + i].getDead()) {
+                        damageNums.Add
+                                (
+                                        String.valueOf(-(int) PlayerDam),
+                                        (float) (enemyX[targetPicker.getSelectedTarget() + i] + (enemies[targetPicker.getSelectedTarget() + i].width / 2)) / screenWidth,
+                                        ((float) (enemyY[targetPicker.getSelectedTarget() + i] + enemies[targetPicker.getSelectedTarget() + i].height) / screenHeight)
+                                );
+                    }
                 }
             }
 
@@ -797,6 +797,7 @@ enemies[i].animation.pause();
         damage[0]=0;
         int[]ratings = combo.num_ratings;
         combo.delete();
+        fightMusic.dispose();
         Timer.instance().clear();
         Timer.instance().stop();
         batch.dispose();
@@ -811,6 +812,7 @@ enemies[i].animation.pause();
     {
         damage[0]=0;
         combo.delete();
+        fightMusic.dispose();
         batch.dispose();
         texture.dispose();
         battleFont.dispose();

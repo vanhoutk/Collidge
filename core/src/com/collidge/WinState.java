@@ -230,6 +230,7 @@ public class WinState extends GameState {
 
     public void endWinState()
     {
+        gsm.setPlayingMus(gsm.mapMusic);
         batch.dispose();
         winfont.dispose();
         if(player.getLevelUpCounter()<=0)

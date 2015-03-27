@@ -55,7 +55,6 @@ public class OpenScreen extends GameState{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-
         background.setSize(screenWidth, screenHeight);
         background.setPosition(0, 0);
         background.draw(batch);
