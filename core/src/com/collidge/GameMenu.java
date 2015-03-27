@@ -499,28 +499,30 @@ public class GameMenu extends GameState
                 if(x > vol0.getX() && x < vol0.getX() + vol0.getWidth()/5)
                 {
                     volumeLevel=0;
-                    gsm.setVolume(volumeLevel);
+
                 }
                 if(x > vol0.getX() + vol0.getWidth()/5 && x < vol0.getX() + vol0.getWidth()*2/5)
                 {
                     volumeLevel=1;
-                    gsm.setVolume(volumeLevel);
+
                 }
                 if(x > vol0.getX() + vol0.getWidth()*2/5 && x < vol0.getX() + vol0.getWidth()*3/5)
                 {
                     volumeLevel=2;
-                    gsm.setVolume(volumeLevel);
+
                 }
                 if(x > vol0.getX() + vol0.getWidth()*3/5 && x < vol0.getX() + vol0.getWidth()*4/5)
                 {
                     volumeLevel=3;
-                    gsm.setVolume(volumeLevel);
+
                 }
                 if(x > vol0.getX() + vol0.getWidth()*4/5 && x < vol0.getX() + vol0.getWidth())
                 {
                     volumeLevel=4;
-                    gsm.setVolume(volumeLevel);
+
                 }
+                gsm.setVolume(volumeLevel);
+                gsm.backgroundMus.setVolume((float)volumeLevel/4);
             }
 
             if (y < vol0.getY() && y > vol0.getY() - vol0.getHeight())

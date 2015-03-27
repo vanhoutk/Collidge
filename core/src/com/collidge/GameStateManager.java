@@ -22,6 +22,8 @@ public class GameStateManager
     public Music backgroundMus;
    // public Music fightMus;
     public Music loseMus;
+    public String loseMusic = "pacman.mp3";
+    public String mapMusic = "backgroundmusic.mp3";
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -65,9 +67,11 @@ public class GameStateManager
         gameStates.add(state1);
 
         //set music
-        backgroundMus = Gdx.audio.newMusic(Gdx.files.internal("backgroundmusic.mp3"));
+       // backgroundMus = Gdx.audio.newMusic(Gdx.files.internal("backgroundmusic.mp3"));
+        setPlayingMus(mapMusic);
         backgroundMus.setLooping(true);
-        backgroundMus.play();
+      //  backgroundMus.setVolume(0.5f);
+        //backgroundMus.play();
 
         //currentState = MENUSTATE;
 
@@ -137,7 +141,7 @@ public class GameStateManager
         changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
-        backgroundMus.play();
+        setPlayingMus(mapMusic);
     }
 
     public void openMenu(Player player)
@@ -171,6 +175,11 @@ public class GameStateManager
     {
         musicLevel = music;
     }
+    public void setPlayingMus(String trackName){
+        backgroundMus = Gdx.audio.newMusic(Gdx.files.internal(trackName)) ;
+        backgroundMus.play();
+
+    }
 
     public void levelUpState(Player player)
     {
@@ -185,8 +194,9 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
         gameStates.add(new DeathState(this,player));    //Makes a new Death State
-        loseMus = Gdx.audio.newMusic(Gdx.files.internal("pacman.mp3"));
-        loseMus.play();
+        //loseMus = Gdx.audio.newMusic(Gdx.files.internal("pacman.mp3"));
+        //loseMus.play();
+        setPlayingMus(loseMusic);
         changeState(gameStates.size()-1);               //Moves to the new state
     }
 
@@ -194,7 +204,8 @@ public class GameStateManager
     {
         gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
-        backgroundMus.play();
+        backgroundMus.pause();
+        setPlayingMus(mapMusic);
         changeState(1);                                 //Return to the Main Menu State
     }
 
