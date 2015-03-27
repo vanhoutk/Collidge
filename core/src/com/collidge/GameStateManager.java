@@ -185,7 +185,7 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
         gameStates.add(new DeathState(this,player));    //Makes a new Death State
-        loseMus = Gdx.audio.newMusic(Gdx.files.internal("sounds/Pacman.mp3"));
+        loseMus = Gdx.audio.newMusic(Gdx.files.internal("pacman.mp3"));
         loseMus.play();
         changeState(gameStates.size()-1);               //Moves to the new state
     }

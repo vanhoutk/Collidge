@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class Combo
 {
-    Sound pop1=Gdx.audio.newSound(Gdx.files.internal("pop1.ogg"));
+    Sound pop1=Gdx.audio.newSound(Gdx.files.internal("strongpunch.mp3"));
     long startTime,allowedTime;
     Random rand=new Random();
     double startX,startY;
