@@ -8,51 +8,54 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
-
-
-import java.util.TimerTask;
-
 
 /**
  * Created by ssakac on 09/03/15.
  */
+public class NPC extends Sprite {
 
-public class NPC extends Sprite
-{
-    private Vector2 velocity = new Vector2();
+    private Vector2 velocity = new Vector2(); //movement velocity
     private float speed = 60 * 2;
     private Boolean movrnot;
-    private float countDelta;
+
     private TiledMapTileLayer collisionlayer;
-    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, Boolean movrnoty)
-    {
+
+    long startTime;
+    long currentTime;
+
+
+    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, Boolean movrnoty) {
+
         super(sprite);
+
         movrnot = movrnoty;
+        velocity.x = speed;
+        startTime = TimeUtils.millis();
+        currentTime = startTime;
         this.collisionlayer = collisionlayer;
-        this.countDelta = 0;
-        this.velocity.x = speed;
     }
 
     @Override
-    public void draw(Batch spritebatch)
-    {
+    public void draw(Batch spritebatch) {
         update(Gdx.graphics.getDeltaTime());
+        //walkingLeftAnimation.update(Gdx.graphics.getDeltaTime());
         super.draw(spritebatch);
     }
 
-    public void draw2(Batch spritebatch, int blaa)
-    {
+    public void draw2(Batch spritebatch, int blaa) {
         update(Gdx.graphics.getDeltaTime());
+
     }
 
-    public void update(float delta)
-    {
+    public void update(float delta) {
         float oldX = getX(), oldY = getY(), tilewidth = collisionlayer.getTileWidth(), tileheight = collisionlayer.getTileHeight();
         boolean collisionX = false, collisionY = false, fight = false;
 
-        if (velocity.x < 0)
-        {
+        if(movrnot == true) {
+            setX(getX() + velocity.x * delta);
+        }
+
+        if (velocity.x < 0) {
             //top left
             collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
             //middle left
@@ -61,9 +64,7 @@ public class NPC extends Sprite
             //bottom left
             if (!collisionX)
                 collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
-        }
-        else if (velocity.x > 0)
-        {
+        } else if (velocity.x > 0) {
             //top right
             collisionX = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
             //middle right
@@ -75,8 +76,7 @@ public class NPC extends Sprite
         }
 
         //react to x collision
-        if (collisionX)
-        {
+        if (collisionX) {
             setX(oldX);
             if(velocity.x > 0)
             {
@@ -86,10 +86,12 @@ public class NPC extends Sprite
             {
                 velocity.x = speed;
             }
+
         }
 
-        if (velocity.y < 0)
-        {
+        setY(getY() + velocity.y * delta);
+
+        if (velocity.y < 0) {
             //bottom left
             collisionY = collisionlayer.getCell((int) (getX() / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
             //middle bottom
@@ -107,53 +109,43 @@ public class NPC extends Sprite
             if (!collisionY)
                 collisionY = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
         }
+
         //react to y collision
-        if (collisionY)
-        {
+        if (collisionY) {
             setY(oldY);
             velocity.y = 0;
         }
 
-        if(countDelta > 300f)
-        {
-            velocity.x = -velocity.x;
-            countDelta = 0;
-        }
 
-        setY(getY() + velocity.y * delta);
-        setX(getX() + velocity.x * delta);
-
-        countDelta++;
     }
 
-    public Vector2 getVelocity()
-    {
+    public Vector2 getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(Vector2 velocity)
-    {
+    public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
     }
 
-    public float getSpeed()
-    {
+    public float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(float speed)
-    {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
 
-    public TiledMapTileLayer getCollisionLayer()
-    {
+    public TiledMapTileLayer getCollisionLayer() {
         return collisionlayer;
     }
 
-    public void setCollisionLayer(TiledMapTileLayer collisionlayer)
-    {
+    public void setCollisionLayer(TiledMapTileLayer collisionlayer) {
         this.collisionlayer = collisionlayer;
     }
+
+
 }
+
+
+
