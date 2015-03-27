@@ -24,6 +24,7 @@ public class GameStateManager
     public Music loseMus;
     public String loseMusic = "pacman.mp3";
     public String mapMusic = "backgroundmusic.mp3";
+    public String winMusic = "winmusic.mp3";
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -220,7 +221,9 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
         gameStates.add(new WinState(this,player, Exp, enemies, damage_taken, ratings));    //Makes a new Win State
+
         changeState(gameStates.size()-1);               //Moves to the new state
+        setPlayingMus(winMusic);
     }
 
     public void startOpenScreen()
