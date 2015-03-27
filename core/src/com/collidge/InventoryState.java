@@ -1,6 +1,7 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +27,7 @@ public class InventoryState extends GameState
     String[] itemInfoText, itemNameText, itemEquipText, playerInfoText;
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
+    public static Music elevatorMusic = Gdx.audio.newMusic(Gdx.files.internal("elevatormusic.mp3"));
 
     private BitmapFont infoFont;
 
@@ -134,6 +136,8 @@ public class InventoryState extends GameState
     @Override
     public void initialize()
     {
+
+        elevatorMusic.play();
         itemNum = player.getItemList().length;
         for(int i = 0; i < itemNum; i++)
         {
@@ -167,6 +171,7 @@ public class InventoryState extends GameState
     @Override
     public void update()
     {
+        elevatorMusic.play();
         playerInfoText[0] = player.getCurrentHealth() + "/" + player.getHealth();
         playerInfoText[1] = player.getCurrentEnergy() + "/" + player.getEnergy();
         playerInfoText[2] = String.valueOf(player.getAttack());

@@ -15,6 +15,9 @@ package com.collidge;
  * - TODO: Rebalance items
  */
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +32,7 @@ public class Inventory
      */
     private HashMap<String, CombatItem> MyCombatInv = new HashMap();
     private HashMap<String, Equipment> MyEquipment = new HashMap();
+   // public static Music elevatorMusic = Gdx.audio.newMusic(Gdx.files.internal("elevatormusic.mp3"));
 
     /**
      * Dan's edit
@@ -173,6 +177,7 @@ public class Inventory
 
     void loadInventory()
     {
+       // elevatorMusic.play();
         /**
          * Constructor for combat items is (Type, Text, Health, Energy, Enemy Damage, Quantity, Image)
          */

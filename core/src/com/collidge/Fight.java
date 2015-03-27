@@ -107,7 +107,9 @@ public class Fight extends GameState
     @Override
     public void initialize()
     {
+        fightMusic.setVolume((float)gsm.musicLevel/4);
         fightMusic.play();
+
 // testAnim=new Animation("walkingRight.png",10);
         combo=new Combo();
         expEarned=0;

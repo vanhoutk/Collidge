@@ -522,7 +522,7 @@ public class GameMenu extends GameState
 
                 }
                 gsm.setVolume(volumeLevel);
-                gsm.backgroundMus.setVolume((float)volumeLevel/4);
+                //gsm.backgroundMus.setVolume((float)volumeLevel/4);
             }
 
             if (y < vol0.getY() && y > vol0.getY() - vol0.getHeight())
@@ -552,6 +552,7 @@ public class GameMenu extends GameState
                     musicLevel=4;
                     gsm.setMusic(musicLevel);
                 }
+                gsm.backgroundMus.setVolume((float)musicLevel/4);
             }
 
             //mute
