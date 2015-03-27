@@ -1,6 +1,7 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,9 @@ public class GameStateManager
     public int currentState, previousState;
     public Player user;
     public int volumeLevel, musicLevel;
+    public Music backgroundMus;
+   // public Music fightMus;
+    public Music loseMus;
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -59,6 +63,11 @@ public class GameStateManager
         // GameState state2 = new TestState2(this);
         gameStates.add(state0);
         gameStates.add(state1);
+
+        //set music
+        backgroundMus = Gdx.audio.newMusic(Gdx.files.internal("backgroundmusic.mp3"));
+        backgroundMus.setLooping(true);
+        backgroundMus.play();
 
         //currentState = MENUSTATE;
 
@@ -119,6 +128,7 @@ public class GameStateManager
     {
         gameStates.add(new Fight(this,player,Enemy));
         changeState(gameStates.size()-1);
+        backgroundMus.pause();
     }
 
     public void endFight()
@@ -127,6 +137,7 @@ public class GameStateManager
         changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
+        backgroundMus.play();
     }
 
     public void openMenu(Player player)
@@ -174,6 +185,8 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();  //disposes of the Fight State
         gameStates.remove(gameStates.size()-1);         //Removes Entry from the Array
         gameStates.add(new DeathState(this,player));    //Makes a new Death State
+        loseMus = Gdx.audio.newMusic(Gdx.files.internal("sounds/Pacman.mp3"));
+        loseMus.play();
         changeState(gameStates.size()-1);               //Moves to the new state
     }
 
@@ -181,6 +194,7 @@ public class GameStateManager
     {
         gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
+        backgroundMus.play();
         changeState(1);                                 //Return to the Main Menu State
     }
 

@@ -1,6 +1,7 @@
 package com.collidge;
 //import android.view.MotionEvent;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.utils.Timer;
 */
 public class Fight extends GameState
 {
+    Music fightMusic = Gdx.audio.newMusic(Gdx.files.internal("mymusic2.mp3"));
+
     private double PlayerDam;
     Player playr;
     boolean waitingForTouch=false;
@@ -104,6 +107,7 @@ public class Fight extends GameState
     @Override
     public void initialize()
     {
+        fightMusic.play();
 // testAnim=new Animation("walkingRight.png",10);
         combo=new Combo();
         expEarned=0;
@@ -797,6 +801,7 @@ enemies[i].animation.pause();
         damage[0]=0;
         int[]ratings = combo.num_ratings;
         combo.delete();
+        fightMusic.dispose();
         Timer.instance().clear();
         Timer.instance().stop();
         batch.dispose();
@@ -811,6 +816,7 @@ enemies[i].animation.pause();
     {
         damage[0]=0;
         combo.delete();
+        fightMusic.dispose();
         batch.dispose();
         texture.dispose();
         battleFont.dispose();
