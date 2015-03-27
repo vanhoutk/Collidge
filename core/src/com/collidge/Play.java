@@ -71,7 +71,7 @@ public class Play extends GameState {
 
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
-        inventoryButton = new Texture("schoolbag.png");
+        inventoryButton = new Texture("bagicon.png");
         menuButtonSprite = new Sprite(menuButton);
         inventoryButtonSprite = new Sprite(inventoryButton);
     }
