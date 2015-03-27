@@ -304,21 +304,7 @@ else {
 enemyCountTemp = enemyCount - 9;
 iTemp = i-9;
 }*/
-                if(!targeting)
-/*
-batch.draw(enemies[i].animation.getFrame(),
-((int) (screenWidth / 2 + 2.5*enemies[i].width + (iTemp * (screenWidth / (double) (3 * enemyCountTemp))))) - target,
-2*screenHeight / 5 + (int) ((((enemyCountTemp) - (iTemp + 1)) / (double) (enemyCountTemp)) * (screenHeight / 2)),
-enemies[i].width,
-enemies[i].height);
-}
-if(!targeting)
-*/
-                {
-                    battleFont.setColor(Color.RED);
-                    battleFont.draw(batch, enemies[i].getHealth() + "", ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount)))))+screenWidth/10, battleFont.getLineHeight());
-                    battleFont.setColor(Color.BLACK);
-                }
+
 /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
 sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
 sprite_enemy[i].draw(batch);*/

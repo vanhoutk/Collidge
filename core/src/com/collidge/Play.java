@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  */
 public class Play extends GameState {
 
-    private int cameraRotation=0,rotationSpeed=18;//use rotation speed to set the speed of rotation, note that it must be a factor of 360 to stop on the same spot it starts on
+    private int cameraRotation=0,rotationSpeed=12;//use rotation speed to set the speed of rotation, note that it must be a factor of 360 to stop on the same spot it starts on
     Player userCharacter;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
