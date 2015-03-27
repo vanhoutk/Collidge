@@ -16,6 +16,8 @@ public class Player
     private int intelligence;
     private double experience;
     public Inventory items;
+    public int itemDamage;
+    public String itemType;
     public String player_name;
 
 
@@ -30,17 +32,49 @@ public class Player
             energyPointsMult=2;
 
 
-    private int
-            baseAttackPoints=3,
-            baseDefencePoints=0,
-            baseIntelligencePoints=1,
-            baseHealthPoints=20,
-            baseEnergyPoints=5;
+    private int baseAttackPoints=3;
+    private int baseDefencePoints=0;
+    private int baseIntelligencePoints=1;
+
+
+    private int baseHealthPoints=20;
+    private int baseEnergyPoints=5;
 
     //Kris Added- Variables for equipped Weapon and equipped Armour
 
     String equippedWeapon;
     String equippedArmour;
+
+
+    public String getPlayer_name()
+    {
+        return player_name;
+    }
+
+    public int getBaseAttackPoints()
+    {
+        return baseAttackPoints;
+    }
+
+    public int getBaseDefencePoints()
+    {
+        return baseDefencePoints;
+    }
+
+    public int getBaseIntelligencePoints()
+    {
+        return baseIntelligencePoints;
+    }
+
+    public int getBaseHealthPoints()
+    {
+        return baseHealthPoints;
+    }
+
+    public int getBaseEnergyPoints()
+    {
+        return baseEnergyPoints;
+    }
 
     public double getAttackPointsMult()
     {
@@ -275,6 +309,8 @@ public class Player
     public void useItem(String item)
     {
         items.useItem(this,item);
+        //itemDamage is needed to specify when an item does enemy damage
+        itemDamage = items.getItemDamage(item);
     }
 
     public int attackPicker(String moveName)
@@ -297,6 +333,11 @@ public class Player
             if(moveName.equals(attacksNames[i]))
             {
                 return attackAOE[i];
+            }
+            //TODO change to allow other damaging items too
+            else if (moveName.equals("IED"))
+            {
+                return 10;
             }
         }
         return 0;
