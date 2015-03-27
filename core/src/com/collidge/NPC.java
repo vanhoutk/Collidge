@@ -27,24 +27,31 @@ public class NPC extends Sprite
     private static final int LEFT = 2;
     private static final int RIGHT = 3;
     boolean xory;
-    boolean positive = true;
+    boolean positive;
     private Vector2 velocity = new Vector2();
     private float speed = 60 * 2;
     private Boolean movrnot;
     private MapPlayer player;
     private float countDelta;
     private TiledMapTileLayer collisionlayer;
-    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, Boolean movrnoty, MapPlayer player, boolean xoryplane)
+    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, boolean movrnoty, MapPlayer player, boolean xoryplane, boolean positive)
     {
         super(sprite);
         movrnot = movrnoty;
         xory = xoryplane;
+        this.positive = positive;
         this.player = player;
         this.collisionlayer = collisionlayer;
         this.countDelta = 0;
         if(movrnot == true) {
-            if(xory) this.velocity.x = speed;
-            else this.velocity.y = speed;
+            if(xory) {
+                if (positive )this.velocity.x = speed;
+                else velocity.x = -1 * speed;
+            }
+            else {
+                if (positive) velocity.y = speed;
+                else velocity.y = -speed;
+            }
         }
     }
 
@@ -66,7 +73,7 @@ public class NPC extends Sprite
         boolean collisionX = false, collisionY = false, fight = false;
 
         boolean move = true;
-        if(move) {
+        if(move && movrnot) {
             if(xory) {
                 if(positive ) velocity.x = speed;
                 else velocity.x = -speed;

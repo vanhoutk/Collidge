@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.ArrayList;
+
 /**
  * Created by Gary on 26/01/2015.
  */
@@ -28,8 +30,8 @@ public class Play extends GameState {
     private OrthographicCamera camera;
     private OrthographicCamera camera2;
     private MapPlayer player;
-    private NPC npc1;
-    //private NPC npc2;
+    int noOfNpcs = 16;
+    private ArrayList<NPC> npcList;
     private Texture menuButton, inventoryButton;
     private Sprite menuButtonSprite, inventoryButtonSprite;
     private float ppx, ppy, px, py;
@@ -62,12 +64,47 @@ public class Play extends GameState {
         renderer = new OrthogonalTiledMapRenderer(map);
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
 
-        npc1 = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, true);
-        npc1.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
-        //npc2 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true);
-        //npc2.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
+        player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
+        npcList = new ArrayList<NPC>();
+        NPC []npcArray = new NPC[noOfNpcs];
+
+        npcArray[0] = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
+        npcArray[0].setPosition(12 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 41) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[1] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[1].setPosition(11 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 59) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[2] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[2].setPosition(23 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 59) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[3] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
+        npcArray[3].setPosition(17 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 60) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[4] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[4].setPosition(15 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 47) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[5] = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
+        npcArray[5].setPosition(18 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 48) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[6] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, false);
+        npcArray[6].setPosition(19 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 53) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[7] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
+        npcArray[7].setPosition(12 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 41) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[8] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, true, false);
+        npcArray[8].setPosition(6 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 34) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[9] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[9].setPosition(32 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 29) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[10] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[10].setPosition(21 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 23) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[11] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
+        npcArray[11].setPosition(10 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 26) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[12] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[12].setPosition(3 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 20) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[13] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, false);
+        npcArray[13].setPosition(29 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 1) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[14] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[14].setPosition(25 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 18) * npcArray[0].getCollisionLayer().getTileHeight());
+        npcArray[15] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
+        npcArray[15].setPosition(10 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 19) * npcArray[0].getCollisionLayer().getTileHeight());
+
+        for (int i = 0; i < noOfNpcs; i++) {
+            npcList.add(npcArray[i]);
+        }
 
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
@@ -141,14 +178,14 @@ public class Play extends GameState {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("walls"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("front_fence"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("randoms_layer"));
-       // player.draw(renderer.getBatch());
 
         if(TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
             player.draw(renderer.getBatch());
         }
-        npc1.draw((renderer.getBatch()));
-        //npc2.draw((renderer.getBatch()));
+        for(int i = 0; i < noOfNpcs; i++) {
+            npcList.get(i).draw(renderer.getBatch());
+        }
 
         //Loads the rest of the map on top of the NPC and Player models
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("back_fence"));

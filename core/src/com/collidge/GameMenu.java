@@ -287,13 +287,13 @@ public class GameMenu extends GameState
             XPframe.draw(batch);
             Font.setColor(Color.BLACK);
 
-            Font.setScale(screenWidth / 600f, screenHeight / 600f);
-            Font.draw(batch, " Lv. ", XPframe.getX() + XPframe.getHeight()/7, XPframe.getY() + XPframe.getHeight()*4/5);
-            Font.draw(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*13/14 , XPframe.getY() + XPframe.getHeight()*4/5);
+            Font.setScale(screenWidth / 650f, screenHeight / 650f);
+            Font.drawWrapped(batch, " Lv. ", XPframe.getX(), XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*21/23 , XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
 
-            Font.setScale(screenWidth / 500f, screenHeight / 500f);
-            Font.draw(batch, "" + player.getLevel(), XPframe.getX() + XPframe.getHeight()/8, XPframe.getY() + XPframe.getHeight()*3/5);
-            Font.draw(batch, "" + (player.getLevel()+1), XPframe.getX() + XPframe.getWidth()*12/13 , XPframe.getY() + XPframe.getHeight()*3/5);
+            Font.setScale(screenWidth / 450f, screenHeight / 450f);
+            Font.drawWrapped(batch, "" + player.getLevel(), XPframe.getX() + XPframe.getHeight()/20, XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, "" + (player.getLevel()+1), XPframe.getX() + XPframe.getWidth()*21/23 , XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
 
 
             statsymbol.setPosition(screenWidth / 7, healthbar.getY() - healthbar.getHeight() / 2);
