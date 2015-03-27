@@ -670,6 +670,8 @@ enemies[i].animation.pause();
             endFight();
         }
 
+        damageNums.Add("DEFEND!",.2f,.5f,0f,.01f,Color.BLUE,10,10.0);
+
     }
     private void enemyTurn(Player player,Enemy[] monsters,int monsterId)
     {
