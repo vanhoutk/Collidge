@@ -198,100 +198,82 @@ public class Fight extends GameState
 
 
 
-    public void update()
-    {
+    public void update() {
 //(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
         damageNums.update();
         testAnim.update(Gdx.graphics.getDeltaTime());
-        if(combo.comboing)
-        {
-            comboing=true;
+        if (combo.comboing) {
+            comboing = true;
             combo.update();
-        }
-        else if(comboing)
-        {
-            if(monsterCode==-1)
-            {
-                comboing=false;
-            }
-            else if(monsterCode==-2)
-            {
+        } else if (comboing) {
+            if (monsterCode == -1) {
+                comboing = false;
+            } else if (monsterCode == -2) {
                 comboing = false;
                 playerTurnPart3();
-            }
-            else if(monsterCode<enemies.length)
-            {
-                if(defend)
-                {
-                    defend=false;
+            } else if (monsterCode < enemies.length) {
+                if (defend) {
+                    defend = false;
                     defendTurn(playr, enemies, monsterCode);
-                }
-                else if(enemies[monsterCode].attackAnimation.getTimesPlayed()>animCount||enemies[monsterCode].getDead())
-                {
+                } else if (enemies[monsterCode].attackAnimation.getTimesPlayed() > animCount || enemies[monsterCode].getDead()) {
                     enemyTurnPart2();
                     enemies[monsterCode].attackAnimation.stop();
-                }
-                else
-                {
+                } else {
                     enemies[monsterCode].attackAnimation.update(Gdx.graphics.getDeltaTime());
                 }
             }
         }
+    }
 
-    @Override
-    public void draw()
+        @Override
+        public void draw ()
         {
             batch.begin();
             background.draw(batch);
-            portrait.setPosition(0,screenHeight-((int)(portrait.getHeight()*.9)+battleFont.getLineHeight()));
+            portrait.setPosition(0, screenHeight - ((int) (portrait.getHeight() * .9) + battleFont.getLineHeight()));
 //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
-            healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), portrait.getY()+(int)(9*portrait.getHeight()/20.0));
+            healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), portrait.getY() + (int) (9 * portrait.getHeight() / 20.0));
             healthBackground.setPosition(healthBar.getX(), healthBar.getY());
-            healthBackground.setSize((int)( 35*portrait.getWidth()/40.0),healthBar.getHeight());
+            healthBackground.setSize((int) (35 * portrait.getWidth() / 40.0), healthBar.getHeight());
             healthBackground.draw(batch);
             healthBackground.setOriginCenter();
-            healthBar.setSize((int)((playr.getCurrentHealth()*((int)( 35*portrait.getWidth()/40.0)))/((double)playr.getHealth())),(int)(18*portrait.getHeight()/50.0));
+            healthBar.setSize((int) ((playr.getCurrentHealth() * ((int) (35 * portrait.getWidth() / 40.0))) / ((double) playr.getHealth())), (int) (18 * portrait.getHeight() / 50.0));
             healthBar.draw(batch);
-            battleFont.draw(batch,"MR MAN",healthBackground.getOriginX(),healthBackground.getY()+(healthBackground.getHeight()+battleFont.getLineHeight()));
-            battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,healthBackground.getOriginX(),(healthBackground.getY()+battleFont.getLineHeight()));
-            batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
-            EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f)); //Code Allowing for generation of Energy Icons
+            battleFont.draw(batch, "MR MAN", healthBackground.getOriginX(), healthBackground.getY() + (healthBackground.getHeight() + battleFont.getLineHeight()));
+            battleFont.draw(batch, playr.getCurrentHealth() + "/" + playr.getHealth(), healthBackground.getOriginX(), (healthBackground.getY() + battleFont.getLineHeight()));
+            batch.draw(testAnim.getFrame(), screenWidth / 30, screenHeight / 30, screenWidth / 10, screenHeight / 5);
+            EnergyIcon.setSize((screenHeight / 20f), (screenHeight / 20f)); //Code Allowing for generation of Energy Icons
             healthBackground.setColor(Color.BLUE);
-            healthBackground.setPosition(portrait.getX()+(portrait.getWidth()/10), (int)((healthBar.getY())-(healthBar.getHeight()*.9)));
-            healthBackground.setSize((int)(((71*portrait.getWidth()/80.0))*(playr.getCurrentEnergy()/(double)playr.getEnergy())),(int)(healthBackground.getHeight()*.9));
+            healthBackground.setPosition(portrait.getX() + (portrait.getWidth() / 10), (int) ((healthBar.getY()) - (healthBar.getHeight() * .9)));
+            healthBackground.setSize((int) (((71 * portrait.getWidth() / 80.0)) * (playr.getCurrentEnergy() / (double) playr.getEnergy())), (int) (healthBackground.getHeight() * .9));
             healthBackground.draw(batch);
             healthBackground.setColor(Color.WHITE);
             battleFont.setColor(Color.WHITE);
-            battleFont.draw(batch, playr.getCurrentEnergy()+"" ,healthBackground.getX()+(healthBackground.getWidth()/2),healthBackground.getY()+healthBackground.getHeight());
+            battleFont.draw(batch, playr.getCurrentEnergy() + "", healthBackground.getX() + (healthBackground.getWidth() / 2), healthBackground.getY() + healthBackground.getHeight());
             portrait.draw(batch);
 //Sets colour and size of battle font, draws "HP" for player health
             battleFont.setColor(Color.BLACK);
-            battleFont.setScale(screenWidth/400);
+            battleFont.setScale(screenWidth / 400);
 // Enemy drawing loop
-            for(int i=0;i<enemies.length;i++)
-            {
-                if(!enemies[i].getDead())
-                {
-                    int target=0;
-                    if((targeting&&targetPicker.getCurrentTarget()==i)||monsterCode==i)
-                    {
+            for (int i = 0; i < enemies.length; i++) {
+                if (!enemies[i].getDead()) {
+                    int target = 0;
+                    if ((targeting && targetPicker.getCurrentTarget() == i) || monsterCode == i) {
 //target=Gdx.graphics.getWidth()/10;
-                        healthBackground.setPosition((3f * screenWidth /5f), screenHeight - (battleFont.getLineHeight()*3));
-                        healthBackground.setSize(2*screenWidth/6f, battleFont.getLineHeight());
-                        healthBar.setPosition(healthBackground.getX(),healthBackground.getY());
-                        healthBar.setSize((int)(healthBackground.getWidth()*((double)enemies[i].getHealth()/(double)enemies[i].getMaxHealth())),healthBackground.getHeight());
-                        healthBackground.setSize(healthBackground.getWidth()-(int)(healthBackground.getWidth()*.05),healthBar.getHeight());
+                        healthBackground.setPosition((3f * screenWidth / 5f), screenHeight - (battleFont.getLineHeight() * 3));
+                        healthBackground.setSize(2 * screenWidth / 6f, battleFont.getLineHeight());
+                        healthBar.setPosition(healthBackground.getX(), healthBackground.getY());
+                        healthBar.setSize((int) (healthBackground.getWidth() * ((double) enemies[i].getHealth() / (double) enemies[i].getMaxHealth())), healthBackground.getHeight());
+                        healthBackground.setSize(healthBackground.getWidth() - (int) (healthBackground.getWidth() * .05), healthBar.getHeight());
                         healthBackground.draw(batch);
                         healthBar.draw(batch);
-                        battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
-                        battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
-                        selector.setPosition(enemyX[i],enemyY[i]);
-                        selector.setSize(enemies[i].width,enemies[i].height);
+                        battleFont.draw(batch, enemies[i].getName(), healthBackground.getX(), healthBackground.getY() + battleFont.getLineHeight() * 2);
+                        battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY() + battleFont.getLineHeight());
+                        selector.setPosition(enemyX[i], enemyY[i]);
+                        selector.setSize(enemies[i].width, enemies[i].height);
                         selector.draw(batch);
-                    }
-                    else
-                    {
-                        target=0;
+                    } else {
+                        target = 0;
                     }
 /*int enemyCountTemp;
 int iTemp;
@@ -327,8 +309,7 @@ iTemp = i-9;
 /*sprite_enemy[i].setSize(screenWidth/12f, screenWidth/12f);
 sprite_enemy[i].setPosition(screenWidth/2f, screenHeight/12f);
 sprite_enemy[i].draw(batch);*/
-                    if(targeting&&(targetPicker.getCurrentTarget()+targetPicker.getTargetingId()>=i&&targetPicker.getCurrentTarget()-targetPicker.getTargetingId()<=i))
-                    {
+                    if (targeting && (targetPicker.getCurrentTarget() + targetPicker.getTargetingId() >= i && targetPicker.getCurrentTarget() - targetPicker.getTargetingId() <= i)) {
 /*battleFont.setColor(Color.RED);
 battleFont.draw(batch, "Tap to choose a target!", screenWidth/20, screenHeight/2);
 battleFont.setColor(Color.BLACK);
@@ -363,12 +344,9 @@ battleFont.setColor(Color.BLACK);
 selector.draw(batch);
 }*/
                     }
-                    if(monsterCode==i)
-                    {
+                    if (monsterCode == i) {
                         batch.draw(enemies[i].attackAnimation.getFrame(), enemyX[i], enemyY[i], enemies[i].width, enemies[i].height);
-                    }
-                    else
-                    {
+                    } else {
                         batch.draw(enemies[i].animation.getFrame(), ((int) (screenWidth / 2 + (i * (screenWidth / (double) (3 * enemyCount))))) - target, screenHeight / 10 + (int) ((((enemyCount) - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)), enemies[i].width, enemies[i].height);
                         enemies[i].animation.update(Gdx.graphics.getDeltaTime());
                     }
@@ -378,7 +356,7 @@ enemies[i].animation.pause();
 }*/
                 }
             }
-            if(targeting) //draws old targeting interface
+            if (targeting) //draws old targeting interface
             {
                 targetArrow.setRotation(90);
                 targetArrow.setPosition(screenWidth / 10, screenHeight / 2);
@@ -391,20 +369,19 @@ enemies[i].animation.pause();
                 backArrow.setPosition(targetReticule.getX(), targetReticule.getY() - backArrow.getHeight());
                 backArrow.draw(batch);
             }
-            if(damageNums.popUps.size()>0)
-            {
+            if (damageNums.popUps.size() > 0) {
                 damageNums.draw(batch);
             }
-            if(!fMenu.actionSelected)
-            {
-                fMenu.draw(batch,screenWidth,screenHeight);
+            if (!fMenu.actionSelected) {
+                fMenu.draw(batch, screenWidth, screenHeight);
             }
-            if(combo.comboing) //if in combo phase
+            if (combo.comboing) //if in combo phase
             {
                 combo.draw(batch);
             }
             batch.end();
         }
+    }
 
 //----------------------------------------------------------------------------------
 // these are just input methods that must be implemented
