@@ -137,7 +137,7 @@ public class Fight extends GameState
         healthBar = new Sprite(texture);
         texture = new Texture("barHorizontal_red_mid.png");
         healthBackground = new Sprite(texture);
-        texture = new Texture("Transparant_Button.png");
+        texture = new Texture("EnemySelect.png");
         selector = new Sprite(texture);
         texture = new Texture("blue_circle.png");
         EnergyIcon = new Sprite(texture);
@@ -266,8 +266,8 @@ public class Fight extends GameState
                     healthBar.draw(batch);
                     battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
-                    selector.setPosition(enemyX[i],enemyY[i]);
-                    selector.setSize(enemies[i].width,enemies[i].height);
+                    selector.setPosition(enemyX[i] - enemies[i].width/8, enemyY[i] - enemies[i].height/8);
+                    selector.setSize(5 * enemies[i].width/4, 5 * enemies[i].height/4);
                     selector.draw(batch);
                 }
                 else

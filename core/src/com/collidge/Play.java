@@ -135,8 +135,8 @@ public class Play extends GameState {
         seconds = (long)(time / 1000);
         minutes = seconds / 60;
         hours = minutes / 60;
-       // hours%=24;
-        hours=(seconds/3)%24;
+        hours%=24;
+       // hours=(seconds/3)%24;
         minutes%=60;
         seconds%=60;
         System.out.println(hours+": "+minutes+": "+seconds);
@@ -345,8 +345,8 @@ public class Play extends GameState {
         seconds = (long)(time / 1000);
         minutes = seconds / 60;
         hours = minutes / 60;
-        // hours%=24;
-        hours=(seconds)%24;
+        hours%=24;
+        //hours=(seconds)%24;
         minutes%=60;
         seconds%=60;
         System.out.println(hours+"------"+twilightOpacity);
