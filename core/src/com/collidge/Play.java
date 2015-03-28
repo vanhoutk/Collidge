@@ -30,7 +30,6 @@ public class Play extends GameState {
     private OrthographicCamera camera;
     private OrthographicCamera camera2;
     private MapPlayer player;
-    int noOfNpcs = 16;
     private ArrayList<NPC> npcList;
     private Texture menuButton, inventoryButton;
     private Sprite menuButtonSprite, inventoryButtonSprite,nightMask,whiteSquare;
@@ -67,50 +66,27 @@ public class Play extends GameState {
 
         renderer = new OrthogonalTiledMapRenderer(map);
         npcList = new ArrayList<NPC>();
-        NPC []npcArray = new NPC[noOfNpcs];
 
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0), npcList);
 
         player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
 
-
-
-        npcArray[0] = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
-        npcArray[0].setPosition(12 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 41) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[1] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[1].setPosition(11 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 59) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[2] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[2].setPosition(23 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 59) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[3] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
-        npcArray[3].setPosition(17 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 60) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[4] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[4].setPosition(15 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 47) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[5] = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
-        npcArray[5].setPosition(18 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 48) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[6] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, false);
-        npcArray[6].setPosition(19 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 53) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[7] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
-        npcArray[7].setPosition(12 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 41) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[8] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, true, false);
-        npcArray[8].setPosition(6 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 34) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[9] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[9].setPosition(32 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 29) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[10] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[10].setPosition(21 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 23) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[11] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
-        npcArray[11].setPosition(10 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 26) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[12] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[12].setPosition(3 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 20) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[13] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, false);
-        npcArray[13].setPosition(29 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 1) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[14] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[14].setPosition(25 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 18) * npcArray[0].getCollisionLayer().getTileHeight());
-        npcArray[15] = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), false, player, false, false);
-        npcArray[15].setPosition(10 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 19) * npcArray[0].getCollisionLayer().getTileHeight());
-
-        for (int i = 0; i < noOfNpcs; i++) {
-            npcList.add(npcArray[i]);
-        }
+        addNpc(12, 41, new Texture("shev.png"), true, false, true);
+        addNpc(11, 58, new Texture("rpgman.png"), false, false, false);
+        addNpc(23, 58, new Texture("rpgman.png"), false, false, false);
+        addNpc(17, 60, new Texture("rpgman.png"), true, false, true);
+        addNpc(15, 47, new Texture("rpgman.png"), false, false, false);
+        addNpc(18, 48, new Texture("shev.png"), true, true, true);
+        addNpc(19, 53, new Texture("rpgman.png"), true, true, false);
+        addNpc(12, 41, new Texture("rpgman.png"), true, true, true);
+        addNpc(6, 34, new Texture("rpgman.png"), false, true, false);
+        addNpc(32, 28, new Texture("rpgman.png"), false, false, false);
+        addNpc(21, 23, new Texture("rpgman.png"), false, false, false);
+        addNpc(10, 26, new Texture("rpgman.png"), true, true, true);
+        addNpc(3, 20, new Texture("rpgman.png"), false, false, false);
+        addNpc(29, 1, new Texture("rpgman.png"), true, true, false);
+        addNpc(25, 17, new Texture("rpgman.png"), false, false, false);
+        addNpc(10, 19, new Texture("rpgman.png"), false, false, false);
 
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
@@ -125,7 +101,17 @@ public class Play extends GameState {
         nightMask.setPosition(0,0);
         whiteSquare.setSize(screenWidth,screenHeight);
         whiteSquare.setPosition(0,0);
+    }
 
+    public void addNpc(int tilex, int tiley, Texture tex, boolean moveOrNot, boolean xDirection, boolean positive) {
+        TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
+        int heightMinusOne = collisionLayer.getHeight() - 1;
+        float tileWidth = collisionLayer.getTileWidth();
+        float tileHeight = collisionLayer.getTileHeight();
+
+        NPC npc = new NPC(new Sprite(tex), collisionLayer, moveOrNot, player, xDirection, positive);
+        npc.setPosition(tilex * tileWidth, (heightMinusOne - tiley) * tileHeight);
+        npcList.add(npc);
     }
 
     @Override
@@ -206,7 +192,8 @@ public class Play extends GameState {
         {
             player.draw(renderer.getBatch());
         }
-        for(int i = 0; i < noOfNpcs; i++) {
+
+        for(int i = 0; i < npcList.size(); i++) {
             npcList.get(i).draw(renderer.getBatch());
         }
 

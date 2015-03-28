@@ -163,26 +163,16 @@ public class MapPlayer extends Sprite
 
         if(velocity.x < 0)
         {
-            //top left
-            collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
-            //middle left
+            //left
             if(!collisionX)
                 collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) ((getY() + getHeight() / 2) / tileheight)).getTile().getProperties().containsKey("blocked");
-            //bottom left
-            if(!collisionX)
-                collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
         }
 
         else if(velocity.x > 0)
         {
-            //top right
-            collisionX = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
-            //middle right
+            //right
             if(!collisionX)
                 collisionX = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight() / 2) / tileheight)).getTile().getProperties().containsKey("blocked");
-            //bottom right
-            if(!collisionX)
-                collisionX = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
         }
 
         //react to x collision
@@ -196,25 +186,16 @@ public class MapPlayer extends Sprite
 
         if(velocity.y < 0)
         {
-            //bottom left
-            collisionY = collisionlayer.getCell((int) (getX() / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
-            //middle bottom
+            //down
             if(!collisionY)
                 collisionY = collisionlayer.getCell((int) ((getX() + getWidth() / 2) / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
-            //bottom right
-            if(!collisionY)
-                collisionY = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
         }
 
         else if(velocity.y > 0)
         {
-            //top left
-            collisionY = collisionlayer.getCell((int) (getX() / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
             //top middle
             if(!collisionY)
                 collisionY = collisionlayer.getCell((int) ((getX() + getWidth() / 2) / tilewidth), (int) ((getY() + getHeight() / 2) / tileheight)).getTile().getProperties().containsKey("blocked");
-            if(!collisionY)
-                collisionY = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
         }
 
         //react to y collision
@@ -355,8 +336,6 @@ public class MapPlayer extends Sprite
     {
         return true;
     }
-
-
 
     private void getDirection(float x, float y)
     {
