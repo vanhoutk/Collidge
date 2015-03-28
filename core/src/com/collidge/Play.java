@@ -33,13 +33,17 @@ public class Play extends GameState {
     int noOfNpcs = 16;
     private ArrayList<NPC> npcList;
     private Texture menuButton, inventoryButton;
-    private Sprite menuButtonSprite, inventoryButtonSprite;
+    private Sprite menuButtonSprite, inventoryButtonSprite,nightMask,whiteSquare;
     private float ppx, ppy, px, py;
     private PopUpText popUps;
     private long enteringFight=0;
     private String fighting;
-
+    long time;
+    long seconds;
+    long minutes;
+    long hours;
     private SpriteBatch  batch;
+    float nightOpacity,twilightOpacity;
 
     Play(GameStateManager gsm)
     {
@@ -62,12 +66,14 @@ public class Play extends GameState {
         map = loader.load("TrinityMap1.tmx");
 
         renderer = new OrthogonalTiledMapRenderer(map);
-
-        player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-
-        player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
         npcList = new ArrayList<NPC>();
         NPC []npcArray = new NPC[noOfNpcs];
+
+        player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0), npcList);
+
+        player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
+
+
 
         npcArray[0] = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
         npcArray[0].setPosition(12 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 41) * npcArray[0].getCollisionLayer().getTileHeight());
@@ -111,12 +117,29 @@ public class Play extends GameState {
         inventoryButton = new Texture("bagicon.png");
         menuButtonSprite = new Sprite(menuButton);
         inventoryButtonSprite = new Sprite(inventoryButton);
+        menuButton=new Texture("nightMask.png");
+        nightMask= new Sprite(menuButton);
+        menuButton=new Texture("whiteSquare.png");
+        whiteSquare=new Sprite(menuButton);
+        nightMask.setSize(screenWidth,screenHeight);
+        nightMask.setPosition(0,0);
+        whiteSquare.setSize(screenWidth,screenHeight);
+        whiteSquare.setPosition(0,0);
+
     }
 
     @Override
     public void initialize()
     {
-
+        time = System.currentTimeMillis();
+        seconds = (long)(time / 1000);
+        minutes = seconds / 60;
+        hours = minutes / 60;
+       // hours%=24;
+        hours=(seconds/3)%24;
+        minutes%=60;
+        seconds%=60;
+        System.out.println(hours+": "+minutes+": "+seconds);
     }
 
     public void setMap(String mapFile,int positionX, int positionY)
@@ -217,10 +240,66 @@ public class Play extends GameState {
         /*font.draw(batch, "blaaa", 50, 50);
         player2.draw(batch);*/
 
+        if(hours<7||hours>=22)
+        {
+            whiteSquare.setColor(Color.GRAY);
+            twilightOpacity=.3f;
+            if(hours>10)
+            {
+                nightOpacity = .95f * (1f-((26f-hours)/4f));
+            }
+            else
+            {
+                if(hours<2)
+                {
+                    nightOpacity = .95f * 1f-((float) (Math.abs((2f - hours) / 3f)));
+                }
+                else if(hours==2)
+                {
+                    nightOpacity=.95f;
+                }
+                else
+                {
+                    nightOpacity=.95f * 1f-(float) (Math.abs((2f - hours )/ 5f));
+                }
+            }
+
+        }
+        else
+        {
+            if(hours<12)
+            {
+                twilightOpacity = .3f * (1f-((float)(hours - 7)/4f));
+            }
+            else if(hours>=19)
+            {
+                twilightOpacity=.3f*(1f-((22f-hours)/3f));
+            }
+            else
+            {
+                twilightOpacity=0f;
+            }
+            nightOpacity=0f;
+            whiteSquare.setColor(.98f, .84f, .65f,1f);
+        }
+        if(hours<12||hours>19)
+        {
+            whiteSquare.draw(batch, twilightOpacity);
+            if(hours<=7||hours>=22)
+            {
+                nightMask.draw(batch, nightOpacity);
+            }
+        }
+
+
+        //System.out.println(nightOpacity+"---"+twilightOpacity);
+
+        //nightMask.draw(batch,1f);
         menuButtonSprite.draw(batch);
         inventoryButtonSprite.draw(batch);
         popUps.update();
         popUps.draw(batch);
+
 
         batch.end();
     }
@@ -262,6 +341,16 @@ public class Play extends GameState {
     @Override
     public void update()
     {
+        time = System.currentTimeMillis();
+        seconds = (long)(time / 1000);
+        minutes = seconds / 60;
+        hours = minutes / 60;
+        // hours%=24;
+        hours=(seconds)%24;
+        minutes%=60;
+        seconds%=60;
+        System.out.println(hours+"------"+twilightOpacity);
+
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510&&TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
             //Kris -- just put in to test InventoryState
@@ -383,7 +472,7 @@ public class Play extends GameState {
         if(x>Gdx.graphics.getWidth()*.45&&x<Gdx.graphics.getWidth()*.55&
                 y>Gdx.graphics.getHeight()*.45&&y<Gdx.graphics.getHeight()*.55)
         {
-            System.out.println("Stop");
+
             popUps.Add("Stop poking me!",.45f,.55f,0f,.2f, Color.WHITE,50);
         }
         if(y < screenHeight/5)
