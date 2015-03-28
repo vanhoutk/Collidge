@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class Play extends GameState {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private OrthographicCamera camera2;
+    TiledMapTileLayer collisionLayer;
     private MapPlayer player;
     private ArrayList<NPC> npcList;
     private Texture menuButton, inventoryButton;
@@ -49,7 +50,6 @@ public class Play extends GameState {
         super(gsm);
         popUps=new PopUpText();
 
-
         userCharacter=gsm.user;
 
         float w = Gdx.graphics.getWidth();
@@ -61,14 +61,12 @@ public class Play extends GameState {
 
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
-
         map = loader.load("TrinityMap1.tmx");
-
         renderer = new OrthogonalTiledMapRenderer(map);
+        collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
+
         npcList = new ArrayList<NPC>();
-
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0), npcList);
-
         player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
 
         addNpc(12, 41, new Texture("shev.png"), true, false, true);
@@ -104,12 +102,11 @@ public class Play extends GameState {
     }
 
     public void addNpc(int tilex, int tiley, Texture tex, boolean moveOrNot, boolean xDirection, boolean positive) {
-        TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
         int heightMinusOne = collisionLayer.getHeight() - 1;
         float tileWidth = collisionLayer.getTileWidth();
         float tileHeight = collisionLayer.getTileHeight();
 
-        NPC npc = new NPC(new Sprite(tex), collisionLayer, moveOrNot, player, xDirection, positive);
+        NPC npc = new NPC(new Sprite(tex), collisionLayer, moveOrNot, player, xDirection, positive, npcList.size());
         npc.setPosition(tilex * tileWidth, (heightMinusOne - tiley) * tileHeight);
         npcList.add(npc);
     }
@@ -220,12 +217,8 @@ public class Play extends GameState {
         //button positions
         menuButtonSprite.setPosition(screenWidth *11/12 - menuButtonSprite.getWidth()/4,screenHeight* 11/12 - menuButtonSprite.getHeight()/2);
         inventoryButtonSprite.setPosition(screenWidth *10/12 - inventoryButtonSprite.getWidth()/4,screenHeight*11/12 - inventoryButtonSprite.getHeight()/2);
-        //
 
         batch.begin();
-        //player.draw(renderer.getBatch());
-        /*font.draw(batch, "blaaa", 50, 50);
-        player2.draw(batch);*/
 
         if(hours<7||hours>=22)
         {
@@ -385,9 +378,6 @@ public class Play extends GameState {
         //}
     }
 
-    //@Override
-    //  public void draw() {}
-
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
@@ -456,12 +446,30 @@ public class Play extends GameState {
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
-        if(x>Gdx.graphics.getWidth()*.45&&x<Gdx.graphics.getWidth()*.55&
-                y>Gdx.graphics.getHeight()*.45&&y<Gdx.graphics.getHeight()*.55)
-        {
+        boolean aboutToTalk = false;  //use this variable to make him stop walking into player after textbox comes up. OR...... just fix collision.
+        if(player.withinOneOfNpc) {
+            float tileWidth = collisionLayer.getTileWidth();
+            float tileHeight = collisionLayer.getTileHeight();
+            float w = Gdx.graphics.getWidth();
+            float h = Gdx.graphics.getHeight();
 
-            popUps.Add("Stop poking me!",.45f,.55f,0f,.2f, Color.WHITE,50);
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(pos);
+            int tileX = (int)(pos.x / tileWidth);
+            int tileY = (int)(pos.y / tileHeight);
+            for (int i = 0; i < npcList.size(); i++) {
+                int npcTileX = (int) ((npcList.get(i).getX() + npcList.get(i).getWidth() / 2) / tileWidth);
+                int npcTileY = (int) ((npcList.get(i).getY() + npcList.get(i).getHeight() / 2) / tileHeight);
+                if(tileX == npcTileX && tileY == npcTileY) {
+                    //could have both pop ups and textboxes
+                    //popUps.Add("here" , x / w, (h - y) / h);
+                    npcList.get(i).talk();
+                    aboutToTalk = true;
+                    break;
+                }
+            }
         }
+
         if(y < screenHeight/5)
         {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
