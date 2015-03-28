@@ -288,42 +288,42 @@ public class GameMenu extends GameState
             Font.setColor(Color.BLACK);
 
             Font.setScale(screenWidth / 650f, screenHeight / 650f);
-            Font.drawWrapped(batch, " Lv. ", XPframe.getX(), XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
-            Font.drawWrapped(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*21/23 , XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*2/300, XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*275/300 , XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
 
             Font.setScale(screenWidth / 450f, screenHeight / 450f);
-            Font.drawWrapped(batch, "" + player.getLevel(), XPframe.getX() + XPframe.getHeight()/20, XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
-            Font.drawWrapped(batch, "" + (player.getLevel()+1), XPframe.getX() + XPframe.getWidth()*21/23 , XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, "" + player.getLevel(), XPframe.getX() + XPframe.getHeight()/20, XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/13, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, "" + (player.getLevel() + 1), XPframe.getX() + XPframe.getWidth()*21/23 , XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/13, BitmapFont.HAlignment.CENTER);
 
 
             statsymbol.setPosition(screenWidth / 7, healthbar.getY() - healthbar.getHeight() / 2);
             statsymbol.setColor(Color.GREEN);
             statsymbol.draw(batch);
-            healthIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*3/5);
+            healthIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight()*3/5);
             healthIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, energybar.getY() - energybar.getHeight()/2);
             statsymbol.setColor(Color.YELLOW);
             statsymbol.draw(batch);
-            energyIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            energyIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY() + healthIcon.getHeight() * 7/10);
             energyIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, attackbar.getY() - attackbar.getHeight()/2);
             statsymbol.setColor(Color.RED);
             statsymbol.draw(batch);
-            attackIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            attackIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight() * 7/10);
             attackIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, defbar.getY() - defbar.getHeight()/2);
             statsymbol.setColor(Color.BLUE);
             statsymbol.draw(batch);
-            defenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            defenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight()*6/10);
             defenceIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, intbar.getY() - intbar.getHeight()/2);
             statsymbol.setColor(Color.PURPLE);
             statsymbol.draw(batch);
-            intelligenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            intelligenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight()*7/10);
             intelligenceIcon.draw(batch);
 
             if(TimeUtils.timeSinceMillis(timer)>40)

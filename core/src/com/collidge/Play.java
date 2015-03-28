@@ -333,10 +333,6 @@ public class Play extends GameState {
 
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510&&TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
-            //Kris -- just put in to test InventoryState
-            //gsm.openInventory(userCharacter);
-
-
             if(userCharacter.getCurrentHealth()<=0)
             {
                 userCharacter.healAll();
