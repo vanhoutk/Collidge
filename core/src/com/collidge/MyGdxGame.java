@@ -49,76 +49,40 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         font.setScale(Gdx.graphics.getWidth()/400,Gdx.graphics.getHeight()/400);
 
         //FIlE INPUT
-        int i=0;
+        /**
+         * Kris
+         * Changed Dan's reading to instead read the created xml
+         */
+        int Level = 0, ATK = 0, DEF = 0, INT = 0, HP = 0, EN = 0, EXP = 0;
 
-        int[] values=new int[7];
-
-
-        if(Gdx.files.isLocalStorageAvailable()&&Gdx.files.local("data/save.txt").exists())
+        if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("stats.xml").exists())
         {
-            InputStream in = Gdx.files.local("data/save.txt").read();
-            int temp = 0;
-            InputStreamReader is = new InputStreamReader(in);
-            while (i < 7)
+            try
             {
-                try
-                {
-                    if (temp == -4)//checks if equal to a comma
-                    {
-                        temp = in.read() - 48;
-                    }
-
-                    while (temp != -4)
-                    {
-                        if (values[i] > 0)
-                        {
-                            values[i] *= 10;
-                        }
-                        values[i] += temp;
-                        temp = in.read() - 48;
-
-                        if(temp==-49)
-                        {
-                            //if you reach the end of line character, end the loop
-                            temp=-1;
-                            while(i<values.length)
-                            {
-                                values[i]=0;
-                                i++;
-                            }
-                            i=500;
-                        }
-                    }
-
-
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                i++;
-
-            }
-            for (i = 0; i < 6; i++)
-            {
-                System.out.println(i + ": " + values[i]);
+                XmlReader reader = new XmlReader();
+                FileHandle handle1 = Gdx.files.local("stats.xml");
+                XmlReader.Element stats = reader.parse(handle1.readString());
+                //XmlReader.Element stats = root.getChildByName("stats");
+                Level = stats.getInt("Level");
+                ATK = stats.getInt("AttackPoints");
+                DEF = stats.getInt("DefencePoints");
+                INT = stats.getInt("IntelligencePoints");
+                HP = stats.getInt("HealthPoints");
+                EN = stats.getInt("EnergyPoints");
+                EXP = stats.getInt("Experience");
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
-        else
-        {
-            values[0]=1;
-            for(i=1;i<values.length;i++)
-            {
-                values[i]=0;
-            }
-        }
-        //FILE INPUT END
+
+        System.out.println("Level " + Level + " Attack " + ATK);
 
         Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GestureDetector(this));
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
-        gsm = new GameStateManager(values[0],values[1],values[2],values[3],values[4],values[5],values[6]);
+        gsm = new GameStateManager(Level, ATK, DEF, INT, HP, EN, EXP);
 
 
         quitFont=new BitmapFont();
@@ -141,7 +105,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
         if(quit)
         {
-            save();
             Gdx.app.exit();
         }
         else
@@ -179,36 +142,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             else
             {
                 batch.end();
-            }
-        }
-    }
-
-    public void save()
-    {
-        //Writes to save, we can add extra int values to the end of the string to store the values of other things (such as what stage in the game we are at, or items, etc. Equipped items might be trickier to hang onto, but im sure we can figure it out
-        if(Gdx.files.isLocalStorageAvailable())
-        {
-            OutputStream out=Gdx.files.local( "data/save.txt" ).write(false);
-            try
-            {
-                String saveVals;
-                saveVals=gsm.user.getLevel()+","+gsm.user.getAttackPoints()+","+gsm.user.getDefencePoints()+","+gsm.user.getIntelligencePoints()+","+gsm.user.getHealthPoints()
-                        +","+gsm.user.getEnergyPoints()+","+gsm.user.getExperience()+",";
-
-                out.write(saveVals.getBytes());
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    out.close();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
             }
         }
     }

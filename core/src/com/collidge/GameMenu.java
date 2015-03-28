@@ -520,6 +520,11 @@ public class GameMenu extends GameState
                 }
                 if (x > save.getX() && x < save.getX() + save.getWidth()) {
                     savePressed = true;
+                    /**
+                     * Kris
+                     * Added to call the save stats method
+                     */
+                    saveStats();
                 }
             }
 
@@ -648,5 +653,48 @@ public class GameMenu extends GameState
     {
 
     }
+
+    /**
+     * Kris
+     * Moved Dan's saving here and changed it to save as an xml format to make it more readable
+     */
+    public void saveStats()
+    {
+        if(Gdx.files.isLocalStorageAvailable())
+        {
+            OutputStream out=Gdx.files.local( "stats.xml" ).write(false);
+            try
+            {
+                System.out.println("Saving stats");
+                String saveStats;
+                saveStats = ("<stats>"
+                                + "<Level>" + gsm.user.getLevel() + "</Level>"
+                                + "<AttackPoints>" + gsm.user.getAttackPoints() + "</AttackPoints>"
+                                + "<DefencePoints>" + gsm.user.getDefencePoints() + "</DefencePoints>"
+                                + "<IntelligencePoints>" + gsm.user.getIntelligencePoints() + "</IntelligencePoints>"
+                                + "<HealthPoints>" + gsm.user.getHealthPoints() + "</HealthPoints>"
+                                + "<EnergyPoints>" + gsm.user.getEnergyPoints() + "</EnergyPoints>"
+                                + "<Experience>" + gsm.user.getExperience() + "</Experience>"
+                                + "</stats>)");
+                out.write(saveStats.getBytes());
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
+
+
+
 

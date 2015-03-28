@@ -336,7 +336,7 @@ public class Play extends GameState {
         //hours=(seconds)%24;
         minutes%=60;
         seconds%=60;
-        System.out.println(hours+"------"+twilightOpacity);
+        //System.out.println(hours+"------"+twilightOpacity);
 
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510&&TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
