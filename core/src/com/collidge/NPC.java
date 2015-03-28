@@ -45,7 +45,7 @@ public class NPC extends Sprite
         this.countDelta = 0;
         if(movrnot == true) {
             if(xory) {
-                if (positive )this.velocity.x = speed;
+                if (positive) this.velocity.x = speed;
                 else velocity.x = -1 * speed;
             }
             else {
