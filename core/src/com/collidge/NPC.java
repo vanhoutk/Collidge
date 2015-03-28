@@ -21,11 +21,7 @@ import java.util.TimerTask;
 
 public class NPC extends Sprite
 {
-    int direction = UP;
-    private static final int UP = 0;
-    private static final int DOWN = 1;
-    private static final int LEFT = 2;
-    private static final int RIGHT = 3;
+    int npcNumber;
     boolean xory;
     boolean positive;
     private Vector2 velocity = new Vector2();
@@ -34,9 +30,10 @@ public class NPC extends Sprite
     private MapPlayer player;
     private float countDelta;
     private TiledMapTileLayer collisionlayer;
-    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, boolean movrnoty, MapPlayer player, boolean xoryplane, boolean positive)
+    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, boolean movrnoty, MapPlayer player, boolean xoryplane, boolean positive, int npcNumber)
     {
         super(sprite);
+        this.npcNumber = npcNumber;
         movrnot = movrnoty;
         xory = xoryplane;
         this.positive = positive;
@@ -188,6 +185,15 @@ public class NPC extends Sprite
         setX(getX() + velocity.x * delta);
 
         countDelta++;
+    }
+
+    public void talk() {
+        String npcNum = "npc" + Integer.toString(npcNumber + 1);
+        //keep here if we want different things to say for each npc, probably leave it at this stage though
+        //String npcConvo;
+        //int convoNum = rand() % 3 + 1;
+        MyGdxGame.setTextBox(MyGdxGame.getNpcString(npcNum, "one"));
+        MyGdxGame.activateTextBox();
     }
 
     public Vector2 getVelocity()

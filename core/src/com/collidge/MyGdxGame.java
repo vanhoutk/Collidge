@@ -132,7 +132,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         batch=new SpriteBatch();
 
         textBox = new TextBox();
-        textBox.setText(getNpcString("npc1", "two"));
+        //have some intro text?
+        //textBox.setText(getNpcString("npc1", "two"));
     }
 
     @Override
@@ -221,10 +222,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         textBox.setText(string);
     }
 
+    public static void activateTextBox() {
+        textBox.setOnOrOff(true);
+    }
+
     public static String getNpcString(String npc, String convo) {
         try {
             XmlReader reader = new XmlReader();
-            FileHandle handle1 = Gdx.files.internal("Strings.xml");
+            FileHandle handle1 = Gdx.files.internal("Conversations.xml");
             XmlReader.Element root = reader.parse(handle1.readString());
             XmlReader.Element child = root.getChildByName(npc);
             String s = child.getChildByName(convo).getText();
@@ -233,7 +238,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             return s;
         }
         catch (Exception e) {
-            return "";
+            return "Hello Stranger";
         }
     }
 

@@ -63,7 +63,6 @@ public class TextBox {
     }
 
     public void draw() {
-        active = false;
         if (active) {
             batch.begin();
             textBoxSprite.draw(batch);
@@ -96,41 +95,46 @@ public class TextBox {
 
     public void setText(String string) {
         fullText = string;
+        if (fullText.equals("")) {
+            pages.add(new AnimatedText(fullText));
+            return;
+        }
         currentPage = 0;
         pages.clear();
-        int pageLetterCount = 200;
+        int pageLetterLimit = 200;
         int amountOfLetters = fullText.length();
 
-        int noOfPages = amountOfLetters / pageLetterCount;
+        int noOfPages = amountOfLetters / pageLetterLimit;
         boolean remainderPage = false;
-        if (amountOfLetters % pageLetterCount > 0) {
+        if (amountOfLetters % pageLetterLimit > 0) {
             noOfPages++;
             remainderPage = true;
         }
 
         int currentLetter = 0;
         for (int page = 0; page < noOfPages; page++) {
-            pageLetterCount = 200;
+            int pageLetterCount = 0;
+            pageLetterLimit = 200;
             String pageToAdd = new String();
             if(page == noOfPages - 1 && remainderPage) {
                 for (int i = currentLetter; i < currentLetter + (amountOfLetters - currentLetter); i++) {
                     pageToAdd += fullText.charAt(i);
+                    pageLetterCount++;
                 }
             }
             else {
-                for (int i = currentLetter; i < currentLetter + pageLetterCount; i++) {
+                for (int i = currentLetter; i < currentLetter + pageLetterLimit; i++) {
                     pageToAdd += fullText.charAt(i);
-                    int charactersLeft = pageLetterCount - i;
+                    pageLetterCount++;
 
-                    if (charactersLeft < 15 && fullText.charAt(i) == ' ') {
-                        pageLetterCount -= charactersLeft;
+                    if (pageLetterLimit - pageLetterCount < 15 && fullText.charAt(i) == ' ') {
                         break;
                     }
                 }
             }
             currentLetter += pageLetterCount;
-            BitmapFont.TextBounds bounds = textBoxFont.getWrappedBounds(pageToAdd, textBoxWidth - xPadding * 1.8f);
-            int noOfLinesInt = (int)((float)Math.round((bounds.height / textBoxFont.getLineHeight() * 100000) / 100000));
+            //BitmapFont.TextBounds bounds = textBoxFont.getWrappedBounds(pageToAdd, textBoxWidth - xPadding * 1.8f);
+            //int noOfLinesInt = (int)((float)Math.round((bounds.height / textBoxFont.getLineHeight() * 100000) / 100000));
             /*if (bounds.height > noOfLines * textBoxFont.getLineHeight()) pages.get(page) = pages.get(page) + noOfLinesInt;*/
             //pageToAdd += " " + noOfLinesInt;
             pages.add(new AnimatedText(pageToAdd, 0));

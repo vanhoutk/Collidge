@@ -22,6 +22,7 @@ public class MapPlayer extends Sprite
     private Vector2 velocity = new Vector2(); //movement velocity
     private float speed = 60*2;
     private TiledMapTileLayer collisionlayer;
+    public boolean withinOneOfNpc;
 
     long startTime;
     long currentTime;
@@ -262,6 +263,28 @@ public class MapPlayer extends Sprite
 
         }
         else stopped = false;
+
+        withinOneOfNpc = false;
+        for (int i = 0; i < npcList.size(); i++) {
+            NPC npc = npcList.get(i);
+            int npcTileX = (int) ((npc.getX() +getWidth() / 2) / tilewidth);
+            int npcTileY = (int)((npc.getY() + getHeight() / 2)/ tileheight);
+            int playerTileX = (int) ((getX() + getWidth() / 2)/ tilewidth);
+            int playerTileY = (int) ((getY() + getHeight() / 2)/ tileheight);
+            int differenceX = npcTileX - playerTileX;
+            int differenceY = npcTileY - playerTileY;
+
+            if(differenceY == 0 && Math.abs(differenceX) == 1) {
+                withinOneOfNpc = true;
+                //move = false
+                //and if move == false after all this. Set velocity.x to 0;
+                //then setX of player setX(getX() + velocity.x*delta);
+                //after all this instead of the first thing in this function
+            }
+            else if (differenceX == 0 && Math.abs(differenceY) == 1) {
+                withinOneOfNpc = true;
+            }
+        }
     }
 
     public TiledMapTileLayer getCollisionLayer()
