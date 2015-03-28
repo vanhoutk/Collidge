@@ -36,11 +36,10 @@ public class MapPlayer extends Sprite
     private static final int uLEFT = 2;
     private static final int uRIGHT = 3;
 
-
+    ArrayList<NPC> npcList;
     //Java holds objects in memory as long as there is a reference to it. Therefore you can make local textureregions, textures and pass them to the animation object.
     private Animation walkingAnimation[];
     private Animation outlineAnimation[];
-
 
     private Texture walkingLeftTexture;
     private TextureRegion[] walkingLeftFrames;
@@ -51,7 +50,6 @@ public class MapPlayer extends Sprite
     private Animation walkingUpAnimation;
     private Texture walkingDownTexture;
     private Animation walkingDownAnimation;
-
 
     /* Declan adding for movement in tiles */
     private float initX= 0;
@@ -67,10 +65,10 @@ public class MapPlayer extends Sprite
 
     int tileID; //tile sprite ends up in
 
-    public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer)
+    public MapPlayer(Sprite sprite, TiledMapTileLayer collisionlayer, ArrayList<NPC> list)
     {
         super(sprite);
- // Normal Character
+        // Normal Character
         //create 4 textures to fit into an array of 4
         Texture walkingTextures[] = new Texture[4];
         walkingTextures[UP] = new Texture("back_player.png");
@@ -96,8 +94,6 @@ public class MapPlayer extends Sprite
             walkingAnimation[i] = new Animation(walkingRegions[i],.2f);
         }
 
-        //Outline
-
         //create 4 textures to fit into an array of 4
         Texture OutlineTextures[] = new Texture[4];
         OutlineTextures[uUP] = new Texture("outline_back.png");
@@ -122,11 +118,12 @@ public class MapPlayer extends Sprite
         for (int i = 0; i < 4; i++) {
             outlineAnimation[i] = new Animation(outlineRegions[i],.2f);
         }
+
+        npcList = list;
         startTime = System.currentTimeMillis();
         currentTime = startTime;
         this.collisionlayer = collisionlayer;
     }
-
 
     public void draw(Batch spritebatch) {
         update(Gdx.graphics.getDeltaTime());
@@ -142,22 +139,16 @@ public class MapPlayer extends Sprite
             walkingAnimation[direction].update(Gdx.graphics.getDeltaTime());
         }
 
-
         spritebatch.draw(walkingAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
-
-
     }
+
     public void drawoutline(Batch spritebatch) {
-
-
         if(walkingAnimation[direction].paused)
         {
             outlineAnimation[direction].pause();
         }
 
-
         outlineAnimation[direction].setCurrentFrame(walkingAnimation[direction].getCurrentFrameNum());
-
 
         spritebatch.draw(outlineAnimation[direction].getFrame(), getX(), getY(),collisionlayer.getTileWidth(),collisionlayer.getTileHeight());
 
@@ -233,8 +224,6 @@ public class MapPlayer extends Sprite
             velocity.y = 0;
         }
 
-
-
         if(stopped == true && (Math.abs(velocity.x) > 0 || Math.abs(velocity.y) > 0) && stopping == false) {
             stopping = true;
             if ( direction == RIGHT) {
@@ -292,13 +281,6 @@ public class MapPlayer extends Sprite
 
         }
         else stopped = false;
-
-    }
-
-
-    public Vector2 getVelocity()
-    {
-        return velocity;
     }
 
     public TiledMapTileLayer getCollisionLayer()
@@ -307,23 +289,15 @@ public class MapPlayer extends Sprite
     }
 
 
-    public void setCollisionLayer(TiledMapTileLayer collisionlayer)
-    {
-        this.collisionlayer = collisionlayer;
-    }
-
     private void moveUp()
     {
         velocity.y = speed;
         velocity.x = 0;
-     //   animation.up();
     }
     private void moveDown()
     {
-
         velocity.y = -speed;
         velocity.x = 0;
-       // animation.down();
     }
     private void moveLeft()
     {
@@ -331,16 +305,12 @@ public class MapPlayer extends Sprite
         velocity.x = -speed;
         velocity.y = 0;
 
-        //animation.left();
-
     }
     private void moveRight()
     {
 
         velocity.x = speed;
         velocity.y = 0;
-
-        //animation.right();
     }
     private void stopMovement()
     {
@@ -350,8 +320,6 @@ public class MapPlayer extends Sprite
 
     public void touchDown(int screenX, int screenY, int width, int height)
     {
-
-
         float xForCalculation = ((screenX-(width/2))/(float)width);
         float yForCalculation = ((-(screenY-(height/2)))/(float)height);
         getDirection(xForCalculation, yForCalculation);
@@ -374,7 +342,6 @@ public class MapPlayer extends Sprite
 
         }
         return;
-
     }
 
     public boolean touchUp(int screenX, int screenY, int width, int height)
@@ -386,11 +353,6 @@ public class MapPlayer extends Sprite
 
     public boolean touchDragged(int screenX, int screenY, int width, int height)
     {
-
-
-
-
-
         return true;
     }
 

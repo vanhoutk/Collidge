@@ -66,12 +66,14 @@ public class Play extends GameState {
         map = loader.load("TrinityMap1.tmx");
 
         renderer = new OrthogonalTiledMapRenderer(map);
-
-        player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-
-        player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
         npcList = new ArrayList<NPC>();
         NPC []npcArray = new NPC[noOfNpcs];
+
+        player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0), npcList);
+
+        player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
+
+
 
         npcArray[0] = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), true, player, true, true);
         npcArray[0].setPosition(12 * npcArray[0].getCollisionLayer().getTileWidth(), (npcArray[0].getCollisionLayer().getHeight() - 41) * npcArray[0].getCollisionLayer().getTileHeight());
