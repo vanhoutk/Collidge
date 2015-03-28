@@ -163,7 +163,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
 
                 screenMask.draw(batch);
-                quitFont.draw(batch, "Do you want to Exit to the main menu?", Gdx.graphics.getWidth()/12,9*Gdx.graphics.getHeight()/12);
+                if(gsm.currentState != 0)
+                {
+                    quitFont.drawWrapped(batch, "Do you want to exit to the main menu?", Gdx.graphics.getWidth() / 12, 9 * Gdx.graphics.getHeight() / 12, 10*Gdx.graphics.getWidth() / 12, BitmapFont.HAlignment.CENTER);
+                }
+                else
+                {
+                    quitFont.drawWrapped(batch, "Do you want to exit the game?", Gdx.graphics.getWidth() / 12, 9 * Gdx.graphics.getHeight() / 12, 10*Gdx.graphics.getWidth() / 12, BitmapFont.HAlignment.CENTER);
+                }
                 quitFont.draw(batch, "Yes, I hate fun", 1*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
                 quitFont.draw(batch, "Not just yet!", 8*Gdx.graphics.getWidth()/12,5*Gdx.graphics.getHeight()/12);
 
@@ -304,20 +311,20 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
         {
-            if(backKey==true&&backDown)
+            if(backKey == true && backDown)
             {
-                if(gsm.currentState != 0) {
+                if(gsm.currentState == 0)
+                {
                     quit = true;
                     return true;
                 }
-                else {
+                else
+                {
                     gsm.startOpenScreen();
                     return true;
                 }
             }
             backDown=true;
-
-
         }
         return false;
     }
@@ -368,20 +375,21 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             {
                 if (x > Gdx.graphics.getWidth() / 10 && x < Gdx.graphics.getWidth()*.375)
                 {
-                    if(gsm.currentState != 0) {
+                    if(gsm.currentState == 0)
+                    {
                         quit = true;
                         return true;
                     }
-                    else {
+                    else
+                    {
                         gsm.startOpenScreen();
+                        backKey = false;
                         return true;
                     }
                 } else if (x > 2*Gdx.graphics.getWidth()/3 && x < .9*Gdx.graphics.getWidth())
                 {
                     backKey = false;
                     backDown=false;
-
-
                 }
             }
             return true;
