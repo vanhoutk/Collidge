@@ -27,7 +27,7 @@ public class WinState extends GameState {
     float i;
     int damage;
     int[] ratings;
-    String Rating;
+    Sprite Rating;
     int page_number;
 
     Timer.Task Exp=new Timer.Task()
@@ -61,7 +61,7 @@ public class WinState extends GameState {
         ratings = num_ratings;
         page_number = 0;
 
-        winfont = new BitmapFont();
+        winfont = new BitmapFont();//Gdx.files.internal("font.fnt"),Gdx.files.internal("font.png"),false);
         buttons = new Sprite(new Texture("textbox_background_2.png"));
         buttons.setSize(sqSide, sqSide);
         rank_button = new Sprite (new Texture("textbox_background_2.png"));
@@ -73,15 +73,15 @@ public class WinState extends GameState {
         continue_button.flip(true,false);
 
         if      (((float)(player.getHealth())-(float)damage)/(float)(player.getHealth()) == 1)
-            Rating = "S";
+            Rating = new Sprite (new Texture("o.png"));
         else if (((float)(player.getHealth())-(float)damage)/(float)(player.getHealth()) > 0.6)
-            Rating = "A";
+            Rating = new Sprite (new Texture("a.png"));
         else if (((float)(player.getHealth())-(float)damage)/(float)(player.getHealth()) > 0.4)
-            Rating = "B";
+            Rating = new Sprite (new Texture("b.png"));
         else if (((float)(player.getHealth())-(float)damage)/(float)(player.getHealth()) > 0.2)
-            Rating = "C";
+            Rating = new Sprite (new Texture("c.png"));
         else
-            Rating = "D";
+            Rating = new Sprite (new Texture("d.png"));
 
         textbox.setSize(screenWidth-spacing*2f, screenHeight - spacing*1.5f - sqSide);
         continue_button.setSize(buttons.getWidth(), buttons.getHeight());
@@ -125,14 +125,14 @@ public class WinState extends GameState {
         textbox.setPosition(spacing, screenHeight - (sqSide+spacing)/2f);
         textbox.draw(batch);
 
-        ExpBar.setPosition(spacing*2f+sqSide+ExpBorder.getWidth()*(1f/14f), spacing/2f+(sqSide/4f));
+        ExpBar.setPosition(spacing*1.5f+sqSide+ExpBorder.getWidth()*(1f/14f), spacing/2f+(sqSide/4f));
         ExpBar.draw(batch);
-        ExpBorder.setPosition(spacing*2f+sqSide, spacing/2f+(sqSide/4f));
+        ExpBorder.setPosition(spacing*1.5f+sqSide, spacing/2f+(sqSide/4f));
         ExpBorder.draw(batch);
         winfont.setScale(screenWidth / 500f, screenHeight / 500f);
         winfont.setColor(Color.BLACK);
-        winfont.draw(batch, "" + (player.getLevel()+player.getLevelUpCounter()), ExpBorder.getX() + ExpBorder.getHeight()/8, ExpBorder.getY() + ExpBorder.getHeight()*3/5);
-        winfont.draw(batch, "" + (player.getLevel()+player.getLevelUpCounter()+1), ExpBorder.getX() + ExpBorder.getWidth()*12/13 , ExpBorder.getY() + ExpBorder.getHeight()*3/5);
+        winfont.drawWrapped(batch, "" + (player.getLevel() + player.getLevelUpCounter()), ExpBorder.getX() + ExpBorder.getHeight() / 8, ExpBorder.getY() + ExpBorder.getHeight() * 3 / 5, 3*ExpBorder.getHeight() / 6f, BitmapFont.HAlignment.CENTER);
+        winfont.drawWrapped(batch, "" + (player.getLevel() + player.getLevelUpCounter()+1), ExpBorder.getX() + ExpBorder.getWidth()*12/13 , ExpBorder.getY() + ExpBorder.getHeight()*3/5, 3*ExpBorder.getHeight() / 6f, BitmapFont.HAlignment.CENTER);
 
 
         buttons.setSize(continue_button.getWidth(), continue_button.getHeight());
@@ -204,9 +204,10 @@ public class WinState extends GameState {
             winfont.draw(batch, ratings[5] + "", spacing + 5 * sqSide, screenHeight - (sqSide / 2f) - 17f * winfont.getXHeight());
         }
         winfont.setColor(Color.GREEN);
-        winfont.draw(batch, "Rank", 1.5f*spacing, sqSide);
-        winfont.setScale(2.5f/400f*screenWidth, 2.5f/400f*screenHeight);
-        winfont.draw(batch, Rating+"", spacing+sqSide/3f, spacing/2f+2*sqSide/3f);
+        winfont.drawWrapped(batch, "Rank", spacing, sqSide, rank_button.getWidth(), BitmapFont.HAlignment.CENTER);
+        Rating.setSize(rank_button.getWidth()/3f, rank_button.getHeight()/3f);
+        Rating.setPosition(rank_button.getX()+(rank_button.getWidth()-Rating.getWidth())/2f,rank_button.getY()+rank_button.getHeight()/4f);
+        Rating.draw(batch);
         batch.end();
     }
 
