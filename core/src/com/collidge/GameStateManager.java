@@ -91,6 +91,7 @@ public class GameStateManager
     //change state to any other state. Alternatively we could make a new object each time instead of keeping them in memory.
     public void changeState(int state)
     {
+
         previousState = currentState;
         if (state >= gameStates.size())
         {
@@ -193,6 +194,7 @@ public class GameStateManager
         gameStates.remove(gameStates.size()-1);
         gameStates.add(new LevelUpSplash(this,player));
         changeState(gameStates.size()-1);
+        //setPlayingMus(mapMusic);
     }
 
     public void StartDeathState(Player player)
@@ -220,6 +222,7 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();  //Disposes of the Death State
         gameStates.remove(gameStates.size()-1);         //Removes the Entry from the Array
         changeState(0);                                 //Return to the Map State
+
     }
     public void StartWinState(Player player, int Exp, Enemy[] enemies, int damage_taken, int[]ratings)
     {
