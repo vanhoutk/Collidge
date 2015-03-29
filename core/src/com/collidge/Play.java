@@ -133,6 +133,11 @@ public class Play extends GameState {
 
         player.setPosition(positionX,positionY);
     }
+
+    public int NPCsize()
+    {
+        return npcList.size();
+    }
     @Override
     public void draw()
     {
