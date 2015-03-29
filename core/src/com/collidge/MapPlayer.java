@@ -23,6 +23,8 @@ public class MapPlayer extends Sprite
     private float speed = 60*2;
     private TiledMapTileLayer collisionlayer;
     public boolean withinOneOfNpc;
+    private static int npclistsize;
+    Play play;
 
     long startTime;
     long currentTime;
@@ -124,6 +126,8 @@ public class MapPlayer extends Sprite
         startTime = System.currentTimeMillis();
         currentTime = startTime;
         this.collisionlayer = collisionlayer;
+
+
     }
 
     public void draw(Batch spritebatch) {
@@ -157,6 +161,65 @@ public class MapPlayer extends Sprite
 
     public void update(float delta)
     {
+        for(int i = 0; i < npcList.size(); i++)
+         {
+             if(withinOneOfNpc)
+             {
+                    if(direction == RIGHT)
+                    {
+                     velocity.x = 0;
+                     if(direction == LEFT)
+                      {
+                         velocity.x = -speed;
+                      }
+                      if(direction == UP)
+                      {
+                         velocity.y = speed;
+                      }
+                      if(direction == DOWN)
+                      {
+                         velocity.y = -speed;
+                      }
+                     }
+                 if(direction == UP)
+                 {
+                     velocity.y = 0;
+                     if(direction == LEFT)
+                     {
+                         velocity.x = -speed;
+                     }
+                     if(direction == RIGHT)
+                     {
+                         velocity.x = speed;
+                     }
+                     if(direction == DOWN)
+                     {
+                         velocity.y = -speed;
+                     }
+                 }
+
+                 if(direction == LEFT)
+                 {
+                     velocity.x = 0;
+                     if(direction == UP)
+                     {
+                         velocity.y = speed;
+                     }
+                     if(direction == RIGHT)
+                     {
+                         velocity.x = speed;
+                     }
+                     if(direction == DOWN)
+                     {
+                         velocity.y = -speed;
+                     }
+                 }
+             }
+
+        }
+
+
+
         float oldX = getX(), oldY = getY(), tilewidth = collisionlayer.getTileWidth(), tileheight = collisionlayer.getTileHeight();
         boolean collisionX = false, collisionY = false, fight = false;
 
