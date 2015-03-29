@@ -1,6 +1,7 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -19,7 +20,8 @@ import java.util.Random;
  */
 public class Combo
 {
-    Sound pop1=Gdx.audio.newSound(Gdx.files.internal("strongpunch.mp3"));
+    Music pop1=Gdx.audio.newMusic(Gdx.files.internal("strongpunch.mp3"));
+
     long startTime,allowedTime;
     Random rand=new Random();
     double startX,startY;
@@ -45,6 +47,8 @@ public class Combo
 
     Combo()
     {
+
+       // pop1.setVolume(GameStateManager.getVolume()/4);
         popUps=new PopUpText();
         font=new BitmapFont();
         texture=new Texture("blackSquare.png");
