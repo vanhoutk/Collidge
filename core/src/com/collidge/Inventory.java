@@ -238,7 +238,7 @@ public class Inventory
         EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 0, nEnergyDrink, "energy60.png");
         Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 0, nNoodles, "Noodles.png");
         Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 0, nSandwich, "sandwichIcon.png");
-        IED = new CombatItem("Attack", "Deals damage to all enemies.", 0, 0, 10, nIED, "dynamite.png");
+        IED = new CombatItem("Attack", "Improvised Explosive Device. Deals damage to all enemies.", 0, 0, 10, nIED, "dynamite.png");
 
         /**
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)
@@ -252,7 +252,7 @@ public class Inventory
         MyCombatInv.put("Energy Drink", EnergyDrink);
         MyCombatInv.put("Noodles", Noodles);
         MyCombatInv.put("Sandwich", Sandwich);
-        MyCombatInv.put("Improvised Explosive Device", IED);
+        MyCombatInv.put("IED", IED);
 
         MyEquipment.put("Tsquare", Tsquare);
         MyEquipment.put("Scarf", Scarf);

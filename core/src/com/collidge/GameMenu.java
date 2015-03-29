@@ -730,7 +730,7 @@ public class GameMenu extends GameState
                         + "</equipped>"
                                 + "</inventory>");
                 out.write(saveInventory.getBytes());
-                System.out.println(saveInventory);
+                //System.out.println(saveInventory);
             } catch (IOException e) {
                 e.printStackTrace();
             }
