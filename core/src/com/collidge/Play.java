@@ -342,7 +342,7 @@ public class Play extends GameState {
                 enteringFight=TimeUtils.millis();
                 saveplay();
                 fighting= "Loner";
-                player.setPosition(getx(),gety()-10);
+                player.setPosition(getx(),gety()-75);
             }
             else if(player.direction==1)
             {
@@ -471,15 +471,16 @@ public class Play extends GameState {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())
             {
                 saveplay();
+                player.setPosition(getx(), gety());
                 gsm.openInventory(userCharacter);
                // gsm.StartDeathState(userCharacter);
-                player.setPosition(getx(), gety());
+
             }
             if(x > menuButtonSprite.getX())
             {
                 saveplay();
-                gsm.openMenu(userCharacter);
                 player.setPosition(getx(), gety());
+                gsm.openMenu(userCharacter);
                 //gsm.changeState(1);
             }
             else
