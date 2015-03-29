@@ -23,6 +23,8 @@ public class MapPlayer extends Sprite
     private float speed = 60*2;
     private TiledMapTileLayer collisionlayer;
     public boolean withinOneOfNpc;
+    private static int npclistsize;
+    Play play;
 
     long startTime;
     long currentTime;
@@ -124,6 +126,8 @@ public class MapPlayer extends Sprite
         startTime = System.currentTimeMillis();
         currentTime = startTime;
         this.collisionlayer = collisionlayer;
+
+
     }
 
     public void draw(Batch spritebatch) {
@@ -157,6 +161,9 @@ public class MapPlayer extends Sprite
 
     public void update(float delta)
     {
+
+
+
         float oldX = getX(), oldY = getY(), tilewidth = collisionlayer.getTileWidth(), tileheight = collisionlayer.getTileHeight();
         boolean collisionX = false, collisionY = false, fight = false;
 
@@ -276,6 +283,8 @@ public class MapPlayer extends Sprite
 
             if(differenceY == 0 && Math.abs(differenceX) == 1) {
                 withinOneOfNpc = true;
+
+                stopMovement();
                 //move = false
                 //and if move == false after all this. Set velocity.x to 0;
                 //then setX of player setX(getX() + velocity.x*delta);
@@ -283,6 +292,7 @@ public class MapPlayer extends Sprite
             }
             else if (differenceX == 0 && Math.abs(differenceY) == 1) {
                 withinOneOfNpc = true;
+                stopMovement();
             }
         }
     }
