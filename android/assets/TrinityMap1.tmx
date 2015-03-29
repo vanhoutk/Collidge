@@ -93,7 +93,7 @@
  </tileset>
  <layer name="collision" width="36" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt2EsOwyAMBFDaTa/Um7QSHC2HbTeRIssG2zGfRLOYRVWTvAIpgZJSKiTbIfS7M9mc14YHnihPHuyhNTRZUaMJdx2r5/XsE+947e1b9dY6q6cwnocQ6tHUwQMPPPBc2VPL6P/nvb0Ub51031b71rooffasp63fVEtmPJb3E+t4Xc3DjY2lf+GJ82hd8PTzaPccozyePoNnrofeL6f6Hn2Wh6vVrEXRnrPjHTV/VvV45020R2PS2EavF/CM93gd8Mx53lfzfP75OjytfaY3nn46eiL6J9pDz09qHq72zh7LHJNqoz3ceZfkqZ2NwQMPPGs/73t7LjPWix5538CjiXa8uFg83j7scR941vX8ABGNXBA=
+   eJzt2E0OwiAQBWB00yt5E03gaD2sbkiayQzMTPmTvMVbGIfyCa0UUgghkZyX0O/u5HReGx54WnniYA+toYmKGk2461g9x7NPvPOV29fqrXVWT2I8DyHUo6mDBx544PlnTymj/59zeyneOqnfWvvauih99qyntd9USmQ8lvcTy3xpvKt5uLmxjC888Ozk0e45Rnk8YwbPfM+1vxjKe/TeHtpf9nC1mrWotefufO/m4Uye+2a0R2sbvV7AM97jdcAz53lfzfP+5ePw1PaZ3njG6eppMT6tPfT8pOThanf2WO4xqba1hzvvkjylszF44IFn7ec9t+cyY73okdcGHk2088XF4vGOYY9+4FnX8wWmzVkQ
   </data>
  </layer>
  <layer name="ground" width="36" height="66">
@@ -128,7 +128,7 @@
  </layer>
  <layer name="roof" width="36" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt2FEOgjAMBmCSnR9413AJ9ACTA8COJCQ2NrWDga6dpE3+xBfjxxZX1slV1TQnzBlekaqH+8yEEgrzgEnTo1nmOY+nnz/fhX2cx6PA+SPlSvVInUHmOY9nVOipMc+o1FM5D7ZI99R/Op/NY54zeGLR8sCZMzj5fsFVqZ5QmIczadi43lWSR3vvOI/WfGHNozFf2PJIzxe0qydnc6387J5YfEEeX4AH3t3hTqHtgYJ1Wky3SHBd3Du5TbFgG8w7funpmTVYfrchaRlbjjMxth7U0gl7amZNsCW3B+8T/M+xqSYW8OTqGXSfPDFdiQU8ufpozAOR9uD5RQkeKG8e85jHPOYxj3nMU5iHe8emiVXKd5udnm9m1Hvm3FueMeG52gRP7B5DE1Y8qZYuwUPvMamm6wFLqueI6Qk3QSec
+   eJzt2MEOgjAMBmASnt4DcBd5CfQBEO+wRxISGpvawUBoJ2mTP/FC/ByyjvZpkvRD3JB2ilQ90+/0KC4yD5g0PZplnvN46uHzQ9jHeRoU2H+kXKEeqT3IPOfxdAo91efplHoq58EW6Z76T/uzecxzBo8vWh7Yc9pUvl9wFavHRebhTBo2rnfF5NG+d5xHa74w59GYLyx5pM5C2fAd+RTNAoeLxDOelfHaxOAZc0PR9tDzu2aBpUCeuye4rukne9eLrJHv/INtMO/Y01Mza3Ah/+18WjtqO2JPbDzrQC2VsIc+79RytAffJ3hfx6aMWMBzVM+g96khppJYwHNUH/V5INIe+mxre6Aa85jHPOYxj3nMY57IPNwZm8ZXIdfmKz2/zKjXzLmXPF3A7yoCPL73GBo34wm1VAEebpYSYio3WEI9W0xv0jYq2g==
   </data>
  </layer>
  <layer name="roof2" width="36" height="66">
@@ -154,6 +154,11 @@
  <layer name="tower3" width="36" height="66">
   <data encoding="base64" compression="zlib">
    eJzt0DEKgEAQQ9FY7ChqYyd2duIdPbkWDqzgEQzyH6T/RALgrAupj68rXnO2LEY9W7bsRj0lW9rcYdQE/EUTdQ7OIk1Rd5Wva6QhO9Zno8lHAAAAAAAAAAAAgIsbmCsEBA==
+  </data>
+ </layer>
+ <layer name="Tile Layer 14" width="36" height="66">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAMCnASUgAAE=
   </data>
  </layer>
 </map>

@@ -1,7 +1,11 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.audio.Music;
+
+import com.badlogic.gdx.files.FileHandle;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,28 +13,36 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.XmlReader;
 
 /**
- * Created by Kris on 24-Jan-15. Last modified 25-Feb-15.
+ * Created by Kris on 24-Jan-15. Last modified 27-Mar-15.
  *
- * Will contain all of the drawing and display involved with the InventoryState
+ * Comments have been added to indicate additions made by Toni
  */
 public class InventoryState extends GameState
 {
+    /**
+     * Variables declarations
+     */
     private String[] itemNames;
-
     Player player;
     SpriteBatch batch;
     Texture texture;
-    Sprite itemSquare, textbox, textbox2, backButton, greenSquare, greenCircle, itemSelectSquare;
+    Sprite itemSquare, textBox, textBox2, backButton, greenSquare, greenCircle, itemSelectSquare;
     Sprite healthIcon, defenceIcon, attackIcon, energyIcon, intelligenceIcon, inventoryBackground;
     String[] itemInfoText, itemNameText, itemEquipText, playerInfoText;
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
+
     public static Music elevatorMusic = Gdx.audio.newMusic(Gdx.files.internal("elevatormusic.mp3"));
+
 
     private BitmapFont infoFont;
 
+    /**
+     * Constants used for spacing of drawings.
+     */
     float sqSide = screenWidth/7;
     float spacing = (screenWidth - 5 * sqSide)/6;
 
@@ -41,8 +53,8 @@ public class InventoryState extends GameState
 
         texture = new Texture("inventory_slot_background.png");
         itemSquare = new Sprite(texture);
-        textbox = new Sprite(texture);
-        textbox2 = new Sprite(new Texture("textbox_background_2.png"));
+        textBox = new Sprite(texture);
+        textBox2 = new Sprite(new Texture("textbox_background_2.png"));
         backButton = new Sprite(new Texture("back_button.png"));
         greenCircle = new Sprite(new Texture("greenCircleBlack.png"));
         greenSquare = new Sprite(new Texture("greenSquareBlack.jpg"));
@@ -92,12 +104,10 @@ public class InventoryState extends GameState
         itemNames = new String[10];
         itemImages = new Sprite[10];
         equipNum = player.getEquipList().length;
-        //itemNum = player.getItemList().length;
 
         for(int i = 0; i < equipNum; i++)
         {
             itemNames[i] = player.getEquipList()[i];
-            //texture = new Texture(player.items.getItemImage(itemNames[i]));
             //Gdx.app.debug("Inventory State", "Message number 1");
             //Gdx.app.debug("ItemImageName", player.items.getItemImage(itemNames[i]));
 
@@ -137,21 +147,15 @@ public class InventoryState extends GameState
     public void initialize()
     {
 
-        elevatorMusic.play();
+//        elevatorMusic.play();
         itemNum = player.getItemList().length;
         for(int i = 0; i < itemNum; i++)
         {
             itemNames[equipNum + i] = player.getItemList()[i];
-            //texture = new Texture(player.items.getItemImage(itemNames[equipNum + i]));
-
             itemImages[equipNum + i] = new Sprite(new Texture(player.items.getItemImage(itemNames[equipNum + i])));
             itemNameText[equipNum + i + 1] = itemNames[equipNum + i];
             itemInfoText[equipNum + i + 1] = player.items.getItemText(itemNames[equipNum + i]);
 
-            /**
-             * Kris -- Commented out to be replaced with usable combat items code
-             */
-            //itemEquipText[equipNum + i + 1] = "Cannot use outside of combat";
             if(player.items.getItemType(itemNames[equipNum + i]).equals("Energy") && (player.getCurrentEnergy() == player.getEnergy()))
             {
                 itemEquipText[equipNum + i + 1] = "Energy Full";
@@ -159,6 +163,10 @@ public class InventoryState extends GameState
             else if(player.items.getItemType(itemNames[equipNum + i]).equals("Health") && (player.getCurrentHealth() == player.getHealth()))
             {
                 itemEquipText[equipNum + i + 1] = "Health Full";
+            }
+            else if(player.items.getItemType(itemNames[equipNum + i]).equals("Attack"))
+            {
+                itemEquipText[equipNum + i + 1] = "Cannot use outside combat";
             }
             else
             {
@@ -253,7 +261,7 @@ public class InventoryState extends GameState
             itemImages[i].setPosition((spacing + sqSide/10) + x * (spacing + sqSide), screenHeight - ((((y * 100) + 90) * sqSide/100) + (y + 2) * spacing / 4));
             itemImages[i].draw(batch);
 
-            if(player.items.getItemType(itemNames[i]).equals("Energy") || player.items.getItemType(itemNames[i]).equals("Health"))
+            if(player.items.getItemType(itemNames[i]).equals("Energy") || player.items.getItemType(itemNames[i]).equals("Health") || player.items.getItemType(itemNames[i]).equals("Attack"))
             {
                 int quantity = player.items.getItemQuantity(itemNames[i]);
                 bitNumbers[quantity/10].setSize(10 * sqSide/75, 10 * sqSide/75);
@@ -294,19 +302,17 @@ public class InventoryState extends GameState
             }
         }
 
-        //textbox.setSize(screenWidth - (2 * (spacing+sqSide)), sqSide);
-        textbox.setSize(screenWidth - 2 * spacing, sqSide);
-        textbox.setPosition(spacing, spacing/2);
-        textbox.draw(batch);
+        textBox.setSize(screenWidth - 2 * spacing, sqSide);
+        textBox.setPosition(spacing, spacing/2);
+        textBox.draw(batch);
 
-        //textbox.setSize(screenWidth - (2 * (spacing+sqSide)), sqSide);
-        textbox.setSize(sqSide, sqSide);
-        textbox.setPosition(spacing, spacing/2);
-        textbox.draw(batch);
+        textBox.setSize(sqSide, sqSide);
+        textBox.setPosition(spacing, spacing/2);
+        textBox.draw(batch);
 
-        textbox2.setSize(4  * sqSide / 3, sqSide);
-        textbox2.setPosition(screenWidth - (spacing + (4 * sqSide/3)), spacing/2);
-        textbox2.draw(batch);
+        textBox2.setSize(4  * sqSide / 3, sqSide);
+        textBox2.setPosition(screenWidth - (spacing + (4 * sqSide/3)), spacing/2);
+        textBox2.draw(batch);
 
         backButton.setSize(sqSide, sqSide);
         backButton.setPosition(spacing, spacing/2);
@@ -335,8 +341,9 @@ public class InventoryState extends GameState
         }
         else
         {
-            infoFont.setScale(screenWidth / 300f, screenHeight / 300f);
-            infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (6 * spacing / 4 + sqSide), sqSide - infoFont.getLineHeight()/2, sqSide, BitmapFont.HAlignment.CENTER);
+            //TODO: May need to edit this to allow for the cannot use
+            infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
+            infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (2 * spacing + sqSide), sqSide + spacing/5, 4 * sqSide/3, BitmapFont.HAlignment.CENTER);
         }
 
         healthIcon.setSize(spacing, spacing);

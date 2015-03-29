@@ -371,6 +371,7 @@ public class Combo
         {
             if (tapsLeft > 0 && comboId == 4)
             {
+                comboStarted=true;
                 skill += 1.0 / tapTotal;
                 tapsLeft--;
             }

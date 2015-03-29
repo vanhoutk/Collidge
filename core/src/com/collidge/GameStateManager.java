@@ -108,7 +108,6 @@ public class GameStateManager
         return gameStates.get(currentState);
     }
 
-    //Kris -- adding in for testing of Inventory State
     public void openInventory(Player player)
     {
         gameStates.add(new InventoryState(this, player));
@@ -163,7 +162,7 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
     }
-    
+
     public int getVolume()
     {
         return volumeLevel;

@@ -149,7 +149,7 @@ public class Player
 
     public String getItemImage(String item) {return items.getItemImage(item);}
 
-    public String[] getItemDesc() { return items.getDesc();}
+    public String[] getItemDesc() { return items.getDescription();}
 
     public int getLevelUpCounter()
     {
@@ -200,9 +200,6 @@ public class Player
 
     Player()
     {
-        items = new Inventory();
-        items.loadInventory();
-
         level=1;
         player_name = "Mr Man";
 
@@ -214,17 +211,18 @@ public class Player
         healthPoints=0;
         energyPoints=0;
 
-        //Kris -- Start off with no armour/weapons equipped
+        //Kris -- Initialise the equipped variables to none
         equippedWeapon = "None";
         equippedArmour = "None";
+
+        items = new Inventory();
+        items.loadInventory();
         updateStats();
         healAll();
     }
 
     Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
     {
-        items = new Inventory();
-        items.loadInventory();
         player_name = "Mr Man";
         level=Level;
 
@@ -235,17 +233,18 @@ public class Player
         energyPoints=EN;
         experience=EXP;
 
-        //Kris -- Start off with no armour/weapons equipped
+        //Kris -- Initialise the equipped variables to none
         equippedWeapon = "None";
         equippedArmour = "None";
+
+        items = new Inventory();
+        items.loadInventory();
         updateStats();
         healAll();
     }
 
     Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
     {
-        items = new Inventory();
-        items.loadInventory();
         player_name = name;
         level=Level;
 
@@ -256,9 +255,12 @@ public class Player
         energyPoints=EN;
         experience=EXP;
 
-        //Kris -- Start off with no armour/weapons equipped
+        //Kris -- Initialise the equipped variables to none
         equippedWeapon = "None";
         equippedArmour = "None";
+
+        items = new Inventory();
+        items.loadInventory();
         updateStats();
         healAll();
     }

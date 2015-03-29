@@ -83,9 +83,9 @@ public class DeathState extends GameState
 
         deathfont.draw(batch, Deathtext[0], Deathtext[0].length()*1.1f*(screenWidth/400f), (7f*screenHeight/8f));
         deathfont.draw(batch, Deathtext[2], spacing, (3f*screenHeight/16f+deathfont.getLineHeight()*0.5f));
-        deathfont.draw(batch, "(Continue)", spacing, (3f*screenHeight/16f-deathfont.getLineHeight()*0.5f));
+        deathfont.drawWrapped(batch, "(Continue)", spacing/2f, (3f * screenHeight / 16f - deathfont.getLineHeight() * 0.5f), lbutton.getWidth(), BitmapFont.HAlignment.CENTER);
         deathfont.draw(batch, Deathtext[3], 2f*screenWidth/3f + Deathtext[3].length()*1.3f*(screenWidth/400f), (3f*screenHeight/16f)+deathfont.getLineHeight()*0.5f);
-        deathfont.draw(batch, "(End Session)", 2f*screenWidth/3f + Deathtext[3].length()*1.3f*(screenWidth/400f), (3f*screenHeight/16f)-deathfont.getLineHeight()*0.5f);
+        deathfont.drawWrapped(batch, "(End Session)", rbutton.getX(), (3f * screenHeight / 16f) - deathfont.getLineHeight() * 0.5f, rbutton.getWidth(), BitmapFont.HAlignment.CENTER);
 
         batch.end();
     }

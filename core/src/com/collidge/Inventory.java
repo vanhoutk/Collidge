@@ -1,20 +1,30 @@
 package com.collidge;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
- * Created by Kris on 24-Jan-15. Last modified 24-Feb-15.
+ * Created by Kris on 24-Jan-15. Last modified 27-Mar-15.
  *
- * So far all code in this class was written by Kris, with three edits by Dan marked as "Dan's edit"
+ * Comments have been added by Kris to indicate additions made by Toni, Dan & Michael
  *
  * Functions in this class:
- * - void useItem(String item)      -> uses a Combat item to restore either the Player's Health or Energy
- * - String[] getList()             -> returns a String array of items of which we have a quantity greater than zero
- * - void loadInventory()           -> sets up the inventory in the first place, initialising all of the items
+ * - void useItem(String item)          -> uses a Combat item to restore either the Player's Health or Energy
+ * - int getAttackBonus(String item)    -> returns the attack bonus of the item
+ * - int getDefenceBonus(String item)   -> returns the defence bonus of the item
+ * - int getItemDamage(String item)     -> returns the damage the item does to enemies
+ * - String[] getList()                 -> returns a String array of items of which we have a quantity greater than zero
+ * - void loadInventory()               -> sets up the inventory in the first place, initialising all of the items
  *
  * Notes:
  * - TODO: May either move useItem into player, or equipItem into inventory. Will see.
  * - TODO: Rebalance items
  */
 
+<<<<<<< HEAD
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
@@ -24,6 +34,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+=======
+>>>>>>> 93d638ddeb02548179fbeea38ada00026d9307b7
 public class Inventory
 {
     /**
@@ -45,24 +57,13 @@ public class Inventory
         MyCombatInv.get(item).changeItemQuantity(-1);
     }
 
-    //for items that damage enemies
-    int getItemDamage(String item) {return MyCombatInv.get(item).getEnemyDamage();}
-
-    /**
-     * This is currently implemented within player rather than in inventory
-     */
-//    void equipItem(String item)
-//    {
-//        player.setattack(MyEquipment.get(item).getAttackbonus());
-//        player.setenergy(MyEquipment.get(item).getEnergybonus());
-//        player.sethealth(MyEquipment.get(item).getHealthbonus());
-//        player.setdefence(MyEquipment.get(item).getDefencebonus());
-//    }
-
     int getAttackBonus(String item){ return MyEquipment.get(item).getAttackbonus();}
-    int getEnergyBonus(String item){ return MyEquipment.get(item).getEnergybonus();}
     int getDefenceBonus(String item){ return MyEquipment.get(item).getDefencebonus();}
-    int getHealthBonus(String item){ return MyEquipment.get(item).getHealthbonus();}
+    /**
+     * Toni's edit
+     * Added for returning the damage caused by attack combat items
+     */
+    int getItemDamage(String item) {return MyCombatInv.get(item).getEnemyDamage();}
 
     String[] getList()
     {
@@ -85,25 +86,31 @@ public class Inventory
         return Names;
     }
 
-    String[] getDesc()
+    /**
+     * Michael's Edit
+     * Added for returning an array of the item descriptions for use in combat
+     */
+    String[] getDescription()
     {
+        /**
+         * Dan's edit
+         * Changed from a Set to an arrayList
+         */
         //Set<String> description = new HashSet();
         ArrayList<String> description=new ArrayList();
 
-
         for(Map.Entry<String, CombatItem> entry: MyCombatInv.entrySet())
         {
-
             if(entry.getValue().getItemQuantity() > 0)
             {
                 description.add(entry.getValue().getBattleText());
             }
-
         }
-
-
+        /**
+         * Dan's edit
+         * Changed the return value to the following
+         */
         return description.toArray(new String[description.size()]);
-
     }
 
     String[] getEquipmentList()
@@ -187,7 +194,7 @@ public class Inventory
         EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 0, 10, "energy60.png");
         Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 0, 10, "Noodles.png");
         Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 0, 10, "sandwichIcon.png");
-        IED = new CombatItem("AOE Damage", "Deals damage to all enemies.", 0, 0, 10, 10, "ied.png");
+        IED = new CombatItem("Attack", "Deals damage to all enemies.", 0, 0, 10, 10, "dynamite.png");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);

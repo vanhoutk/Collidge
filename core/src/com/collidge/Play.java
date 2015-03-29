@@ -14,7 +14,10 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by Gary on 26/01/2015.
@@ -26,24 +29,26 @@ public class Play extends GameState {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private OrthographicCamera camera2;
+    TiledMapTileLayer collisionLayer;
     private MapPlayer player;
-    private NPC npc1;
-    //private NPC npc2;
+    private ArrayList<NPC> npcList;
     private Texture menuButton, inventoryButton;
-    private Sprite menuButtonSprite, inventoryButtonSprite;
+    private Sprite menuButtonSprite, inventoryButtonSprite,nightMask,whiteSquare;
     private float ppx, ppy, px, py;
     private PopUpText popUps;
     private long enteringFight=0;
     private String fighting;
-
+    long time;
+    long seconds;
+    long minutes;
+    long hours;
     private SpriteBatch  batch;
+    float nightOpacity,twilightOpacity;
 
     Play(GameStateManager gsm)
     {
         super(gsm);
         popUps=new PopUpText();
-
 
         userCharacter=gsm.user;
 
@@ -56,30 +61,68 @@ public class Play extends GameState {
 
         batch = new SpriteBatch();
         TmxMapLoader loader = new TmxMapLoader();
-
         map = loader.load("TrinityMap1.tmx");
-
         renderer = new OrthogonalTiledMapRenderer(map);
+        collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
 
-        player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
+        npcList = new ArrayList<NPC>();
+        player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0), npcList);
+        player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
 
-        npc1 = new NPC(new Sprite(new Texture("shev.png")), (TiledMapTileLayer) map.getLayers().get(0), false);
-        npc1.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
-        //npc2 = new NPC(new Sprite(new Texture("rpgman.png")), (TiledMapTileLayer) map.getLayers().get(0), true);
-        //npc2.setPosition(8 * npc1.getCollisionLayer().getTileWidth(), (npc1.getCollisionLayer().getHeight() - 10) * npc1.getCollisionLayer().getTileHeight());
+        addNpc(12, 41, new Texture("shev.png"), true, false, true);
+        addNpc(11, 58, new Texture("rpgman.png"), false, false, false);
+        addNpc(23, 58, new Texture("rpgman.png"), false, false, false);
+        addNpc(17, 60, new Texture("rpgman.png"), true, false, true);
+        addNpc(15, 47, new Texture("rpgman.png"), false, false, false);
+        addNpc(18, 48, new Texture("shev.png"), true, true, true);
+        addNpc(19, 53, new Texture("rpgman.png"), true, true, false);
+        addNpc(12, 41, new Texture("rpgman.png"), true, true, true);
+        addNpc(6, 34, new Texture("rpgman.png"), false, true, false);
+        addNpc(32, 28, new Texture("rpgman.png"), false, false, false);
+        addNpc(21, 23, new Texture("rpgman.png"), false, false, false);
+        addNpc(10, 26, new Texture("rpgman.png"), true, true, true);
+        addNpc(3, 20, new Texture("rpgman.png"), false, false, false);
+        addNpc(29, 1, new Texture("rpgman.png"), true, true, false);
+        addNpc(25, 17, new Texture("rpgman.png"), false, false, false);
+        addNpc(10, 19, new Texture("rpgman.png"), false, false, false);
 
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
-        inventoryButton = new Texture("schoolbag.png");
+        inventoryButton = new Texture("bagicon.png");
         menuButtonSprite = new Sprite(menuButton);
         inventoryButtonSprite = new Sprite(inventoryButton);
+        menuButton=new Texture("nightMask.png");
+        nightMask= new Sprite(menuButton);
+        menuButton=new Texture("whiteSquare.png");
+        whiteSquare=new Sprite(menuButton);
+        nightMask.setSize(screenWidth,screenHeight);
+        nightMask.setPosition(0,0);
+        whiteSquare.setSize(screenWidth,screenHeight);
+        whiteSquare.setPosition(0,0);
+    }
+
+    public void addNpc(int tilex, int tiley, Texture tex, boolean moveOrNot, boolean xDirection, boolean positive) {
+        int heightMinusOne = collisionLayer.getHeight() - 1;
+        float tileWidth = collisionLayer.getTileWidth();
+        float tileHeight = collisionLayer.getTileHeight();
+
+        NPC npc = new NPC(new Sprite(tex), collisionLayer, moveOrNot, player, xDirection, positive, npcList.size());
+        npc.setPosition(tilex * tileWidth, (heightMinusOne - tiley) * tileHeight);
+        npcList.add(npc);
     }
 
     @Override
     public void initialize()
     {
-
+        time = System.currentTimeMillis();
+        seconds = (long)(time / 1000);
+        minutes = seconds / 60;
+        hours = minutes / 60;
+        hours%=24;
+       // hours=(seconds/3)%24;
+        minutes%=60;
+        seconds%=60;
+        System.out.println(hours+": "+minutes+": "+seconds);
     }
 
     public void setMap(String mapFile,int positionX, int positionY)
@@ -141,14 +184,15 @@ public class Play extends GameState {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("walls"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("front_fence"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("randoms_layer"));
-       // player.draw(renderer.getBatch());
 
         if(TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
             player.draw(renderer.getBatch());
         }
-        npc1.draw((renderer.getBatch()));
-        //npc2.draw((renderer.getBatch()));
+
+        for(int i = 0; i < npcList.size(); i++) {
+            npcList.get(i).draw(renderer.getBatch());
+        }
 
         //Loads the rest of the map on top of the NPC and Player models
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("back_fence"));
@@ -173,17 +217,69 @@ public class Play extends GameState {
         //button positions
         menuButtonSprite.setPosition(screenWidth *11/12 - menuButtonSprite.getWidth()/4,screenHeight* 11/12 - menuButtonSprite.getHeight()/2);
         inventoryButtonSprite.setPosition(screenWidth *10/12 - inventoryButtonSprite.getWidth()/4,screenHeight*11/12 - inventoryButtonSprite.getHeight()/2);
-        //
 
         batch.begin();
-        //player.draw(renderer.getBatch());
-        /*font.draw(batch, "blaaa", 50, 50);
-        player2.draw(batch);*/
 
+        if(hours<7||hours>=22)
+        {
+            whiteSquare.setColor(Color.GRAY);
+            twilightOpacity=.3f;
+            if(hours>10)
+            {
+                nightOpacity = .95f * (1f-((26f-hours)/4f));
+            }
+            else
+            {
+                if(hours<2)
+                {
+                    nightOpacity = .95f * 1f-((float) (Math.abs((2f - hours) / 3f)));
+                }
+                else if(hours==2)
+                {
+                    nightOpacity=.95f;
+                }
+                else
+                {
+                    nightOpacity=.95f * 1f-(float) (Math.abs((2f - hours )/ 5f));
+                }
+            }
+
+        }
+        else
+        {
+            if(hours<12)
+            {
+                twilightOpacity = .3f * (1f-((float)(hours - 7)/4f));
+            }
+            else if(hours>=19)
+            {
+                twilightOpacity=.3f*(1f-((22f-hours)/3f));
+            }
+            else
+            {
+                twilightOpacity=0f;
+            }
+            nightOpacity=0f;
+            whiteSquare.setColor(.98f, .84f, .65f,1f);
+        }
+        if(hours<12||hours>19)
+        {
+            whiteSquare.draw(batch, twilightOpacity);
+            if(hours<=7||hours>=22)
+            {
+                nightMask.draw(batch, nightOpacity);
+            }
+        }
+
+
+        //System.out.println(nightOpacity+"---"+twilightOpacity);
+
+        //nightMask.draw(batch,1f);
         menuButtonSprite.draw(batch);
         inventoryButtonSprite.draw(batch);
         popUps.update();
         popUps.draw(batch);
+
 
         batch.end();
     }
@@ -225,12 +321,18 @@ public class Play extends GameState {
     @Override
     public void update()
     {
+        time = System.currentTimeMillis();
+        seconds = (long)(time / 1000);
+        minutes = seconds / 60;
+        hours = minutes / 60;
+        hours%=24;
+        //hours=(seconds)%24;
+        minutes%=60;
+        seconds%=60;
+        //System.out.println(hours+"------"+twilightOpacity);
+
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510&&TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
-            //Kris -- just put in to test InventoryState
-            //gsm.openInventory(userCharacter);
-
-
             if(userCharacter.getCurrentHealth()<=0)
             {
                 userCharacter.healAll();
@@ -271,9 +373,6 @@ public class Play extends GameState {
         //    player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
         //}
     }
-
-    //@Override
-    //  public void draw() {}
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
@@ -343,12 +442,30 @@ public class Play extends GameState {
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
-        if(x>Gdx.graphics.getWidth()*.45&&x<Gdx.graphics.getWidth()*.55&
-                y>Gdx.graphics.getHeight()*.45&&y<Gdx.graphics.getHeight()*.55)
-        {
-            System.out.println("Stop");
-            popUps.Add("Stop poking me!",.45f,.55f,0f,.2f, Color.WHITE,50);
+        boolean aboutToTalk = false;  //use this variable to make him stop walking into player after textbox comes up. OR...... just fix collision.
+        if(player.withinOneOfNpc) {
+            float tileWidth = collisionLayer.getTileWidth();
+            float tileHeight = collisionLayer.getTileHeight();
+            float w = Gdx.graphics.getWidth();
+            float h = Gdx.graphics.getHeight();
+
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(pos);
+            int tileX = (int)(pos.x / tileWidth);
+            int tileY = (int)(pos.y / tileHeight);
+            for (int i = 0; i < npcList.size(); i++) {
+                int npcTileX = (int) ((npcList.get(i).getX() + npcList.get(i).getWidth() / 2) / tileWidth);
+                int npcTileY = (int) ((npcList.get(i).getY() + npcList.get(i).getHeight() / 2) / tileHeight);
+                if(tileX == npcTileX && tileY == npcTileY) {
+                    //could have both pop ups and textboxes
+                    //popUps.Add("here" , x / w, (h - y) / h);
+                    npcList.get(i).talk();
+                    aboutToTalk = true;
+                    break;
+                }
+            }
         }
+
         if(y < screenHeight/5)
         {
             if(x > inventoryButtonSprite.getX() && x < menuButtonSprite.getX())

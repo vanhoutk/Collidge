@@ -1,6 +1,7 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +10,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.XmlReader;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * Created by simon on 11/02/15.
@@ -23,7 +45,7 @@ public class GameMenu extends GameState
     int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0, musicPre, volPre;
     SpriteBatch batch;
     Texture texture, background;
-    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthbar, energybar, attackbar, defbar, intbar, statsymbol, healthIcon, energyIcon, attackIcon, defenceIcon, intelligenceIcon, XPbar, XPframe, mute, unmute;
+    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthMax, energyMax, healthbar, energybar, attackbar, defbar, intbar, statsymbol, healthIcon, energyIcon, attackIcon, defenceIcon, intelligenceIcon, XPbar, XPframe, mute, unmute;
     BitmapFont Font;
 
 
@@ -104,6 +126,10 @@ public class GameMenu extends GameState
 
 
         texture = new Texture("statbar.png");
+        healthMax = new Sprite(texture);
+        texture = new Texture("statbar.png");
+        energyMax = new Sprite(texture);
+        texture = new Texture("statbar.png");
         healthbar = new Sprite(texture);
         texture = new Texture("statbar.png");
         energybar = new Sprite(texture);
@@ -175,142 +201,148 @@ public class GameMenu extends GameState
 
         if(statsPressed)
         {
-
             //DRAW HEALTH BAR
-                healthbar.setColor(Color.GREEN);
-                healthbar.setPosition(screenWidth / 5, screenHeight *6/8);
-                healthbar.setSize((screenWidth*4/7) * ((5+healthcounter)/500f), screenHeight/20);
-                healthbar.draw(batch);
+            healthMax.setColor(Color.TEAL);
+            healthMax.setPosition(screenWidth / 5, screenHeight *6/8);
+            healthMax.setSize((screenWidth*4/7), screenHeight/20);
+            healthMax.draw(batch);
 
-                Font.setColor(Color.GREEN);
-                Font.setScale(screenWidth / 500f, screenHeight / 500f);
-                Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY()+healthbar.getHeight()/2);
+            healthbar.setColor(Color.GREEN);
+            healthbar.setPosition(screenWidth / 5, screenHeight *6/8);
+            healthbar.setSize((screenWidth*4/7) * (healthcounter/(float)player.getHealth()), screenHeight/20);
+            healthbar.draw(batch);
+
+            Font.setColor(Color.GREEN);
+            Font.setScale(screenWidth / 500f, screenHeight / 500f);
+            Font.draw(batch, " " + healthcounter, healthbar.getX() + healthbar.getWidth(), healthbar.getY()+healthbar.getHeight()/2);
 
 
             //DRAW ENERGY BAR
-                energybar.setColor(Color.YELLOW);
-                energybar.setPosition(screenWidth / 5, screenHeight *5/8);
-                energybar.setSize((screenWidth*4/7) * ((5+energycounter)/500f), screenHeight/20);
-                energybar.draw(batch);
+            energyMax.setColor(Color.ORANGE);
+            energyMax.setPosition(screenWidth / 5, screenHeight *5/8);
+            energyMax.setSize((screenWidth*4/7), screenHeight/20);
+            energyMax.draw(batch);
 
-                Font.setColor(Color.YELLOW);
-                Font.setScale(screenWidth / 500f, screenHeight / 500f);
-                Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY()+healthbar.getHeight()/2);
+            energybar.setColor(Color.YELLOW);
+            energybar.setPosition(screenWidth / 5, screenHeight *5/8);
+            energybar.setSize((screenWidth*4/7) * (energycounter/(float)player.getEnergy()), screenHeight/20);
+            energybar.draw(batch);
+
+            Font.setColor(Color.YELLOW);
+            Font.setScale(screenWidth / 500f, screenHeight / 500f);
+            Font.draw(batch, " " + energycounter, energybar.getX() + energybar.getWidth(), energybar.getY()+healthbar.getHeight()/2);
 
 
             // DRAW ATTACK BAR
-                attackbar.setColor(Color.RED);
-                attackbar.setPosition(screenWidth / 5, screenHeight *4/8);
-                attackbar.setSize((screenWidth*4/7) * ((1+attackcounter)/100f), screenHeight/20);
-                attackbar.draw(batch);
+            attackbar.setColor(Color.RED);
+            attackbar.setPosition(screenWidth / 5, screenHeight *4/8);
+            attackbar.setSize((screenWidth*4/7) * ((1+attackcounter)/100f), screenHeight/20);
+            attackbar.draw(batch);
 
-                Font.setColor(Color.RED);
-                Font.setScale(screenWidth / 500f, screenHeight / 500f);
-                Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY()+healthbar.getHeight()/2);
+            Font.setColor(Color.RED);
+            Font.setScale(screenWidth / 500f, screenHeight / 500f);
+            Font.draw(batch, " " + attackcounter, attackbar.getX() + attackbar.getWidth(), attackbar.getY()+healthbar.getHeight()/2);
 
             // DRAW DEF BAR
-                defbar.setColor(Color.BLUE);
-                defbar.setPosition(screenWidth / 5, screenHeight *3/8);
-                defbar.setSize((screenWidth*4/7) * ((1+defcounter)/100f), screenHeight/20);
-                defbar.draw(batch);
+            defbar.setColor(Color.BLUE);
+            defbar.setPosition(screenWidth / 5, screenHeight *3/8);
+            defbar.setSize((screenWidth*4/7) * ((1+defcounter)/100f), screenHeight/20);
+            defbar.draw(batch);
 
-                Font.setColor(Color.BLUE);
-                Font.setScale(screenWidth / 500f, screenHeight / 500f);
-                Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY()+healthbar.getHeight()/2);
+            Font.setColor(Color.BLUE);
+            Font.setScale(screenWidth / 500f, screenHeight / 500f);
+            Font.draw(batch, " " + defcounter, defbar.getX() + defbar.getWidth(), defbar.getY()+healthbar.getHeight()/2);
 
 
             // DRAW INT BAR
-                intbar.setColor(Color.PURPLE);
-                intbar.setPosition(screenWidth / 5, screenHeight *2/8);
-                intbar.setSize((screenWidth*4/7) * ((1+intcounter)/100f), screenHeight/20);
-                intbar.draw(batch);
+            intbar.setColor(Color.PURPLE);
+            intbar.setPosition(screenWidth / 5, screenHeight *2/8);
+            intbar.setSize((screenWidth*4/7) * ((1+intcounter)/100f), screenHeight/20);
+            intbar.draw(batch);
 
-                Font.setColor(Color.PURPLE);
-                Font.setScale(screenWidth / 500f, screenHeight / 500f);
-                Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY()+healthbar.getHeight()/2);
+            Font.setColor(Color.PURPLE);
+            Font.setScale(screenWidth / 500f, screenHeight / 500f);
+            Font.draw(batch, " " + intcounter, intbar.getX() + intbar.getWidth(), intbar.getY()+healthbar.getHeight()/2);
 
 
             // DRAW XP BAR
-                XPbar.setColor(Color.WHITE);
-                XPbar.setPosition(XPframe.getX()+XPframe.getWidth()/14,XPframe.getY());
-                XPbar.setSize((XPframe.getWidth() * (6f/7f)) * (XPcounter/(float)player.getExpTarget()), XPframe.getHeight() );
+            XPbar.setColor(Color.WHITE);
+            XPbar.setPosition(XPframe.getX()+XPframe.getWidth()/14,XPframe.getY());
+            XPbar.setSize((XPframe.getWidth() * (6f/7f)) * (XPcounter/(float)player.getExpTarget()), XPframe.getHeight() );
 
-                XPbar.draw(batch);
+            XPbar.draw(batch);
 
-                Font.setColor(Color.WHITE);
-                Font.setScale(screenWidth / 400f, screenHeight / 400f);
-                Font.draw(batch, XPcounter + " / " + player.getExpTarget(), XPframe.getX() + XPframe.getWidth()*3/7, XPframe.getY() + XPframe.getHeight()*13/10);
+            Font.setColor(Color.WHITE);
+            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.draw(batch, XPcounter + " / " + player.getExpTarget(), XPframe.getX() + XPframe.getWidth()*3/7, XPframe.getY() + XPframe.getHeight()*13/10);
 
-                if(XPcounter>=player.getExpTarget())
-                {
-                    player.addExperience(-XPcounter);
-                    player.addExperience(XPcounter);
-                    XPcounter=0;
-                    gsm.levelUpState(player);
-                }
-
-
-
+            if(XPcounter>=player.getExpTarget())
+            {
+                player.addExperience(-XPcounter);
+                player.addExperience(XPcounter);
+                XPcounter=0;
+                gsm.levelUpState(player);
+            }
 
             XPframe.draw(batch);
             Font.setColor(Color.BLACK);
 
-            Font.setScale(screenWidth / 600f, screenHeight / 600f);
-            Font.draw(batch, " Lv. ", XPframe.getX() + XPframe.getHeight()/7, XPframe.getY() + XPframe.getHeight()*4/5);
-            Font.draw(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*13/14 , XPframe.getY() + XPframe.getHeight()*4/5);
+            Font.setScale(screenWidth / 650f, screenHeight / 650f);
+            Font.drawWrapped(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*2/300, XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, " Lv. ", XPframe.getX() + XPframe.getWidth()*275/300 , XPframe.getY() + XPframe.getHeight()*4/5, XPframe.getWidth()/14, BitmapFont.HAlignment.CENTER);
 
-            Font.setScale(screenWidth / 500f, screenHeight / 500f);
-            Font.draw(batch, "" + player.getLevel(), XPframe.getX() + XPframe.getHeight()/8, XPframe.getY() + XPframe.getHeight()*3/5);
-            Font.draw(batch, "" + (player.getLevel()+1), XPframe.getX() + XPframe.getWidth()*12/13 , XPframe.getY() + XPframe.getHeight()*3/5);
+            Font.setScale(screenWidth / 450f, screenHeight / 450f);
+            Font.drawWrapped(batch, "" + player.getLevel(), XPframe.getX() + XPframe.getHeight()/20, XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/13, BitmapFont.HAlignment.CENTER);
+            Font.drawWrapped(batch, "" + (player.getLevel() + 1), XPframe.getX() + XPframe.getWidth()*21/23 , XPframe.getY() + XPframe.getHeight()*3/5, XPframe.getWidth()/13, BitmapFont.HAlignment.CENTER);
 
 
             statsymbol.setPosition(screenWidth / 7, healthbar.getY() - healthbar.getHeight() / 2);
             statsymbol.setColor(Color.GREEN);
             statsymbol.draw(batch);
-            healthIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*3/5);
+            healthIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight()*3/5);
             healthIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, energybar.getY() - energybar.getHeight()/2);
             statsymbol.setColor(Color.YELLOW);
             statsymbol.draw(batch);
-            energyIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            energyIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY() + healthIcon.getHeight() * 7/10);
             energyIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, attackbar.getY() - attackbar.getHeight()/2);
             statsymbol.setColor(Color.RED);
             statsymbol.draw(batch);
-            attackIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            attackIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight() * 7/10);
             attackIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, defbar.getY() - defbar.getHeight()/2);
             statsymbol.setColor(Color.BLUE);
             statsymbol.draw(batch);
-            defenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            defenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight()*6/10);
             defenceIcon.draw(batch);
 
             statsymbol.setPosition(screenWidth / 7, intbar.getY() - intbar.getHeight()/2);
             statsymbol.setColor(Color.PURPLE);
             statsymbol.draw(batch);
-            intelligenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/5, statsymbol.getY()+healthIcon.getHeight()*4/5);
+            intelligenceIcon.setPosition(statsymbol.getX() + healthIcon.getWidth()/4, statsymbol.getY()+healthIcon.getHeight()*7/10);
             intelligenceIcon.draw(batch);
 
             if(TimeUtils.timeSinceMillis(timer)>40)
             {
 
-                if(healthcounter<player.getHealth())
+                if(healthcounter<player.getCurrentHealth())
                 {
-                    healthcounter = healthcounter + 1 + (player.getHealth()/50);
-                    if (healthcounter > player.getHealth())
+                    healthcounter = healthcounter + 1 + (player.getCurrentHealth()/50);
+                    if (healthcounter > player.getCurrentHealth())
                     {
-                        healthcounter=player.getHealth();
+                        healthcounter=player.getCurrentHealth();
                     }
                 }
-                if(energycounter<player.getEnergy())
+                if(energycounter<player.getCurrentEnergy())
                 {
-                    energycounter = energycounter + 1 + (player.getEnergy()/50);
-                    if (energycounter > player.getEnergy())
+                    energycounter = energycounter + 1 + (player.getCurrentEnergy()/50);
+                    if (energycounter > player.getCurrentEnergy())
                     {
-                        energycounter=player.getEnergy();
+                        energycounter=player.getCurrentEnergy();
                     }
                 }
                 if(attackcounter<player.getAttack())
@@ -488,6 +520,11 @@ public class GameMenu extends GameState
                 }
                 if (x > save.getX() && x < save.getX() + save.getWidth()) {
                     savePressed = true;
+                    /**
+                     * Kris
+                     * Added to call the save stats method
+                     */
+                    saveStats();
                 }
             }
 
@@ -618,5 +655,47 @@ public class GameMenu extends GameState
 
     }
 
+    /**
+     * Kris
+     * Moved Dan's saving here and changed it to save as an xml format to make it more readable
+     */
+    public void saveStats()
+    {
+        if(Gdx.files.isLocalStorageAvailable())
+        {
+            OutputStream out=Gdx.files.local( "stats.xml" ).write(false);
+            try
+            {
+                System.out.println("Saving stats");
+                String saveStats;
+                saveStats = ("<stats>"
+                                + "<Level>" + gsm.user.getLevel() + "</Level>"
+                                + "<AttackPoints>" + gsm.user.getAttackPoints() + "</AttackPoints>"
+                                + "<DefencePoints>" + gsm.user.getDefencePoints() + "</DefencePoints>"
+                                + "<IntelligencePoints>" + gsm.user.getIntelligencePoints() + "</IntelligencePoints>"
+                                + "<HealthPoints>" + gsm.user.getHealthPoints() + "</HealthPoints>"
+                                + "<EnergyPoints>" + gsm.user.getEnergyPoints() + "</EnergyPoints>"
+                                + "<Experience>" + gsm.user.getExperience() + "</Experience>"
+                                + "</stats>)");
+                out.write(saveStats.getBytes());
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
+
+
+
 

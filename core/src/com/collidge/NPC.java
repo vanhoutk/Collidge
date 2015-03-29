@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 
 
+import java.util.Map;
 import java.util.TimerTask;
 
 
@@ -20,18 +21,35 @@ import java.util.TimerTask;
 
 public class NPC extends Sprite
 {
+    int npcNumber;
+    boolean xory;
+    boolean positive;
     private Vector2 velocity = new Vector2();
     private float speed = 60 * 2;
     private Boolean movrnot;
+    private MapPlayer player;
     private float countDelta;
     private TiledMapTileLayer collisionlayer;
-    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, Boolean movrnoty)
+    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, boolean movrnoty, MapPlayer player, boolean xoryplane, boolean positive, int npcNumber)
     {
         super(sprite);
+        this.npcNumber = npcNumber;
         movrnot = movrnoty;
+        xory = xoryplane;
+        this.positive = positive;
+        this.player = player;
         this.collisionlayer = collisionlayer;
         this.countDelta = 0;
-        this.velocity.x = speed;
+        if(movrnot == true) {
+            if(xory) {
+                if (positive) this.velocity.x = speed;
+                else velocity.x = -1 * speed;
+            }
+            else {
+                if (positive) velocity.y = speed;
+                else velocity.y = -speed;
+            }
+        }
     }
 
     @Override
@@ -51,27 +69,29 @@ public class NPC extends Sprite
         float oldX = getX(), oldY = getY(), tilewidth = collisionlayer.getTileWidth(), tileheight = collisionlayer.getTileHeight();
         boolean collisionX = false, collisionY = false, fight = false;
 
+        boolean move = true;
+        if(move && movrnot) {
+            if(xory) {
+                if(positive ) velocity.x = speed;
+                else velocity.x = -speed;
+            }
+            else {
+                if (positive) velocity.y = speed;
+                else velocity.y = -speed;
+            }
+        }
+
         if (velocity.x < 0)
         {
-            //top left
-            collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
             //middle left
             if (!collisionX)
                 collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) ((getY() + getHeight() / 2) / tileheight)).getTile().getProperties().containsKey("blocked");
-            //bottom left
-            if (!collisionX)
-                collisionX = collisionlayer.getCell((int) (getX() / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
         }
         else if (velocity.x > 0)
         {
-            //top right
-            collisionX = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
             //middle right
             if (!collisionX)
                 collisionX = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight() / 2) / tileheight)).getTile().getProperties().containsKey("blocked");
-            //bottom right
-            if (!collisionX)
-                collisionX = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
         }
 
         //react to x collision
@@ -81,37 +101,41 @@ public class NPC extends Sprite
             if(velocity.x > 0)
             {
                 velocity.x = -speed;
+                positive = !positive;
             }
             else if(velocity.x < 0)
             {
                 velocity.x = speed;
+                positive = !positive;
             }
         }
 
         if (velocity.y < 0)
         {
-            //bottom left
-            collisionY = collisionlayer.getCell((int) (getX() / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
             //middle bottom
             if (!collisionY)
                 collisionY = collisionlayer.getCell((int) ((getX() + getWidth() / 2) / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
-            //bottom right
-            if (!collisionY)
-                collisionY = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) (getY() / tileheight)).getTile().getProperties().containsKey("blocked");
-        } else if (velocity.y > 0) {
-            //top left
-            collisionY = collisionlayer.getCell((int) (getX() / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
+        }
+        else if (velocity.y > 0) {
             //top middle
             if (!collisionY)
                 collisionY = collisionlayer.getCell((int) ((getX() + getWidth() / 2) / tilewidth), (int) ((getY() + getHeight() / 2) / tileheight)).getTile().getProperties().containsKey("blocked");
-            if (!collisionY)
-                collisionY = collisionlayer.getCell((int) ((getX() + getWidth()) / tilewidth), (int) ((getY() + getHeight()) / tileheight)).getTile().getProperties().containsKey("blocked");
-        }
+            }
+
         //react to y collision
         if (collisionY)
         {
             setY(oldY);
-            velocity.y = 0;
+            if(velocity.y > 0)
+            {
+                velocity.y *= -1;
+                positive = !positive;
+            }
+            else if(velocity.y < 0)
+            {
+                velocity.y *= -1;
+                positive = !positive;
+            }
         }
 
         if(countDelta > 300f)
@@ -120,10 +144,56 @@ public class NPC extends Sprite
             countDelta = 0;
         }
 
+        //check if colliding with player
+        if(movrnot) {
+            int npcTileX =(int) ((getX() +getWidth() / 2) / tilewidth);
+            int npcTileY = (int)((getY() + getHeight() / 2)/ tileheight);
+            int playerTileX = (int) ((player.getX() + player.getWidth() / 2)/ tilewidth);
+            int playerTileY = (int) ((player.getY() + player.getHeight() / 2)/ tileheight);
+            int differenceX = npcTileX - playerTileX;
+            int differenceY = npcTileY - playerTileY;
+
+            if (differenceX == 1 && differenceY == 0 && velocity.x < 0) {
+                if(Math.abs(getX() - player.getX()) <= 32) move = false;
+            }
+            else if (differenceX == -1 && differenceY == 0 && velocity.x > 0) {
+                if(Math.abs(getX() - player.getX()) <= 32) move = false;
+            }
+            if (differenceY == 1 && differenceX == 0 && velocity.y < 0) {
+                if(Math.abs(getY() - player.getY()) <= 32) move = false;
+            }
+            else if (differenceY == -1 && differenceX == 0 && velocity.y > 0) {
+                if(Math.abs(getY() - player.getY()) <= 32) move = false;
+            }
+        }
+
+        if(getX() < 0 || getX() + getWidth() > collisionlayer.getWidth() * tilewidth) {
+            velocity.x *= -1;
+            positive = !positive;
+        }
+        if(getY() < 0 || getY() + getHeight() > collisionlayer.getHeight() * tileheight) {
+            velocity.y *= -1;
+            positive = !positive;
+        }
+
+        if (!move) {
+            velocity.x = 0;
+            velocity.y = 0;
+        }
+
         setY(getY() + velocity.y * delta);
         setX(getX() + velocity.x * delta);
 
         countDelta++;
+    }
+
+    public void talk() {
+        String npcNum = "npc" + Integer.toString(npcNumber + 1);
+        //keep here if we want different things to say for each npc, probably leave it at this stage though
+        //String npcConvo;
+        //int convoNum = rand() % 3 + 1;
+        MyGdxGame.setTextBox(MyGdxGame.getNpcString(npcNum, "one"));
+        MyGdxGame.activateTextBox();
     }
 
     public Vector2 getVelocity()
