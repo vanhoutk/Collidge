@@ -40,13 +40,13 @@ public class DeathState extends GameState
         textbox = new Sprite(new Texture("textbox_background_2.png"));
 
         Deathtext = new String[4];
-        Deathtext[0] = "You lost. Go get a Burrito and try again later";
+        Deathtext[0] = "You lost. Get a Burrito and try again later";
         Deathtext[1] = "choose your option";
-        Deathtext[2] = "No, let's try again!";
-        Deathtext[3] = "Sounds great!";
+        Deathtext[2] = "No, again!";
+        Deathtext[3] = "Sounds good";
 
-        deathfont = new BitmapFont();
-        deathfont.setScale(screenWidth / 400f, screenHeight / 400f);
+        deathfont = new BitmapFont(Gdx.files.internal("customfont.fnt"));
+        deathfont.setScale(screenWidth / 1000f, screenHeight / 1000f);
 
     }
     @Override
@@ -68,8 +68,7 @@ public class DeathState extends GameState
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        deathfont.setColor(Color.RED);
-
+       
         Skull.draw(batch);
 
         textbox.setSize(screenWidth-spacing*2f, sqSide);
@@ -81,10 +80,10 @@ public class DeathState extends GameState
         rbutton.setPosition(screenWidth-spacing-sqSide*2f, spacing/2f);
         rbutton.draw(batch);
 
-        deathfont.draw(batch, Deathtext[0], Deathtext[0].length()*1.1f*(screenWidth/400f), (7f*screenHeight/8f));
-        deathfont.draw(batch, Deathtext[2], spacing, (3f*screenHeight/16f+deathfont.getLineHeight()*0.5f));
+        deathfont.drawWrapped(batch, Deathtext[0], 0, (7f * screenHeight / 8f), screenWidth, BitmapFont.HAlignment.CENTER);
+        deathfont.drawWrapped(batch, Deathtext[2], spacing/2f, (3f * screenHeight / 16f + deathfont.getLineHeight() * 0.5f), lbutton.getWidth(), BitmapFont.HAlignment.CENTER);
         deathfont.drawWrapped(batch, "(Continue)", spacing/2f, (3f * screenHeight / 16f - deathfont.getLineHeight() * 0.5f), lbutton.getWidth(), BitmapFont.HAlignment.CENTER);
-        deathfont.draw(batch, Deathtext[3], 2f*screenWidth/3f + Deathtext[3].length()*1.3f*(screenWidth/400f), (3f*screenHeight/16f)+deathfont.getLineHeight()*0.5f);
+        deathfont.drawWrapped(batch, Deathtext[3], rbutton.getX(), (3f * screenHeight / 16f) + deathfont.getLineHeight() * 0.5f, rbutton.getWidth(), BitmapFont.HAlignment.CENTER);
         deathfont.drawWrapped(batch, "(End Session)", rbutton.getX(), (3f * screenHeight / 16f) - deathfont.getLineHeight() * 0.5f, rbutton.getWidth(), BitmapFont.HAlignment.CENTER);
 
         batch.end();
