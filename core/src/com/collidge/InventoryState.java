@@ -35,7 +35,7 @@ public class InventoryState extends GameState
     Sprite[] itemImages, bitNumbers;
     int equipNum, itemNum, selectedItem;
 
-    public static Music elevatorMusic = Gdx.audio.newMusic(Gdx.files.internal("elevatormusic.mp3"));
+   // public static Music elevatorMusic = Gdx.audio.newMusic(Gdx.files.internal("elevatormusic.mp3"));
 
 
     private BitmapFont infoFont;
@@ -179,7 +179,7 @@ public class InventoryState extends GameState
     @Override
     public void update()
     {
-        elevatorMusic.play();
+        //elevatorMusic.play();
         playerInfoText[0] = player.getCurrentHealth() + "/" + player.getHealth();
         playerInfoText[1] = player.getCurrentEnergy() + "/" + player.getEnergy();
         playerInfoText[2] = String.valueOf(player.getAttack());

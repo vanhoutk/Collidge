@@ -194,16 +194,13 @@ public class Inventory
 
 
 
-    void loadInventory()
+    void loadInventory(Player player)
     {
-       // elevatorMusic.play();
-        System.out.println("Loading Inventory$");
 
         /**
          * Deirdre
          * Loading inventory items from saved file if it exists
          */
-
         int nCoffee, nEnergyDrink, nNoodles, nSandwich, nIED;
         int nTsquare, nScarf, nMacshield, nBookshield;
 
@@ -216,6 +213,8 @@ public class Inventory
         nNoodles = 10;
         nSandwich = 10;
         nIED = 10;
+        String nEquipWeap = "";
+        String nEquipArm = "";
 
         if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists()) {
             try {
@@ -224,10 +223,9 @@ public class Inventory
 
                 XmlReader reader = new XmlReader();
                 FileHandle handle1 = Gdx.files.local("inventory.xml");
-                XmlReader.Element inventory = reader.parse(handle1.readString());
+                XmlReader.Element root = reader.parse(handle1.readString());
 
-                System.out.println("Loading Inventory^^");
-
+                XmlReader.Element inventory = root.getChildByName("items");
                 nTsquare = inventory.getInt("Tsquare");
                 nScarf= inventory.getInt("Scarf");
                 nMacshield=inventory.getInt("Macshield");
@@ -237,6 +235,11 @@ public class Inventory
                 nNoodles=inventory.getInt("Noodles");
                 nSandwich=inventory.getInt("Sandwich");
                 nIED=inventory.getInt("IED");
+                XmlReader.Element equipped = root.getChildByName("equipped");
+                nEquipArm = equipped.getChildByName("EquippedArmour").getText();
+                nEquipWeap = equipped.getChildByName("EquippedWeapon").getText();
+
+
                 System.out.println("IED:");
                 System.out.println(nIED);
 
@@ -249,6 +252,9 @@ public class Inventory
         else{
             System.out.println("Things didn't work :((((");
         }
+
+        player.equippedWeapon = nEquipWeap;
+        player.equippedArmour = nEquipArm;
 
 
         /**
@@ -288,49 +294,5 @@ public class Inventory
 
 
     }
-
-    /**
-     * Deirdre
-     * Saving Inventory
-     */
-    public void saveInventory(){
-        if(Gdx.files.isLocalStorageAvailable()) {
-            OutputStream out = Gdx.files.local("inventory.xml").write(false);
-            try {
-                System.out.println("Saving inventory");
-                String saveInventory;
-                saveInventory = ("<inventory>"
-                        + "<Tsquare>" + Tsquare.getItemQuantity() + "</Tsquare>"
-                        + "<Scarf>" + Scarf.getItemQuantity()+ "</Scarf>"
-                        + "<Macshield>" + Macshield.getItemQuantity() + "</Macshield>"
-                        + "<Bookshield>" + Bookshield.getItemQuantity() + "</Bookshield>"
-                        + "<Coffee>" + Coffee.getItemQuantity() + "</Coffee>"
-                        + "<EnergyDrink>" + EnergyDrink.getItemQuantity() + "</EnergyDrink>"
-                        + "<Noodles>" + Noodles.getItemQuantity() +"</Noodles>"
-                        + "<Sandwich>" + Sandwich.getItemQuantity() + "</Sandwich>"
-                        + "<IED>" + IED.getItemQuantity() + "</IED>"
-                        + "</inventory>");
-                out.write(saveInventory.getBytes());
-                System.out.println(saveInventory);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    out.close();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-
-
-
-
 
 }
