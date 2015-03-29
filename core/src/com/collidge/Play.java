@@ -382,7 +382,7 @@ public class Play extends GameState {
 
     public void startFightSequence() {
         String set = npcList.get(npcToTalkTo).fighting;
-        if(TimeUtils.timeSinceMillis(enteringFight)>3000 && set != null) {
+        if(TimeUtils.timeSinceMillis(enteringFight)>3000 && set != null && npcList.get(npcToTalkTo).fight) {
             enteringFight=TimeUtils.millis();
             saveplay();
             fighting = set;
