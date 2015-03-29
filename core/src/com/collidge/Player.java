@@ -1,5 +1,7 @@
 package com.collidge;
 
+import java.util.HashMap;
+
 /**
  * Created by Daniel on 21/01/2015.
  */
@@ -187,16 +189,37 @@ public class Player
 
 
     private int movesKnown=5;
-    private int[] attackMultipliers={1,2,2,2,10};
-    private int[] attackEnergyCosts={0,5,15,75,200};
-    private int[] attackAOE={0,0,1,10,0};
-    private String[] attacksNames={"Bash","Slam","Blast","Spirit","Smash"};
-    //private String[] attackDesc = {"1 Dmg, 0 En", "2 Dmg, 5 En" , "5 Dmg, 15 En" , "7 Dmg, 75 En", "10 Dmg, 200 En"};       //attack tooltips for FightMenu
-    private String[] attackDesc = {attackMultipliers[0] + "Dmg, " + attackEnergyCosts[0] + "En",    //attack tooltips for FightMenu
-            attackMultipliers[1] + "Dmg, " + attackEnergyCosts[1] + "En",
-            attackMultipliers[2] + "Dmg, " + attackEnergyCosts[2] + "En",
-            attackMultipliers[3] + "Dmg, " + attackEnergyCosts[3] + "En",
-            attackMultipliers[4] + "Dmg, " + attackEnergyCosts[4] + "En"};
+    //constructor for combat moves is multiplier, energy cost, aoe, image
+    CombatMove Bash = new CombatMove(1, 0, 0, "Bash", "bash.png");
+    CombatMove Slam = new CombatMove(2, 5, 0, "Slam", "slam.png");
+    CombatMove Blast = new CombatMove(2, 15, 1, "Blast", "blast.png");
+    CombatMove Spirit = new CombatMove(2, 75, 10, "Spirit", "spirit.png");
+    CombatMove Smash = new CombatMove(10, 200, 0, "Smash", "smash.png");
+
+    private HashMap<String, CombatMove> StringToCombatMove = new HashMap();
+
+    public CombatMove[] getCombatMoves(){
+        CombatMove[] Moves = {Bash, Slam, Blast, Spirit, Smash};
+        for (int i =0; i < movesKnown; i++){
+            StringToCombatMove.put(Moves[i].attackName, Moves[i]);
+        }
+        return Moves;}
+
+    public int getEnergyCost(String move){return StringToCombatMove.get(move).attackEnergyCost;}
+    public int getAttackMultiplier(String move){return StringToCombatMove.get(move).attackMultiplier;}
+    public int attackRange(String move)
+    {
+
+        if (move.equals("IED"))
+        {
+            return 10;
+        }
+
+        System.out.println("moveName is " + StringToCombatMove.get(move).attackName);
+        return StringToCombatMove.get(move).attackMultiplier;
+
+        //TODO change to allow other damaging items too
+    }
 
     Player()
     {
@@ -216,7 +239,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory();
+        items.loadInventory(this);
         updateStats();
         healAll();
     }
@@ -241,7 +264,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory();
+        items.loadInventory(this);
         updateStats();
         healAll();
     }
@@ -263,34 +286,10 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory();
+        items.loadInventory(this);
         updateStats();
         healAll();
     }
-
-
-    public int[] getAttackEnergyCosts()
-    {
-        return attackEnergyCosts;
-    }
-    public int getAttackEnergyCosts(String atkName)
-    {
-        for(int i=0;i<attacksNames.length;i++)
-        {
-            if(atkName.equals(attacksNames[i]))
-            {
-                return attackEnergyCosts[i];
-            }
-        }
-        return 0;
-    }
-
-    public String[] getAttacksNames()
-    {
-        return attacksNames;
-    }
-
-    public String[] getAttackDesc(){return attackDesc;}
 
     public int getExpTarget()
     {
@@ -314,36 +313,6 @@ public class Player
         items.useItem(this,item);
         //itemDamage is needed to specify when an item does enemy damage
         itemDamage = items.getItemDamage(item);
-    }
-
-    public int attackPicker(String moveName)
-    {
-        for(int i=0;i<attacksNames.length;i++)
-        {
-            if(moveName.equals(attacksNames[i]))
-            {
-
-                return attackMultipliers[i];
-            }
-        }
-        return 0;
-    }
-
-    public int attackRange(String moveName)
-    {
-        for(int i=0;i<attacksNames.length;i++)
-        {
-            if(moveName.equals(attacksNames[i]))
-            {
-                return attackAOE[i];
-            }
-            //TODO change to allow other damaging items too
-            else if (moveName.equals("IED"))
-            {
-                return 10;
-            }
-        }
-        return 0;
     }
 
     public void changeHealth(int dH)

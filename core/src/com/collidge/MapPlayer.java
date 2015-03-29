@@ -34,25 +34,11 @@ public class MapPlayer extends Sprite
     private static final int DOWN = 1;
     private static final int LEFT = 2;
     private static final int RIGHT = 3;
-    private static final int uUP = 0;
-    private static final int uDOWN = 1;
-    private static final int uLEFT = 2;
-    private static final int uRIGHT = 3;
 
     ArrayList<NPC> npcList;
     //Java holds objects in memory as long as there is a reference to it. Therefore you can make local textureregions, textures and pass them to the animation object.
     private Animation walkingAnimation[];
     private Animation outlineAnimation[];
-
-    private Texture walkingLeftTexture;
-    private TextureRegion[] walkingLeftFrames;
-    private Animation walkingLeftAnimation;
-    private Texture walkingRightTexture;
-    private Animation walkingRightAnimation;
-    private Texture walkingUpTexture;
-    private Animation walkingUpAnimation;
-    private Texture walkingDownTexture;
-    private Animation walkingDownAnimation;
 
     /* Declan adding for movement in tiles */
     private float initX= 0;
@@ -99,10 +85,10 @@ public class MapPlayer extends Sprite
 
         //create 4 textures to fit into an array of 4
         Texture OutlineTextures[] = new Texture[4];
-        OutlineTextures[uUP] = new Texture("outline_back.png");
-        OutlineTextures[uDOWN] = new Texture("outline_front.png");
-        OutlineTextures[uRIGHT] = new Texture("outline_right.png");
-        OutlineTextures[uLEFT] = new Texture("outline_left.png");
+        OutlineTextures[UP] = new Texture("outline_back.png");
+        OutlineTextures[DOWN] = new Texture("outline_front.png");
+        OutlineTextures[RIGHT] = new Texture("outline_right.png");
+        OutlineTextures[LEFT] = new Texture("outline_left.png");
 
         //create 4 animations to hold 4 textureRegions each
         outlineAnimation = new Animation[4];
@@ -161,9 +147,6 @@ public class MapPlayer extends Sprite
 
     public void update(float delta)
     {
-
-
-
         float oldX = getX(), oldY = getY(), tilewidth = collisionlayer.getTileWidth(), tileheight = collisionlayer.getTileHeight();
         boolean collisionX = false, collisionY = false, fight = false;
 
@@ -283,7 +266,6 @@ public class MapPlayer extends Sprite
 
             if(differenceY == 0 && Math.abs(differenceX) == 1) {
                 withinOneOfNpc = true;
-
                 stopMovement();
                 //move = false
                 //and if move == false after all this. Set velocity.x to 0;

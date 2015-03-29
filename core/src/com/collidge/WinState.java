@@ -96,7 +96,11 @@ public class WinState extends GameState {
     }
 
     @Override
-    public void initialize(){ winMusic.play();}
+    public void initialize()
+    {
+        winMusic.setVolume(gsm.getVolume()/4);
+        winMusic.play();
+    }
 
     //update will update all game logic before drawing
     @Override
@@ -242,7 +246,7 @@ public class WinState extends GameState {
     public void endWinState()
     {
         winMusic.dispose();
-      //  gsm.setPlayingMus(gsm.mapMusic);
+
         batch.dispose();
         winfont.dispose();
         if(player.getLevelUpCounter()<=0)

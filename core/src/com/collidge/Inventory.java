@@ -3,8 +3,6 @@ package com.collidge;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -182,24 +180,15 @@ public class Inventory
         }
     }
 
-    void loadInventory()
+    void loadInventory(Player player)
     {
         /**
          * Deirdre
          * Loading inventory items from saved file if it exists
          */
-        int nCoffee, nEnergyDrink, nNoodles, nSandwich, nIED;
-        int nTsquare, nScarf, nMacshield, nBookshield;
-
-        nTsquare = 1;
-        nScarf = 1;
-        nMacshield = 1;
-        nBookshield = 1;
-        nCoffee = 10;
-        nEnergyDrink = 10;
-        nNoodles = 10;
-        nSandwich = 10;
-        nIED = 10;
+        int nCoffee = 10, nEnergyDrink = 10, nNoodles = 10, nSandwich = 10, nIED = 10;
+        int nTsquare = 1, nScarf = 1, nMacshield = 1, nBookshield = 1;
+        String nEquipWep = "None", nEquipArm = "None";
 
         if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists())
         {
@@ -207,7 +196,8 @@ public class Inventory
             {
                 XmlReader reader = new XmlReader();
                 FileHandle handle1 = Gdx.files.local("inventory.xml");
-                XmlReader.Element inventory = reader.parse(handle1.readString());
+                XmlReader.Element root = reader.parse(handle1.readString());
+                XmlReader.Element inventory = root.getChildByName("items");
                 nTsquare = inventory.getInt("Tsquare");
                 nScarf= inventory.getInt("Scarf");
                 nMacshield=inventory.getInt("Macshield");
@@ -217,6 +207,10 @@ public class Inventory
                 nNoodles=inventory.getInt("Noodles");
                 nSandwich=inventory.getInt("Sandwich");
                 nIED=inventory.getInt("IED");
+
+                XmlReader.Element equipped = root.getChildByName("equipped");
+                nEquipArm = equipped.getChildByName("EquippedArmour").getText();
+                nEquipWep = equipped.getChildByName("EquippedWeapon").getText();
             }
             catch (Exception e)
             {
@@ -226,6 +220,15 @@ public class Inventory
         else
         {
             System.out.println("Local storage unavailable or file doesn't exist.");
+        }
+
+        if(nEquipWep != "None")
+        {
+            player.equipItem(nEquipWep);
+        }
+        if(nEquipArm != "None")
+        {
+            player.equipItem(nEquipArm);
         }
 
         /**
@@ -256,49 +259,4 @@ public class Inventory
         MyEquipment.put("Macshield", Macshield);
         MyEquipment.put("Bookshield", Bookshield);
     }
-
-    /**
-     * Deirdre
-     * Saving Inventory
-     */
-    public void saveInventory(){
-        if(Gdx.files.isLocalStorageAvailable()) {
-            OutputStream out = Gdx.files.local("inventory.xml").write(false);
-            try {
-                System.out.println("Saving inventory");
-                String saveInventory;
-                saveInventory = ("<inventory>"
-                                    + "<Tsquare>" + Tsquare.getItemQuantity() + "</Tsquare>"
-                                    + "<Scarf>" + Scarf.getItemQuantity()+ "</Scarf>"
-                                    + "<Macshield>" + Macshield.getItemQuantity() + "</Macshield>"
-                                    + "<Bookshield>" + Bookshield.getItemQuantity() + "</Bookshield>"
-                                    + "<Coffee>" + Coffee.getItemQuantity() + "</Coffee>"
-                                    + "<EnergyDrink>" + EnergyDrink.getItemQuantity() + "</EnergyDrink>"
-                                    + "<Noodles>" + Noodles.getItemQuantity() +"</Noodles>"
-                                    + "<Sandwich>" + Sandwich.getItemQuantity() + "</Sandwich>"
-                                    + "<IED>" + IED.getItemQuantity() + "</IED>"
-                                    + "</inventory>");
-                out.write(saveInventory.getBytes());
-                System.out.println(saveInventory);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    out.close();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-
-
-
-
-
 }

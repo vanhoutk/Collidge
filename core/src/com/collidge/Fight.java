@@ -621,13 +621,15 @@ enemies[i].animation.pause();
 
 
         else {
-            playr.changeEnergy(-(playr.getAttackEnergyCosts(fMenu.getMoveString(ActionType, ActionId))));
+            //playr.changeEnergy(-(playr.getAttackEnergyCosts(fMenu.getMoveString(ActionType, ActionId))));
+            playr.changeEnergy(-(playr.getEnergyCost(fMenu.getMoveString(ActionType, ActionId))));
             for (int i = -targetPicker.getTargetingId(); i <= targetPicker.getTargetingId(); i++)
             {
                 System.out.println("Attacking: " + i);
                 if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length)
                 {
-                    PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+                    //PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+                    PlayerDam = playr.getAttackMultiplier(fMenu.getMoveString(ActionType, ActionId));
                     System.out.println("Dam to " + i + ": " + PlayerDam);
                     if (enemies[targetPicker.getSelectedTarget() + i].getDefence() > 0)
                     {
@@ -810,7 +812,7 @@ enemies[i].animation.pause();
         damage[0]=0;
         int[]ratings = combo.num_ratings;
         combo.delete();
-        fightMusic.dispose();
+        fightMusic.pause();
         Timer.instance().clear();
         Timer.instance().stop();
         batch.dispose();
@@ -825,7 +827,7 @@ enemies[i].animation.pause();
     {
         damage[0]=0;
         combo.delete();
-        fightMusic.dispose();
+      //  fightMusic.dispose();
         batch.dispose();
         texture.dispose();
         battleFont.dispose();

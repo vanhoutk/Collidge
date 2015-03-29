@@ -527,9 +527,8 @@ public class GameMenu extends GameState
                     saveStats();
                     /**
                      * Deirdre: Save Inventory..
-                     * Method in inventory class
                      */
-                    gsm.user.items.saveInventory();
+                    saveInventory();
                 }
             }
 
@@ -685,6 +684,54 @@ public class GameMenu extends GameState
                 out.write(saveStats.getBytes());
             } catch (IOException e)
             {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * Deirdre
+     * Saving Inventory
+     * Called when save button in GameMenu is selected
+     */
+    public void saveInventory(){
+        if(Gdx.files.isLocalStorageAvailable()) {
+            OutputStream out = Gdx.files.local("inventory.xml").write(false);
+            try {
+                System.out.println("Saving inventory");
+                String saveInventory;
+                saveInventory = ("<inventory>"
+                        + "<items>"
+                            + "<Tsquare>" + gsm.user.items.getItemQuantity("Tsquare") + "</Tsquare>"
+                            + "<Scarf>" + gsm.user.items.getItemQuantity("Scarf")+ "</Scarf>"
+                            + "<Macshield>" + gsm.user.items.getItemQuantity("Macshield") + "</Macshield>"
+                            + "<Bookshield>" + gsm.user.items.getItemQuantity("Bookshield") + "</Bookshield>"
+                            + "<Coffee>" + gsm.user.items.getItemQuantity("Coffee") + "</Coffee>"
+                            + "<EnergyDrink>" + gsm.user.items.getItemQuantity("Energy Drink") + "</EnergyDrink>"
+                            + "<Noodles>" + gsm.user.items.getItemQuantity("Noodles") +"</Noodles>"
+                            + "<Sandwich>" + gsm.user.items.getItemQuantity("Sandwich") + "</Sandwich>"
+                            + "<IED>" + gsm.user.items.getItemQuantity("IED") + "</IED>"
+                        + "</items>"
+                        + "<equipped>"
+                            + "<EquippedWeapon>" + gsm.user.equippedWeapon + "</EquippedWeapon>"
+                            + "<EquippedArmour>" + gsm.user.equippedArmour + "</EquippedArmour>"
+                        + "</equipped>"
+                                + "</inventory>");
+                out.write(saveInventory.getBytes());
+                System.out.println(saveInventory);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             finally

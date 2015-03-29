@@ -312,20 +312,29 @@ public class FightMenu
             menuSprites[i][0]=backIcon;
         }
         //Set up attacks
-        for(int j=1;j<=player.getAttacksNames().length && j<=player.getMovesKnown();j++)
+       // for(int j=1;j<=player.getAttacksNames().length && j<=player.getMovesKnown();j++)
+       // {
+        for (int j=1; j<player.getCombatMoves().length + 1; j++)
         {
-            menuSprites[1][j]=fightIcon;
+            //menuSprites[1][j]=fightIcon;
+            Texture texture = new Texture(player.getCombatMoves()[j-1].attackImage);
+            menuSprites[1][j]= new Sprite(texture);
 
-                if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
+                //if(player.getAttackEnergyCosts()[j-1]>player.getCurrentEnergy())
+            if(player.getCombatMoves()[j-1].attackEnergyCost>player.getCurrentEnergy())
                 {
-                    menuWords[1][j]=player.getAttacksNames()[j-1]+"*";
-                    attackDesc[1][j]= player.getAttackEnergyCosts()[j-1]+" En";
+                    //menuWords[1][j]=player.getAttacksNames()[j-1]+"*";
+                    menuWords[1][j]=player.getCombatMoves()[j-1].attackName + "*";
+                    //attackDesc[1][j]= player.getAttackEnergyCosts()[j-1]+" En";
+                    attackDesc[1][j]= player.getCombatMoves()[j-1].attackDesc;
                 }
                 else
 
                 {
-                    menuWords[1][j] = player.getAttacksNames()[j - 1];
-                    attackDesc[1][j] = player.getAttackDesc()[j - 1 ];
+                   // menuWords[1][j] = player.getAttacksNames()[j - 1];
+                    menuWords[1][j] = player.getCombatMoves()[j-1].attackName;
+                    //attackDesc[1][j] = player.getAttackDesc()[j - 1 ];
+                    attackDesc[1][j] = player.getCombatMoves()[j-1].attackDesc;
                 }
         }
 
@@ -622,10 +631,7 @@ public class FightMenu
 
 
 
-    public String getMoveString(int menu, int icon)
-    {
-        return menuWords[menu][icon];
-    }
+    public String getMoveString(int menu, int icon){ return menuWords[menu][icon]; }
     public int getActionType()
     {
         return selectedMenu;
