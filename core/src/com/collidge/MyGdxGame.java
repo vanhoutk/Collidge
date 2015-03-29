@@ -81,7 +81,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         Gdx.input.setInputProcessor(multiplexer);
         gsm = new GameStateManager(Level, ATK, DEF, INT, HP, EN, EXP);
 
-
         quitFont=new BitmapFont();
         quitFont.setScale(Gdx.graphics.getWidth()/300f,Gdx.graphics.getHeight()/300f);
         quitFont.setColor(Color.WHITE);
