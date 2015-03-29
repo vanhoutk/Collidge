@@ -525,6 +525,11 @@ public class GameMenu extends GameState
                      * Added to call the save stats method
                      */
                     saveStats();
+                    /**
+                     * Deirdre: Save Inventory..
+                     * Method in inventory class
+                     */
+                    gsm.user.items.saveInventory();
                 }
             }
 
@@ -559,7 +564,7 @@ public class GameMenu extends GameState
 
                 }
                 gsm.setVolume(volumeLevel);
-                gsm.backgroundMus.setVolume((float)volumeLevel/4);
+                //gsm.backgroundMus.setVolume((float)volumeLevel/4);
             }
 
             if (y < vol0.getY() && y > vol0.getY() - vol0.getHeight())
@@ -589,6 +594,7 @@ public class GameMenu extends GameState
                     musicLevel=4;
                     gsm.setMusic(musicLevel);
                 }
+                gsm.backgroundMus.setVolume((float)musicLevel/4);
             }
 
             //mute

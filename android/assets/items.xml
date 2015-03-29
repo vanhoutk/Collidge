@@ -1,15 +1,15 @@
 <inventory>
 	<equipment>
-		<Tsquare> 1 </Tsquare>
+		<Tsquare> 5 </Tsquare>
 		<Scarf> 1 </Scarf>
 		<macShield> 1 </macShield>
 		<bookShield> 1 </bookShield>
 	</equipment>
 	<combatItem>
-		<Coffee> 10 </Coffee>
+		<Coffee> 100 </Coffee>
 		<EnergyDrink> 10 </EnergyDrink>
 		<Noodles> 10 </Noodles>
-		<Sandwich> 10 </Sandwich>
+		<Sandwich> 8 </Sandwich>
 	</combatItem>
 	<equipped>
 		<Weapon> Tsquare </Weapon>

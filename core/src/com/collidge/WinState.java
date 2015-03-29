@@ -1,6 +1,7 @@
 package com.collidge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,6 +30,8 @@ public class WinState extends GameState {
     int[] ratings;
     Sprite Rating;
     int page_number;
+
+    Music winMusic =  Gdx.audio.newMusic(Gdx.files.internal("winmusic.mp3"));
 
     Timer.Task Exp=new Timer.Task()
     {
@@ -93,7 +96,7 @@ public class WinState extends GameState {
     }
 
     @Override
-    public void initialize(){}
+    public void initialize(){ winMusic.play();}
 
     //update will update all game logic before drawing
     @Override
@@ -238,7 +241,8 @@ public class WinState extends GameState {
 
     public void endWinState()
     {
-        gsm.setPlayingMus(gsm.mapMusic);
+        winMusic.dispose();
+      //  gsm.setPlayingMus(gsm.mapMusic);
         batch.dispose();
         winfont.dispose();
         if(player.getLevelUpCounter()<=0)

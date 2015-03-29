@@ -18,6 +18,7 @@ public class Fight extends GameState
 {
     Music fightMusic = Gdx.audio.newMusic(Gdx.files.internal("mymusic2.mp3"));
 
+
     private double PlayerDam;
     Player playr;
     boolean waitingForTouch=false;
@@ -108,6 +109,8 @@ public class Fight extends GameState
     public void initialize()
     {
         fightMusic.play();
+        fightMusic.setVolume((float)gsm.musicLevel/4);
+
 // testAnim=new Animation("walkingRight.png",10);
         combo=new Combo();
         expEarned=0;
@@ -571,8 +574,8 @@ enemies[i].animation.pause();
         }
         if(ActionType==1) //attack
         {
-                targetPicker.reset(enemies, player.attackRange(fMenu.getMoveString(ActionType, ActionId)));
-                targeting = true;
+            targetPicker.reset(enemies, player.attackRange(fMenu.getMoveString(ActionType, ActionId)));
+            targeting = true;
             return;
         }
         playerTurnEnd();
@@ -658,7 +661,7 @@ enemies[i].animation.pause();
                 }
             }
         }
-            playerTurnEnd();
+        playerTurnEnd();
 
     }
     //at the end of the player's turn, if there are enemies left, start the enemy's turn, otherwise if all are dead end the fight

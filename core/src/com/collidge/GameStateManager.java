@@ -20,11 +20,12 @@ public class GameStateManager
     public Player user;
     public int volumeLevel, musicLevel;
     public Music backgroundMus;
-   // public Music fightMus;
-    public Music loseMus;
+
+
     public String loseMusic = "pacman.mp3";
     public String mapMusic = "backgroundmusic.mp3";
-    public String winMusic = "winmusic.mp3";
+    public String shopMusic = "elevatormusic.mp3";
+
 
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
@@ -71,8 +72,7 @@ public class GameStateManager
        // backgroundMus = Gdx.audio.newMusic(Gdx.files.internal("backgroundmusic.mp3"));
         setPlayingMus(mapMusic);
         backgroundMus.setLooping(true);
-      //  backgroundMus.setVolume(0.5f);
-        //backgroundMus.play();
+
 
         //currentState = MENUSTATE;
 
@@ -112,6 +112,8 @@ public class GameStateManager
     {
         gameStates.add(new InventoryState(this, player));
         changeState(gameStates.size()-1);
+        backgroundMus.pause();
+       // setPlayingMus(shopMusic);
     }
 
     public void closeInventory()
@@ -119,6 +121,8 @@ public class GameStateManager
         changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
+        InventoryState.elevatorMusic.pause();
+        setPlayingMus(mapMusic);
     }
 
     public void startFight(Player player)
@@ -175,10 +179,12 @@ public class GameStateManager
     {
         musicLevel = music;
     }
-    public void setPlayingMus(String trackName){
-        backgroundMus = Gdx.audio.newMusic(Gdx.files.internal(trackName)) ;
-        backgroundMus.play();
 
+    public void setPlayingMus(String trackName){
+       // backgroundMus.pause();
+        backgroundMus = Gdx.audio.newMusic(Gdx.files.internal(trackName)) ;
+        backgroundMus.setVolume((float)musicLevel/4);
+        backgroundMus.play();
     }
 
     public void levelUpState(Player player)
@@ -222,7 +228,7 @@ public class GameStateManager
         gameStates.add(new WinState(this,player, Exp, enemies, damage_taken, ratings));    //Makes a new Win State
 
         changeState(gameStates.size()-1);               //Moves to the new state
-        setPlayingMus(winMusic);
+       // setPlayingMus(winMusic);
     }
 
     public void startOpenScreen()
