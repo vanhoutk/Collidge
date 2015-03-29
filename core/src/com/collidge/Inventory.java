@@ -1,7 +1,8 @@
 package com.collidge;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.XmlReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,23 +27,6 @@ import java.util.Set;
  * - TODO: Rebalance items
  */
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.XmlReader;
-//import com.badlogic.gdx.files.FileHandle;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import sun.rmi.runtime.Log;
-
-//import javax.sql.rowset.spi.XmlReader;
-
-
 public class Inventory
 {
     /**
@@ -51,12 +35,8 @@ public class Inventory
      */
     private HashMap<String, CombatItem> MyCombatInv = new HashMap();
     private HashMap<String, Equipment> MyEquipment = new HashMap();
-   // public static Music elevatorMusic = Gdx.audio.newMusic(Gdx.files.internal("elevatormusic.mp3"));
 
-    Equipment Tsquare, Scarf, Macshield, Bookshield;
-    CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
-
-    /**
+   /**
      * Dan's edit
      * Changed to have Player player passed in.
      */
@@ -172,10 +152,13 @@ public class Inventory
     {
         if(MyCombatInv.containsKey(item))
         {
+            System.out.println("passed contains key with " + item);
             return MyCombatInv.get(item).getItemType();
         }
         else
         {
+            System.out.println("passed else with " + item);
+            System.out.println("Does this break?" + MyEquipment.get(item).getItemType());
             return MyEquipment.get(item).getItemType();
         }
     }
@@ -192,39 +175,23 @@ public class Inventory
         }
     }
 
-
-
     void loadInventory(Player player)
     {
-
         /**
          * Deirdre
          * Loading inventory items from saved file if it exists
          */
-        int nCoffee, nEnergyDrink, nNoodles, nSandwich, nIED;
-        int nTsquare, nScarf, nMacshield, nBookshield;
+        int nCoffee = 10, nEnergyDrink = 10, nNoodles = 10, nSandwich = 10, nIED = 10;
+        int nTsquare = 1, nScarf = 1, nMacshield = 1, nBookshield = 1;
+        String nEquipWep = "None", nEquipArm = "None";
 
-        nTsquare = 1;
-        nScarf = 1;
-        nMacshield = 1;
-        nBookshield = 1;
-        nCoffee = 10;
-        nEnergyDrink = 10;
-        nNoodles = 10;
-        nSandwich = 10;
-        nIED = 10;
-        String nEquipWeap = "";
-        String nEquipArm = "";
-
-        if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists()) {
-            try {
-
-                System.out.println("Loading Inventory#");
-
+        if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists())
+        {
+            try
+            {
                 XmlReader reader = new XmlReader();
                 FileHandle handle1 = Gdx.files.local("inventory.xml");
                 XmlReader.Element root = reader.parse(handle1.readString());
-
                 XmlReader.Element inventory = root.getChildByName("items");
                 nTsquare = inventory.getInt("Tsquare");
                 nScarf= inventory.getInt("Scarf");
@@ -235,46 +202,35 @@ public class Inventory
                 nNoodles=inventory.getInt("Noodles");
                 nSandwich=inventory.getInt("Sandwich");
                 nIED=inventory.getInt("IED");
+
                 XmlReader.Element equipped = root.getChildByName("equipped");
                 nEquipArm = equipped.getChildByName("EquippedArmour").getText();
-                nEquipWeap = equipped.getChildByName("EquippedWeapon").getText();
-
-
-                System.out.println("IED:");
-                System.out.println(nIED);
-
+                nEquipWep = equipped.getChildByName("EquippedWeapon").getText();
             }
-            catch (Exception e) {
-                System.out.println("CATCH Things didn't work :((((");
+            catch (Exception e)
+            {
                 System.out.println(e);
             }
         }
-        else{
-            System.out.println("Things didn't work :((((");
+        else
+        {
+            System.out.println("Local storage unavailable or file doesn't exist.");
         }
-
-        player.equippedWeapon = nEquipWeap;
-        player.equippedArmour = nEquipArm;
-
 
         /**
          * Constructor for combat items is (Type, Text, Health, Energy, Enemy Damage, Quantity, Image)
          */
-        // CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
-       // System.out.println("IED:");
-     //   System.out.println(nIED);
-
+        CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
         Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 0, nCoffee, "Coffee_cupSmall.png");
         EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 0, nEnergyDrink, "energy60.png");
         Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 0, nNoodles, "Noodles.png");
         Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 0, nSandwich, "sandwichIcon.png");
-        IED = new CombatItem("Attack", "Deals damage to all enemies.", 0, 0, 10, nIED, "dynamite.png");
+        IED = new CombatItem("Attack", "Improvised Explosive Device. Deals damage to all enemies.", 0, 0, 10, nIED, "dynamite.png");
 
         /**
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)
          */
-        //Equipment Tsquare, Scarf, Macshield, Bookshield;
-
+        Equipment Tsquare, Scarf, Macshield, Bookshield;
         Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, nTsquare, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, nScarf, "Scarf.png");
         Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, nMacshield, "macShieldIcon.png");
@@ -284,15 +240,20 @@ public class Inventory
         MyCombatInv.put("Energy Drink", EnergyDrink);
         MyCombatInv.put("Noodles", Noodles);
         MyCombatInv.put("Sandwich", Sandwich);
-        MyCombatInv.put("Improvised Explosive Device", IED);
-
+        MyCombatInv.put("IED", IED);
 
         MyEquipment.put("Tsquare", Tsquare);
         MyEquipment.put("Scarf", Scarf);
         MyEquipment.put("Macshield", Macshield);
         MyEquipment.put("Bookshield", Bookshield);
 
-
+        if(!nEquipWep.equals("None"))
+        {
+            player.equipItem(nEquipWep);
+        }
+        if(!nEquipArm.equals("None"))
+        {
+            player.equipItem(nEquipArm);
+        }
     }
-
 }

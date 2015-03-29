@@ -699,30 +699,30 @@ public class GameMenu extends GameState
         }
     }
 
-
-
     /**
      * Deirdre
      * Saving Inventory
      * Called when save button in GameMenu is selected
      */
-    public void saveInventory(){
-        if(Gdx.files.isLocalStorageAvailable()) {
+    public void saveInventory()
+    {
+        if(Gdx.files.isLocalStorageAvailable())
+        {
             OutputStream out = Gdx.files.local("inventory.xml").write(false);
             try {
                 System.out.println("Saving inventory");
                 String saveInventory;
                 saveInventory = ("<inventory>"
                         + "<items>"
-                            + "<Tsquare>" + gsm.user.items.Tsquare.getItemQuantity() + "</Tsquare>"
-                            + "<Scarf>" + gsm.user.items.Scarf.getItemQuantity()+ "</Scarf>"
-                            + "<Macshield>" + gsm.user.items.Macshield.getItemQuantity() + "</Macshield>"
-                            + "<Bookshield>" + gsm.user.items.Bookshield.getItemQuantity() + "</Bookshield>"
-                            + "<Coffee>" + gsm.user.items.Coffee.getItemQuantity() + "</Coffee>"
-                            + "<EnergyDrink>" + gsm.user.items.EnergyDrink.getItemQuantity() + "</EnergyDrink>"
-                            + "<Noodles>" + gsm.user.items.Noodles.getItemQuantity() +"</Noodles>"
-                            + "<Sandwich>" + gsm.user.items.Sandwich.getItemQuantity() + "</Sandwich>"
-                            + "<IED>" + gsm.user.items.IED.getItemQuantity() + "</IED>"
+                            + "<Tsquare>" + gsm.user.items.getItemQuantity("Tsquare") + "</Tsquare>"
+                            + "<Scarf>" + gsm.user.items.getItemQuantity("Scarf")+ "</Scarf>"
+                            + "<Macshield>" + gsm.user.items.getItemQuantity("Macshield") + "</Macshield>"
+                            + "<Bookshield>" + gsm.user.items.getItemQuantity("Bookshield") + "</Bookshield>"
+                            + "<Coffee>" + gsm.user.items.getItemQuantity("Coffee") + "</Coffee>"
+                            + "<EnergyDrink>" + gsm.user.items.getItemQuantity("Energy Drink") + "</EnergyDrink>"
+                            + "<Noodles>" + gsm.user.items.getItemQuantity("Noodles") +"</Noodles>"
+                            + "<Sandwich>" + gsm.user.items.getItemQuantity("Sandwich") + "</Sandwich>"
+                            + "<IED>" + gsm.user.items.getItemQuantity("IED") + "</IED>"
                         + "</items>"
                         + "<equipped>"
                             + "<EquippedWeapon>" + gsm.user.equippedWeapon + "</EquippedWeapon>"
@@ -730,7 +730,7 @@ public class GameMenu extends GameState
                         + "</equipped>"
                                 + "</inventory>");
                 out.write(saveInventory.getBytes());
-                System.out.println(saveInventory);
+                //System.out.println(saveInventory);
             } catch (IOException e) {
                 e.printStackTrace();
             }

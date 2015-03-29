@@ -27,15 +27,19 @@ public class NPC extends Sprite
     private Vector2 velocity = new Vector2();
     private float speed = 60 * 2;
     private Boolean movrnot;
+    public boolean fight;
+    public String fighting;
     private MapPlayer player;
     private float countDelta;
     private TiledMapTileLayer collisionlayer;
-    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, boolean movrnoty, MapPlayer player, boolean xoryplane, boolean positive, int npcNumber)
+    public NPC(Sprite sprite, TiledMapTileLayer collisionlayer, boolean movrnoty, MapPlayer player, boolean xoryplane, boolean positive, int npcNumber, boolean fightOrNot, String string)
     {
         super(sprite);
         this.npcNumber = npcNumber;
         movrnot = movrnoty;
         xory = xoryplane;
+        fight = fightOrNot;
+        fighting = string;
         this.positive = positive;
         this.player = player;
         this.collisionlayer = collisionlayer;
@@ -57,11 +61,6 @@ public class NPC extends Sprite
     {
         update(Gdx.graphics.getDeltaTime());
         super.draw(spritebatch);
-    }
-
-    public void draw2(Batch spritebatch, int blaa)
-    {
-        update(Gdx.graphics.getDeltaTime());
     }
 
     public void update(float delta)

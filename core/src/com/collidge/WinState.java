@@ -160,7 +160,7 @@ public class WinState extends GameState {
         //winfont.setScale(1.5f/400f*screenWidth, 1.5f/400f*screenHeight);
         //winfont.setColor(Color.BLACK);
         //winfont.drawWrapped(batch, "RESULTS", textbox.getX(), screenHeight - spacing / 2f - 2f * (textbox.getHeight() - winfont.getLineHeight()) / 3f, textbox.getWidth(), BitmapFont.HAlignment.CENTER);
-        winfont.setScale((1f / 800f) * screenWidth, (1f / 800f) * screenHeight);
+        winfont.setScale((1f / 800f) * screenWidth, (1f / 750f) * screenHeight);
 
         if (page_number == 0) {
 

@@ -270,7 +270,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     @Override
     public boolean keyDown(int keycode)
     {
-
         if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
         {
             if(backKey==true)
@@ -279,7 +278,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             }
 
             backKey=true;
-
 
         }
         return false;
@@ -336,8 +334,16 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             y = Gdx.graphics.getHeight() - y;
             if(x < textBox.getX() + textBox.getTextBoxWidth() && x > textBox.getX()) {
                 if(y > textBox.getY() && y < textBox.getY() + textBox.getTextBoxHeight()) {
-                    if(!textBox.pageDone()) textBox.finishPage();
-                    else textBox.turnPage();
+                    if(!textBox.pageDone()) {
+                        textBox.finishPage();
+                    }
+                    else {
+                        textBox.turnPage();
+                        if(!textBox.isActive()) {
+                            Play play = (Play) gsm.returnCurrentState();
+                            play.startFightSequence();
+                        }
+                    }
                 }
             }
             return true;

@@ -21,12 +21,9 @@ public class GameStateManager
     public int volumeLevel, musicLevel;
     public Music backgroundMus;
 
-
     public String loseMusic = "pacman.mp3";
     public String mapMusic = "backgroundmusic.mp3";
     public String shopMusic = "elevatormusic.mp3";
-
-
 
     //ENUMS FOR HANDYNESS. So you can do "currentState = MENUSTATE;" instead of "currentState = 0;" and not know what state you are in.
 
@@ -51,14 +48,10 @@ public class GameStateManager
 
         currentState = 0;
         gameStates.get(currentState).initialize();
-
-
     }
 
     public GameStateManager(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP)
     {
-
-
         user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
@@ -73,13 +66,10 @@ public class GameStateManager
         setPlayingMus(mapMusic);
         backgroundMus.setLooping(true);
 
-
         //currentState = MENUSTATE;
 
         currentState = 0;
         gameStates.get(currentState).initialize();
-
-
     }
 
     public void setUpPlayer(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP)

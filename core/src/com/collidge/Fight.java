@@ -622,13 +622,15 @@ enemies[i].animation.pause();
 
 
         else {
-            playr.changeEnergy(-(playr.getAttackEnergyCosts(fMenu.getMoveString(ActionType, ActionId))));
+            //playr.changeEnergy(-(playr.getAttackEnergyCosts(fMenu.getMoveString(ActionType, ActionId))));
+            playr.changeEnergy(-(playr.getEnergyCost(fMenu.getMoveString(ActionType, ActionId))));
             for (int i = -targetPicker.getTargetingId(); i <= targetPicker.getTargetingId(); i++)
             {
                 System.out.println("Attacking: " + i);
                 if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length)
                 {
-                    PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+                    //PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
+                    PlayerDam = playr.getAttackMultiplier(fMenu.getMoveString(ActionType, ActionId));
                     System.out.println("Dam to " + i + ": " + PlayerDam);
                     if (enemies[targetPicker.getSelectedTarget() + i].getDefence() > 0)
                     {

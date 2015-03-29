@@ -38,6 +38,7 @@ public class Play extends GameState {
     private PopUpText popUps;
     private long enteringFight=0;
     private String fighting;
+    private int npcToTalkTo;
     long time;
     long seconds;
     long minutes;
@@ -69,22 +70,22 @@ public class Play extends GameState {
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0), npcList);
         player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
 
-        addNpc(12, 41, new Texture("shev.png"), true, false, true);
-        addNpc(11, 58, new Texture("rpgman.png"), false, false, false);
-        addNpc(23, 58, new Texture("rpgman.png"), false, false, false);
-        addNpc(17, 60, new Texture("rpgman.png"), true, false, true);
-        addNpc(15, 47, new Texture("rpgman.png"), false, false, false);
-        addNpc(18, 48, new Texture("shev.png"), true, true, true);
-        addNpc(19, 53, new Texture("rpgman.png"), true, true, false);
-        addNpc(12, 41, new Texture("rpgman.png"), true, true, true);
-        addNpc(6, 34, new Texture("rpgman.png"), false, true, false);
-        addNpc(32, 28, new Texture("rpgman.png"), false, false, false);
-        addNpc(21, 23, new Texture("rpgman.png"), false, false, false);
-        addNpc(10, 26, new Texture("rpgman.png"), true, true, true);
-        addNpc(3, 20, new Texture("rpgman.png"), false, false, false);
-        addNpc(29, 1, new Texture("rpgman.png"), true, true, false);
-        addNpc(25, 17, new Texture("rpgman.png"), false, false, false);
-        addNpc(10, 19, new Texture("rpgman.png"), false, false, false);
+        addNpc(12, 41, new Texture("shev.png"), true, false, true, true, "Full Set");
+        addNpc(11, 58, new Texture("rpgman.png"), false, false, false, true, "Loner");
+        addNpc(23, 58, new Texture("rpgman.png"), false, false, false,true , "Loner");
+        addNpc(17, 60, new Texture("rpgman.png"), true, false, true, false, "Pledge");
+        addNpc(15, 47, new Texture("rpgman.png"), false, false, false, false, "Preppy");
+        addNpc(18, 48, new Texture("shev.png"), true, true, true, true, "Preppy");
+        addNpc(19, 53, new Texture("rpgman.png"), true, true, false, false, "Pledge");
+        addNpc(12, 41, new Texture("rpgman.png"), true, true, true, true,"Loner" );
+        addNpc(6, 34, new Texture("rpgman.png"), false, true, false, true, "Loner");
+        addNpc(32, 28, new Texture("rpgman.png"), false, false, false, true, "Loner");
+        addNpc(21, 23, new Texture("rpgman.png"), false, false, false, true, "Pledge");
+        addNpc(10, 26, new Texture("rpgman.png"), true, true, true, true, "Loner");
+        addNpc(3, 20, new Texture("rpgman.png"), false, false, false, false, "Pledge");
+        addNpc(29, 1, new Texture("rpgman.png"), true, true, false, true, "Loner");
+        addNpc(25, 17, new Texture("rpgman.png"), false, false, false, true, "Preppy");
+        addNpc(10, 19, new Texture("rpgman.png"), false, false, false, false, "Loner");
 
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
@@ -101,12 +102,12 @@ public class Play extends GameState {
         whiteSquare.setPosition(0,0);
     }
 
-    public void addNpc(int tilex, int tiley, Texture tex, boolean moveOrNot, boolean xDirection, boolean positive) {
+    public void addNpc(int tilex, int tiley, Texture tex, boolean moveOrNot, boolean xDirection, boolean positive, boolean fightOrNot, String string) {
         int heightMinusOne = collisionLayer.getHeight() - 1;
         float tileWidth = collisionLayer.getTileWidth();
         float tileHeight = collisionLayer.getTileHeight();
 
-        NPC npc = new NPC(new Sprite(tex), collisionLayer, moveOrNot, player, xDirection, positive, npcList.size());
+        NPC npc = new NPC(new Sprite(tex), collisionLayer, moveOrNot, player, xDirection, positive, npcList.size(), fightOrNot, string);
         npc.setPosition(tilex * tileWidth, (heightMinusOne - tiley) * tileHeight);
         npcList.add(npc);
     }
@@ -379,6 +380,16 @@ public class Play extends GameState {
         //}
     }
 
+    public void startFightSequence() {
+        String set = npcList.get(npcToTalkTo).fighting;
+        if(TimeUtils.timeSinceMillis(enteringFight)>3000 && set != null && npcList.get(npcToTalkTo).fight) {
+            enteringFight=TimeUtils.millis();
+            saveplay();
+            fighting = set;
+            player.setPosition(getx(),gety());
+        }
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
@@ -465,6 +476,7 @@ public class Play extends GameState {
                     //could have both pop ups and textboxes
                     //popUps.Add("here" , x / w, (h - y) / h);
                     npcList.get(i).talk();
+                    npcToTalkTo = i;
                     aboutToTalk = true;
                     break;
                 }
