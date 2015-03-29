@@ -233,7 +233,10 @@ public class Player
         energyPoints=EN;
         experience=EXP;
 
-        //Kris -- Initialise the equipped variables to none
+        /**
+         * Kris
+         * Initialise the equipped variables to none
+         */
         equippedWeapon = "None";
         equippedArmour = "None";
 
