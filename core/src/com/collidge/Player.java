@@ -216,7 +216,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory();
+        items.loadInventory(this);
         updateStats();
         healAll();
     }
@@ -238,7 +238,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory();
+        items.loadInventory(this);
         updateStats();
         healAll();
     }
@@ -260,7 +260,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory();
+        items.loadInventory(this);
         updateStats();
         healAll();
     }

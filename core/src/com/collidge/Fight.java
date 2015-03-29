@@ -810,7 +810,7 @@ enemies[i].animation.pause();
         damage[0]=0;
         int[]ratings = combo.num_ratings;
         combo.delete();
-        fightMusic.dispose();
+        fightMusic.pause();
         Timer.instance().clear();
         Timer.instance().stop();
         batch.dispose();
@@ -825,7 +825,7 @@ enemies[i].animation.pause();
     {
         damage[0]=0;
         combo.delete();
-        fightMusic.dispose();
+      //  fightMusic.dispose();
         batch.dispose();
         texture.dispose();
         battleFont.dispose();

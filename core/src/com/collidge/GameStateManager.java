@@ -112,7 +112,7 @@ public class GameStateManager
     {
         gameStates.add(new InventoryState(this, player));
         changeState(gameStates.size()-1);
-        backgroundMus.pause();
+        //backgroundMus.pause();
        // setPlayingMus(shopMusic);
     }
 
@@ -121,8 +121,8 @@ public class GameStateManager
         changeState(1);
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
-        InventoryState.elevatorMusic.pause();
-        setPlayingMus(mapMusic);
+       // InventoryState.elevatorMusic.pause();
+       // setPlayingMus(mapMusic);
     }
 
     public void startFight(Player player)
