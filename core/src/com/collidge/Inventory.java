@@ -1,5 +1,7 @@
 package com.collidge;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +45,9 @@ public class Inventory
     private HashMap<String, CombatItem> MyCombatInv = new HashMap();
     private HashMap<String, Equipment> MyEquipment = new HashMap();
    // public static Music elevatorMusic = Gdx.audio.newMusic(Gdx.files.internal("elevatormusic.mp3"));
+
+    Equipment Tsquare, Scarf, Macshield, Bookshield;
+    CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
 
     /**
      * Dan's edit
@@ -186,7 +191,7 @@ public class Inventory
         /**
          * Constructor for combat items is (Type, Text, Health, Energy, Enemy Damage, Quantity, Image)
          */
-        CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
+       // CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
 
         Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 0, 10, "Coffee_cupSmall.png");
         EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 0, 10, "energy60.png");
@@ -203,7 +208,7 @@ public class Inventory
         /**
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)
          */
-        Equipment Tsquare, Scarf, Macshield, Bookshield;
+        //Equipment Tsquare, Scarf, Macshield, Bookshield;
 
         Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, 1, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, 1, "Scarf.png");
@@ -215,4 +220,47 @@ public class Inventory
         MyEquipment.put("Macshield", Macshield);
         MyEquipment.put("Bookshield", Bookshield);
     }
+
+    /**
+     * Deirdre
+     * Saving Inventory
+     */
+    public void saveInventory(){
+        if(Gdx.files.isLocalStorageAvailable()) {
+            OutputStream out = Gdx.files.local("inventory.xml").write(false);
+            try {
+                System.out.println("Saving inventory");
+                String saveInventory;
+                saveInventory = ("<inventory>"
+                        + "<Tsquare>" + Tsquare.getItemQuantity() + "</Tsquare>"
+                        + "<Scarf>" + Scarf.getItemQuantity()+ "</Scarf>"
+                        + "<Macshield>" + Macshield.getItemQuantity() + "</Macshield>"
+                        + "<Bookshield>" + Bookshield.getItemQuantity() + "</Bookshield>"
+                        + "<Coffee>" + Coffee.getItemQuantity() + "</Coffee>"
+                        + "<EnergyDrink>" + EnergyDrink.getItemQuantity() + "</EnergyDrink>"
+                        + "<Noodles>" + Noodles.getItemQuantity() +"</Noodles>"
+                        + "<Sandwich>" + Sandwich.getItemQuantity() + "</Sandwich>"
+                        + "<IED>" + IED.getItemQuantity() + "</IED>");
+                out.write(saveInventory.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+
+
+
 }

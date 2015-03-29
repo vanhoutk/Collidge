@@ -525,6 +525,11 @@ public class GameMenu extends GameState
                      * Added to call the save stats method
                      */
                     saveStats();
+                    /**
+                     * Deirdre: Save Inventory..
+                     * Method in inventory class
+                     */
+                    gsm.user.items.saveInventory();
                 }
             }
 
