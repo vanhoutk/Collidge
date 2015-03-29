@@ -192,9 +192,9 @@ public class Player
     //constructor for combat moves is multiplier, energy cost, aoe, image
     CombatMove Bash = new CombatMove(1, 0, 0, "Bash", "bash.png");
     CombatMove Slam = new CombatMove(2, 5, 0, "Slam", "slam.png");
-    CombatMove Blast = new CombatMove(2, 15, 1, "Blast", "blast.png");
-    CombatMove Spirit = new CombatMove(2, 75, 10, "Spirit", "spirit.png");
-    CombatMove Smash = new CombatMove(10, 200, 0, "Smash", "smash.png");
+    CombatMove Blast = new CombatMove(1, 15, 100, "Blast", "blast.png");
+    CombatMove Spirit = new CombatMove(2, 40, 100, "Spirit", "spirit.png");
+    CombatMove Smash = new CombatMove(5, 60, 0, "Smash", "smash.png");
 
     private HashMap<String, CombatMove> StringToCombatMove = new HashMap();
 
@@ -404,14 +404,14 @@ public class Player
         armour=equippedArmour;
         unequipItem(equippedWeapon);
         unequipItem(equippedArmour);
-        attack=baseAttackPoints+(int)((level+attackPoints)*attackPointsMult);
+        attack=baseAttackPoints+(int)(((level*.5)+attackPoints)*attackPointsMult);
 
-        defence=baseDefencePoints+(int)((defencePoints+level)*defencePointsMult);
+        defence=baseDefencePoints+(int)((defencePoints+(level*.5))*defencePointsMult);
         health=baseHealthPoints+(int)((level+healthPoints)*healthPointsMult);
 
-        intelligence=baseIntelligencePoints+(int)((level+intelligencePoints)*intelligencePointsMult);
+        intelligence=baseIntelligencePoints+(int)(((level*.5)+intelligencePoints)*intelligencePointsMult);
 
-        energy=baseEnergyPoints+(int)((level+energyPoints)*energyPointsMult);
+        energy=baseEnergyPoints+(int)(((level*.5)+energyPoints)*energyPointsMult);
         //TODO figure out a good curve for xp to follow
         expTarget=((int)Math.pow((level),1.5))+5;
         //expTarget=1;

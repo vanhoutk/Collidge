@@ -604,6 +604,7 @@ public class GameMenu extends GameState
                     muted=false;
                     gsm.setMusic(musicPre);
                     gsm.setVolume(volPre);
+                    gsm.backgroundMus.setVolume((float)musicPre/4);
                 }
                 else
                 {
@@ -612,7 +613,9 @@ public class GameMenu extends GameState
                     muted = true;
                     gsm.setVolume(0);
                     gsm.setMusic(0);
+                    gsm.backgroundMus.setVolume(0);
                 }
+
             }
         }
 
