@@ -312,7 +312,6 @@ public class MapPlayer extends Sprite
     }
     private void moveRight()
     {
-
         velocity.x = speed;
         velocity.y = 0;
     }
@@ -328,22 +327,29 @@ public class MapPlayer extends Sprite
         float yForCalculation = ((-(screenY-(height/2)))/(float)height);
         getDirection(xForCalculation, yForCalculation);
 
-        if(direction == LEFT)
+        /**
+         * Kris
+         * Added the outermost if statement to stop the character moving if you
+         * click on either the inventory or menu buttons
+         */
+        if(!(screenY < height/5 && (screenX > width * 10/12)))
         {
-            moveLeft();
-        }
-        else if(direction == RIGHT)
-        {
-            moveRight();
-        }
-        else if(direction == DOWN)
-        {
-            moveDown();
-        }
-        else
-        {
-            moveUp();
-
+            if (direction == LEFT)
+            {
+                moveLeft();
+            }
+            else if (direction == RIGHT)
+            {
+                moveRight();
+            }
+            else if (direction == DOWN)
+            {
+                moveDown();
+            }
+            else
+            {
+                moveUp();
+            }
         }
         return;
     }
