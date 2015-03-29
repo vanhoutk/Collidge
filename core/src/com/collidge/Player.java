@@ -215,8 +215,7 @@ public class Player
             return 10;
         }
 
-        System.out.println("moveName is " + StringToCombatMove.get(move).attackName);
-        return StringToCombatMove.get(move).attackMultiplier;
+        return StringToCombatMove.get(move).attackAOE;
 
         //TODO change to allow other damaging items too
     }
