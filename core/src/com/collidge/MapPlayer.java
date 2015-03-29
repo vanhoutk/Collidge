@@ -266,6 +266,7 @@ public class MapPlayer extends Sprite
 
             if(differenceY == 0 && Math.abs(differenceX) == 1) {
                 withinOneOfNpc = true;
+                stopMovement();
                 //move = false
                 //and if move == false after all this. Set velocity.x to 0;
                 //then setX of player setX(getX() + velocity.x*delta);
@@ -273,64 +274,8 @@ public class MapPlayer extends Sprite
             }
             else if (differenceX == 0 && Math.abs(differenceY) == 1) {
                 withinOneOfNpc = true;
+                stopMovement();
             }
-        }
-
-        for(int i = 0; i < npcList.size(); i++)
-        {
-            if(withinOneOfNpc)
-            {
-                if(direction == RIGHT)
-                {
-                    velocity.x = 0;
-                    if(direction == LEFT)
-                    {
-                        velocity.x = -speed;
-                    }
-                    if(direction == UP)
-                    {
-                        velocity.y = speed;
-                    }
-                    if(direction == DOWN)
-                    {
-                        velocity.y = -speed;
-                    }
-                }
-                if(direction == UP)
-                {
-                    velocity.y = 0;
-                    if(direction == LEFT)
-                    {
-                        velocity.x = -speed;
-                    }
-                    if(direction == RIGHT)
-                    {
-                        velocity.x = speed;
-                    }
-                    if(direction == DOWN)
-                    {
-                        velocity.y = -speed;
-                    }
-                }
-
-                if(direction == LEFT)
-                {
-                    velocity.x = 0;
-                    if(direction == UP)
-                    {
-                        velocity.y = speed;
-                    }
-                    if(direction == RIGHT)
-                    {
-                        velocity.x = speed;
-                    }
-                    if(direction == DOWN)
-                    {
-                        velocity.y = -speed;
-                    }
-                }
-            }
-
         }
     }
 
