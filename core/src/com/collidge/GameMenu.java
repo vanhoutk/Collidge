@@ -699,15 +699,15 @@ public class GameMenu extends GameState
         }
     }
 
-
-
     /**
      * Deirdre
      * Saving Inventory
      * Called when save button in GameMenu is selected
      */
-    public void saveInventory(){
-        if(Gdx.files.isLocalStorageAvailable()) {
+    public void saveInventory()
+    {
+        if(Gdx.files.isLocalStorageAvailable())
+        {
             OutputStream out = Gdx.files.local("inventory.xml").write(false);
             try {
                 System.out.println("Saving inventory");
