@@ -24,7 +24,6 @@ import java.util.Set;
  * - TODO: Rebalance items
  */
 
-<<<<<<< HEAD
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
@@ -34,8 +33,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-=======
->>>>>>> 93d638ddeb02548179fbeea38ada00026d9307b7
+
 public class Inventory
 {
     /**
