@@ -265,19 +265,21 @@ public class MapPlayer extends Sprite
             int differenceY = npcTileY - playerTileY;
 
             if(differenceY == 0 && Math.abs(differenceX) == 1) {
-                if (differenceX == 1) {
+                float distance = Math.abs(npc.getX() - getX());
+                if (differenceX == 1 && distance <= 32) {
                     freeDirections[RIGHT] = false;
                 }
-                if (differenceX == -1) {
+                if (differenceX == -1  && distance <= 32) {
                     freeDirections[LEFT] = false;
                 }
                 withinOneOfNpc = true;
             }
             if (differenceX == 0 && Math.abs(differenceY) == 1) {
-                if (differenceY == 1) {
+                float distance = Math.abs(npc.getY() - getY());
+                if (differenceY == 1  && distance <= 32) {
                     freeDirections[UP] = false;
                 }
-                if (differenceY == -1) {
+                if (differenceY == -1  && distance <= 32) {
                     freeDirections[DOWN] = false;
                 }
                 withinOneOfNpc = true;
