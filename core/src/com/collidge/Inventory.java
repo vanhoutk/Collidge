@@ -152,13 +152,10 @@ public class Inventory
     {
         if(MyCombatInv.containsKey(item))
         {
-            System.out.println("passed contains key with " + item);
             return MyCombatInv.get(item).getItemType();
         }
         else
         {
-            System.out.println("passed else with " + item);
-            System.out.println("Does this break?" + MyEquipment.get(item).getItemType());
             return MyEquipment.get(item).getItemType();
         }
     }

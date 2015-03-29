@@ -62,7 +62,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 XmlReader reader = new XmlReader();
                 FileHandle handle1 = Gdx.files.local("stats.xml");
                 XmlReader.Element stats = reader.parse(handle1.readString());
-                //XmlReader.Element stats = root.getChildByName("stats");
                 Level = stats.getInt("Level");
                 ATK = stats.getInt("AttackPoints");
                 DEF = stats.getInt("DefencePoints");
@@ -74,8 +73,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
                 System.out.println(e);
             }
         }
-
-        System.out.println("Level " + Level + " Attack " + ATK);
 
         Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
