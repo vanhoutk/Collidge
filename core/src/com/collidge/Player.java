@@ -477,9 +477,6 @@ public class Player
         {
             return;
         }
-        else if (item.equals("")) {
-            return;
-        }
         else if(items.getItemType(item).equals("Weapon"))
         {
             if(!equippedWeapon.equals("None"))
@@ -508,9 +505,6 @@ public class Player
     {
         if(item.equals("None"))
         {
-            return;
-        }
-        else if (item.equals("")) {
             return;
         }
         else if(items.getItemType(item).equals("Weapon"))
