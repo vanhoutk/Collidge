@@ -74,7 +74,7 @@ public class Play extends GameState {
         addNpc(12, 41, new Texture("s8rguyvert2.png"), true, false, true, true, "Full Set");
         addNpc(11, 58, new Texture("backofNPC2.png"), false, false, false, true, "Loner");
         addNpc(23, 58, new Texture("backofNPC1.png"), false, false, false,true , "Loner");
-        addNpc(17, 60, new Texture("nkdvert.png"), true, false, true, false, "Pledge");
+        addNpc(17, 50, new Texture("nkdvert.png"), true, false, true, false, "Pledge");
         addNpc(15, 47, new Texture("bookguy.png"), false, false, false, false, "Preppy");
         addNpc(18, 48, new Texture("shev.png"), true, true, true, true, "Preppy");
         addNpc(19, 53, new Texture("sassyguys8r.png"), true, true, false, false, "Pledge");

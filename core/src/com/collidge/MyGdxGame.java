@@ -123,8 +123,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
             if(backKey)
             {
-
-
                 screenMask.draw(batch);
                 if(gsm.currentState != 0)
                 {
@@ -245,7 +243,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
     }
 
     @Override
-    public boolean keyUp(int keycode) {
+    public boolean keyUp(int keycode)
+    {
         if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
         {
             if(backKey == true && backDown)
@@ -275,9 +274,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             {
                 return true;
             }
-
             backKey=true;
-
         }
         return false;
     }
