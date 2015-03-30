@@ -27,6 +27,7 @@ public class Fight extends GameState
     private int ActionId;
     private boolean comboing;
     private boolean targeting=false;
+    private boolean targetingInterfaceToggle = gsm.getTouchToggle();
     private boolean damagingItemUsed=false;
     private int expEarned;
     private int monsterCode=-1;
@@ -234,7 +235,6 @@ public class Fight extends GameState
     {
         batch.begin();
 
-        //tutorial system for first fight - TODO
         background.draw(batch);
 
         portrait.setPosition(0,screenHeight-((int)(portrait.getHeight()*.9)+battleFont.getLineHeight()));
@@ -376,12 +376,16 @@ enemies[i].animation.pause();
         {
             targetArrow.setRotation(90);
             targetArrow.setPosition(screenWidth / 10, screenHeight / 2);
-            targetArrow.draw(batch);
             targetReticule.setPosition(targetArrow.getX() + targetArrow.getWidth(), targetArrow.getY());
-            targetReticule.draw(batch);
-            targetArrow.setRotation(-90);
-            targetArrow.setPosition(targetReticule.getX() + targetReticule.getWidth(), targetReticule.getY());
-            targetArrow.draw(batch);
+            if(!targetingInterfaceToggle) {
+                targetArrow.draw(batch);
+                targetReticule.draw(batch);
+                targetArrow.setRotation(-90);
+                targetArrow.setPosition(targetReticule.getX() + targetReticule.getWidth(), targetReticule.getY());
+                targetArrow.draw(batch);
+                backArrow.setPosition(targetReticule.getX(), targetReticule.getY() - backArrow.getHeight());
+                backArrow.draw(batch);
+            }
             backArrow.setPosition(targetReticule.getX(), targetReticule.getY() - backArrow.getHeight());
             backArrow.draw(batch);
         }
@@ -394,7 +398,7 @@ enemies[i].animation.pause();
             fMenu.draw(batch,screenWidth,screenHeight);
         }
 
-        if (tutorialActive == true && playr.getLevel() < 2) {
+        if (tutorialActive == true && playr.getLevel() <= 1) {
             if (fMenu.menuStyle2) {
                 tutorialPopUp.setPosition(screenWidth / 8, screenHeight / 8);
                 tutorialPopUp.setSize(screenWidth / 2f, screenHeight / 3f);

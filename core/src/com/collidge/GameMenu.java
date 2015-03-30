@@ -441,8 +441,8 @@ public class GameMenu extends GameState
 
             Font.setColor(Color.WHITE);
             Font.setScale(screenWidth / 600f, screenHeight / 600f);
-            Font.draw(batch, "  Toggle Touch Targeting", screenWidth*2/5 , screenHeight*8/10);
-            Font.draw(batch, "  Toggle Combat Menu", screenWidth*2/5 , screenHeight*7/10);
+            Font.draw(batch, "  Toggle Targeting Arrow Interface", screenWidth*2/5 , screenHeight*8/10);
+            Font.draw(batch, "  Toggle Combat Menu Style", screenWidth*2/5 , screenHeight*7/10);
 
 
 

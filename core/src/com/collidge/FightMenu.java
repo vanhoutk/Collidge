@@ -20,21 +20,23 @@ public class FightMenu
     public String Tooltip = "";
     private int[] previousMenus;
     private String[][] attackDesc;
-    private int currentIcon, icon2, icon3, icon4, tooltipIcon, aboveIcon,belowIcon,overflow;
+    private int currentIcon, tooltipIcon, aboveIcon,belowIcon,overflow;
     private int[][] menu;
-    private int menuNext =4;
-    private int menuPrev =4;
     private int page = 1;
     private int selectedMenu;
     private int selectedIcon;
     private int currentMenu;
-    public Boolean menuStyle2 = false;
+    public Boolean menuStyle2;
     public boolean actionSelected;
     public boolean tooltipSelected=false;
     private BitmapFont battleFont;
     private Sprite backIcon, fightIcon, itemIcon, fleeIcon, rechargeIcon, tooltipBackground;
 
     float dx, dy, Tooltipdx, Tooltipdy;       //for pan function
+
+    int xPosition = 0, yPosition = 0;
+
+    int myInt = 0;
 
     FightMenu(Player player)
     {
@@ -96,10 +98,9 @@ public class FightMenu
 
     }
 
-    FightMenu(Player player, boolean menu2)
+    FightMenu(Player player, boolean menu2On)
     {
-
-        menuStyle2 = menu2;
+        menuStyle2 = menu2On;
 
         battleFont = new BitmapFont();
 
@@ -162,69 +163,80 @@ public class FightMenu
 
     private void Select(int iconToSelect)
     {
-        selectedMenu=currentMenu;
-        selectedIcon = iconToSelect;
-        //selectedIcon=currentIcon;
-        //back functionality
-        if(menu[currentMenu][iconToSelect]==2)
-        {
-            for(int i=previousMenus.length-1;i>=0;i--)
-            {
-                if(previousMenus[i]!=50)
-                {
-                    currentMenu=previousMenus[i];
+            selectedMenu = currentMenu;
+            selectedIcon = iconToSelect;
+            System.out.println("Selected icon is: " + iconToSelect);
+            //selectedIcon=currentIcon;
+            //back functionality
 
-                    previousMenus[i]=50;
-                    i=-1;
+            if (menu[currentMenu][iconToSelect] == 2) {
+                for (int i = previousMenus.length - 1; i >= 0; i--) {
+                    if (previousMenus[i] != 50) {
+                        currentMenu = previousMenus[i];
+
+                        previousMenus[i] = 50;
+                        i = -1;
+                    }
                 }
             }
-        }
-        //secondary menu selected
-        else if(menu[currentMenu][iconToSelect]==1)
-        {
-            for(int i=0; i<3;i++)
-            {
-                if(previousMenus[i]==50)
-                {
-                    previousMenus[i]=currentMenu;
-                    i=5;
+            //secondary menu selected
+            else if (menu[currentMenu][iconToSelect] == 1) {
+                for (int i = 0; i < 3; i++) {
+                    if (previousMenus[i] == 50) {
+                        previousMenus[i] = currentMenu;
+                        i = 5;
+                    }
                 }
+                //if(currentMenu==0)
+                // {
+                //    currentMenu++;
+                //  }
+
+                //currentMenu+=iconToSelect;
+
+
+                if (currentMenu == 0) {
+                    if (iconToSelect == 0) {
+                        currentMenu = 1;
+                    } else if (iconToSelect == 1) {
+                        currentMenu = 2;
+                    } else if (iconToSelect == 2) {
+                        currentMenu = 3;
+                    }
+                }
+
             }
-            if(currentMenu==0)
-            {
-                currentMenu++;
+            //actionSelected
+            else if (menu[currentMenu][iconToSelect] == 3) {
+                selectedIcon = iconToSelect;
+                currentMenu = 0;
+                page = 1;
+                previousMenus[0] = 50;
+                previousMenus[1] = 50;
+                previousMenus[2] = 50;
+                actionSelected = true;
             }
-            currentMenu+=iconToSelect;
 
-
-        }
-        //actionSelected
-        else if(menu[currentMenu][iconToSelect]==3)
-        {
-            selectedIcon=iconToSelect;
-            currentMenu=0;
-            previousMenus[0]=50;
-            previousMenus[1]=50;
-            previousMenus[2]=50;
-            actionSelected=true;
+            if (!menuStyle2) {
+                overflow = getMenuOverflow();
+                currentIcon = 0;
+                validate();
+            }
         }
 
-        overflow=getMenuOverflow();
-        currentIcon=0;
-        validate();
-    }
     private void Right()
     {
         if (menuStyle2) {
             //currentIcon--;
-            if (menu[currentMenu][menuNext] != 0) {
+            //if (menu[currentMenu][menuNext] != 0) {
+            if (menuSprites[currentMenu][myInt + 4] != null){
                 page++;
-                menuNext += 4;
-                currentIcon += 4;   //go to next page
-                if (currentIcon < 0) {
-                    currentIcon = (menu[0].length - overflow) - 1;
-                }
-                validate();
+                //menuNext += 4;
+                //currentIcon += 4;   //go to next page
+                //if (currentIcon < 0) {
+                //    currentIcon = (menu[0].length - overflow) - 1;
+                //}
+                //validate();
             }
         }
 
@@ -244,16 +256,16 @@ public class FightMenu
     {
         if (menuStyle2) {
             //currentIcon++;
-            if (menu[currentMenu][menuPrev] != 0 && page > 1) {
+            if (page > 1) {
                 page--;
-                menuNext -= 4;
+                //menuNext -= 4;
 
-                currentIcon -= 4;   //go to previous page
+               // currentIcon -= 4;   //go to previous page
 
-                if (currentIcon < 0) {
-                    currentIcon = (menu[0].length - overflow) - 1;
-                }
-                validate();
+               // if (currentIcon < 0) {
+               //     currentIcon = (menu[0].length - overflow) - 1;
+               // }
+              //  validate();
             }
         }
         else {
@@ -266,21 +278,8 @@ public class FightMenu
     }
     private void validate()
     {
-        if (menuStyle2){
-            icon2=currentIcon+1;
-            icon3=currentIcon+2;
-            icon4=currentIcon+3;
+        if (!menuStyle2){
 
-            if (currentIcon < 0) {
-                currentIcon = (menu[0].length - overflow) - 1;
-            }
-
-            currentIcon%=(menu[currentMenu].length-overflow);
-            icon2%=(menu[currentMenu].length-overflow);
-            icon3%=(menu[currentMenu].length-overflow);
-            icon4%=(menu[currentMenu].length-overflow);
-        }
-        else {
             aboveIcon = currentIcon + 1;
             belowIcon = currentIcon - 1;
             if (currentIcon < 0) {
@@ -425,143 +424,103 @@ public class FightMenu
     public void draw(SpriteBatch batch, int screenWidth, int screenHeight) {
 
         if (menuStyle2) {
-            battleFont.setScale(screenWidth / 400.0f, screenHeight / 350.0f);
-            menuSprites[currentMenu][currentIcon].setSize(screenWidth / 8f, screenHeight / 8f);
-            menuSprites[currentMenu][currentIcon].setPosition(screenWidth / 12, screenHeight / 2);
-            menuSprites[currentMenu][currentIcon].draw(batch);
-            if (getCurrentIcon().endsWith("*")) {
-                battleFont.setColor(Color.RED);
-            } else {
-                battleFont.setColor(Color.BLACK);
-            }
-            if (menuWords[currentMenu][currentIcon] == "Improvised Explosive Device"){
-                menuWords[currentMenu][currentIcon] = "IED";
-            }
-            battleFont.drawWrapped(batch, menuWords[currentMenu][currentIcon], menuSprites[currentMenu][currentIcon].getX() - menuSprites[currentMenu][currentIcon].getWidth()/6, menuSprites[currentMenu][currentIcon].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][currentIcon].getWidth()/3, BitmapFont.HAlignment.CENTER);
 
+            switch(page){
+                case 1: myInt = 0;
+                    break;
+                case 2: myInt = 4;
+                    break;
+                case 3: myInt = 8;
+                    break;
+            }
 
-            if (menuSprites[currentMenu][icon2] != menuSprites[currentMenu][currentIcon]) {
-                menuSprites[currentMenu][icon2].setSize(screenWidth / 8f, screenHeight / 8f);
-                menuSprites[currentMenu][icon2].setPosition(screenWidth / 4, screenHeight / 2);
-                menuSprites[currentMenu][icon2].draw(batch);
-                    if (menuWords[currentMenu][icon2].endsWith("*")) {
-                        battleFont.setColor(Color.RED);
-                    } else {
-                        battleFont.setColor(Color.BLACK);
+            for (int i = 0; i < 4; i++) {
+
+                if (menuSprites[currentMenu][myInt + i] != null) {
+                    switch(i){
+                        case 0: xPosition = screenWidth / 12;
+                                yPosition = screenHeight/2;
+                                break;
+                        case 1: xPosition = screenWidth / 4;
+                                yPosition = screenHeight/2;
+                                break;
+                        case 2: xPosition = screenWidth / 12;
+                                yPosition = screenHeight/4;
+                                break;
+                        case 3: xPosition = screenWidth / 4;
+                                yPosition = screenHeight/4;
+                                break;
                     }
-                if (menuWords[currentMenu][icon2] == "Improvised Explosive Device"){
-                    menuWords[currentMenu][icon2] = "IED";
-                }
-                    battleFont.drawWrapped(batch, menuWords[currentMenu][icon2], menuSprites[currentMenu][icon2].getX() - menuSprites[currentMenu][icon2].getWidth()/6, menuSprites[currentMenu][icon2].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][icon2].getWidth()/3, BitmapFont.HAlignment.CENTER);
-           }
+                    menuSprites[currentMenu][myInt + i].setPosition(xPosition, yPosition);
+                    menuSprites[currentMenu][myInt + i].setSize(screenWidth / 8f, screenHeight / 8f);
+                    menuSprites[currentMenu][myInt + i].draw(batch);
 
-            if (menuSprites[currentMenu][icon3] != menuSprites[currentMenu][currentIcon]) {
-                menuSprites[currentMenu][icon3].setSize(screenWidth / 8f, screenHeight / 8f);
-                menuSprites[currentMenu][icon3].setPosition(screenWidth / 12, screenHeight / 4);
-                menuSprites[currentMenu][icon3].draw(batch);
-                if (menuWords[currentMenu][icon3].endsWith("*")) {
-                    battleFont.setColor(Color.RED);
-                } else {
-                    battleFont.setColor(Color.BLACK);
+                    if (menuWords[currentMenu][myInt + i] != null) {
+                        if (menuWords[currentMenu][myInt + i].endsWith("*")) {
+                            battleFont.setColor(Color.RED);
+                        } else {
+                            battleFont.setColor(Color.BLACK);
+                        }
+                        if (menuWords[currentMenu][myInt + i] == "Improvised Explosive Device") {
+                            menuWords[currentMenu][myInt + i] = "IED";
+                        }
+                        battleFont.drawWrapped(batch, menuWords[currentMenu][myInt + i], menuSprites[currentMenu][myInt + i].getX() - menuSprites[currentMenu][myInt + i].getWidth() / 6, menuSprites[currentMenu][myInt + i].getY() - battleFont.getLineHeight() / 2, 4 * menuSprites[currentMenu][myInt + i].getWidth() / 3, BitmapFont.HAlignment.CENTER);
+                    }
                 }
-                if (menuWords[currentMenu][icon3] == "Improvised Explosive Device"){
-                    menuWords[currentMenu][icon3] = "IED";
-                }
-                battleFont.drawWrapped(batch, menuWords[currentMenu][icon3], menuSprites[currentMenu][icon3].getX() - menuSprites[currentMenu][icon3].getWidth()/6, menuSprites[currentMenu][icon3].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][icon3].getWidth()/3, BitmapFont.HAlignment.CENTER);
-
             }
+        }
 
-            if (menuSprites[currentMenu][icon4] != menuSprites[currentMenu][currentIcon]) {
-                menuSprites[currentMenu][icon4].setSize(screenWidth / 8f, screenHeight / 8f);
-                menuSprites[currentMenu][icon4].setPosition(screenWidth / 4, screenHeight / 4);
-                menuSprites[currentMenu][icon4].draw(batch);
-                if (menuWords[currentMenu][icon4].endsWith("*")) {
+            else {
+                battleFont.setScale(screenWidth / 350.0f, screenHeight / 300.0f);
+                getAboveSprite().setSize(screenWidth / 8f, screenHeight / 8f);
+                getAboveSprite().setPosition(screenWidth / 30 + (screenWidth / 50), screenHeight / 3);
+                getAboveSprite().setColor(Color.LIGHT_GRAY);
+                getAboveSprite().draw(batch);
+
+                getCurrentSprite().setSize(screenWidth / 5f, screenHeight / 5f);
+                getCurrentSprite().setPosition(screenWidth / 30 + (screenWidth / 50) + getAboveSprite().getWidth(), screenHeight / 3 + screenHeight / 16f);
+
+                if (getCurrentIcon().endsWith("*")) {
+                    getCurrentSprite().setColor(Color.DARK_GRAY);
+                } else {
+                    getCurrentSprite().setColor(Color.WHITE);
+                }
+                getCurrentSprite().draw(batch);
+
+                getBelowSprite().setSize(screenWidth / 8f, screenHeight / 8f);
+                getBelowSprite().setPosition(screenWidth / 30 + (screenWidth / 50) + getAboveSprite().getWidth() + getCurrentSprite().getWidth(), screenHeight / 3);
+                getBelowSprite().setColor(Color.LIGHT_GRAY);
+                getBelowSprite().draw(batch);
+
+                if (getCurrentIcon().endsWith("*")) {
                     battleFont.setColor(Color.RED);
                 } else {
                     battleFont.setColor(Color.BLACK);
                 }
-                if (menuWords[currentMenu][icon4] == "Improvised Explosive Device"){
-                    menuWords[currentMenu][icon4] = "IED";
-                }
-                battleFont.drawWrapped(batch, menuWords[currentMenu][icon4], menuSprites[currentMenu][icon4].getX() - menuSprites[currentMenu][icon4].getWidth()/6, menuSprites[currentMenu][icon4].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][icon4].getWidth()/3, BitmapFont.HAlignment.CENTER);
-
-
+                battleFont.drawWrapped(batch, getCurrentIcon(), getCurrentSprite().getX(), getBelowSprite().getY() + battleFont.getLineHeight(), getCurrentSprite().getWidth(), BitmapFont.HAlignment.CENTER);
 
                 if (tooltipSelected == true && Tooltip != "") {     //for drawing Tooltip - Tooltips can have 1 or 2 rows
                     battleFont.setScale(screenWidth / 420.0f, screenHeight / 380.0f);
                     battleFont.setColor(Color.BLACK);
                     if (Tooltip.length() > 25) {
-                        tooltipBackground.setPosition(menuSprites[currentMenu][tooltipIcon].getX() - menuSprites[currentMenu][tooltipIcon].getWidth() / 2, menuSprites[currentMenu][tooltipIcon].getY());
-                        tooltipBackground.setSize(2 * menuSprites[currentMenu][tooltipIcon].getWidth(), 4*menuSprites[currentMenu][tooltipIcon].getHeight()/3);
+                        tooltipBackground.setPosition(getCurrentSprite().getX() - getCurrentSprite().getWidth() / 2, getCurrentSprite().getY() + getCurrentSprite().getY() / 2);
+                        tooltipBackground.setSize(2 * getCurrentSprite().getWidth(), getCurrentSprite().getHeight() / 2);
                         tooltipBackground.draw(batch);
 
-                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + 3*battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
-                    }
-
-                    else {
-                        tooltipBackground.setPosition(menuSprites[currentMenu][tooltipIcon].getX() - menuSprites[currentMenu][tooltipIcon].getWidth() / 2, menuSprites[currentMenu][tooltipIcon].getY());
-                        tooltipBackground.setSize(2 * menuSprites[currentMenu][tooltipIcon].getWidth(), menuSprites[currentMenu][tooltipIcon].getHeight());
+                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + 2 * battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
+                    } else {
+                        tooltipBackground.setPosition(getCurrentSprite().getX() - getCurrentSprite().getWidth() / 2, getCurrentSprite().getY() + getCurrentSprite().getY() / 2);
+                        tooltipBackground.setSize(2 * getCurrentSprite().getWidth(), getCurrentSprite().getHeight() / 4);
                         tooltipBackground.draw(batch);
-                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + 2*battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
+
+                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
                     }
                     battleFont.setScale(screenWidth / 300.0f, screenHeight / 250.0f);
                 }
 
-
+                battleFont.setScale(screenWidth / 400.0f, screenHeight / 350.0f);
             }
-        } else {
-            battleFont.setScale(screenWidth / 350.0f, screenHeight / 300.0f);
-            getAboveSprite().setSize(screenWidth / 8f, screenHeight / 8f);
-            getAboveSprite().setPosition(screenWidth / 30 + (screenWidth / 50), screenHeight / 3);
-            getAboveSprite().setColor(Color.LIGHT_GRAY);
-            getAboveSprite().draw(batch);
-
-            getCurrentSprite().setSize(screenWidth / 5f, screenHeight / 5f);
-            getCurrentSprite().setPosition(screenWidth / 30 + (screenWidth / 50) + getAboveSprite().getWidth(), screenHeight / 3 + screenHeight / 16f);
-
-            if (getCurrentIcon().endsWith("*")) {
-                getCurrentSprite().setColor(Color.DARK_GRAY);
-            } else {
-                getCurrentSprite().setColor(Color.WHITE);
-            }
-            getCurrentSprite().draw(batch);
-
-            getBelowSprite().setSize(screenWidth / 8f, screenHeight / 8f);
-            getBelowSprite().setPosition(screenWidth / 30 + (screenWidth / 50) + getAboveSprite().getWidth() + getCurrentSprite().getWidth(), screenHeight / 3);
-            getBelowSprite().setColor(Color.LIGHT_GRAY);
-            getBelowSprite().draw(batch);
-
-            if (getCurrentIcon().endsWith("*")) {
-                battleFont.setColor(Color.RED);
-            } else {
-                battleFont.setColor(Color.BLACK);
-            }
-                battleFont.drawWrapped(batch, getCurrentIcon(), getCurrentSprite().getX(), getBelowSprite().getY() + battleFont.getLineHeight(), getCurrentSprite().getWidth(), BitmapFont.HAlignment.CENTER);
-
-            if (tooltipSelected == true && Tooltip != "") {     //for drawing Tooltip - Tooltips can have 1 or 2 rows
-                battleFont.setScale(screenWidth / 420.0f, screenHeight / 380.0f);
-                battleFont.setColor(Color.BLACK);
-                if (Tooltip.length() > 25) {
-                    tooltipBackground.setPosition(getCurrentSprite().getX() - getCurrentSprite().getWidth() / 2, getCurrentSprite().getY() + getCurrentSprite().getY() / 2);
-                    tooltipBackground.setSize(2 * getCurrentSprite().getWidth(), getCurrentSprite().getHeight() / 2);
-                    tooltipBackground.draw(batch);
-
-                    battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + 2 * battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
-                }
-
-                else {
-                    tooltipBackground.setPosition(getCurrentSprite().getX() - getCurrentSprite().getWidth() / 2, getCurrentSprite().getY() + getCurrentSprite().getY() / 2);
-                    tooltipBackground.setSize(2 * getCurrentSprite().getWidth(), getCurrentSprite().getHeight() / 4);
-                    tooltipBackground.draw(batch);
-
-                    battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
-                }
-                battleFont.setScale(screenWidth / 300.0f, screenHeight / 250.0f);
-            }
-
-            battleFont.setScale(screenWidth / 400.0f, screenHeight / 350.0f);
         }
-    }
 
 
     public void displayTooltip(int icon) {      //assigns tooltips to the menu
@@ -605,69 +564,128 @@ public class FightMenu
                     }
                 }
             }
-        } else {
+        }
+        else {
+
+            /*for (int i = 0; i < 4; i++) {
+                if (menuSprites[currentMenu][myInt + i] != null) {
+                    switch (i) {
+                        case 0:
+                            xPosition = Gdx.graphics.getWidth() / 12;
+                            yPosition = Gdx.graphics.getHeight() / 2;
+                            break;
+                        case 1:
+                            xPosition = Gdx.graphics.getWidth() / 4;
+                            yPosition = Gdx.graphics.getHeight() / 2;
+                            break;
+                        case 2:
+                            xPosition = Gdx.graphics.getWidth() / 12;
+                            yPosition = Gdx.graphics.getHeight() / 4;
+                            break;
+                        case 3:
+                            xPosition = Gdx.graphics.getWidth() / 4;
+                            yPosition = Gdx.graphics.getHeight() / 4;
+                            break;
+                    }
+                }
+            }
+
+            if (x > xPosition && x < xPosition + Gdx.graphics.getHeight()/8)*/
+
             //top left
-            if (x > getCurrentSprite().getX() && x < getCurrentSprite().getX() + getCurrentSprite().getWidth()
-                    && y < Gdx.graphics.getHeight() / 2) {
-                {
-                    if (getCurrentIcon().endsWith("*")) {
-                        tooltipIcon = currentIcon;
+            /*
+            for (int i = 0; i < 4; i ++) {
+                if (menuSprites[currentMenu][myInt + i] != null) {
+                if (x > menuSprites[currentMenu][myInt + i].getX() && x < menuSprites[currentMenu][myInt + i].getX() + menuSprites[currentMenu][myInt + i].getWidth()
+                        && y < menuSprites[currentMenu][myInt + i].getY() + menuSprites[currentMenu][myInt + i].getHeight()/2 && y > menuSprites[currentMenu][myInt + i].getY() - menuSprites[currentMenu][myInt + i].getHeight()/2) {
+                    {
+                        if (menuWords[currentMenu][myInt + i] != null) {
+                            if (menuWords[currentMenu][myInt + i].endsWith("*")) {
+                                tooltipIcon = myInt + i;
+                                tooltipSelected = true;
+                                battleFont.setColor(Color.RED);
+                                Tooltip = "You do not have enough energy to use this attack.";
+                                battleFont.setColor(Color.BLACK);
+                            } else {
+                                tooltipSelected = false;
+                                Select(myInt + i);
+                            }
+                        }
+                        }
+                    }
+                }
+            }*/
+
+            //top left
+            //if (menuSprites[currentMenu][myInt] != null) {
+                if (menuSprites[currentMenu][myInt] != null && x > menuSprites[currentMenu][myInt].getX() && x < menuSprites[currentMenu][myInt].getX() + menuSprites[currentMenu][myInt].getWidth()
+                        && y < Gdx.graphics.getHeight() / 2) {
+                    if (menuWords[currentMenu][myInt].endsWith("*")) {
+                        tooltipIcon = myInt;
                         tooltipSelected = true;
                         battleFont.setColor(Color.RED);
                         Tooltip = "You do not have enough energy to use this attack.";
                         battleFont.setColor(Color.BLACK);
                     } else {
                         tooltipSelected = false;
-                        Select(currentIcon);
+                        Select(myInt);
                     }
-                }
+
             }
+
+
             //top right
-            else if (x > menuSprites[currentMenu][icon2].getX() && x < menuSprites[currentMenu][icon2].getX() + menuSprites[currentMenu][icon2].getWidth()
-                    && y < Gdx.graphics.getHeight() / 2) {
-                if (menuWords[currentMenu][icon2].endsWith("*")) {
-                    tooltipIcon = icon2;
-                    tooltipSelected = true;
-                    battleFont.setColor(Color.RED);
-                    Tooltip = "You do not have enough energy to use this attack.";
-                    battleFont.setColor(Color.BLACK);
-                } else {
-                    tooltipSelected = false;
-                    Select(icon2);
-                }
+            //if (menuSprites[currentMenu][myInt + 1] != null) {
+                else if (menuSprites[currentMenu][myInt + 1] != null && x > menuSprites[currentMenu][myInt + 1].getX() && x < menuSprites[currentMenu][myInt + 1].getX() + menuSprites[currentMenu][myInt + 1].getWidth()
+                        && y < Gdx.graphics.getHeight() / 2) {
+                    if (menuWords[currentMenu][myInt + 1].endsWith("*")) {
+                        tooltipIcon = myInt + 1;
+                        tooltipSelected = true;
+                        battleFont.setColor(Color.RED);
+                        Tooltip = "You do not have enough energy to use this attack.";
+                        battleFont.setColor(Color.BLACK);
+                    } else {
+                        tooltipSelected = false;
+                        Select(myInt + 1);
+                    }
+
             }
 
             //bottom left
-            else if (x > menuSprites[currentMenu][icon3].getX()
-                    && x < menuSprites[currentMenu][icon3].getX() + menuSprites[currentMenu][icon3].getWidth()
-                    && y > Gdx.graphics.getHeight() / 2) {
+            //if (menuSprites[currentMenu][myInt + 2] != null) {
+                else if (menuSprites[currentMenu][myInt + 2] != null && x > menuSprites[currentMenu][myInt + 2].getX()
+                        && x < menuSprites[currentMenu][myInt + 2].getX() + menuSprites[currentMenu][myInt + 2].getWidth()
+                        && y > Gdx.graphics.getHeight() / 2) {
 
-                if (menuWords[currentMenu][icon3].endsWith("*")) {
-                    tooltipIcon = icon3;
-                    tooltipSelected = true;
-                    battleFont.setColor(Color.RED);
-                    Tooltip = "You do not have enough energy to use this attack.";
-                    battleFont.setColor(Color.BLACK);
-                } else {
-                    tooltipSelected = false;
-                    Select(icon3);
+                    if (menuWords[currentMenu][myInt + 2].endsWith("*")) {
+                        tooltipIcon = myInt + 2;
+                        tooltipSelected = true;
+                        battleFont.setColor(Color.RED);
+                        Tooltip = "You do not have enough energy to use this attack.";
+                        battleFont.setColor(Color.BLACK);
+                    } else {
+                        tooltipSelected = false;
+                        Select(myInt + 2);
+
                 }
             }
 
             //bottom right
-            if (x > menuSprites[currentMenu][icon4].getX()
-                    && x < menuSprites[currentMenu][icon4].getX() + menuSprites[currentMenu][icon4].getWidth()
-                    && y > Gdx.graphics.getHeight() / 2) {
-                if (menuWords[currentMenu][icon4].endsWith("*")) {
-                    tooltipIcon = icon4;
-                    tooltipSelected = true;
-                    battleFont.setColor(Color.RED);
-                    Tooltip = "You do not have enough energy to use this attack.";
-                    battleFont.setColor(Color.BLACK);
-                } else {
-                    tooltipSelected = false;
-                    Select(icon4);
-                }
+           // if (menuSprites[currentMenu][myInt + 3] != null) {
+                else if (menuSprites[currentMenu][myInt+3] != null && x > menuSprites[currentMenu][myInt + 3].getX()
+                        && x < menuSprites[currentMenu][myInt + 3].getX() + menuSprites[currentMenu][myInt + 3].getWidth()
+                        && y > Gdx.graphics.getHeight() / 2) {
+                    if (menuWords[currentMenu][myInt + 3].endsWith("*")) {
+                        tooltipIcon = myInt + 3;
+                        tooltipSelected = true;
+                        battleFont.setColor(Color.RED);
+                        Tooltip = "You do not have enough energy to use this attack.";
+                        battleFont.setColor(Color.BLACK);
+                    } else {
+                        tooltipSelected = false;
+                        Select(myInt + 3);
+                    }
+
             }
         }
     }
@@ -718,35 +736,35 @@ public class FightMenu
 
                 if (menuStyle2) {
                     //top left
-                    if (Tooltipdy < 0 && x > getCurrentSprite().getX() && x < getCurrentSprite().getX() + getCurrentSprite().getWidth()
+                   /* if (Tooltipdy < 0 && x > getCurrentSprite().getX() && x < getCurrentSprite().getX() + getCurrentSprite().getWidth()
                             && y < Gdx.graphics.getHeight() / 2) {
                         displayTooltip(currentIcon);
                         tooltipIcon = currentIcon;
                         tooltipSelected = true;
                         //top right
-                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][icon2].getX()
-                            && x < menuSprites[currentMenu][icon2].getX() + menuSprites[currentMenu][icon2].getWidth()
+                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][myInt + 1].getX()
+                            && x < menuSprites[currentMenu][myInt + 1].getX() + menuSprites[currentMenu][myInt + 1].getWidth()
                             && y < Gdx.graphics.getHeight() / 2) {
-                        displayTooltip(icon2);
-                        tooltipIcon = icon2;
+                        displayTooltip(myInt + 1);
+                        tooltipIcon = myInt + 1;
                         tooltipSelected = true;
                         //bottom left
-                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][icon3].getX()
-                            && x < menuSprites[currentMenu][icon3].getX() + menuSprites[currentMenu][icon3].getWidth()
+                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][myInt + 2].getX()
+                            && x < menuSprites[currentMenu][myInt + 2].getX() + menuSprites[currentMenu][myInt + 2].getWidth()
                             && y > Gdx.graphics.getHeight() / 2) {
-                        displayTooltip(icon3);
-                        tooltipIcon = icon3;
+                        displayTooltip(myInt + 2);
+                        tooltipIcon = myInt + 2;
                         tooltipSelected = true;
                         //bottom right
-                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][icon4].getX()
-                            && x < menuSprites[currentMenu][icon4].getX() + menuSprites[currentMenu][icon4].getWidth()
+                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][myInt + 3].getX()
+                            && x < menuSprites[currentMenu][myInt + 3].getX() + menuSprites[currentMenu][myInt + 3].getWidth()
                             && y > Gdx.graphics.getHeight() / 2) {
-                        displayTooltip(icon4);
-                        tooltipIcon = icon4;
+                        displayTooltip(myInt + 3);
+                        tooltipIcon = myInt + 3;
                         tooltipSelected = true;
                     } else {      //swipe downwards or do anything else to hide tooltip
                         tooltipSelected = false;
-                    }
+                    }*/
                 }
                 return true;
             }
