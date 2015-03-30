@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+import javax.swing.Popup;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -583,8 +584,10 @@ public class GameMenu extends GameState
                     settingsPressed = true;
                 }
                 if (x > save.getX() && x < save.getX() + save.getWidth()) {
-                    savePressed = true;
-                    System.out.println("shit is trues");
+                    //savePressed = true;
+                    popUp.Add("GAME SAVED!", .6f, .6f, Color.CYAN);
+                    saveInventory();
+                    saveStats();
                 }
             }
 
@@ -717,26 +720,6 @@ public class GameMenu extends GameState
         {
             player.addExperience(player.getExpTarget());
             gsm.levelUpState(player);
-        }
-
-        if (savePressed)
-        {
-
-            /*
-            if (y < screenHeight*4/5)
-            {
-                if (x < screenWidth/4)
-                {
-                    saveStats();
-                    saveInventory();
-                }
-                if (x > screenWidth/4)
-                {
-                    savePressed=false;
-                }
-            }
-            */
-
         }
 
 
