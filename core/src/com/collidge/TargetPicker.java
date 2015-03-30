@@ -28,35 +28,32 @@ public class TargetPicker
     {
 
         System.out.println("L");
-        currentTarget--;
-        if(currentTarget<0||monsters[currentTarget].getDead())
-        {
-            if(currentTarget<0)
-            {
-                currentTarget=monsters.length;
-            }
+            currentTarget--;
 
-            Left();
+            if (currentTarget < 0 || monsters[currentTarget].getDead()) {
+                if (currentTarget < 0) {
+                    currentTarget = monsters.length;
+                }
+
+                Left();
         }
         System.out.println(currentTarget);
     }
     public void Right()
     {
+            currentTarget++;
 
-        currentTarget++;
-        if(currentTarget >=monsters.length||monsters[currentTarget].getDead())
-        {
-            if(currentTarget>=monsters.length)
-            {
-                currentTarget%=monsters.length;
-                currentTarget--;
-                System.out.println("X");
+            if (currentTarget >= monsters.length || monsters[currentTarget].getDead()) {
+                if (currentTarget >= monsters.length) {
+                    currentTarget %= monsters.length;
+                    currentTarget--;
+                    System.out.println("X");
+                }
+                System.out.println("O");
+
+                Right();
+
             }
-            System.out.println("O");
-
-            Right();
-
-        }
         System.out.println("R");
         System.out.println(currentTarget);
     }
@@ -113,7 +110,7 @@ public class TargetPicker
                 enemyCount++;
             }
         }
-        if(enemyCount>1)
+        if(enemyCount>=1)
         {
             monsters=enemies;
             targetHighlighted=false;
