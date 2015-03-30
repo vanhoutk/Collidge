@@ -464,6 +464,8 @@ public class FightMenu
                     menuSprites[currentMenu][myInt + i].setSize(screenWidth / 8f, screenHeight / 8f);
                     menuSprites[currentMenu][myInt + i].draw(batch);
 
+                    battleFont.setScale(screenWidth / 380.0f, screenHeight / 300.0f);
+
                     if (menuWords[currentMenu][myInt + i] != null) {
                         if (menuWords[currentMenu][myInt + i].endsWith("*")) {
                             battleFont.setColor(Color.RED);
@@ -476,9 +478,29 @@ public class FightMenu
                         battleFont.drawWrapped(batch, menuWords[currentMenu][myInt + i], menuSprites[currentMenu][myInt + i].getX() - menuSprites[currentMenu][myInt + i].getWidth() / 6, menuSprites[currentMenu][myInt + i].getY() - battleFont.getLineHeight() / 2, 4 * menuSprites[currentMenu][myInt + i].getWidth() / 3, BitmapFont.HAlignment.CENTER);
                     }
                 }
+
+                if (tooltipSelected == true && Tooltip != "") {     //for drawing Tooltip - Tooltips can have 1 or 2 rows
+                    battleFont.setScale(screenWidth / 450.0f, screenHeight / 400.0f);
+                    battleFont.setColor(Color.BLACK);
+                    if (Tooltip.length() > 30) {
+                        tooltipBackground.setPosition(menuSprites[currentMenu][tooltipIcon].getX() - menuSprites[currentMenu][tooltipIcon].getWidth() / 2, menuSprites[currentMenu][tooltipIcon].getY() - menuSprites[currentMenu][tooltipIcon].getHeight() / 4);
+                        tooltipBackground.setSize(2 * menuSprites[currentMenu][tooltipIcon].getWidth(), 6 * menuSprites[currentMenu][tooltipIcon].getHeight() / 5);
+                        tooltipBackground.draw(batch);
+                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + 3 * battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
+                    }
+                    else {
+                        tooltipBackground.setPosition(menuSprites[currentMenu][tooltipIcon].getX() - menuSprites[currentMenu][tooltipIcon].getWidth() / 2, menuSprites[currentMenu][tooltipIcon].getY() - menuSprites[currentMenu][tooltipIcon].getHeight() / 4);
+                        tooltipBackground.setSize(2 * menuSprites[currentMenu][tooltipIcon].getWidth(), 4 * menuSprites[currentMenu][tooltipIcon].getHeight() / 5);
+                        tooltipBackground.draw(batch);
+                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + 2 * battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
+
+                    }
+                }
+
             }
         }
 
+        //MENU STYLE 1
             else {
                 battleFont.setScale(screenWidth / 350.0f, screenHeight / 300.0f);
                 getAboveSprite().setSize(screenWidth / 8f, screenHeight / 8f);
@@ -535,22 +557,18 @@ public class FightMenu
     public void displayTooltip(int icon) {      //assigns tooltips to the menu
 
         if (currentMenu == 0){
-            //System.out.println("Attack");
             Tooltip = "";
         }
 
         else if (currentMenu == 1){
-            //System.out.println("Attack");
             Tooltip = attackDesc[1][icon];
         }
 
         else if (currentMenu == 2){
-            //System.out.println("Tactics");
             Tooltip = attackDesc[2][icon];
         }
 
         else if (currentMenu ==3){
-            //System.out.println("Items");
             Tooltip = attackDesc[3][icon];
         }
     }
@@ -574,59 +592,8 @@ public class FightMenu
                 }
             }
         }
+
         else {
-
-            /*for (int i = 0; i < 4; i++) {
-                if (menuSprites[currentMenu][myInt + i] != null) {
-                    switch (i) {
-                        case 0:
-                            xPosition = Gdx.graphics.getWidth() / 12;
-                            yPosition = Gdx.graphics.getHeight() / 2;
-                            break;
-                        case 1:
-                            xPosition = Gdx.graphics.getWidth() / 4;
-                            yPosition = Gdx.graphics.getHeight() / 2;
-                            break;
-                        case 2:
-                            xPosition = Gdx.graphics.getWidth() / 12;
-                            yPosition = Gdx.graphics.getHeight() / 4;
-                            break;
-                        case 3:
-                            xPosition = Gdx.graphics.getWidth() / 4;
-                            yPosition = Gdx.graphics.getHeight() / 4;
-                            break;
-                    }
-                }
-            }
-
-            if (x > xPosition && x < xPosition + Gdx.graphics.getHeight()/8)*/
-
-            //top left
-            /*
-            for (int i = 0; i < 4; i ++) {
-                if (menuSprites[currentMenu][myInt + i] != null) {
-                if (x > menuSprites[currentMenu][myInt + i].getX() && x < menuSprites[currentMenu][myInt + i].getX() + menuSprites[currentMenu][myInt + i].getWidth()
-                        && y < menuSprites[currentMenu][myInt + i].getY() + menuSprites[currentMenu][myInt + i].getHeight()/2 && y > menuSprites[currentMenu][myInt + i].getY() - menuSprites[currentMenu][myInt + i].getHeight()/2) {
-                    {
-                        if (menuWords[currentMenu][myInt + i] != null) {
-                            if (menuWords[currentMenu][myInt + i].endsWith("*")) {
-                                tooltipIcon = myInt + i;
-                                tooltipSelected = true;
-                                battleFont.setColor(Color.RED);
-                                Tooltip = "You do not have enough energy to use this attack.";
-                                battleFont.setColor(Color.BLACK);
-                            } else {
-                                tooltipSelected = false;
-                                Select(myInt + i);
-                            }
-                        }
-                        }
-                    }
-                }
-            }*/
-
-            //top left
-            //if (menuSprites[currentMenu][myInt] != null) {
                 if (menuSprites[currentMenu][myInt] != null && x > menuSprites[currentMenu][myInt].getX() && x < menuSprites[currentMenu][myInt].getX() + menuSprites[currentMenu][myInt].getWidth()
                         && y < Gdx.graphics.getHeight() / 2) {
                     if (menuWords[currentMenu][myInt].endsWith("*")) {
@@ -639,12 +606,9 @@ public class FightMenu
                         tooltipSelected = false;
                         Select(myInt);
                     }
-
             }
 
-
             //top right
-            //if (menuSprites[currentMenu][myInt + 1] != null) {
                 else if (menuSprites[currentMenu][myInt + 1] != null && x > menuSprites[currentMenu][myInt + 1].getX() && x < menuSprites[currentMenu][myInt + 1].getX() + menuSprites[currentMenu][myInt + 1].getWidth()
                         && y < Gdx.graphics.getHeight() / 2) {
                     if (menuWords[currentMenu][myInt + 1].endsWith("*")) {
@@ -661,7 +625,6 @@ public class FightMenu
             }
 
             //bottom left
-            //if (menuSprites[currentMenu][myInt + 2] != null) {
                 else if (menuSprites[currentMenu][myInt + 2] != null && x > menuSprites[currentMenu][myInt + 2].getX()
                         && x < menuSprites[currentMenu][myInt + 2].getX() + menuSprites[currentMenu][myInt + 2].getWidth()
                         && y > Gdx.graphics.getHeight() / 2) {
@@ -680,7 +643,6 @@ public class FightMenu
             }
 
             //bottom right
-           // if (menuSprites[currentMenu][myInt + 3] != null) {
                 else if (menuSprites[currentMenu][myInt+3] != null && x > menuSprites[currentMenu][myInt + 3].getX()
                         && x < menuSprites[currentMenu][myInt + 3].getX() + menuSprites[currentMenu][myInt + 3].getWidth()
                         && y > Gdx.graphics.getHeight() / 2) {
@@ -745,27 +707,27 @@ public class FightMenu
 
                 if (menuStyle2) {
                     //top left
-                   /* if (Tooltipdy < 0 && x > getCurrentSprite().getX() && x < getCurrentSprite().getX() + getCurrentSprite().getWidth()
+                    if (Tooltipdy < 0 && menuSprites[currentMenu][myInt] != null && x > menuSprites[currentMenu][myInt].getX() && x < menuSprites[currentMenu][myInt].getX() + menuSprites[currentMenu][myInt].getWidth()
                             && y < Gdx.graphics.getHeight() / 2) {
-                        displayTooltip(currentIcon);
-                        tooltipIcon = currentIcon;
+                        displayTooltip(myInt);
+                        tooltipIcon = myInt;
                         tooltipSelected = true;
                         //top right
-                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][myInt + 1].getX()
+                    } else if (Tooltipdy < 0 && menuSprites[currentMenu][myInt + 1] != null && x > menuSprites[currentMenu][myInt + 1].getX()
                             && x < menuSprites[currentMenu][myInt + 1].getX() + menuSprites[currentMenu][myInt + 1].getWidth()
                             && y < Gdx.graphics.getHeight() / 2) {
                         displayTooltip(myInt + 1);
                         tooltipIcon = myInt + 1;
                         tooltipSelected = true;
                         //bottom left
-                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][myInt + 2].getX()
+                    } else if (Tooltipdy < 0 && menuSprites[currentMenu][myInt + 2] != null && x > menuSprites[currentMenu][myInt + 2].getX()
                             && x < menuSprites[currentMenu][myInt + 2].getX() + menuSprites[currentMenu][myInt + 2].getWidth()
                             && y > Gdx.graphics.getHeight() / 2) {
                         displayTooltip(myInt + 2);
                         tooltipIcon = myInt + 2;
                         tooltipSelected = true;
                         //bottom right
-                    } else if (Tooltipdy < 0 && x > menuSprites[currentMenu][myInt + 3].getX()
+                    } else if (Tooltipdy < 0 && menuSprites[currentMenu][myInt + 3] != null && x > menuSprites[currentMenu][myInt + 3].getX()
                             && x < menuSprites[currentMenu][myInt + 3].getX() + menuSprites[currentMenu][myInt + 3].getWidth()
                             && y > Gdx.graphics.getHeight() / 2) {
                         displayTooltip(myInt + 3);
@@ -773,7 +735,7 @@ public class FightMenu
                         tooltipSelected = true;
                     } else {      //swipe downwards or do anything else to hide tooltip
                         tooltipSelected = false;
-                    }*/
+                    }
                 }
                 return true;
             }
