@@ -355,29 +355,67 @@ public class FightMenu
 
     public void draw(SpriteBatch batch, int screenWidth, int screenHeight) {
 
-        battleFont.setScale(screenWidth / 350.0f, screenHeight / 300.0f);
-
         if (menuStyle2) {
+            battleFont.setScale(screenWidth / 400.0f, screenHeight / 350.0f);
             menuSprites[currentMenu][currentIcon].setSize(screenWidth / 8f, screenHeight / 8f);
-            menuSprites[currentMenu][currentIcon].setPosition(screenWidth / 8, screenHeight / 2);
+            menuSprites[currentMenu][currentIcon].setPosition(screenWidth / 12, screenHeight / 2);
             menuSprites[currentMenu][currentIcon].draw(batch);
+            if (getCurrentIcon().endsWith("*")) {
+                battleFont.setColor(Color.RED);
+            } else {
+                battleFont.setColor(Color.BLACK);
+            }
+            if (menuWords[currentMenu][currentIcon] == "Improvised Explosive Device"){
+                menuWords[currentMenu][currentIcon] = "IED";
+            }
+            battleFont.drawWrapped(batch, menuWords[currentMenu][currentIcon], menuSprites[currentMenu][currentIcon].getX() - menuSprites[currentMenu][currentIcon].getWidth()/6, menuSprites[currentMenu][currentIcon].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][currentIcon].getWidth()/3, BitmapFont.HAlignment.CENTER);
+
 
             if (menuSprites[currentMenu][icon2] != menuSprites[currentMenu][currentIcon]) {
                 menuSprites[currentMenu][icon2].setSize(screenWidth / 8f, screenHeight / 8f);
                 menuSprites[currentMenu][icon2].setPosition(screenWidth / 4, screenHeight / 2);
                 menuSprites[currentMenu][icon2].draw(batch);
-            }
+                    if (menuWords[currentMenu][icon2].endsWith("*")) {
+                        battleFont.setColor(Color.RED);
+                    } else {
+                        battleFont.setColor(Color.BLACK);
+                    }
+                if (menuWords[currentMenu][icon2] == "Improvised Explosive Device"){
+                    menuWords[currentMenu][icon2] = "IED";
+                }
+                    battleFont.drawWrapped(batch, menuWords[currentMenu][icon2], menuSprites[currentMenu][icon2].getX() - menuSprites[currentMenu][icon2].getWidth()/6, menuSprites[currentMenu][icon2].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][icon2].getWidth()/3, BitmapFont.HAlignment.CENTER);
+           }
 
             if (menuSprites[currentMenu][icon3] != menuSprites[currentMenu][currentIcon]) {
                 menuSprites[currentMenu][icon3].setSize(screenWidth / 8f, screenHeight / 8f);
-                menuSprites[currentMenu][icon3].setPosition(screenWidth / 8, screenHeight / 4);
+                menuSprites[currentMenu][icon3].setPosition(screenWidth / 12, screenHeight / 4);
                 menuSprites[currentMenu][icon3].draw(batch);
+                if (menuWords[currentMenu][icon3].endsWith("*")) {
+                    battleFont.setColor(Color.RED);
+                } else {
+                    battleFont.setColor(Color.BLACK);
+                }
+                if (menuWords[currentMenu][icon3] == "Improvised Explosive Device"){
+                    menuWords[currentMenu][icon3] = "IED";
+                }
+                battleFont.drawWrapped(batch, menuWords[currentMenu][icon3], menuSprites[currentMenu][icon3].getX() - menuSprites[currentMenu][icon3].getWidth()/6, menuSprites[currentMenu][icon3].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][icon3].getWidth()/3, BitmapFont.HAlignment.CENTER);
+
             }
 
             if (menuSprites[currentMenu][icon4] != menuSprites[currentMenu][currentIcon]) {
                 menuSprites[currentMenu][icon4].setSize(screenWidth / 8f, screenHeight / 8f);
                 menuSprites[currentMenu][icon4].setPosition(screenWidth / 4, screenHeight / 4);
                 menuSprites[currentMenu][icon4].draw(batch);
+                if (menuWords[currentMenu][icon4].endsWith("*")) {
+                    battleFont.setColor(Color.RED);
+                } else {
+                    battleFont.setColor(Color.BLACK);
+                }
+                if (menuWords[currentMenu][icon4] == "Improvised Explosive Device"){
+                    menuWords[currentMenu][icon4] = "IED";
+                }
+                battleFont.drawWrapped(batch, menuWords[currentMenu][icon4], menuSprites[currentMenu][icon4].getX() - menuSprites[currentMenu][icon4].getWidth()/6, menuSprites[currentMenu][icon4].getY() - battleFont.getLineHeight()/2, 4*menuSprites[currentMenu][icon4].getWidth()/3, BitmapFont.HAlignment.CENTER);
+
 
 
                 if (tooltipSelected == true && Tooltip != "") {     //for drawing Tooltip - Tooltips can have 1 or 2 rows
@@ -392,11 +430,10 @@ public class FightMenu
                     }
 
                     else {
-                        tooltipBackground.setPosition(getCurrentSprite().getX() - getCurrentSprite().getWidth() / 2, getCurrentSprite().getY() + getCurrentSprite().getY() / 2);
-                        tooltipBackground.setSize(2 * getCurrentSprite().getWidth(), getCurrentSprite().getHeight() / 4);
+                        tooltipBackground.setPosition(menuSprites[currentMenu][tooltipIcon].getX() - menuSprites[currentMenu][tooltipIcon].getWidth() / 2, menuSprites[currentMenu][tooltipIcon].getY());
+                        tooltipBackground.setSize(2 * menuSprites[currentMenu][tooltipIcon].getWidth(), menuSprites[currentMenu][tooltipIcon].getHeight());
                         tooltipBackground.draw(batch);
-
-                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
+                        battleFont.drawWrapped(batch, Tooltip, tooltipBackground.getX(), tooltipBackground.getY() + 2*battleFont.getLineHeight(), tooltipBackground.getWidth(), BitmapFont.HAlignment.CENTER);
                     }
                     battleFont.setScale(screenWidth / 300.0f, screenHeight / 250.0f);
                 }
@@ -404,6 +441,7 @@ public class FightMenu
 
             }
         } else {
+            battleFont.setScale(screenWidth / 350.0f, screenHeight / 300.0f);
             getAboveSprite().setSize(screenWidth / 8f, screenHeight / 8f);
             getAboveSprite().setPosition(screenWidth / 30 + (screenWidth / 50), screenHeight / 3);
             getAboveSprite().setColor(Color.LIGHT_GRAY);
