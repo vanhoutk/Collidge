@@ -226,6 +226,14 @@ public class Fight extends GameState
     public void draw()
     {
         batch.begin();
+
+        //tutorial system for first fight - TODO
+        if (playr.getLevel() == 1){
+
+
+        }
+
+
         background.draw(batch);
         portrait.setPosition(0,screenHeight-((int)(portrait.getHeight()*.9)+battleFont.getLineHeight()));
 //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.

@@ -5,6 +5,7 @@ package com.collidge;
  * Created because this makes it a lot easier to have different images for different moves in the fight menu.
  */
 public class CombatMove {
+    public static String newline = System.getProperty("line.separator");
     public int attackMultiplier;
     public int attackEnergyCost;
     public int attackAOE;
@@ -16,7 +17,7 @@ public class CombatMove {
         attackMultiplier = multiplier;
         attackEnergyCost = energyCost;
         attackAOE = AOE;
-        attackDesc = attackMultiplier + "Dmg, " + attackEnergyCost + "En";
+        attackDesc = "Deals " + attackMultiplier + " Base Damage, " + "Costs " + attackEnergyCost + " Energy";
         attackName = name;
         attackImage = image;
     }

@@ -41,19 +41,19 @@ public class CombatItem extends Item
         enemyDamage = damage;
         if (energyRestore != 0 && healthRestore != 0)
         {
-            battleText = "Restores "+ healthRestore + "Hp & " + energyRestore + "En";
+            battleText = "Restores "+ healthRestore + " Health & " + energyRestore + " Energy";
         }
         else if (healthRestore != 0)
         {
-            battleText = "Restores " + healthRestore + "Hp";
+            battleText = "Restores " + healthRestore + " Health";
         }
         else if (energyRestore != 0)
         {
-            battleText = "Restores " + energyRestore + "En";
+            battleText = "Restores " + energyRestore + " Energy";
         }
         if (enemyDamage!=0)
         {
-            battleText = enemyDamage + "Dmg";
+            battleText = "Deals " + enemyDamage + " Damage to all enemies";
         }
         /**
          * Creates inventory description by combining a descriptive

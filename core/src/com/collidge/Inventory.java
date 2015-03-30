@@ -186,7 +186,7 @@ public class Inventory
          * Deirdre
          * Loading inventory items from saved file if it exists
          */
-        int nCoffee = 10, nEnergyDrink = 10, nNoodles = 10, nSandwich = 10, nIED = 10;
+        int nCoffee = 10, nEnergyDrink = 10, nNoodles = 10, nSandwich = 10, nIED = 5;
         int nTsquare = 1, nScarf = 1, nMacshield = 1, nBookshield = 1;
         String nEquipWep = "None", nEquipArm = "None";
 
@@ -235,13 +235,13 @@ public class Inventory
          * Constructor for combat items is (Type, Text, Health, Energy, Enemy Damage, Quantity, Image)
          */
         Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 0, nCoffee, "Coffee_cupSmall.png");
-        EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 10, 0, nEnergyDrink, "energy60.png");
+        EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 20, 0, nEnergyDrink, "energy60.png");
         Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 0, nNoodles, "Noodles.png");
-        Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 10, 0, 0, nSandwich, "sandwichIcon.png");
-        IED = new CombatItem("Attack", "Deals damage to all enemies.", 0, 0, 10, nIED, "dynamite.png");
+        Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 20, 0, 0, nSandwich, "sandwichIcon.png");
+        IED = new CombatItem("Attack", "Damaging Item.", 0, 0, 10, nIED, "dynamite.png");
 
         /**
-         * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity)
+         * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity, Image)
          */
         Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, nTsquare, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, nScarf, "Scarf.png");
