@@ -341,7 +341,6 @@ public class InventoryState extends GameState
         }
         else
         {
-            //TODO: May need to edit this to allow for the cannot use
             infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
             infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (2 * spacing + sqSide), sqSide + spacing/5, 4 * sqSide/3, BitmapFont.HAlignment.CENTER);
         }
@@ -458,6 +457,10 @@ public class InventoryState extends GameState
             {
                 selectedItem = 6;
             }
+            else if(y > (2 * sqSide + spacing) && y < (2 * (sqSide + spacing)) && gsm.demoMode)
+            {
+                gsm.user.items.loadInventory(player, true);
+            }
         }
         else if(x > (4 * spacing + 3 * sqSide) && x < 4 * (spacing + sqSide))
         {
@@ -479,6 +482,14 @@ public class InventoryState extends GameState
             else if(y > (sqSide + spacing) && y < (2 * sqSide + spacing) && (equipNum + itemNum) >= 10)
             {
                 selectedItem = 10;
+            }
+            else if(y > (2 * sqSide + spacing) && y < (2 * (sqSide + spacing)) && gsm.demoMode)
+            {
+                gsm.user.items.MyCombatInv.get("Coffee").setItemQuantity(99);
+                gsm.user.items.MyCombatInv.get("IED").setItemQuantity(99);
+                gsm.user.items.MyCombatInv.get("Noodles").setItemQuantity(99);
+                gsm.user.items.MyCombatInv.get("Energy Drink").setItemQuantity(99);
+                gsm.user.items.MyCombatInv.get("Sandwich").setItemQuantity(99);
             }
         }
         if(x > (screenWidth - (spacing + 4 * sqSide / 3)) && x < (screenWidth - spacing))

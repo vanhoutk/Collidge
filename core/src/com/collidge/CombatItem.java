@@ -101,5 +101,9 @@ public class CombatItem extends Item
         {
             itemQuantity = 0;
         }
+        else if(itemQuantity > 99)
+        {
+            itemQuantity = 99;
+        }
     }
 }
