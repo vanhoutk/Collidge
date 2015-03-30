@@ -604,6 +604,7 @@ public class GameMenu extends GameState
                     muted=false;
                     gsm.setMusic(musicPre);
                     gsm.setVolume(volPre);
+                    gsm.backgroundMus.setVolume((float)musicPre/4);
                 }
                 else
                 {
@@ -612,7 +613,9 @@ public class GameMenu extends GameState
                     muted = true;
                     gsm.setVolume(0);
                     gsm.setMusic(0);
+                    gsm.backgroundMus.setVolume(0);
                 }
+
             }
         }
 
@@ -699,15 +702,15 @@ public class GameMenu extends GameState
         }
     }
 
-
-
     /**
      * Deirdre
      * Saving Inventory
      * Called when save button in GameMenu is selected
      */
-    public void saveInventory(){
-        if(Gdx.files.isLocalStorageAvailable()) {
+    public void saveInventory()
+    {
+        if(Gdx.files.isLocalStorageAvailable())
+        {
             OutputStream out = Gdx.files.local("inventory.xml").write(false);
             try {
                 System.out.println("Saving inventory");
@@ -730,7 +733,7 @@ public class GameMenu extends GameState
                         + "</equipped>"
                                 + "</inventory>");
                 out.write(saveInventory.getBytes());
-                System.out.println(saveInventory);
+                //System.out.println(saveInventory);
             } catch (IOException e) {
                 e.printStackTrace();
             }

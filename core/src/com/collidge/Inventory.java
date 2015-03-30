@@ -36,15 +36,7 @@ public class Inventory
     private HashMap<String, CombatItem> MyCombatInv = new HashMap();
     private HashMap<String, Equipment> MyEquipment = new HashMap();
 
-    /**
-     * Deirdre
-     * Moved the declarations outside of the loadInventory method so they can be
-     * called from save inventory.
-     */
-    private Equipment Tsquare, Scarf, Macshield, Bookshield;
-    private CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
-
-    /**
+   /**
      * Dan's edit
      * Changed to have Player player passed in.
      */
@@ -222,27 +214,21 @@ public class Inventory
             System.out.println("Local storage unavailable or file doesn't exist.");
         }
 
-        if(nEquipWep != "None")
-        {
-            player.equipItem(nEquipWep);
-        }
-        if(nEquipArm != "None")
-        {
-            player.equipItem(nEquipArm);
-        }
-
         /**
          * Constructor for combat items is (Type, Text, Health, Energy, Enemy Damage, Quantity, Image)
          */
+        CombatItem Coffee, EnergyDrink, Noodles, Sandwich, IED;
         Coffee = new CombatItem("Energy", "Energy Item. Mmm that's good coffee!", 0, 10, 0, nCoffee, "Coffee_cupSmall.png");
         EnergyDrink = new CombatItem("Energy", "Energy Item. Buzzing!", 0, 20, 0, nEnergyDrink, "energy60.png");
         Noodles = new CombatItem("Health", "Health Item. Instant Goodness", 10, 0, 0, nNoodles, "Noodles.png");
         Sandwich = new CombatItem("Health", "Health Item. Needs more mayo!", 20, 0, 0, nSandwich, "sandwichIcon.png");
-        IED = new CombatItem("Attack", "Damaging Item. Improvised Explosive Device.", 0, 0, 10, nIED, "dynamite.png");
+        IED = new CombatItem("Attack", "Damaging Item. Improvised Explosive Device. Home Made!", 0, 0, 10, nIED, "dynamite.png");
+
 
         /**
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity, Image)
          */
+        Equipment Tsquare, Scarf, Macshield, Bookshield;
         Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, nTsquare, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, nScarf, "Scarf.png");
         Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, nMacshield, "macShieldIcon.png");
@@ -258,5 +244,14 @@ public class Inventory
         MyEquipment.put("Scarf", Scarf);
         MyEquipment.put("Macshield", Macshield);
         MyEquipment.put("Bookshield", Bookshield);
+
+        if(!nEquipWep.equals("None"))
+        {
+            player.equipItem(nEquipWep);
+        }
+        if(!nEquipArm.equals("None"))
+        {
+            player.equipItem(nEquipArm);
+        }
     }
 }

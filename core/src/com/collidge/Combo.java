@@ -111,6 +111,10 @@ public class Combo
         }
         if(comboEnded)
         {
+            if(!pop1.isPlaying())
+            {
+                pop1.play();
+            }
             popUps.clear();
         }
 
@@ -328,7 +332,7 @@ public class Combo
         {
             skill+=1.0/tapTotal;
 
-            pop1.play();
+
 
 
         }
@@ -385,11 +389,7 @@ public class Combo
                 skill *= 2;
                 skill = 1 - skill;
                 skill = skill * skill * skill * skill;
-                if (skill > .8)
-                {
 
-                    pop1.play();
-                }
                 comboEnded = true;
                 updateRating();
                 timer=0;

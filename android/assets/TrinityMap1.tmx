@@ -138,7 +138,7 @@
  </layer>
  <layer name="randoms_layer" width="36" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt17EJgDAQQFFBcAshCwi6im6gIziCixuwUIs0IhrxvSrFFT9wzRUF/Mdcvl1wttzUEzL7FwDwHXW1v0OVnntKc2hoM+gBNm4O7tbHnRoy2qsxtkyJni6jTgAAAACuWQFpeQOf
+   eJzt17EJgDAQBdCAkC2ELCDoJjqLI7i4goVapBNN9L3qiiv+wW8uBPiPuXk7wdVyU55U2F0AQD3aeMwp5vee0p0y9AXkAXZ+Dr5u3Do+ZXo+6D8AAABA9VZ8DgLQ
   </data>
  </layer>
  <layer name="tower1" width="36" height="66">

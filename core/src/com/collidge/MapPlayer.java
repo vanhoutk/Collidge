@@ -23,8 +23,7 @@ public class MapPlayer extends Sprite
     private float speed = 60*2;
     private TiledMapTileLayer collisionlayer;
     public boolean withinOneOfNpc;
-    private static int npclistsize;
-    Play play;
+    private boolean [] freeDirections = new boolean[4];
 
     long startTime;
     long currentTime;
@@ -150,7 +149,7 @@ public class MapPlayer extends Sprite
         float oldX = getX(), oldY = getY(), tilewidth = collisionlayer.getTileWidth(), tileheight = collisionlayer.getTileHeight();
         boolean collisionX = false, collisionY = false, fight = false;
 
-        setX(getX() + velocity.x*delta);
+
 
         if(velocity.x < 0)
         {
@@ -172,8 +171,6 @@ public class MapPlayer extends Sprite
             setX(oldX);
             velocity.x = 0;
         }
-
-        setY(getY() + velocity.y*delta);
 
         if(velocity.y < 0)
         {
@@ -255,9 +252,12 @@ public class MapPlayer extends Sprite
         else stopped = false;
 
         withinOneOfNpc = false;
+        for (int i = 0; i < 4; i++) {
+            freeDirections[i] = true;
+        }
         for (int i = 0; i < npcList.size(); i++) {
             NPC npc = npcList.get(i);
-            int npcTileX = (int) ((npc.getX() +getWidth() / 2) / tilewidth);
+            int npcTileX = (int) ((npc.getX() + getWidth() / 2) / tilewidth);
             int npcTileY = (int)((npc.getY() + getHeight() / 2)/ tileheight);
             int playerTileX = (int) ((getX() + getWidth() / 2)/ tilewidth);
             int playerTileY = (int) ((getY() + getHeight() / 2)/ tileheight);
@@ -265,18 +265,54 @@ public class MapPlayer extends Sprite
             int differenceY = npcTileY - playerTileY;
 
             if(differenceY == 0 && Math.abs(differenceX) == 1) {
+                float distance = Math.abs(npc.getX() - getX());
+                if (differenceX == 1 && distance <= 32) {
+                    freeDirections[RIGHT] = false;
+                }
+                if (differenceX == -1  && distance <= 32) {
+                    freeDirections[LEFT] = false;
+                }
                 withinOneOfNpc = true;
-                stopMovement();
-                //move = false
-                //and if move == false after all this. Set velocity.x to 0;
-                //then setX of player setX(getX() + velocity.x*delta);
-                //after all this instead of the first thing in this function
             }
-            else if (differenceX == 0 && Math.abs(differenceY) == 1) {
+            if (differenceX == 0 && Math.abs(differenceY) == 1) {
+                float distance = Math.abs(npc.getY() - getY());
+                if (differenceY == 1  && distance <= 32) {
+                    freeDirections[UP] = false;
+                }
+                if (differenceY == -1  && distance <= 32) {
+                    freeDirections[DOWN] = false;
+                }
                 withinOneOfNpc = true;
-                stopMovement();
             }
         }
+
+        if(!freeDirections[direction]) {
+            if (direction == LEFT)
+            {
+                velocity.x = 0;
+                velocity.y = 0;
+            }
+            else if (direction == RIGHT)
+            {
+                velocity.x = 0;
+                velocity.y = 0;
+            }
+            else if (direction == DOWN)
+            {
+                velocity.x = 0;
+                velocity.y = 0;
+            }
+            else
+            {
+                velocity.x = 0;
+                velocity.y = 0;
+            }
+        }
+
+        //System.out.println("Up = " + freeDirections[UP] + "  Down = " + freeDirections[DOWN] + " Right = " + freeDirections[RIGHT] + " Left = " + freeDirections[LEFT]);
+
+        setX(getX() + velocity.x*delta);
+        setY(getY() + velocity.y*delta);
     }
 
     public TiledMapTileLayer getCollisionLayer()
@@ -284,29 +320,38 @@ public class MapPlayer extends Sprite
         return collisionlayer;
     }
 
-
     private void moveUp()
     {
-        velocity.y = speed;
-        velocity.x = 0;
+        if(freeDirections[UP]) {
+            velocity.y = speed;
+            velocity.x = 0;
+        }
     }
+
     private void moveDown()
     {
-        velocity.y = -speed;
-        velocity.x = 0;
+        if(freeDirections[DOWN]) {
+            velocity.y = -speed;
+            velocity.x = 0;
+        }
     }
+
     private void moveLeft()
     {
-
-        velocity.x = -speed;
-        velocity.y = 0;
-
+        if(freeDirections[LEFT]) {
+            velocity.x = -speed;
+            velocity.y = 0;
+        }
     }
+
     private void moveRight()
     {
-        velocity.x = speed;
-        velocity.y = 0;
+        if(freeDirections[RIGHT]) {
+            velocity.x = speed;
+            velocity.y = 0;
+        }
     }
+
     private void stopMovement()
     {
         velocity.y = 0;
@@ -318,6 +363,39 @@ public class MapPlayer extends Sprite
         float xForCalculation = ((screenX-(width/2))/(float)width);
         float yForCalculation = ((-(screenY-(height/2)))/(float)height);
         getDirection(xForCalculation, yForCalculation);
+
+        withinOneOfNpc = false;
+        for (int i = 0; i < 4; i++) {
+            freeDirections[i] = true;
+        }
+        for (int i = 0; i < npcList.size(); i++) {
+            NPC npc = npcList.get(i);
+            int npcTileX = (int) ((npc.getX() +getWidth() / 2) / collisionlayer.getTileWidth());
+            int npcTileY = (int)((npc.getY() + getHeight() / 2)/ collisionlayer.getTileHeight());
+            int playerTileX = (int) ((getX() + getWidth() / 2)/ collisionlayer.getTileWidth());
+            int playerTileY = (int) ((getY() + getHeight() / 2)/ collisionlayer.getTileHeight());
+            int differenceX = npcTileX - playerTileX;
+            int differenceY = npcTileY - playerTileY;
+
+            if(differenceY == 0 && Math.abs(differenceX) == 1) {
+                if (differenceX == 1) {
+                    freeDirections[RIGHT] = false;
+                }
+                if (differenceX == -1) {
+                    freeDirections[LEFT] = false;
+                }
+                withinOneOfNpc = true;
+            }
+            if (differenceX == 0 && Math.abs(differenceY) == 1) {
+                if (differenceY == 1) {
+                    freeDirections[UP] = false;
+                }
+                if (differenceY == -1) {
+                    freeDirections[DOWN] = false;
+                }
+                withinOneOfNpc = true;
+            }
+        }
 
         /**
          * Kris
