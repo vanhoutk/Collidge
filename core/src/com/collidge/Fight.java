@@ -41,6 +41,10 @@ public class Fight extends GameState
     SpriteBatch batch;
     Texture texture ;
     Sprite healthBar, healthBackground, EnergyIcon, portrait;
+    Sprite tutorialPopUp;
+    Boolean tutorialActive = true;
+    Boolean tutorial2Active = false;
+    Boolean firstTime = true;
     Sprite menuContainer;
     Sprite selector;
     Sprite player;
@@ -141,6 +145,8 @@ public class Fight extends GameState
         healthBar = new Sprite(texture);
         texture = new Texture("barHorizontal_red_mid.png");
         healthBackground = new Sprite(texture);
+        texture = new Texture("tooltipBackground.png");
+        tutorialPopUp = new Sprite(texture);
         texture = new Texture("EnemySelect.png");
         selector = new Sprite(texture);
         texture = new Texture("blue_circle.png");
@@ -229,13 +235,8 @@ public class Fight extends GameState
         batch.begin();
 
         //tutorial system for first fight - TODO
-        if (playr.getLevel() == 1){
-
-
-        }
-
-
         background.draw(batch);
+
         portrait.setPosition(0,screenHeight-((int)(portrait.getHeight()*.9)+battleFont.getLineHeight()));
 //draws green health bar and red background. Background size is based on max health and doesn't change- at full hp the bar appears fully green.
         healthBar.setPosition(screenWidth / 30 + (screenWidth / 50), portrait.getY()+(int)(9*portrait.getHeight()/20.0));
@@ -392,6 +393,33 @@ enemies[i].animation.pause();
         {
             fMenu.draw(batch,screenWidth,screenHeight);
         }
+
+        if (tutorialActive == true && playr.getLevel() < 2) {
+            if (fMenu.menuStyle2) {
+                tutorialPopUp.setPosition(screenWidth / 8, screenHeight / 8);
+                tutorialPopUp.setSize(screenWidth / 2f, screenHeight / 3f);
+                tutorialPopUp.draw(batch);
+                battleFont.drawWrapped(batch, "Tap a menu icon to select an action. Swipe upwards on an icon to display the tooltip of an item or attack.", tutorialPopUp.getX(), tutorialPopUp.getY() + tutorialPopUp.getHeight(), tutorialPopUp.getWidth(), BitmapFont.HAlignment.CENTER);
+            }
+            else {
+                tutorialPopUp.setPosition(screenWidth / 8, screenHeight / 12);
+                tutorialPopUp.setSize(screenWidth / 2f, 4*screenHeight / 9f);
+                tutorialPopUp.draw(batch);
+                battleFont.drawWrapped(batch, "Swipe left or right to navigate through the menu. Tap the icon in the centre to select that action. Swipe upwards to display the tooltip of an item or attack.", tutorialPopUp.getX(), tutorialPopUp.getY()  + tutorialPopUp.getHeight(), tutorialPopUp.getWidth(), BitmapFont.HAlignment.CENTER);
+            }
+            waitingForTouch = true;
+        }
+
+        if (tutorial2Active == true) {
+            tutorialPopUp.setPosition(screenWidth / 8, screenHeight / 30);
+            tutorialPopUp.setSize(screenWidth / 2f, 2*screenHeight / 3f);
+            tutorialPopUp.draw(batch);
+            battleFont.drawWrapped(batch,
+                    "Tap an enemy to target them. When you use an attack you will have to perform a combo and the damage of your attack will depend on how well you do. After you attack, it's the enemies' turn and you'll have to defend right away!",
+                    tutorialPopUp.getX(), tutorialPopUp.getY() + tutorialPopUp.getHeight(), tutorialPopUp.getWidth(), BitmapFont.HAlignment.CENTER);
+            waitingForTouch = true;
+        }
+
         if(combo.comboing) //if in combo phase
         {
             combo.draw(batch);
@@ -470,41 +498,35 @@ enemies[i].animation.pause();
     //-------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------
     @Override
-    public boolean tap(float x, float y, int count, int button)
-    {
+    public boolean tap(float x, float y, int count, int button) {
 //if selecting an action from the fight menu. Actions have an ID and a type.
-        if(waitingForTouch)
-        {
-            if (!fMenu.actionSelected)
-            {
+        if (waitingForTouch) {
+            if (tutorialActive) {
+                tutorialActive = false;
+            } else if (!fMenu.actionSelected) {
 //tap the menu to select an action
                 fMenu.tap(x, y);
-                if (fMenu.actionSelected)
-                {
+                if (fMenu.actionSelected) {
                     ActionId = fMenu.getActionId();
                     ActionType = fMenu.getActionType();
                     playerTurn(playr, enemies);
                 }
             }
 //targeting an enemy after selecting an action
-            else if (targeting)
-            {
+            else if (targeting) {
+                tutorial2Active = false;
 /*for (int i = 0; i < enemies.length; i++)
 {
 // if (x> screenWidth/2) { //arbitrary x values at the moment, vaguely at the right side of the screen
 // if (y < 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2))
 // && y > 9 * screenHeight / 10 - (int) (((enemyCount - (i + 1)) / (double) (enemyCount)) * (screenHeight / 2)) - enemies[0].height) {
 */
-                if (y < targetReticule.getY() && y > targetReticule.getY() - targetReticule.getHeight())
-                {
-                    if (x < targetReticule.getX() && x > targetReticule.getX() - targetReticule.getWidth())
-                    {
+                if (y < targetReticule.getY() && y > targetReticule.getY() - targetReticule.getHeight()) {
+                    if (x < targetReticule.getX() && x > targetReticule.getX() - targetReticule.getWidth()) {
                         targetPicker.Left();
-                    } else if (x > targetReticule.getX() + targetReticule.getWidth() && x < targetReticule.getX() + (targetReticule.getWidth() * 2))
-                    {
+                    } else if (x > targetReticule.getX() + targetReticule.getWidth() && x < targetReticule.getX() + (targetReticule.getWidth() * 2)) {
                         targetPicker.Right();
-                    } else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth())
-                    {
+                    } else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth()) {
                         targetPicker.Select();
                     }
                     if (targetPicker.targetSelected) //move on to the next part of combat after a target is selected
@@ -513,23 +535,16 @@ enemies[i].animation.pause();
                         playerTurnPart2();
                         return true;
                     }
-                }
-                else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth() && y > targetReticule.getY() && y < targetReticule.getY() + targetReticule.getHeight())
-                {
+                } else if (x > targetReticule.getX() && x < targetReticule.getX() + targetReticule.getWidth() && y > targetReticule.getY() && y < targetReticule.getY() + targetReticule.getHeight()) {
                     targeting = false;
                     waitingForTouch = true;
                     fMenu.actionSelected = false;
                 }
-                if(x>enemyX[0]&&x<enemyX[enemyX.length-1]+enemies[enemyX.length-1].width)
-                {
-                    for(int i=0;i<enemyX.length;i++)
-                    {
-                        if(x>enemyX[i]&&x<enemyX[i]+enemies[i].width)
-                        {
-                            if(!enemies[i].getDead())
-                            {
-                                if(screenHeight-y>enemyY[i]&&screenHeight-y<enemyY[i]+enemies[i].height)
-                                {
+                if (x > enemyX[0] && x < enemyX[enemyX.length - 1] + enemies[enemyX.length - 1].width) {
+                    for (int i = 0; i < enemyX.length; i++) {
+                        if (x > enemyX[i] && x < enemyX[i] + enemies[i].width) {
+                            if (!enemies[i].getDead()) {
+                                if (screenHeight - y > enemyY[i] && screenHeight - y < enemyY[i] + enemies[i].height) {
                                     targetPicker.goTo(i);
                                 }
                             }
@@ -548,8 +563,10 @@ enemies[i].animation.pause();
                 combo.tap((int) x, (int) y);
             }
         }
-        return false;
+
+            return false;
     }
+
     private void playerTurn(Player player,Enemy[] monsters)
     {
         PlayerDam=0;
@@ -583,6 +600,10 @@ enemies[i].animation.pause();
         }
         if(ActionType==1) //attack
         {
+            if (firstTime && playr.getLevel() < 2) {
+                tutorial2Active = true;
+                firstTime = false;
+            }
             targetPicker.reset(enemies, player.attackRange(fMenu.getMoveString(ActionType, ActionId)));
             targeting = true;
             return;

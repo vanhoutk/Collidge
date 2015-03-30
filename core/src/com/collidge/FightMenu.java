@@ -101,7 +101,7 @@ public class FightMenu
         selectedIcon = iconToSelect;
         //selectedIcon=currentIcon;
         //back functionality
-        if(menu[currentMenu][currentIcon]==2)
+        if(menu[currentMenu][iconToSelect]==2)
         {
             for(int i=previousMenus.length-1;i>=0;i--)
             {
@@ -205,6 +205,10 @@ public class FightMenu
             icon2=currentIcon+1;
             icon3=currentIcon+2;
             icon4=currentIcon+3;
+
+            if (currentIcon < 0) {
+                currentIcon = (menu[0].length - overflow) - 1;
+            }
 
             currentIcon%=(menu[currentMenu].length-overflow);
             icon2%=(menu[currentMenu].length-overflow);

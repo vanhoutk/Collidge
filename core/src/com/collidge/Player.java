@@ -192,8 +192,8 @@ public class Player
     //constructor for combat moves is multiplier, energy cost, aoe, image
     CombatMove Bash = new CombatMove(1, 0, 0, "Bash", "bash.png");
     CombatMove Slam = new CombatMove(2, 5, 0, "Slam", "slam.png");
-    CombatMove Blast = new CombatMove(1, 15, 100, "Blast", "blast.png");
-    CombatMove Spirit = new CombatMove(2, 40, 100, "Spirit", "spirit.png");
+    CombatMove Blast = new CombatMove(3, 15, 100, "Blast", "blast.png");
+    CombatMove Spirit = new CombatMove(4, 40, 100, "Spirit", "spirit.png");
     CombatMove Smash = new CombatMove(5, 60, 0, "Smash", "smash.png");
 
     private HashMap<String, CombatMove> StringToCombatMove = new HashMap();
