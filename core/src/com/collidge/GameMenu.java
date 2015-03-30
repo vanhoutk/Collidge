@@ -41,7 +41,7 @@ public class GameMenu extends GameState
 
     long timer=TimeUtils.millis();
     Player player;
-    boolean statsPressed=false, settingsPressed=false, savePressed=false, muted;
+    boolean statsPressed=false, settingsPressed=false, savePressed=false, muted,menuLock;
     int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0, musicPre, volPre;
     SpriteBatch batch;
     Texture texture, background;
@@ -55,6 +55,17 @@ public class GameMenu extends GameState
         super(gsm);
         player = plr;
     }
+    GameMenu(GameStateManager gsm, Player plr,String menu)
+    {
+        super(gsm);
+        player = plr;
+        if(menu.equals("settings"))
+        {
+            settingsPressed=true;
+            menuLock=true;
+        }
+    }
+
 
     public void initialize()
     {
@@ -500,7 +511,12 @@ public class GameMenu extends GameState
                 defcounter = 0;
                 intcounter = 0;
                 XPcounter=0;
+                if(menuLock)
+                {
+                    gsm.closeMenu();
+                }
             }
+
         }
 
         else {

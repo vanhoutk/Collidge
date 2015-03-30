@@ -112,7 +112,7 @@ public class OpenScreen extends GameState{
             gsm.changeState(1);
         }
         else if (x > 5 * horSize && x < 6 * horSize && y > screenHeight / 2) {
-            gsm.openMenu(plr);
+            gsm.openMenu(plr,"settings");
         }
         return false;
     }

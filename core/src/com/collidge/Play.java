@@ -45,6 +45,7 @@ public class Play extends GameState {
     long hours;
     private SpriteBatch  batch;
     float nightOpacity,twilightOpacity;
+    boolean demoMode;
 
     Play(GameStateManager gsm)
     {
@@ -115,6 +116,7 @@ public class Play extends GameState {
     @Override
     public void initialize()
     {
+        demoMode=gsm.demoMode;
         time = System.currentTimeMillis();
         seconds = (long)(time / 1000);
         minutes = seconds / 60;
@@ -331,8 +333,15 @@ public class Play extends GameState {
         seconds = (long)(time / 1000);
         minutes = seconds / 60;
         hours = minutes / 60;
-        hours%=24;
-        //hours=(seconds)%24;
+        if(!demoMode)
+        {
+            hours %= 24;
+        }
+        else
+        {
+            hours=(seconds)%24;
+        }
+
         minutes%=60;
         seconds%=60;
         //System.out.println(hours+"------"+twilightOpacity);

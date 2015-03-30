@@ -15,6 +15,7 @@ public class GameStateManager
 {
     //ArrayList (dynamic list) which holds every state
     private ArrayList<GameState> gameStates;
+    public boolean demoMode=false;
     //There can only be one current state
     public int currentState, previousState;
     public Player user;
@@ -142,6 +143,12 @@ public class GameStateManager
     public void openMenu(Player player)
     {
         gameStates.add(new GameMenu(this, player));
+        changeState(gameStates.size()-1);
+    }
+
+    public void openMenu(Player player,String menu)
+    {
+        gameStates.add(new GameMenu(this, player,menu));
         changeState(gameStates.size()-1);
     }
 

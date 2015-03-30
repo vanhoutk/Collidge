@@ -116,7 +116,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
             gsm.draw();
             textBox.draw();
             batch.begin();
-            font.draw(batch,"FPS: "+Gdx.graphics.getFramesPerSecond()+"",0,font.getLineHeight());
+            if(gsm.demoMode)
+            {
+                font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond() + "", 0, font.getLineHeight());
+            }
 
             if(backKey)
             {
