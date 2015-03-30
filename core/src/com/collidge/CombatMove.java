@@ -17,7 +17,12 @@ public class CombatMove {
         attackMultiplier = multiplier;
         attackEnergyCost = energyCost;
         attackAOE = AOE;
-        attackDesc = "Deals " + attackMultiplier + " Base Damage, " + "Costs " + attackEnergyCost + " Energy";
+        if (attackAOE > 1){
+            attackDesc = "Deals " + attackMultiplier + " Base AOE Damage, " + "Costs " + attackEnergyCost + " Energy";
+        }
+        else {
+            attackDesc = "Deals " + attackMultiplier + " Base Damage, " + "Costs " + attackEnergyCost + " Energy";
+        }
         attackName = name;
         attackImage = image;
     }
