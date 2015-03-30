@@ -44,7 +44,7 @@ public class TargetPicker
     {
 
         currentTarget++;
-        if(currentTarget>=monsters.length||monsters[currentTarget].getDead())
+        if(currentTarget >=monsters.length||monsters[currentTarget].getDead())
         {
             if(currentTarget>=monsters.length)
             {

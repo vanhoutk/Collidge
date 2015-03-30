@@ -95,6 +95,71 @@ public class FightMenu
         }*/
 
     }
+
+    FightMenu(Player player, boolean menu2)
+    {
+
+        menuStyle2 = menu2;
+
+        battleFont = new BitmapFont();
+
+        Texture texture = new Texture("back3.png");
+        backIcon = new Sprite(texture);
+
+        texture = new Texture("fightIcon.png");
+        fightIcon = new Sprite(texture);
+
+        texture = new Texture("bagicon.png");
+        itemIcon = new Sprite(texture);
+
+        texture = new Texture("flee.png");
+        fleeIcon = new Sprite(texture);
+
+        texture = new Texture("battery-pack2.png");
+        rechargeIcon = new Sprite(texture);
+
+        texture = new Texture("tooltipBackground.png");
+        tooltipBackground = new Sprite(texture);
+
+
+
+        previousMenus=new int[3];   //array to store previous menus (for use with back button)
+        previousMenus[0]=50;
+        previousMenus[1]=50;
+        previousMenus[2]=50;
+
+        menu=new int[7][50];        //menu array to store ids for menu
+        menuWords=new String[7][50];    //string array, to store the word values for the menu
+        menuSprites=new Sprite[7][50];
+        attackDesc = new String[7][50];
+        currentMenu=0;              //id for the current menu being shown. basically menu[currentMenu]
+        fillMenus(player);          //populate menus (both word and id) with values
+        currentIcon=0;              //current item being pointed at. basically menu[][currentIcon]
+        overflow=getMenuOverflow(); //number of empty items on the menus, used for wrap around
+        validate();
+        /*for(int  i=0;i<menu.length;i++)
+        {
+            for(int j=0;j<menu[0].length;j++)
+            {
+                System.out.print(menu[i][j]);
+            }
+            System.out.println();
+        }
+        for(int  i=0;i<menu.length;i++)
+        {
+            for(int j=0;j<menu[0].length;j++)
+            {
+                if(menuWords[i][j]!=null)
+                {
+                    System.out.print(menuWords[i][j] + ", ");
+                }
+            }
+            System.out.println();
+        }*/
+
+    }
+
+
     private void Select(int iconToSelect)
     {
         selectedMenu=currentMenu;

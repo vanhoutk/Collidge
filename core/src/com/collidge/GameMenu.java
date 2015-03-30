@@ -41,6 +41,7 @@ public class GameMenu extends GameState
 
     long timer=TimeUtils.millis();
     Player player;
+    PopUpText popUp= new PopUpText();
 
     boolean statsPressed=false, settingsPressed=false, savePressed=false, muted, toggleTouch, toggleMenu,menuLock;
     int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0, musicPre, volPre;
@@ -514,6 +515,7 @@ public class GameMenu extends GameState
             Font.draw(batch, "CANCEL", screenWidth*6/10 , screenHeight*4/10);
         }
 
+        popUp.draw(batch);
         batch.end();
     }
 
@@ -692,11 +694,30 @@ public class GameMenu extends GameState
                     gsm.setMusic(0);
                     gsm.backgroundMus.setVolume(0);
                 }
+                if(count==5)
+                {
+                    if(gsm.demoMode)
+                    {
+                        gsm.demoMode = false;
+                        popUp.Add("Demo Mode Deactivated",.35f,.5f);
+                    }
+                    else
+                    {
+                        gsm.demoMode=true;
+                        popUp.Add("Demo Mode Activated",.35f,.5f,Color.BLUE);
+                    }
+
+                }
 
             }
 
         }
 
+        else if(statsPressed&&x<Gdx.graphics.getWidth()*4/5&&y>Gdx.graphics.getHeight()*4/5&&gsm.demoMode)
+        {
+            player.addExperience(player.getExpTarget());
+            gsm.levelUpState(player);
+        }
 
         if (savePressed)
         {
@@ -759,7 +780,7 @@ public class GameMenu extends GameState
 
     public void update()
     {
-
+        popUp.update();
     }
 
     /**
