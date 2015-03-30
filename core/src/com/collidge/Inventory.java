@@ -172,7 +172,7 @@ public class Inventory
         }
     }
 
-    void loadInventory(Player player)
+    void loadInventory(Player player, boolean load)
     {
         /**
          * Deirdre
@@ -182,7 +182,7 @@ public class Inventory
         int nTsquare = 1, nScarf = 1, nMacshield = 1, nBookshield = 1;
         String nEquipWep = "None", nEquipArm = "None";
 
-        if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists())
+        if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists() && load)
         {
             try
             {

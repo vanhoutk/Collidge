@@ -238,12 +238,12 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this);
+        items.loadInventory(this, false);
         updateStats();
         healAll();
     }
 
-    Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
+    Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP, boolean load)
     {
         player_name = "Mr Man";
         level=Level;
@@ -263,12 +263,12 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this);
+        items.loadInventory(this, load);
         updateStats();
         healAll();
     }
 
-    Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
+    Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP, boolean load)
     {
         player_name = name;
         level=Level;
@@ -285,7 +285,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this);
+        items.loadInventory(this, load);
         updateStats();
         healAll();
     }

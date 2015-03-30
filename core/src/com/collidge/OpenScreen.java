@@ -105,11 +105,11 @@ public class OpenScreen extends GameState{
     public boolean tap(float x, float y, int count, int button){
         if(x > horSize && x < 2*horSize && y > screenHeight/2){
             //new game pressed
-            //TODO: (From Kris - "You should implement something here, even if it's just the changeState below")
-            Gdx.app.exit();
+            gsm.setUpPlayer(1, 0, 0, 0, 0, 0, 0, false);
+            gsm.openMap();
         }
         else if(x > 3*horSize && x < 4*horSize && y > screenHeight/2){
-            gsm.changeState(1);
+            gsm.openMap();
         }
         else if (x > 5 * horSize && x < 6 * horSize && y > screenHeight / 2) {
             gsm.openMenu(plr,"settings");
