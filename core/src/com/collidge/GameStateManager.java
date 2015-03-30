@@ -36,8 +36,6 @@ public class GameStateManager
     //Constructor creates all states and adds them to the list. Sets current state and loads it.
     public GameStateManager()
     {
-
-
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
         GameState state0 = new OpenScreen(this);
@@ -54,7 +52,11 @@ public class GameStateManager
 
     public GameStateManager(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP)
     {
+
         user=new Player(Level, ATK, DEF, INT,HP, EN, EXP, true);
+        advancedMenu = true;
+        touchTargeting = true;
+
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
         GameState state0 = new OpenScreen(this);
@@ -197,11 +199,11 @@ public class GameStateManager
     }
     public void setMenuToggle()
     {
-        if (advancedMenu == true)
+        if (advancedMenu == false)
         {
-            advancedMenu=false;
+            advancedMenu=true;
         }
-        else {advancedMenu=true;}
+        else {advancedMenu=false;}
     }
 
 
