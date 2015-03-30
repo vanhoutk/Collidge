@@ -16,8 +16,8 @@ import com.badlogic.gdx.utils.Timer;
 */
 public class Fight extends GameState
 {
-    Music fightMusic = Gdx.audio.newMusic(Gdx.files.internal("mymusic2.mp3"));
 
+    public Music fightMusic;
 
     private double PlayerDam;
     Player playr;
@@ -108,6 +108,7 @@ public class Fight extends GameState
     @Override
     public void initialize()
     {
+        fightMusic = Gdx.audio.newMusic(Gdx.files.internal("mymusic2.mp3"));
         fightMusic.play();
         fightMusic.setVolume((float)gsm.musicLevel/4);
 
@@ -820,7 +821,7 @@ enemies[i].animation.pause();
         damage[0]=0;
         int[]ratings = combo.num_ratings;
         combo.delete();
-        fightMusic.pause();
+        fightMusic.dispose();
         Timer.instance().clear();
         Timer.instance().stop();
         batch.dispose();
