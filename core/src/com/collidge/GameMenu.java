@@ -397,6 +397,8 @@ public class GameMenu extends GameState
         {
             volumeLevel = gsm.getVolume();
             musicLevel = gsm.getMusic();
+            toggleTouch = gsm.getTouchToggle();
+            toggleMenu = gsm.getMenuToggle();
 
             if(toggleTouch==true)
             {
@@ -576,7 +578,7 @@ public class GameMenu extends GameState
         }
         if (settingsPressed)
         {
-            if (y < screenHeight*2/10 + toggleOff.getHeight() && y > screenHeight*2/10)
+            if (y < screenHeight*2/10 + toggleOff.getHeight()/2 && y > screenHeight*2/10 - toggleOff.getHeight()/2)
             {
                 if(toggleTouch == false)
                 {
@@ -584,8 +586,9 @@ public class GameMenu extends GameState
                 }
                 else{toggleTouch=false;}
 
+                gsm.setTouchToggle();
             }
-            if (y < screenHeight*3/10 + toggleOff.getHeight() && y > screenHeight*3/10)
+            if (y < screenHeight*3/10 + toggleOff.getHeight()/2 && y > screenHeight*3/10 - toggleOff.getHeight()/2)
             {
                 if(toggleMenu == false)
                 {
@@ -593,6 +596,7 @@ public class GameMenu extends GameState
                 }
                 else{toggleMenu=false;}
 
+                gsm.setMenuToggle();
             }
 
 
