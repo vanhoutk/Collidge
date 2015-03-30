@@ -28,7 +28,7 @@ public class FightMenu
     private int selectedMenu;
     private int selectedIcon;
     private int currentMenu;
-    public Boolean menuStyle2 = true;
+    public Boolean menuStyle2 = false;
     public boolean actionSelected;
     public boolean tooltipSelected=false;
     private BitmapFont battleFont;

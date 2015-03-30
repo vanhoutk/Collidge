@@ -509,7 +509,9 @@ public class GameMenu extends GameState
             //batch.draw(save, Gdx.graphics.getWidth()/2 - save.getWidth()/2 , Gdx.graphics.getHeight()*3/4 - stats.getWidth());
             Font.setColor(Color.WHITE);
             Font.setScale(screenWidth / 400f, screenHeight / 400f);
-            Font.draw(batch, "GAME SAVED", screenWidth*2/5 , screenHeight/2);
+            Font.draw(batch, "SAVE YOUR PROGRESS?", screenWidth/4 , screenHeight*3/4);
+            Font.draw(batch, "SAVE", screenWidth*2/10 , screenHeight*4/10);
+            Font.draw(batch, "CANCEL", screenWidth*6/10 , screenHeight*4/10);
         }
 
         batch.end();
@@ -580,15 +582,7 @@ public class GameMenu extends GameState
                 }
                 if (x > save.getX() && x < save.getX() + save.getWidth()) {
                     savePressed = true;
-                    /**
-                     * Kris
-                     * Added to call the save stats method
-                     */
-                    saveStats();
-                    /**
-                     * Deirdre: Save Inventory..
-                     */
-                    saveInventory();
+                    System.out.println("shit is trues");
                 }
             }
 
@@ -702,6 +696,28 @@ public class GameMenu extends GameState
             }
 
         }
+
+
+        if (savePressed)
+        {
+
+            /*
+            if (y < screenHeight*4/5)
+            {
+                if (x < screenWidth/4)
+                {
+                    saveStats();
+                    saveInventory();
+                }
+                if (x > screenWidth/4)
+                {
+                    savePressed=false;
+                }
+            }
+            */
+
+        }
+
 
         return true;
     }
