@@ -231,8 +231,8 @@ public class Inventory
         Equipment Tsquare, Scarf, Macshield, Bookshield;
         Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, nTsquare, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, nScarf, "Scarf.png");
-        Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, nMacshield, "macShieldIcon.png");
-        Bookshield = new Equipment("Armour", "Armour. +5 Defence. Is there a fine if it's damaged on return?", 0, 0, 5, 0, nBookshield, "bookShieldIcon.png");
+        Macshield = new Equipment("Armour", "Armour. +2 Defence. Overpriced shield!", 0, 0, 2, 0, nMacshield, "macShieldIcon.png");
+        Bookshield = new Equipment("Armour", "Armour. +1 Defence. Is there a fine if it's damaged on return?", 0, 0, 1, 0, nBookshield, "bookShieldIcon.png");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);
