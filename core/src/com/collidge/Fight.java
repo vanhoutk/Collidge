@@ -182,7 +182,7 @@ public class Fight extends GameState
         backArrow.setOriginCenter();
         testAnim = new com.collidge.Animation(region[0],.2f);
 //calls fightMenu class
-        fMenu=new FightMenu(playr, gsm.getMenuToggle());
+        fMenu=new FightMenu(playr, gsm.getMenuToggle(),gsm.demoMode);
         waitingForTouch=true;
         battleFont = new BitmapFont();
         Timer.instance().start();
@@ -589,6 +589,12 @@ enemies[i].animation.pause();
                 endFight();
                 return;
             }
+            else if(fMenu.getMoveString(ActionType,ActionId).equals("DIE"))
+            {
+                damage[0]=9999999;
+                damageNums.Add("999999999",.1f,.4f);
+                return;
+            }
         }
         if(ActionType==3) //use an item
         {
@@ -794,7 +800,10 @@ enemies[i].animation.pause();
 // System.out.println("Damage by monster " + i + " resisted");
                 if(combo.skill<.9)
                 {
-                    damage[0]++;
+                    if(!gsm.demoMode)
+                    {
+                        damage[0]++;
+                    }
                     damageNums.Add(String.valueOf(1), .15f, .3f);
                 }
                 else
@@ -804,7 +813,10 @@ enemies[i].animation.pause();
             }
             else if(combo.skill<.95)
             {
-                damage[0]+=dam;
+                if(!gsm.demoMode)
+                {
+                    damage[0] += dam;
+                }
                 damageNums.Add(String.valueOf((int)dam),.15f,.3f);
 //player.changeHealth(-(damage));
 // System.out.println("Enemy " + i + " deals " + (dam) + " damage");

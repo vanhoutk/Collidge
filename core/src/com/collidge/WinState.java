@@ -30,6 +30,8 @@ public class WinState extends GameState {
     int[] ratings;
     Sprite Rating;
     int page_number;
+    int levelUpMarker;
+    PopUpText popUp=new PopUpText();
 
     Music winMusic =  Gdx.audio.newMusic(Gdx.files.internal("winmusic.mp3"));
 
@@ -42,6 +44,11 @@ public class WinState extends GameState {
             {
                 ExpEarned-=0.5;
                 player.addExperience(0.5);
+                if(player.getLevelUpCounter()>levelUpMarker)
+                {
+                    popUp.Add("LEVEL UP!",.4f,.2f,Color.CYAN);
+                }
+
                 /*buffer+=0.1;
                 if(buffer>=1)
                 {
@@ -106,12 +113,12 @@ public class WinState extends GameState {
     @Override
     public  void update()
     {
+        popUp.update();
         Timer.instance().clear();
         Timer.instance().start();
         Timer.instance().postTask(Exp);
         ExpBorder.setSize(screenWidth-(spacing*3f+2f*sqSide), sqSide/2f);
         ExpBar.setSize((((float)player.getTrueExperience()*screenWidth)/((float)player.getExpTarget()*2f))*(13f/14f), sqSide/2f-ExpBorder.getHeight()/14f);
-
     }
 
 
@@ -222,6 +229,7 @@ public class WinState extends GameState {
         Rating.setSize(rank_button.getWidth() / 3f, rank_button.getHeight() / 3f);
         Rating.setPosition(rank_button.getX() + (rank_button.getWidth() - Rating.getWidth()) / 2f, rank_button.getY() + rank_button.getHeight() / 4f);
         Rating.draw(batch);
+        popUp.draw(batch);
         batch.end();
     }
 

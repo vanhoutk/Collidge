@@ -39,10 +39,10 @@ public class GameStateManager
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
         GameState state0 = new OpenScreen(this);
-        GameState state1 = new Play(this);
+        //GameState state1 = new Play(this);
         // GameState state2 = new TestState2(this);
         gameStates.add(state0);
-        gameStates.add(state1);
+        //gameStates.add(state1);
 
         //currentState = MENUSTATE;
 
@@ -52,18 +52,18 @@ public class GameStateManager
 
     public GameStateManager(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP)
     {
-        user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
 
+        user=new Player(Level, ATK, DEF, INT,HP, EN, EXP, true);
         advancedMenu = true;
         touchTargeting = true;
 
         gameStates = new ArrayList<GameState>();
         //use of polymorphoism. Arraylist contains "GameState"s but is full of objects which inherit off GameState.
         GameState state0 = new OpenScreen(this);
-        GameState state1 = new Play(this);
+        //GameState state1 = new Play(this);
         // GameState state2 = new TestState2(this);
         gameStates.add(state0);
-        gameStates.add(state1);
+        //gameStates.add(state1);
 
         //set music
        // backgroundMus = Gdx.audio.newMusic(Gdx.files.internal("backgroundmusic.mp3"));
@@ -76,9 +76,9 @@ public class GameStateManager
         gameStates.get(currentState).initialize();
     }
 
-    public void setUpPlayer(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP)
+    public void setUpPlayer(int Level, int ATK,int DEF, int INT,int HP,int EN,int EXP, boolean load)
     {
-        user=new Player(Level, ATK,DEF, INT,HP, EN,EXP);
+        user=new Player(Level, ATK,DEF, INT,HP, EN,EXP, load);
         gameStates.get(currentState).initialize();
     }
 
@@ -141,6 +141,12 @@ public class GameStateManager
         gameStates.get(gameStates.size()-1).dispose();
         gameStates.remove(gameStates.size()-1);
         setPlayingMus(mapMusic);
+    }
+
+    public void openMap()
+    {
+        gameStates.add(new Play(this));
+        changeState(1);
     }
 
     public void openMenu(Player player)
@@ -257,11 +263,6 @@ public class GameStateManager
     public void startOpenScreen()
     {
         changeState(0);
-    }
-
-    public void endOpenScreen()
-    {
-        changeState(1);
     }
 
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.

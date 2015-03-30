@@ -33,8 +33,8 @@ public class Inventory
      * Dan's edit
      * Added = new HashMap();
      */
-    private HashMap<String, CombatItem> MyCombatInv = new HashMap();
-    private HashMap<String, Equipment> MyEquipment = new HashMap();
+    public HashMap<String, CombatItem> MyCombatInv = new HashMap();
+    public HashMap<String, Equipment> MyEquipment = new HashMap();
 
    /**
      * Dan's edit
@@ -172,7 +172,7 @@ public class Inventory
         }
     }
 
-    void loadInventory(Player player)
+    void loadInventory(Player player, boolean load)
     {
         /**
          * Deirdre
@@ -182,7 +182,7 @@ public class Inventory
         int nTsquare = 1, nScarf = 1, nMacshield = 1, nBookshield = 1;
         String nEquipWep = "None", nEquipArm = "None";
 
-        if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists())
+        if(Gdx.files.isLocalStorageAvailable() && Gdx.files.local("inventory.xml").exists() && load)
         {
             try
             {
@@ -228,11 +228,11 @@ public class Inventory
         /**
          * Constructor for equipment is (Type, Text, Attack, Energy, Defence, Health, Quantity, Image)
          */
-        Equipment Tsquare, Scarf, Macshield, Bookshield;
+        Equipment Tsquare, Scarf, Macshield, Bookshield, Debugger;
         Tsquare = new Equipment("Weapon", "Weapon. +10 Attack. The sign of a true engineer.", 10, 0, 0, 0, nTsquare, "tsquareSmall.png");
         Scarf = new Equipment("Weapon", "Weapon. +5 Attack. McDonalds Manager, here I come!", 5, 0, 0, 0, nScarf, "Scarf.png");
-        Macshield = new Equipment("Armour", "Armour. +10 Defence. Overpriced shield!", 0, 0, 10, 0, nMacshield, "macShieldIcon.png");
-        Bookshield = new Equipment("Armour", "Armour. +5 Defence. Is there a fine if it's damaged on return?", 0, 0, 5, 0, nBookshield, "bookShieldIcon.png");
+        Macshield = new Equipment("Armour", "Armour. +2 Defence. Overpriced shield!", 0, 0, 2, 0, nMacshield, "macShieldIcon.png");
+        Bookshield = new Equipment("Armour", "Armour. +1 Defence. Is there a fine if it's damaged on return?", 0, 0, 1, 0, nBookshield, "bookShieldIcon.png");
 
         MyCombatInv.put("Coffee", Coffee);
         MyCombatInv.put("Energy Drink", EnergyDrink);

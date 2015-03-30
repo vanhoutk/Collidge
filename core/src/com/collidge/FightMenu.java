@@ -18,6 +18,7 @@ public class FightMenu
     private String[][] menuWords;
     private Sprite[][] menuSprites;
     public String Tooltip = "";
+    private boolean demoMode;
     private int[] previousMenus;
     private String[][] attackDesc;
     private int currentIcon, tooltipIcon, aboveIcon,belowIcon,overflow;
@@ -98,8 +99,10 @@ public class FightMenu
 
     }
 
-    FightMenu(Player player, boolean menu2On)
+    FightMenu(Player player, boolean menu2On,boolean demo)
     {
+        demoMode=demo;
+
         menuStyle2 = menu2On;
 
         battleFont = new BitmapFont();
@@ -382,12 +385,12 @@ public class FightMenu
             Texture texture = new Texture(player.getCombatMoves()[j-1].attackImage);
             menuSprites[1][j]= new Sprite(texture);
 
-            if(player.getCombatMoves()[j-1].attackEnergyCost > player.getCurrentEnergy())
+            if(player.getCombatMoves()[j-1].attackEnergyCost > player.getCurrentEnergy()&&!demoMode)
                 {
                     menuWords[1][j]=player.getCombatMoves()[j-1].attackName + "*";
                     attackDesc[1][j]= player.getCombatMoves()[j-1].attackDesc;
                 }
-                else
+            else
 
                 {
                     menuWords[1][j] = player.getCombatMoves()[j-1].attackName;
@@ -419,6 +422,12 @@ public class FightMenu
         menuWords[2][2]="Flee";
         menuSprites[2][2]=fleeIcon;
         attackDesc[2][2] = "Run away & end the fight";
+        if(demoMode)
+        {
+            menuWords[2][3]="DIE";
+            menuSprites[2][3]=menuSprites[1][3];
+            attackDesc[2][3] = "Kill Self";
+        }
     }
 
     public void draw(SpriteBatch batch, int screenWidth, int screenHeight) {

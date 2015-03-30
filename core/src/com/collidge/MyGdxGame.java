@@ -246,23 +246,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
 
     @Override
     public boolean keyUp(int keycode) {
-        if(keycode == Input.Keys.BACK||keycode==Input.Keys.ESCAPE)
-        {
-            if(backKey == true && backDown)
-            {
-                if(gsm.currentState == 0)
-                {
-                    quit = true;
-                    return true;
-                }
-                else
-                {
-                    gsm.startOpenScreen();
-                    return true;
-                }
-            }
-            backDown=true;
-        }
         return false;
     }
 
@@ -273,11 +256,22 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor, App
         {
             if(backKey==true)
             {
-                return true;
+                if(gsm.currentState == 0)
+                {
+                    backKey = false;
+                    quit = true;
+                    return true;
+                }
+                else
+                {
+                    gsm.startOpenScreen();
+                    backKey = false;
+                    return true;
+                }
+
             }
 
             backKey=true;
-
         }
         return false;
     }

@@ -192,8 +192,8 @@ public class Player
     //constructor for combat moves is multiplier, energy cost, aoe, image
     CombatMove Bash = new CombatMove(1, 0, 0, "Bash", "bash.png");
     CombatMove Slam = new CombatMove(2, 5, 0, "Slam", "slam.png");
-    CombatMove Blast = new CombatMove(3, 15, 100, "Blast", "blast.png");
-    CombatMove Spirit = new CombatMove(4, 40, 100, "Spirit", "spirit.png");
+    CombatMove Blast = new CombatMove(1, 15, 100, "Blast", "blast.png");
+    CombatMove Spirit = new CombatMove(2, 40, 100, "Spirit", "spirit.png");
     CombatMove Smash = new CombatMove(5, 60, 0, "Smash", "smash.png");
 
     private HashMap<String, CombatMove> StringToCombatMove = new HashMap();
@@ -238,12 +238,12 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this);
+        items.loadInventory(this, false);
         updateStats();
         healAll();
     }
 
-    Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
+    Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP, boolean load)
     {
         player_name = "Mr Man";
         level=Level;
@@ -263,12 +263,12 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this);
+        items.loadInventory(this, load);
         updateStats();
         healAll();
     }
 
-    Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP)
+    Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP, boolean load)
     {
         player_name = name;
         level=Level;
@@ -285,7 +285,7 @@ public class Player
         equippedArmour = "None";
 
         items = new Inventory();
-        items.loadInventory(this);
+        items.loadInventory(this, load);
         updateStats();
         healAll();
     }
