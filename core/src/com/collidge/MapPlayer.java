@@ -265,7 +265,7 @@ public class MapPlayer extends Sprite
                     //Wait until past this point
                 }
             }
-            else {
+            if (direction == DOWN) {
                 lastpoint = (int) getY();
                 if (lastpoint <= Math.abs(tileID * tileheight)) {
                     stopMovement();
