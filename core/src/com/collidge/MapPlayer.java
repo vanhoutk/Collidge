@@ -169,7 +169,22 @@ public class MapPlayer extends Sprite
         if(collisionX||getX()>(collisionlayer.getWidth()-1)*collisionlayer.getTileWidth()||getX()<0)
         {
             setX(oldX);
-            velocity.x = 0;
+
+            if(collisionX)
+            {
+                velocity.x=0;
+
+            }
+
+            if(direction == LEFT && getX() < 0)
+            {
+                velocity.x=0;
+            }
+
+            if(direction == RIGHT && getX()>(collisionlayer.getWidth()-1)*collisionlayer.getTileWidth())
+            {
+                velocity.x=0;
+            }
         }
 
         if(velocity.y < 0)
@@ -187,10 +202,22 @@ public class MapPlayer extends Sprite
         }
 
         //react to y collision
-        if(collisionY||getY()>(collisionlayer.getHeight()-1)*collisionlayer.getTileHeight()||getY()<0)
+        if(collisionY || getY()>(collisionlayer.getHeight()-1)*collisionlayer.getTileHeight()||getY()<0)
         {
             setY(oldY);
-            velocity.y = 0;
+            if(collisionY)
+            {
+                velocity.y = 0;
+            }
+            if(direction == DOWN && getY() < 0)
+            {
+                velocity.y = 0;
+            }
+
+            if(direction == UP && getY()>(collisionlayer.getHeight()-1)*collisionlayer.getTileHeight())
+            {
+                velocity.y = 0;
+            }
         }
 
         if(stopped == true && (Math.abs(velocity.x) > 0 || Math.abs(velocity.y) > 0) && stopping == false) {

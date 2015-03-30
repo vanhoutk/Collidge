@@ -234,17 +234,17 @@ public class Play extends GameState {
             twilightOpacity=.3f;
             if(hours>10)
             {
-                nightOpacity = .95f * (1f-((26f-hours)/4f));
+                nightOpacity = .9f * (1f-((26f-hours)/4f));
             }
             else
             {
                 if(hours<2)
                 {
-                    nightOpacity = .95f * 1f-((float) (Math.abs((2f - hours) / 3f)));
+                    nightOpacity = .9f * 1f-((float) (Math.abs((2f - hours) / 3f)));
                 }
                 else if(hours==2)
                 {
-                    nightOpacity=.95f;
+                    nightOpacity=.9f;
                 }
                 else
                 {
@@ -257,7 +257,7 @@ public class Play extends GameState {
         {
             if(hours<12)
             {
-                twilightOpacity = .3f * (1f-((float)(hours - 7)/4f));
+                twilightOpacity = .2f * (1f-((float)(hours - 7)/4f));
             }
             else if(hours>=19)
             {
