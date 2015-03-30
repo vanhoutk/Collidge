@@ -70,22 +70,22 @@ public class Play extends GameState {
         player = new MapPlayer(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(0), npcList);
         player.setPosition(18 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 61) * player.getCollisionLayer().getTileHeight());
 
-        addNpc(12, 41, new Texture("shev.png"), true, false, true, true, "Full Set");
-        addNpc(11, 58, new Texture("rpgman.png"), false, false, false, true, "Loner");
-        addNpc(23, 58, new Texture("rpgman.png"), false, false, false,true , "Loner");
-        addNpc(17, 60, new Texture("rpgman.png"), true, false, true, false, "Pledge");
-        addNpc(15, 47, new Texture("rpgman.png"), false, false, false, false, "Preppy");
+        addNpc(12, 41, new Texture("s8rguyvert2.png"), true, false, true, true, "Full Set");
+        addNpc(11, 58, new Texture("backofNPC2.png"), false, false, false, true, "Loner");
+        addNpc(23, 58, new Texture("backofNPC1.png"), false, false, false,true , "Loner");
+        addNpc(17, 60, new Texture("nkdvert.png"), true, false, true, false, "Pledge");
+        addNpc(15, 47, new Texture("bookguy.png"), false, false, false, false, "Preppy");
         addNpc(18, 48, new Texture("shev.png"), true, true, true, true, "Preppy");
-        addNpc(19, 53, new Texture("rpgman.png"), true, true, false, false, "Pledge");
-        addNpc(12, 41, new Texture("rpgman.png"), true, true, true, true,"Loner" );
-        addNpc(6, 34, new Texture("rpgman.png"), false, true, false, true, "Loner");
-        addNpc(32, 28, new Texture("rpgman.png"), false, false, false, true, "Loner");
-        addNpc(21, 23, new Texture("rpgman.png"), false, false, false, true, "Pledge");
-        addNpc(10, 26, new Texture("rpgman.png"), true, true, true, true, "Loner");
-        addNpc(3, 20, new Texture("rpgman.png"), false, false, false, false, "Pledge");
-        addNpc(29, 1, new Texture("rpgman.png"), true, true, false, true, "Loner");
-        addNpc(25, 17, new Texture("rpgman.png"), false, false, false, true, "Preppy");
-        addNpc(10, 19, new Texture("rpgman.png"), false, false, false, false, "Loner");
+        addNpc(19, 53, new Texture("sassyguys8r.png"), true, true, false, false, "Pledge");
+        addNpc(12, 41, new Texture("grunts8r.png"), true, true, true, true,"Loner" );
+        addNpc(6, 34, new Texture("guy1.png"), false, true, false, true, "Loner");
+        addNpc(32, 28, new Texture("rpgman_talk.png"), false, false, false, true, "Loner");
+        addNpc(21, 23, new Texture("douche.png"), false, false, false, true, "Pledge");
+        addNpc(10, 26, new Texture("skaterBoi.png"), true, true, true, true, "Loner");
+        addNpc(3, 20, new Texture("bookgurl.png"), false, false, false, false, "Pledge");
+        addNpc(29, 1, new Texture("oldguy.png"), true, true, false, true, "Loner");
+        addNpc(25, 17, new Texture("sadguyongrass.png"), false, false, false, true, "Preppy");
+        addNpc(10, 19, new Texture("backofNPC2.png"), false, false, false, false, "Loner");
 
         //Adding buttons for inventory and menu to the map
         menuButton = new Texture("android-mobile.png");
