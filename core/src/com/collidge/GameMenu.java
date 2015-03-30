@@ -41,11 +41,12 @@ public class GameMenu extends GameState
 
     long timer=TimeUtils.millis();
     Player player;
-    boolean statsPressed=false, settingsPressed=false, savePressed=false, muted,menuLock;
+
+    boolean statsPressed=false, settingsPressed=false, savePressed=false, muted, toggleTouch, toggleMenu,menuLock;
     int volumeLevel=0, musicLevel=0, healthcounter=0, attackcounter=0, energycounter=0, defcounter=0, intcounter=0, XPcounter=0, musicPre, volPre;
     SpriteBatch batch;
     Texture texture, background;
-    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthMax, energyMax, healthbar, energybar, attackbar, defbar, intbar, statsymbol, healthIcon, energyIcon, attackIcon, defenceIcon, intelligenceIcon, XPbar, XPframe, mute, unmute;
+    Sprite stats,save, settings, backgroundsprite, vol0, vol1, vol2, vol3, vol4, music0, music1, music2, music3, music4, healthMax, energyMax, healthbar, energybar, attackbar, defbar, intbar, statsymbol, healthIcon, energyIcon, attackIcon, defenceIcon, intelligenceIcon, XPbar, XPframe, mute, unmute, toggleOn, toggleOff;
     BitmapFont Font;
 
 
@@ -121,16 +122,25 @@ public class GameMenu extends GameState
         mute.setSize(screenWidth /15, screenWidth /15);
         unmute.setSize(screenWidth /15, screenWidth /15);
 
-        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2, screenHeight*7/10 - vol0.getHeight()/2);
-        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2, screenHeight*7/10 - vol1.getHeight()/2);
-        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2, screenHeight*7/10 - vol2.getHeight()/2);
-        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2, screenHeight*7/10 - vol3.getHeight()/2);
-        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2, screenHeight*7/10 - vol4.getHeight()/2);
-        music0.setPosition(screenWidth /2 - music0.getWidth()/2,screenHeight*4/10 - music0.getHeight()/2);
-        music1.setPosition(screenWidth /2 - music1.getWidth()/2,screenHeight*4/10 - music1.getHeight()/2);
-        music2.setPosition(screenWidth /2 - music2.getWidth()/2,screenHeight*4/10 - music2.getHeight()/2);
-        music3.setPosition(screenWidth /2 - music3.getWidth()/2,screenHeight*4/10 - music3.getHeight()/2);
-        music4.setPosition(screenWidth /2 - music4.getWidth()/2,screenHeight*4/10 - music4.getHeight()/2);
+        texture = new Texture("toggleOn.png");
+        toggleOn = new Sprite(texture);
+        texture = new Texture("toggleOff.png");
+        toggleOff = new Sprite(texture);
+        toggleOn.setSize(screenWidth /20, screenHeight /15);
+        toggleOff.setSize(screenWidth /20, screenHeight /15);
+        //toggleOn.setPosition(screenWidth /2 - toggleOn.getWidth()/2, screenHeight*7/10 - toggleOn.getHeight()/2);
+        //toggleOff.setPosition(screenWidth /2 - toggleOff.getWidth()/2, screenHeight*8/10 - toggleOff.getHeight()/2);
+
+        vol0.setPosition(screenWidth /2 - vol0.getWidth()/2, screenHeight*5/10 - vol0.getHeight()/2);
+        vol1.setPosition(screenWidth /2 - vol1.getWidth()/2, screenHeight*5/10 - vol1.getHeight()/2);
+        vol2.setPosition(screenWidth /2 - vol2.getWidth()/2, screenHeight*5/10 - vol2.getHeight()/2);
+        vol3.setPosition(screenWidth /2 - vol3.getWidth()/2, screenHeight*5/10 - vol3.getHeight()/2);
+        vol4.setPosition(screenWidth /2 - vol4.getWidth()/2, screenHeight*5/10 - vol4.getHeight()/2);
+        music0.setPosition(screenWidth /2 - music0.getWidth()/2,screenHeight*3/10 - music0.getHeight()/2);
+        music1.setPosition(screenWidth /2 - music1.getWidth()/2,screenHeight*3/10 - music1.getHeight()/2);
+        music2.setPosition(screenWidth /2 - music2.getWidth()/2,screenHeight*3/10 - music2.getHeight()/2);
+        music3.setPosition(screenWidth /2 - music3.getWidth()/2,screenHeight*3/10 - music3.getHeight()/2);
+        music4.setPosition(screenWidth /2 - music4.getWidth()/2,screenHeight*3/10 - music4.getHeight()/2);
 
         mute.setPosition(screenWidth/2 - mute.getWidth()/2 , screenHeight/5 - mute.getHeight()/2);
         unmute.setPosition(screenWidth/2 - unmute.getWidth()/2 , screenHeight/5 - unmute.getHeight()/2);
@@ -399,6 +409,40 @@ public class GameMenu extends GameState
         {
             volumeLevel = gsm.getVolume();
             musicLevel = gsm.getMusic();
+            toggleTouch = gsm.getTouchToggle();
+            toggleMenu = gsm.getMenuToggle();
+
+            if(toggleTouch==true)
+            {
+                toggleOn.setPosition(screenWidth*2/5 - toggleOn.getWidth(), screenHeight*8/10 - toggleOn.getHeight()/2);
+                toggleOn.draw(batch);
+
+            }
+            else
+            {
+                toggleOff.setPosition(screenWidth*2/5 - toggleOff.getWidth(), screenHeight*8/10 - toggleOff.getHeight()/2);
+                toggleOff.draw(batch);
+
+            }
+            if(toggleMenu==true)
+            {
+                toggleOn.setPosition(screenWidth*2/5 - toggleOn.getWidth(), screenHeight*7/10 - toggleOn.getHeight()/2);
+                toggleOn.draw(batch);
+
+            }
+            else
+            {
+                toggleOff.setPosition(screenWidth*2/5 - toggleOff.getWidth(), screenHeight*7/10 - toggleOff.getHeight()/2);
+                toggleOff.draw(batch);
+
+            }
+
+            Font.setColor(Color.WHITE);
+            Font.setScale(screenWidth / 600f, screenHeight / 600f);
+            Font.draw(batch, "  Toggle Touch Targeting", screenWidth*2/5 , screenHeight*8/10);
+            Font.draw(batch, "  Toggle Combat Menu", screenWidth*2/5 , screenHeight*7/10);
+
+
 
 
             if (volumeLevel == 0 && musicLevel == 0)
@@ -414,7 +458,7 @@ public class GameMenu extends GameState
             else {unmute.draw(batch);}
 
             Font.setColor(Color.WHITE);
-            Font.setScale(screenWidth / 400f, screenHeight / 400f);
+            Font.setScale(screenWidth / 450f, screenHeight / 450f);
             Font.draw(batch, "Volume:", vol0.getX() , vol0.getY() + 3*vol0.getHeight()/2);
             Font.draw(batch, "Music:", music0.getX() , music0.getY() + 3*music0.getHeight()/2);
 
@@ -551,7 +595,29 @@ public class GameMenu extends GameState
         }
         if (settingsPressed)
         {
-            if (y < music0.getY() && y > music0.getY() - vol0.getHeight())
+            if (y < screenHeight*2/10 + toggleOff.getHeight()/2 && y > screenHeight*2/10 - toggleOff.getHeight()/2)
+            {
+                if(toggleTouch == false)
+                {
+                    toggleTouch = true;
+                }
+                else{toggleTouch=false;}
+
+                gsm.setTouchToggle();
+            }
+            if (y < screenHeight*3/10 + toggleOff.getHeight()/2 && y > screenHeight*3/10 - toggleOff.getHeight()/2)
+            {
+                if(toggleMenu == false)
+                {
+                    toggleMenu = true;
+                }
+                else{toggleMenu=false;}
+
+                gsm.setMenuToggle();
+            }
+
+
+            if (y < vol0.getY() + vol0.getHeight() && y > vol0.getY())
             {
                 if(x > vol0.getX() && x < vol0.getX() + vol0.getWidth()/5)
                 {
@@ -582,7 +648,7 @@ public class GameMenu extends GameState
                 //gsm.backgroundMus.setVolume((float)volumeLevel/4);
             }
 
-            if (y < vol0.getY() && y > vol0.getY() - vol0.getHeight())
+            if (y < vol0.getY() + vol0.getHeight() + screenHeight/5 && y > vol0.getY() + screenHeight/5)
             {
                 if(x > music0.getX() && x < music0.getX() + music0.getWidth()/5)
                 {
@@ -613,6 +679,7 @@ public class GameMenu extends GameState
             }
 
             //mute
+
             if (y < screenHeight - mute.getY() && y > screenHeight - mute.getY() - mute.getHeight())
             {
                 if (muted == true)
@@ -633,6 +700,7 @@ public class GameMenu extends GameState
                 }
 
             }
+
         }
 
         return true;

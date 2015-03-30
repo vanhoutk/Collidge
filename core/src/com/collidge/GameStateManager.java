@@ -20,6 +20,7 @@ public class GameStateManager
     public int currentState, previousState;
     public Player user;
     public int volumeLevel, musicLevel;
+    public boolean touchTargeting, advancedMenu;
     public Music backgroundMus;
 
     public String loseMusic = "pacman.mp3";
@@ -177,6 +178,26 @@ public class GameStateManager
     {
         musicLevel = music;
     }
+
+    public boolean getTouchToggle(){ return touchTargeting; }
+    public boolean getMenuToggle() { return advancedMenu; }
+    public void setTouchToggle()
+    {
+        if (touchTargeting == true)
+        {
+            touchTargeting=false;
+        }
+        else {touchTargeting=true;}
+    }
+    public void setMenuToggle()
+    {
+        if (advancedMenu == true)
+        {
+            advancedMenu=false;
+        }
+        else {advancedMenu=true;}
+    }
+
 
     public void setPlayingMus(String trackName){
        // backgroundMus.pause();
