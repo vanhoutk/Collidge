@@ -247,7 +247,7 @@ public class Player
         updateStats();
         healAll();
 
-        attackAnim=new Animation[5];
+/*        attackAnim=new Animation[5];
 
         TextureRegion[][] region = TextureRegion.split(new Texture("playerIdle.png"),32,32);
         idleAnim=new Animation(region[0],3f/region[0].length);
@@ -258,7 +258,7 @@ public class Player
             TextureRegion[][] region0 = TextureRegion.split(new Texture("playerAttack"+i+".png"),32,32);
             attackAnim[i]=new Animation(region0[0],1.5f/region0[0].length);
             System.out.println("A:"+i+" loaded");
-        }
+        }*/
 
     }
 
@@ -286,7 +286,7 @@ public class Player
         updateStats();
         healAll();
 
-        attackAnim=new Animation[5];
+/*        attackAnim=new Animation[5];
 
         TextureRegion[][] region = TextureRegion.split(new Texture("playerIdle.png"),32,32);
         idleAnim=new Animation(region[0],3f/region[0].length);
@@ -298,7 +298,7 @@ public class Player
             TextureRegion[][] region0 = TextureRegion.split(new Texture(file),32,32);
             attackAnim[i]=new Animation(region0[0],1.5f/region0[0].length);
             System.out.println("A:"+i+" loaded");
-        }
+        }*/
     }
 
     Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP, boolean load)
@@ -322,7 +322,7 @@ public class Player
         updateStats();
         healAll();
 
-        TextureRegion[][] region = TextureRegion.split(new Texture("playerIdle.png"),32,32);
+/*        TextureRegion[][] region = TextureRegion.split(new Texture("playerIdle.png"),32,32);
         idleAnim=new Animation(region[0],3f/region[0].length);
         System.out.println("idle");
         for(int i=0;i<movesKnown;i++)
@@ -331,7 +331,7 @@ public class Player
             TextureRegion[][] region0 = TextureRegion.split(new Texture("playerAttack"+i+".png"),32,32);
             attackAnim[i]=new Animation(region0[0],1.5f/region0[0].length);
             System.out.println("A:"+i+" loaded");
-        }
+        }*/
     }
 
     public int getExpTarget()
