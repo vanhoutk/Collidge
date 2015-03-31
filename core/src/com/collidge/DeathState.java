@@ -27,6 +27,9 @@ public class DeathState extends GameState
     {
         super(gsm);
         player = plr;
+        player.addExperience(-player.getExperience());
+        player.healAll();
+
         batch = new SpriteBatch();
 
         Skull = new Sprite (new Texture ("skull.png"));

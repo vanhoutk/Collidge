@@ -212,7 +212,6 @@ public class Fight extends GameState
                 {
                     if (playr.attackAnim[ActionId - 1].getTimesPlayed() > animCount)
                     {
-                        System.out.println(playr.attackAnim[ActionId - 1].getTimesPlayed()+"-----"+animCount);
                         animCount = -1;
                         comboing = false;
                         playr.attackAnim[ActionId - 1].stop();
@@ -226,7 +225,6 @@ public class Fight extends GameState
                     else
                     {
                         playr.attackAnim[ActionId - 1].update(Gdx.graphics.getDeltaTime());
-                        System.out.println(playr.attackAnim[ActionId - 1].getTimesPlayed()+"====="+animCount);
 
                     }
                 }
@@ -274,11 +272,11 @@ public class Fight extends GameState
         battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,healthBackground.getOriginX(),(healthBackground.getY()+battleFont.getLineHeight()));
         if(!attackingAnim)
         {
-            batch.draw(playr.idleAnim.getFrame(), screenWidth / 5, screenHeight / 20, screenWidth / 10, screenHeight / 5);
+            batch.draw(playr.idleAnim.getFrame(), screenWidth / 5, screenHeight / 20, screenWidth / 8, screenHeight / 5);
         }
         else
         {
-            batch.draw(playr.attackAnim[ActionId-1].getFrame(), screenWidth / 5, screenHeight / 20, screenWidth / 10, screenHeight / 5);
+            batch.draw(playr.attackAnim[ActionId-1].getFrame(), screenWidth / 5, screenHeight / 20, screenWidth / 8, screenHeight / 5);
         }
         EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f)); //Code Allowing for generation of Energy Icons
         healthBackground.setColor(Color.BLUE);
@@ -658,6 +656,8 @@ enemies[i].animation.pause();
             combo.initiateCombo(ActionId - 1, this);
             comboing = true;
             animCount=playr.attackAnim[ActionId - 1].getTimesPlayed();
+            playr.attackAnim[ActionId-1].setCurrentFrame(0);
+            playr.attackAnim[ActionId - 1].play();
             attackingAnim=true;
         }
         else
@@ -667,15 +667,12 @@ enemies[i].animation.pause();
     }
     private void playerTurnPart3() //After the combo, applying the multipliers, dealing damage
     {
-//TODO remove system outs left for debugging of combos
 
 
         //if a damaging item was used PlayerDam is already set
         if (damagingItemUsed) {
             for (int i = -targetPicker.getTargetingId(); i <= targetPicker.getTargetingId(); i++) {
-                System.out.println("Attacking: " + i);
                 if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length) {
-                    System.out.println("Dam to " + i + ": " + PlayerDam);
 
 
                     damage[targetPicker.getSelectedTarget() + 1 + i] += PlayerDam;
@@ -700,12 +697,12 @@ enemies[i].animation.pause();
             playr.changeEnergy(-(playr.getEnergyCost(fMenu.getMoveString(ActionType, ActionId))));
             for (int i = -targetPicker.getTargetingId(); i <= targetPicker.getTargetingId(); i++)
             {
-                System.out.println("Attacking: " + i);
+
                 if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length)
                 {
                     //PlayerDam = playr.attackPicker(fMenu.getMoveString(ActionType, ActionId));
                     PlayerDam = playr.getAttackMultiplier(fMenu.getMoveString(ActionType, ActionId));
-                    System.out.println("Dam to " + i + ": " + PlayerDam);
+
                     if (enemies[targetPicker.getSelectedTarget() + i].getDefence() > 0)
                     {
                         PlayerDam *= (playr.getAttack() / enemies[targetPicker.getSelectedTarget() + i].getDefence());
@@ -713,9 +710,7 @@ enemies[i].animation.pause();
                     {
                         PlayerDam *= playr.getAttack();
                     }
-                    System.out.println("Atk: " + playr.getAttack() + " Def: " + enemies[targetPicker.getSelectedTarget() + i].getDefence());
                     PlayerDam *= Math.abs(combo.skill);
-                    System.out.println("After Mult of " + combo.skill + ": " + PlayerDam);
                     if (PlayerDam < 1)
                     {
                         PlayerDam = 1;
@@ -764,7 +759,6 @@ enemies[i].animation.pause();
     private void enemyTurn(Player player,Enemy[] monsters,int monsterId)
     {
         monsterCode=monsterId;
-        System.out.println("Monster:"+monsterId);
         monsters[monsterId].attackAnimation.setCurrentFrame(0);
         animCount=monsters[monsterId].attackAnimation.getTimesPlayed();
         monsters[monsterId].attackAnimation.play();
@@ -801,7 +795,6 @@ enemies[i].animation.pause();
     {
         if(!enemies[monsterCode].getDead())
         {
-            System.out.println("X");
             combo.initiateCombo(enemies[monsterCode].attackType, this);
             defend = true;
         }
@@ -813,7 +806,6 @@ enemies[i].animation.pause();
     private void defendTurn(Player player,Enemy[] monsters,int monsterId)
     {
         double dam=-1;
-        System.out.println("Id: "+monsterId+"/"+monsters.length);
         if(monsterId>=monsters.length||monsterId<0)
         {
         }
@@ -827,12 +819,9 @@ enemies[i].animation.pause();
             {
                 dam+=monsters[monsterId].getAttack();
             }
-            System.out.println("Damage from "+monsters[monsterId].getName()+": "+dam);
             dam*=(1-(combo.skill*combo.skill));
-// System.out.println("Monster " + i + " attacks");
             if (dam <= 1)
             {
-// System.out.println("Damage by monster " + i + " resisted");
                 if(combo.skill<.9)
                 {
                     if(!gsm.demoMode)
@@ -853,12 +842,10 @@ enemies[i].animation.pause();
                     damage[0] += dam;
                 }
                 damageNums.Add(String.valueOf((int)dam),.15f,.3f);
-//player.changeHealth(-(damage));
-// System.out.println("Enemy " + i + " deals " + (dam) + " damage");
+
                 if (player.getCurrentHealth() <= 0)
                 {
                     enemiesLeft = -1;
-// System.out.println("you lose");
                     monsterCode=-1;
                 }
             }
@@ -867,7 +854,6 @@ enemies[i].animation.pause();
                 damageNums.Add("Blocked!",.15f,.3f,Color.WHITE,150,4.0);
             }
         }
-        System.out.println("Skill: "+combo.skill+" >damage: "+dam);
         monsterCode++;
         if(monsterCode>=monsters.length)
         {
@@ -883,7 +869,6 @@ enemies[i].animation.pause();
         }
         else
         {
-            System.out.println(monsterCode+":X");
             enemyTurn(player,monsters,monsterCode);
         }
         defend=false;
