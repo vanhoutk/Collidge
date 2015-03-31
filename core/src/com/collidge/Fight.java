@@ -274,11 +274,11 @@ public class Fight extends GameState
         battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,healthBackground.getOriginX(),(healthBackground.getY()+battleFont.getLineHeight()));
         if(!attackingAnim)
         {
-            batch.draw(playr.idleAnim.getFrame(), screenWidth / 10, screenHeight / 10, screenWidth / 10, screenHeight / 5);
+            batch.draw(playr.idleAnim.getFrame(), screenWidth / 5, screenHeight / 20, screenWidth / 10, screenHeight / 5);
         }
         else
         {
-            batch.draw(playr.attackAnim[ActionId-1].getFrame(), screenWidth / 10, screenHeight / 10, screenWidth / 10, screenHeight / 5);
+            batch.draw(playr.attackAnim[ActionId-1].getFrame(), screenWidth / 5, screenHeight / 20, screenWidth / 10, screenHeight / 5);
         }
         EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f)); //Code Allowing for generation of Energy Icons
         healthBackground.setColor(Color.BLUE);
