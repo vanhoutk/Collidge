@@ -448,16 +448,16 @@ public class FightMenu
                 if (menuSprites[currentMenu][myInt + i] != null) {
                     switch(i){
                         case 0: xPosition = screenWidth / 12;
-                                yPosition = 3 * screenHeight/5;
+                                yPosition = screenHeight/2;
                                 break;
                         case 1: xPosition = screenWidth / 4;
-                                yPosition = 3 * screenHeight/5;
+                                yPosition = screenHeight/2;
                                 break;
                         case 2: xPosition = screenWidth / 12;
-                                yPosition = screenHeight/3;
+                                yPosition = screenHeight/4;
                                 break;
                         case 3: xPosition = screenWidth / 4;
-                                yPosition = screenHeight/3;
+                                yPosition = screenHeight/4;
                                 break;
                     }
                     menuSprites[currentMenu][myInt + i].setPosition(xPosition, yPosition);
