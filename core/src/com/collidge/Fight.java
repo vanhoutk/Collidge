@@ -18,6 +18,8 @@ public class Fight extends GameState
 {
 
     public Music fightMusic;
+    Music punch=Gdx.audio.newMusic(Gdx.files.internal("strongpunch.mp3"));
+
 
     private double PlayerDam;
     Player playr;
@@ -31,11 +33,11 @@ public class Fight extends GameState
     private boolean damagingItemUsed=false;
     private int expEarned;
     private int monsterCode=-1;
-    private com.collidge.Animation testAnim;
     private boolean defend;
     private FightMenu fMenu;
     private int enemyCount,enemiesLeft;
     private Enemy[] enemies;
+    Animation playerIdle;
     Attack move;
     private int damage_taken;
     PopUpText damageNums=new PopUpText();
@@ -50,6 +52,7 @@ public class Fight extends GameState
     Sprite selector;
     Sprite player;
     Combo combo;
+    private Boolean attackingAnim=false;
     private BitmapFont battleFont;
     private TargetPicker targetPicker;
     private Sprite background;
@@ -180,7 +183,6 @@ public class Fight extends GameState
         backArrow=new Sprite(texture);
         backArrow.setSize(targetReticule.getWidth(), targetReticule.getHeight());
         backArrow.setOriginCenter();
-        testAnim = new com.collidge.Animation(region[0],.2f);
 //calls fightMenu class
         fMenu=new FightMenu(playr, gsm.getMenuToggle(),gsm.demoMode);
         waitingForTouch=true;
@@ -191,7 +193,7 @@ public class Fight extends GameState
     {
 //(int)(((double)(4*(screenWidth/10)))*((double)playr.getCurrentEnergy()/playr.getHealth()))
         damageNums.update();
-        testAnim.update(Gdx.graphics.getDeltaTime());
+        playr.idleAnim.update(Gdx.graphics.getDeltaTime());
         if(combo.comboing)
         {
             comboing=true;
@@ -205,8 +207,29 @@ public class Fight extends GameState
             }
             else if(monsterCode==-2)
             {
-                comboing = false;
-                playerTurnPart3();
+
+                if(attackingAnim)
+                {
+                    if (playr.attackAnim[ActionId - 1].getTimesPlayed() > animCount)
+                    {
+                        System.out.println(playr.attackAnim[ActionId - 1].getTimesPlayed()+"-----"+animCount);
+                        animCount = -1;
+                        comboing = false;
+                        playr.attackAnim[ActionId - 1].stop();
+                        attackingAnim = false;
+                        if(!punch.isPlaying())
+                        {
+                            punch.play();
+                        }
+                        playerTurnPart3();
+                    }
+                    else
+                    {
+                        playr.attackAnim[ActionId - 1].update(Gdx.graphics.getDeltaTime());
+                        System.out.println(playr.attackAnim[ActionId - 1].getTimesPlayed()+"====="+animCount);
+
+                    }
+                }
             }
             else if(monsterCode<enemies.length)
             {
@@ -219,6 +242,7 @@ public class Fight extends GameState
                 {
                     enemyTurnPart2();
                     enemies[monsterCode].attackAnimation.stop();
+                    animCount=-1;
                 }
                 else
                 {
@@ -248,7 +272,14 @@ public class Fight extends GameState
         healthBar.draw(batch);
         battleFont.draw(batch,"MR MAN",healthBackground.getOriginX(),healthBackground.getY()+(healthBackground.getHeight()+battleFont.getLineHeight()));
         battleFont.draw(batch, playr.getCurrentHealth() + "/"+playr.getHealth() ,healthBackground.getOriginX(),(healthBackground.getY()+battleFont.getLineHeight()));
-        batch.draw(testAnim.getFrame(),screenWidth/30,screenHeight/30,screenWidth/10,screenHeight/5);
+        if(!attackingAnim)
+        {
+            batch.draw(playr.idleAnim.getFrame(), screenWidth / 10, screenHeight / 10, screenWidth / 10, screenHeight / 5);
+        }
+        else
+        {
+            batch.draw(playr.attackAnim[ActionId-1].getFrame(), screenWidth / 10, screenHeight / 10, screenWidth / 10, screenHeight / 5);
+        }
         EnergyIcon.setSize((screenHeight / 20f),(screenHeight / 20f)); //Code Allowing for generation of Energy Icons
         healthBackground.setColor(Color.BLUE);
         healthBackground.setPosition(portrait.getX()+(portrait.getWidth()/10), (int)((healthBar.getY())-(healthBar.getHeight()*.9)));
@@ -622,11 +653,15 @@ enemies[i].animation.pause();
     }
     private void playerTurnPart2() //Initiating combo
     {
-        if (!damagingItemUsed) {
+        if (!damagingItemUsed)
+        {
             combo.initiateCombo(ActionId - 1, this);
             comboing = true;
+            animCount=playr.attackAnim[ActionId - 1].getTimesPlayed();
+            attackingAnim=true;
         }
-        else{
+        else
+        {
             playerTurnPart3();
         }
     }

@@ -1,5 +1,8 @@
 package com.collidge;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import java.util.HashMap;
 
 /**
@@ -21,6 +24,8 @@ public class Player
     public int itemDamage;
     public String itemType;
     public String player_name;
+    public Animation idleAnim;
+    public Animation attackAnim[];
 
 
     private int levelUpCounter=0;
@@ -241,6 +246,20 @@ public class Player
         items.loadInventory(this, false);
         updateStats();
         healAll();
+
+        attackAnim=new Animation[5];
+
+        TextureRegion[][] region = TextureRegion.split(new Texture("playerIdle.png"),32,32);
+        idleAnim=new Animation(region[0],3f/region[0].length);
+        System.out.println("idle");
+        for(int i=0;i<movesKnown;i++)
+        {
+            System.out.println("A:"+i+" loading");
+            TextureRegion[][] region0 = TextureRegion.split(new Texture("playerAttack"+i+".png"),32,32);
+            attackAnim[i]=new Animation(region0[0],1.5f/region0[0].length);
+            System.out.println("A:"+i+" loaded");
+        }
+
     }
 
     Player(int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP, boolean load)
@@ -266,6 +285,20 @@ public class Player
         items.loadInventory(this, load);
         updateStats();
         healAll();
+
+        attackAnim=new Animation[5];
+
+        TextureRegion[][] region = TextureRegion.split(new Texture("playerIdle.png"),32,32);
+        idleAnim=new Animation(region[0],3f/region[0].length);
+        System.out.println("idle");
+        for(int i=0;i<movesKnown;i++)
+        {
+            String file="playerAttack"+String.valueOf(i)+".png";
+            System.out.println("A:"+i+" loading");
+            TextureRegion[][] region0 = TextureRegion.split(new Texture(file),32,32);
+            attackAnim[i]=new Animation(region0[0],1.5f/region0[0].length);
+            System.out.println("A:"+i+" loaded");
+        }
     }
 
     Player(String name,int Level, int ATK,int DEF, int INT,int HP,int EN, int EXP, boolean load)
@@ -288,6 +321,17 @@ public class Player
         items.loadInventory(this, load);
         updateStats();
         healAll();
+
+        TextureRegion[][] region = TextureRegion.split(new Texture("playerIdle.png"),32,32);
+        idleAnim=new Animation(region[0],3f/region[0].length);
+        System.out.println("idle");
+        for(int i=0;i<movesKnown;i++)
+        {
+            System.out.println("A:"+i+" loading");
+            TextureRegion[][] region0 = TextureRegion.split(new Texture("playerAttack"+i+".png"),32,32);
+            attackAnim[i]=new Animation(region0[0],1.5f/region0[0].length);
+            System.out.println("A:"+i+" loaded");
+        }
     }
 
     public int getExpTarget()
