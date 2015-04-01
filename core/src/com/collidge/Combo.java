@@ -113,7 +113,7 @@ public class Combo
         {
             if(!pop1.isPlaying())
             {
-                pop1.play();
+               // pop1.play();
             }
             popUps.clear();
         }

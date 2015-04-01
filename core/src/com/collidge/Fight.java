@@ -216,10 +216,6 @@ public class Fight extends GameState
                         comboing = false;
                         playr.attackAnim[ActionId - 1].stop();
                         attackingAnim = false;
-                        if(!punch.isPlaying())
-                        {
-                            punch.play();
-                        }
                         playerTurnPart3();
                     }
                     else
@@ -672,17 +668,21 @@ enemies[i].animation.pause();
         //if a damaging item was used PlayerDam is already set
         if (damagingItemUsed) {
             for (int i = -targetPicker.getTargetingId(); i <= targetPicker.getTargetingId(); i++) {
-                if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length) {
+                if (targetPicker.getSelectedTarget() + i >= 0 && targetPicker.getSelectedTarget() + i < enemies.length)
+                {
 
 
                     damage[targetPicker.getSelectedTarget() + 1 + i] += PlayerDam;
-                    if (!enemies[targetPicker.getSelectedTarget() + i].getDead()) {
+                    if (!enemies[targetPicker.getSelectedTarget() + i].getDead())
+                    {
                         damageNums.Add
                                 (
                                         String.valueOf(-(int) PlayerDam),
                                         (float) (enemyX[targetPicker.getSelectedTarget() + i] + (enemies[targetPicker.getSelectedTarget() + i].width / 2)) / screenWidth,
                                         ((float) (enemyY[targetPicker.getSelectedTarget() + i] + enemies[targetPicker.getSelectedTarget() + i].height) / screenHeight)
                                 );
+
+
                     }
                 }
             }
@@ -729,6 +729,9 @@ enemies[i].animation.pause();
                                         (float) (enemyX[targetPicker.getSelectedTarget() + i] + (enemies[targetPicker.getSelectedTarget() + i].width / 2)) / screenWidth,
                                         ((float) (enemyY[targetPicker.getSelectedTarget() + i] + enemies[targetPicker.getSelectedTarget() + i].height) / screenHeight)
                                 );
+
+                        punch.play();
+
                     }
                 }
             }
@@ -827,8 +830,10 @@ enemies[i].animation.pause();
                     if(!gsm.demoMode)
                     {
                         damage[0]++;
+
                     }
                     damageNums.Add(String.valueOf(1), .15f, .3f);
+                    punch.play();
                 }
                 else
                 {
@@ -840,8 +845,10 @@ enemies[i].animation.pause();
                 if(!gsm.demoMode)
                 {
                     damage[0] += dam;
+
                 }
                 damageNums.Add(String.valueOf((int)dam),.15f,.3f);
+                punch.play();
 
                 if (player.getCurrentHealth() <= 0)
                 {
@@ -893,7 +900,7 @@ enemies[i].animation.pause();
     {
         damage[0]=0;
         combo.delete();
-      //  fightMusic.dispose();
+        fightMusic.dispose();
         batch.dispose();
         texture.dispose();
         battleFont.dispose();
