@@ -339,6 +339,11 @@ public class InventoryState extends GameState
             infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
             infoFont.drawWrapped(batch, itemEquipText[selectedItem], screenWidth - (6 * spacing / 4 + sqSide), sqSide - 3* infoFont.getLineHeight()/4, sqSide, BitmapFont.HAlignment.CENTER);
         }
+        else if(itemEquipText[selectedItem].equals("Use item"))
+        {
+            infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
+            infoFont.draw(batch, "Use item", screenWidth - (5 * spacing / 3 + sqSide), sqSide - 5 * infoFont.getLineHeight() / 4);
+        }
         else
         {
             infoFont.setScale(screenWidth / 350f, screenHeight / 350f);
