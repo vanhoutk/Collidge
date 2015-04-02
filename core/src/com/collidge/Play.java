@@ -345,7 +345,7 @@ public class Play extends GameState {
         minutes%=60;
         seconds%=60;
         //System.out.println(hours+"------"+twilightOpacity);
-
+/*
         if(player.getX() < 624&&player.getY()<1485&&player.getY()>1410&&player.getX()>510&&TimeUtils.timeSinceMillis(enteringFight)>3000)
         {
             if(userCharacter.getCurrentHealth()<=0)
@@ -386,7 +386,7 @@ public class Play extends GameState {
         //{
         //    gsm.openInventory(userCharacter);
         //    player.setPosition(8 * player.getCollisionLayer().getTileWidth(), (player.getCollisionLayer().getHeight() - 8) * player.getCollisionLayer().getTileHeight());
-        //}
+        //}*/
     }
 
     public void startFightSequence() {

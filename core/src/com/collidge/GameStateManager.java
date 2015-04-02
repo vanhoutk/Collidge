@@ -159,6 +159,7 @@ public class GameStateManager
     {
         gameStates.add(new GameMenu(this, player,menu));
         changeState(gameStates.size()-1);
+
     }
 
     public void closeMenu()
@@ -263,6 +264,7 @@ public class GameStateManager
     public void startOpenScreen()
     {
         changeState(0);
+
     }
 
     //Two functions below are the most important functions. These get called in the main loop each frame by calling the currentState's individual update/draw functions.

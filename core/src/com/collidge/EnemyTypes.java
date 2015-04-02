@@ -20,7 +20,7 @@ public class EnemyTypes
         //temp = new Enemy(String name, int health, int attack, int defence,int experianceForKilled);
         temp=new Enemy("Fresher",10,4,2,5,8,6,-1);
         EnemyCatalog.put(temp.getName(), temp);
-        temp=new Enemy("Master Debater",20,6,3,10,8,6,-2);
+        temp=new Enemy("Debater",20,6,3,10,8,6,-2);
         EnemyCatalog.put(temp.getName(), temp);
         temp=new Enemy("Lecturer",80,15,4,25,7,6,-4);
         EnemyCatalog.put(temp.getName(), temp);

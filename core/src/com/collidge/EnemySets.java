@@ -25,14 +25,14 @@ public class EnemySets
         EnemyPopulation.put("Loner",fillArrays(1,0,0,0));
         EnemyCollections.put("Pack", fillArrays("Fresher","Fresher","Fresher",""));
         EnemyPopulation.put("Pack",fillArrays(3,3,1,0));
-        EnemyCollections.put("Preppy", fillArrays("Fresher","Master Debater","",""));
+        EnemyCollections.put("Preppy", fillArrays("Fresher","Debater","",""));
         EnemyPopulation.put("Preppy",fillArrays(1,1,0,0));
         EnemyCollections.put("Pet",fillArrays("Fresher","Lecturer","",""));
         EnemyPopulation.put("Pet",fillArrays(2,1,0,0));
         EnemyCollections.put("Pledge",fillArrays("Fresher","Frat boy","",""));
         EnemyPopulation.put("Pledge",fillArrays(5,1,0,0));
-        EnemyCollections.put("Full Set",fillArrays("Fresher","Master Debater","Lecturer","Frat boy"));
-        EnemyPopulation.put("Full Set",fillArrays(3,3,2,2));
+        EnemyCollections.put("Full Set",fillArrays("Fresher","Debater","Lecturer","Frat boy"));
+        EnemyPopulation.put("Full Set",fillArrays(1,1,1,1));
 
         //NB MAX OF 10 ENEMIES PLEASE
 

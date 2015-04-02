@@ -112,6 +112,7 @@ public class Fight extends GameState
         playr=player;
         EnemySets BasicSet=new EnemySets();
         enemies=BasicSet.getEnemies(Enemy);
+        punch.setVolume((float)gsm.getVolume()/4);
     }
     @Override
     public void initialize()
@@ -302,7 +303,9 @@ public class Fight extends GameState
                     healthBackground.setSize(healthBackground.getWidth()-(int)(healthBackground.getWidth()*.05),healthBar.getHeight());
                     healthBackground.draw(batch);
                     healthBar.draw(batch);
+                    battleFont.setColor(Color.WHITE);
                     battleFont.draw(batch,enemies[i].getName(),healthBackground.getX(),healthBackground.getY()+battleFont.getLineHeight()*2);
+                    battleFont.setColor(Color.BLACK);
                     battleFont.draw(batch, enemies[i].getHealth() + "", healthBackground.getX(), healthBackground.getY()+battleFont.getLineHeight());
                     selector.setPosition(enemyX[i] - enemies[i].width/8, enemyY[i] - enemies[i].height/8);
                     selector.setSize(5 * enemies[i].width/4, 5 * enemies[i].height/4);
